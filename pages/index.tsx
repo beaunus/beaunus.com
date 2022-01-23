@@ -35,7 +35,7 @@ const Home: NextPage = () => {
         <img id="profile-photo" src="/img/beau-dobbin-photo.jpg" />
         <h3>Beau Dobbin</h3>
         <h4>Software Engineer</h4>
-        <div className="flex gap-x-5 justify-center">
+        <div className="flex flex-wrap gap-x-5 justify-center">
           <div>
             <FontAwesomeIcon className="mr-2 text-blue-600" icon={faTerminal} />
             <span>Code</span>
