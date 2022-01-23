@@ -27,10 +27,6 @@ body {
   text-align: center;
 }
 
-p {
-  font-size: 1em;
-}
-
 section {
   padding: 65px 20px;
   display: flex;
