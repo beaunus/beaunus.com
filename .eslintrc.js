@@ -7,4 +7,10 @@ module.exports = {
     "next/core-web-vitals",
     "plugin:tailwindcss/recommended",
   ],
+  settings: {
+    ...beaunusStyleConfig.settings,
+    tailwindcss: {
+      cssFiles: ["styles/**/*.css"],
+    },
+  },
 };
