@@ -118,54 +118,8 @@ img {
   background: var(--color-highlight);
 }
 
-.logos {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.logos > *,
-.logos > a > *,
-#logo {
-  height: 25px;
-  margin: 10px;
-}
-
-.logos i {
-  text-align: right;
-}
-
-.logos span {
-  text-align: left;
-}
-
 .rounded {
   border-radius: 20px;
-}
-
-.fa-terminal {
-  color: blue;
-}
-
-.fa-handshake {
-  color: green;
-}
-
-.fa-music {
-  color: orange;
-}
-
-.fa-headphones-alt {
-  color: red;
-}
-
-.fa,
-.far,
-.fas {
-  margin-top: 3px;
-  /* text-align: center; */
-  margin-right: 10px;
-  /* width: 30px; */
 }
 
 .rounded-border {

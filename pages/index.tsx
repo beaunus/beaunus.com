@@ -17,27 +17,33 @@ const Home: NextPage = () => {
         <meta content="width=device-width,initial-scale=1" name="viewport" />
       </Head>
       <header>
-        <img id="logo" src="img/beaunus_logo_pixels.png" />
+        <img className="m-3 h-7" src="img/beaunus_logo_pixels.png" />
       </header>
       <div>
         <img id="profile-photo" src="img/beau-dobbin-photo.jpg" />
         <h3>Beau Dobbin</h3>
         <h4>Software Engineer</h4>
-        <div className="logos">
+        <div className="flex gap-x-5 justify-center">
           <div>
-            <FontAwesomeIcon icon={faTerminal} />
+            <FontAwesomeIcon className="mr-2 text-blue-600" icon={faTerminal} />
             <span>Code</span>
           </div>
           <div>
-            <FontAwesomeIcon icon={faHandshake} />
+            <FontAwesomeIcon
+              className="mr-2 text-green-600"
+              icon={faHandshake}
+            />
             <span>Education</span>
           </div>
           <div>
-            <FontAwesomeIcon icon={faMusic} />
+            <FontAwesomeIcon className="mr-2 text-orange-300" icon={faMusic} />
             <span>Music</span>
           </div>
           <div>
-            <FontAwesomeIcon icon={faHeadphonesAlt} />
+            <FontAwesomeIcon
+              className="mr-2 text-red-500"
+              icon={faHeadphonesAlt}
+            />
             <span>Audio Engineering</span>
           </div>
         </div>
@@ -61,30 +67,73 @@ const Home: NextPage = () => {
             sustainable sources.
           </p>
         </div>
-        <div className="logos">
+        <div className="flex flex-wrap gap-4 justify-center">
           <img
             alt="TypeScript"
+            className="h-6"
             src="img/logos/typescript.svg"
             title="TypeScript"
           />
-          <img alt="NodeJS" src="img/logos/node.png" title="NodeJS" />
-          <img alt="GraphQL" src="img/logos/graph-ql.svg" title="GraphQL" />
-          <img alt="Python" src="img/logos/python.svg" title="Python" />
+          <img
+            alt="NodeJS"
+            className="h-6"
+            src="img/logos/node.png"
+            title="NodeJS"
+          />
+          <img
+            alt="GraphQL"
+            className="h-6"
+            src="img/logos/graph-ql.svg"
+            title="GraphQL"
+          />
+          <img
+            alt="Python"
+            className="h-6"
+            src="img/logos/python.svg"
+            title="Python"
+          />
           <img
             alt="React Testing Library"
+            className="h-6"
             src="img/logos/react-testing-library.png"
             title="React Testing Library"
           />
-          <img alt="Jest" src="img/logos/jest.svg" title="Jest" />
-          <img alt="React" src="img/logos/react.png" title="React" />
-          <img alt="Next.js" src="img/logos/nextjs.svg" title="Next.js" />
+          <img
+            alt="Jest"
+            className="h-6"
+            src="img/logos/jest.svg"
+            title="Jest"
+          />
+          <img
+            alt="React"
+            className="h-6"
+            src="img/logos/react.png"
+            title="React"
+          />
+          <img
+            alt="Next.js"
+            className="h-6"
+            src="img/logos/nextjs.svg"
+            title="Next.js"
+          />
           <img
             alt="Tailwind CSS"
+            className="h-6"
             src="img/logos/tailwind-css.svg"
             title="Tailwind CSS"
           />
-          <img alt="Vercel" src="img/logos/vercel.png" title="Vercel" />
-          <img alt="Sentry" src="img/logos/sentry.png" title="Sentry" />
+          <img
+            alt="Vercel"
+            className="h-6"
+            src="img/logos/vercel.png"
+            title="Vercel"
+          />
+          <img
+            alt="Sentry"
+            className="h-6"
+            src="img/logos/sentry.png"
+            title="Sentry"
+          />
         </div>
       </section>
       <section>
@@ -111,13 +160,38 @@ const Home: NextPage = () => {
             beginners for an advanced programming bootcamp.
           </p>
         </div>
-        <div className="logos">
-          <img alt="NodeJS" src="img/logos/node.png" title="NodeJS" />
-          <img alt="ExpressJS" src="img/logos/express.png" title="ExpressJS" />
-          <img alt="React" src="img/logos/react.png" title="React" />
-          <img alt="GraphQL" src="img/logos/graph-ql.svg" title="GraphQL" />
-          <img alt="HTML" src="img/logos/html.png" title="HTML" />
-          <img alt="CSS" src="img/logos/css.png" title="CSS" />
+        <div className="flex flex-wrap gap-4 justify-center">
+          <img
+            alt="NodeJS"
+            className="h-6"
+            src="img/logos/node.png"
+            title="NodeJS"
+          />
+          <img
+            alt="ExpressJS"
+            className="h-6"
+            src="img/logos/express.png"
+            title="ExpressJS"
+          />
+          <img
+            alt="React"
+            className="h-6"
+            src="img/logos/react.png"
+            title="React"
+          />
+          <img
+            alt="GraphQL"
+            className="h-6"
+            src="img/logos/graph-ql.svg"
+            title="GraphQL"
+          />
+          <img
+            alt="HTML"
+            className="h-6"
+            src="img/logos/html.png"
+            title="HTML"
+          />
+          <img alt="CSS" className="h-6" src="img/logos/css.png" title="CSS" />
         </div>
       </section>
       <section>
@@ -134,45 +208,91 @@ const Home: NextPage = () => {
             software development center based in Tokyo.
           </p>
         </div>
-        <div className="logos">
+        <div className="flex flex-wrap gap-4 justify-center">
           <img
             alt="TypeScript"
+            className="h-6"
             src="img/logos/typescript.svg"
             title="TypeScript"
           />
-          <img alt="NodeJS" src="img/logos/node.png" title="NodeJS" />
-          <img alt="GraphQL" src="img/logos/graph-ql.svg" title="GraphQL" />
+          <img
+            alt="NodeJS"
+            className="h-6"
+            src="img/logos/node.png"
+            title="NodeJS"
+          />
+          <img
+            alt="GraphQL"
+            className="h-6"
+            src="img/logos/graph-ql.svg"
+            title="GraphQL"
+          />
           <img
             alt="Google Cloud Platform"
+            className="h-6"
             src="img/logos/google-cloud-logo.svg"
             title="Google Cloud Platform"
           />
-          <img alt="MongoDB" src="img/logos/mongodb.png" title="MongoDB" />
-          <img alt="ExpressJS" src="img/logos/express.png" title="ExpressJS" />
+          <img
+            alt="MongoDB"
+            className="h-6"
+            src="img/logos/mongodb.png"
+            title="MongoDB"
+          />
+          <img
+            alt="ExpressJS"
+            className="h-6"
+            src="img/logos/express.png"
+            title="ExpressJS"
+          />
           <img
             alt="Cypress"
+            className="h-6"
             src="img/logos/cypress-logo.webp"
             title="Cypress"
           />
-          <img alt="Jest" src="img/logos/jest.svg" title="Jest" />
-          <img alt="React" src="img/logos/react.png" title="React" />
-          <img alt="Webpack" src="img/logos/webpack.png" title="Webpack" />
+          <img
+            alt="Jest"
+            className="h-6"
+            src="img/logos/jest.svg"
+            title="Jest"
+          />
+          <img
+            alt="React"
+            className="h-6"
+            src="img/logos/react.png"
+            title="React"
+          />
+          <img
+            alt="Webpack"
+            className="h-6"
+            src="img/logos/webpack.png"
+            title="Webpack"
+          />
           <img
             alt="Ant Design"
+            className="h-6"
             src="img/logos/ant-design.svg"
             title="Ant Design"
           />
           <img
             alt="Ionic Framework"
+            className="h-6"
             src="img/logos/ionicframework.png"
             title="Ionic Framework"
           />
           <img
             alt="Amazon Web Services"
+            className="h-6"
             src="img/logos/aws.png"
             title="Amazon Web Services"
           />
-          <img alt="Redis" src="img/logos/redis.svg" title="Redis" />
+          <img
+            alt="Redis"
+            className="h-6"
+            src="img/logos/redis.svg"
+            title="Redis"
+          />
         </div>
       </section>
       <section>
@@ -190,28 +310,61 @@ const Home: NextPage = () => {
             Japan.
           </p>
         </div>
-        <div className="logos">
-          <img alt="NodeJS" src="img/logos/node.png" title="NodeJS" />
+        <div className="flex flex-wrap gap-4 justify-center">
+          <img
+            alt="NodeJS"
+            className="h-6"
+            src="img/logos/node.png"
+            title="NodeJS"
+          />
           <img
             alt="TypeScript"
+            className="h-6"
             src="img/logos/typescript.svg"
             title="TypeScript"
           />
-          <img alt="MongoDB" src="img/logos/mongodb.png" title="MongoDB" />
-          <img alt="ExpressJS" src="img/logos/express.png" title="ExpressJS" />
-          <img alt="React" src="img/logos/react.png" title="React" />
+          <img
+            alt="MongoDB"
+            className="h-6"
+            src="img/logos/mongodb.png"
+            title="MongoDB"
+          />
+          <img
+            alt="ExpressJS"
+            className="h-6"
+            src="img/logos/express.png"
+            title="ExpressJS"
+          />
+          <img
+            alt="React"
+            className="h-6"
+            src="img/logos/react.png"
+            title="React"
+          />
           <img
             alt="AngularJS"
+            className="h-6"
             src="img/logos/angularjs.png"
             title="AngularJS"
           />
           <img
             alt="Amazon Web Services"
+            className="h-6"
             src="img/logos/aws.png"
             title="Amazon Web Services"
           />
-          <img alt="Redis" src="img/logos/redis.svg" title="Redis" />
-          <img alt="Sentry" src="img/logos/sentry.png" title="Sentry" />
+          <img
+            alt="Redis"
+            className="h-6"
+            src="img/logos/redis.svg"
+            title="Redis"
+          />
+          <img
+            alt="Sentry"
+            className="h-6"
+            src="img/logos/sentry.png"
+            title="Sentry"
+          />
         </div>
       </section>
       <section>
@@ -238,21 +391,34 @@ const Home: NextPage = () => {
             .
           </p>
         </div>
-        <div className="logos">
+        <div className="flex flex-wrap gap-4 justify-center">
           <img
             alt="TypeScript"
+            className="h-6"
             src="img/logos/typescript.svg"
             title="TypeScript"
           />
-          <img alt="React" src="img/logos/react.png" title="React" />
+          <img
+            alt="React"
+            className="h-6"
+            src="img/logos/react.png"
+            title="React"
+          />
           <img
             alt="Amazon Web Services"
+            className="h-6"
             src="img/logos/aws.png"
             title="Amazon Web Services"
           />
-          <img alt="D3.JS" src="img/logos/d3.svg" title="D3.JS" />
+          <img
+            alt="D3.JS"
+            className="h-6"
+            src="img/logos/d3.svg"
+            title="D3.JS"
+          />
           <img
             alt="The Movie Database"
+            className="h-6"
             src="img/logos/themoviedb.svg"
             title="The Movie Database"
           />
@@ -324,12 +490,12 @@ const Home: NextPage = () => {
         <p>
           <a href="mailto:beau@beaunus.com">beau@beaunus.com</a>
         </p>
-        <div className="logos">
+        <div className="flex flex-wrap gap-4 justify-center">
           <a href="https://github.com/beaunus">
-            <img src="img/logos/github.png" />
+            <img className="h-6" src="img/logos/github.png" />
           </a>
           <a href="https://www.linkedin.com/in/beaunus/">
-            <img src="img/logos/linkedin.png" />
+            <img className="h-6" src="img/logos/linkedin.png" />
           </a>
         </div>
       </section>
