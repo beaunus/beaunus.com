@@ -14,12 +14,7 @@
   box-sizing: border-box;
 }
 
-section:nth-child(odd) {
-  background-color: var(--color-alternate-background);
-}
-
 section:nth-child(odd):not(:last-of-type) {
-  background-color: var(--color-alternate-background);
   margin: 10px 0 0;
   -webkit-clip-path: polygon(0 0%, 100% 4%, 100% 96%, 0% 100%);
   clip-path: polygon(0 0%, 100% 4%, 100% 96%, 0% 100%);
