@@ -1,4 +1,5 @@
 import {
+  faHandPeace,
   faHandshake,
   faHeadphonesAlt,
   faMusic,
@@ -28,11 +29,24 @@ const Home: NextPage = () => {
         <meta content="" name="description" />
         <meta content="width=device-width,initial-scale=1" name="viewport" />
       </Head>
-      <header>
-        <img className="m-3 h-7" src="/img/beaunus_logo_pixels.png" />
+      <header className="p-3">
+        <Image
+          alt="Beaunus Logo"
+          height={24}
+          objectFit="contain"
+          src="/img/beaunus_logo_pixels.png"
+          width="100%"
+        />
       </header>
       <div>
-        <img id="profile-photo" src="/img/beau-dobbin-photo.jpg" />
+        <Image
+          alt="Beau Dobbin"
+          className="rounded-full"
+          height={200}
+          objectFit="contain"
+          src="/img/beau-dobbin-photo.jpg"
+          width={200}
+        />
         <h3>Beau Dobbin</h3>
         <h4>Software Engineer</h4>
         <div className="flex flex-wrap gap-x-5 justify-center">
@@ -62,10 +76,14 @@ const Home: NextPage = () => {
       </div>
       <section>
         <div>
-          <img
-            className="rounded-border"
+          <Image
+            alt="Octopus Energy"
+            className="rounded-3xl"
+            height={200}
+            objectFit="contain"
             src="/img/logos/octopus.jpeg"
             title="Octopus Energy"
+            width={200}
           />
         </div>
         <div>
@@ -98,10 +116,14 @@ const Home: NextPage = () => {
       </section>
       <section>
         <div>
-          <img
+          <Image
             alt="Code Chrysalis"
+            className="rounded-3xl"
+            height={200}
+            objectFit="contain"
             src="/img/logos/code-chrysalis.png"
             title="Code Chrysalis"
+            width={200}
           />
         </div>
         <div>
@@ -131,7 +153,15 @@ const Home: NextPage = () => {
       </section>
       <section>
         <div>
-          <img className="rounded-border" src="/img/logos/basal.png" />
+          <Image
+            alt="Basal"
+            className="rounded-3xl"
+            height={200}
+            objectFit="contain"
+            src="/img/logos/basal.png"
+            title="Basal"
+            width={200}
+          />
         </div>
         <div>
           <h4>Basal</h4>
@@ -165,7 +195,15 @@ const Home: NextPage = () => {
       </section>
       <section>
         <div>
-          <img alt="Zehitomo" src="/img/zehitomo-iphone.png" title="Zehitomo" />
+          <Image
+            alt="Zehitomo"
+            className="rounded-3xl"
+            height={200}
+            objectFit="contain"
+            src="/img/zehitomo-iphone.png"
+            title="Zehitomo"
+            width={200}
+          />
         </div>
         <div>
           <h4>Zehitomo</h4>
@@ -192,11 +230,14 @@ const Home: NextPage = () => {
       </section>
       <section>
         <div>
-          <img
+          <Image
             alt="Six Degrees of Kevin Bacon"
-            className="rounded-border"
+            className="rounded-3xl"
+            height={200}
+            objectFit="contain"
             src="/img/logos/six-degrees-of-kevin-bacon.png"
             title="Six Degrees of Kevin Bacon"
+            width={200}
           />
         </div>
         <div>
@@ -224,10 +265,14 @@ const Home: NextPage = () => {
       </section>
       <section>
         <div>
-          <img
-            className="rounded"
+          <Image
+            alt="Second Shift"
+            className="rounded-3xl"
+            height={200}
+            objectFit="contain"
             src="/img/background_splash_bbq.jpg"
             title="Second Shift"
+            width={200}
           />
         </div>
         <div>
@@ -246,10 +291,14 @@ const Home: NextPage = () => {
       </section>
       <section>
         <div>
-          <img
+          <Image
             alt="Beaunus Sound"
+            className="rounded-3xl"
+            height={200}
+            objectFit="contain"
             src="/img/logos/beaunussound.png"
             title="Beaunus Sound"
+            width={200}
           />
         </div>
         <div>
@@ -263,10 +312,14 @@ const Home: NextPage = () => {
       <section>
         <div>
           <a href="https://unsplash.com/photos/S4eh9DWTId4?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink">
-            <img
+            <Image
               alt="Scales and Modes"
+              className="rounded-3xl"
+              height={200}
+              objectFit="contain"
               src="/img/kelly-sikkema-S4eh9DWTId4-unsplash.jpg"
               title="Scales and Modes"
+              width={200}
             />
           </a>
         </div>
@@ -284,16 +337,34 @@ const Home: NextPage = () => {
         </div>
       </section>
       <section>
-        <i aria-hidden="true" className="far fa-hand-peace"></i>
+        <p>
+          <FontAwesomeIcon icon={faHandPeace} />
+        </p>
         <p>
           <a href="mailto:beau@beaunus.com">beau@beaunus.com</a>
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
           <a href="https://github.com/beaunus">
-            <img className="h-6" src="/img/logos/github.png" />
+            <Image
+              alt="Github"
+              className="rounded-3xl"
+              height={24}
+              objectFit="contain"
+              src="/img/logos/github.png"
+              title="Github"
+              width="100%"
+            />
           </a>
           <a href="https://www.linkedin.com/in/beaunus/">
-            <img className="h-6" src="/img/logos/linkedin.png" />
+            <Image
+              alt="Linkedin"
+              className="rounded-3xl"
+              height={24}
+              objectFit="contain"
+              src="/img/logos/linkedin.png"
+              title="Linkedin"
+              width="100%"
+            />
           </a>
         </div>
       </section>

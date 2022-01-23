@@ -33,13 +33,6 @@ header {
   margin-bottom: 2em;
 }
 
-#profile-photo {
-  border-radius: 50%;
-  max-width: 66.6666666667%;
-  max-height: 200px;
-  box-shadow: 2px 2px 6px 2px lightgray;
-}
-
 h1,
 h2,
 h3,
@@ -116,12 +109,4 @@ img {
 
 :not(.logos) > a:hover {
   background: var(--color-highlight);
-}
-
-.rounded {
-  border-radius: 20px;
-}
-
-.rounded-border {
-  border-radius: 20px;
 }
