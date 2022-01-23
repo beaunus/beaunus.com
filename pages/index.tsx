@@ -47,8 +47,8 @@ const Home: NextPage = () => {
           src="/img/beau-dobbin-photo.jpg"
           width={200}
         />
-        <h3>Beau Dobbin</h3>
-        <h4>Software Engineer</h4>
+        <h3 className="my-2">Beau Dobbin</h3>
+        <h4 className="my-2">Software Engineer</h4>
         <div className="flex flex-wrap gap-x-5 justify-center">
           <div>
             <FontAwesomeIcon className="mr-2 text-blue-600" icon={faTerminal} />
@@ -87,8 +87,8 @@ const Home: NextPage = () => {
           />
         </div>
         <div>
-          <h4>Octopus Energy</h4>
-          <h5>
+          <h4 className="my-2">Octopus Energy</h4>
+          <h5 className="my-2">
             <a href="https://octopusenergy.co.jp/">octopusenergy.co.jp</a>
           </h5>
           <p>
@@ -127,8 +127,8 @@ const Home: NextPage = () => {
           />
         </div>
         <div>
-          <h4>Code Chrysalis</h4>
-          <h5>
+          <h4 className="my-2">Code Chrysalis</h4>
+          <h5 className="my-2">
             <a href="https://www.codechrysalis.io/">codechrysalis.io</a>
           </h5>
           <p>
@@ -164,8 +164,8 @@ const Home: NextPage = () => {
           />
         </div>
         <div>
-          <h4>Basal</h4>
-          <h5>
+          <h4 className="my-2">Basal</h4>
+          <h5 className="my-2">
             <a href="https://basal.dev/">basal.dev</a>
           </h5>
           <p>
@@ -206,8 +206,8 @@ const Home: NextPage = () => {
           />
         </div>
         <div>
-          <h4>Zehitomo</h4>
-          <h5>
+          <h4 className="my-2">Zehitomo</h4>
+          <h5 className="my-2">
             <a href="https://www.zehitomo.com/">zehitomo.com</a>
           </h5>
           <p>
@@ -241,8 +241,8 @@ const Home: NextPage = () => {
           />
         </div>
         <div>
-          <h4>Six Degrees of Kevin Bacon</h4>
-          <h5>
+          <h4 className="my-2">Six Degrees of Kevin Bacon</h4>
+          <h5 className="my-2">
             <a href="http://six-degrees-of-kevin-bacon.beaunus.com/">
               six-degrees-of-kevin-bacon.beaunus.com
             </a>
@@ -276,8 +276,8 @@ const Home: NextPage = () => {
           />
         </div>
         <div>
-          <h4>Second Shift</h4>
-          <h5>
+          <h4 className="my-2">Second Shift</h4>
+          <h5 className="my-2">
             <a href="http://secondshiftmusic.com/catalog/">
               secondshiftmusic.com
             </a>
@@ -302,8 +302,8 @@ const Home: NextPage = () => {
           />
         </div>
         <div>
-          <h4>Beaunus Sound</h4>
-          <h5>
+          <h4 className="my-2">Beaunus Sound</h4>
+          <h5 className="my-2">
             <a href="http://beaunussound.com/">beaunussound.com</a>
           </h5>
           <p>I ran an audio production company for a few years.</p>
@@ -324,8 +324,8 @@ const Home: NextPage = () => {
           </a>
         </div>
         <div>
-          <h4>Scales and Modes</h4>
-          <h5>
+          <h4 className="my-2">Scales and Modes</h4>
+          <h5 className="my-2">
             <a href="http://scales-and-modes.beaunus.com/">
               scales-and-modes.beaunus.com
             </a>
