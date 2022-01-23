@@ -89,7 +89,12 @@ const Home: NextPage = () => (
         <div>
           <div className="my-2 text-2xl text-blue-700">Octopus Energy</div>
           <div className="my-2 text-xl text-purple-600">
-            <a href="https://octopusenergy.co.jp/">octopusenergy.co.jp</a>
+            <a
+              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              href="https://octopusenergy.co.jp/"
+            >
+              octopusenergy.co.jp
+            </a>
           </div>
           <p>
             I am a senior frontend developer at Octopus Energy, an energy
@@ -129,7 +134,12 @@ const Home: NextPage = () => (
         <div>
           <div className="my-2 text-2xl text-blue-700">Code Chrysalis</div>
           <div className="my-2 text-xl text-purple-600">
-            <a href="https://www.codechrysalis.io/">codechrysalis.io</a>
+            <a
+              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              href="https://www.codechrysalis.io/"
+            >
+              codechrysalis.io
+            </a>
           </div>
           <p>
             I am an instructor for Immersive Part-time, an advanced JavaScript
@@ -166,7 +176,12 @@ const Home: NextPage = () => (
         <div>
           <div className="my-2 text-2xl text-blue-700">Basal</div>
           <div className="my-2 text-xl text-purple-600">
-            <a href="https://basal.dev/">basal.dev</a>
+            <a
+              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              href="https://basal.dev/"
+            >
+              basal.dev
+            </a>
           </div>
           <p>
             I was a senior full-stack engineer and team lead at Basal, a
@@ -208,7 +223,12 @@ const Home: NextPage = () => (
         <div>
           <div className="my-2 text-2xl text-blue-700">Zehitomo</div>
           <div className="my-2 text-xl text-purple-600">
-            <a href="https://www.zehitomo.com/">zehitomo.com</a>
+            <a
+              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              href="https://www.zehitomo.com/"
+            >
+              zehitomo.com
+            </a>
           </div>
           <p>
             I was a full-stack developer at Zehitomo, a local services
@@ -245,13 +265,19 @@ const Home: NextPage = () => (
             Six Degrees of Kevin Bacon
           </div>
           <div className="my-2 text-xl text-purple-600">
-            <a href="http://six-degrees-of-kevin-bacon.beaunus.com/">
+            <a
+              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              href="http://six-degrees-of-kevin-bacon.beaunus.com/"
+            >
               six-degrees-of-kevin-bacon.beaunus.com
             </a>
           </div>
           <p>
             I created a way to visualize the game,
-            <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon">
+            <a
+              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon"
+            >
               Six Degrees of Kevin Bacon
             </a>
             .
@@ -280,7 +306,10 @@ const Home: NextPage = () => (
         <div>
           <div className="my-2 text-2xl text-blue-700">Second Shift</div>
           <div className="my-2 text-xl text-purple-600">
-            <a href="http://secondshiftmusic.com/catalog/">
+            <a
+              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              href="http://secondshiftmusic.com/catalog/"
+            >
               secondshiftmusic.com
             </a>
           </div>
@@ -306,14 +335,22 @@ const Home: NextPage = () => (
         <div>
           <div className="my-2 text-2xl text-blue-700">Beaunus Sound</div>
           <div className="my-2 text-xl text-purple-600">
-            <a href="http://beaunussound.com/">beaunussound.com</a>
+            <a
+              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              href="http://beaunussound.com/"
+            >
+              beaunussound.com
+            </a>
           </div>
           <p>I ran an audio production company for a few years.</p>
         </div>
       </section>
       <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-slate-100">
         <div>
-          <a href="https://unsplash.com/photos/S4eh9DWTId4?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink">
+          <a
+            className="hover:bg-blue-200 border-b-2 border-b-blue-200 transition duration-75 ease-in-out"
+            href="https://unsplash.com/photos/S4eh9DWTId4?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink"
+          >
             <Image
               alt="Scales and Modes"
               className="rounded-3xl"
@@ -328,7 +365,10 @@ const Home: NextPage = () => (
         <div>
           <div className="my-2 text-2xl text-blue-700">Scales and Modes</div>
           <div className="my-2 text-xl text-purple-600">
-            <a href="http://scales-and-modes.beaunus.com/">
+            <a
+              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              href="http://scales-and-modes.beaunus.com/"
+            >
               scales-and-modes.beaunus.com
             </a>
           </div>
@@ -343,10 +383,18 @@ const Home: NextPage = () => (
           <FontAwesomeIcon icon={faHandPeace} />
         </p>
         <p>
-          <a href="mailto:beau@beaunus.com">beau@beaunus.com</a>
+          <a
+            className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+            href="mailto:beau@beaunus.com"
+          >
+            beau@beaunus.com
+          </a>
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
-          <a href="https://github.com/beaunus">
+          <a
+            className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+            href="https://github.com/beaunus"
+          >
             <Image
               alt="Github"
               className="rounded-3xl"
@@ -357,7 +405,10 @@ const Home: NextPage = () => (
               width="100%"
             />
           </a>
-          <a href="https://www.linkedin.com/in/beaunus/">
+          <a
+            className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+            href="https://www.linkedin.com/in/beaunus/"
+          >
             <Image
               alt="Linkedin"
               className="rounded-3xl"
