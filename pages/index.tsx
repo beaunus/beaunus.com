@@ -12,15 +12,10 @@ import Image from "next/image";
 import { FC } from "react";
 
 const Logo: FC<{ src: string; title: string }> = ({ title, src }) => (
-  <Image
-    alt={title}
-    className="object-contain"
-    height={25}
-    src={src}
-    title={title}
-    width={100}
-  />
+  // eslint-disable-next-line @next/next/no-img-element
+  <img alt={title} className="h-7" src={src} title={title} />
 );
+
 const Home: NextPage = () => (
   <>
     <Head>
