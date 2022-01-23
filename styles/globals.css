@@ -27,14 +27,6 @@ body {
   text-align: center;
 }
 
-section {
-  padding: 65px 20px;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-
 section:nth-child(odd) {
   background-color: var(--color-alternate-background);
 }
