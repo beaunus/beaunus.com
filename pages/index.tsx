@@ -29,7 +29,7 @@ const Home: NextPage = () => {
         <meta content="" name="description" />
         <meta content="width=device-width,initial-scale=1" name="viewport" />
       </Head>
-      <header className="p-3">
+      <header className="flex flex-row-reverse p-3 mb-8">
         <Image
           alt="Beaunus Logo"
           height={24}
