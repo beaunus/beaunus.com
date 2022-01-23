@@ -46,12 +46,6 @@ section:nth-child(odd):not(:last-of-type) {
   clip-path: polygon(0 0%, 100% 4%, 100% 96%, 0% 100%);
 }
 
-img {
-  max-height: 400px;
-  max-width: 200px;
-  margin: auto;
-}
-
 :not(.logos) > a,
 :not(.logos) > a:hover {
   text-decoration: none;
