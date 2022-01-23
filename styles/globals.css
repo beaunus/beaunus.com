@@ -14,10 +14,6 @@
   box-sizing: border-box;
 }
 
-html {
-  font-family: Nunito;
-}
-
 section:nth-child(odd) {
   background-color: var(--color-alternate-background);
 }
