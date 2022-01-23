@@ -47,8 +47,8 @@ const Home: NextPage = () => {
           src="/img/beau-dobbin-photo.jpg"
           width={200}
         />
-        <h3 className="my-2">Beau Dobbin</h3>
-        <h4 className="my-2">Software Engineer</h4>
+        <div className="my-2 text-4xl">Beau Dobbin</div>
+        <div className="my-2 text-2xl text-blue-700">Software Engineer</div>
         <div className="flex flex-wrap gap-x-5 justify-center">
           <div>
             <FontAwesomeIcon className="mr-2 text-blue-600" icon={faTerminal} />
@@ -87,10 +87,10 @@ const Home: NextPage = () => {
           />
         </div>
         <div>
-          <h4 className="my-2">Octopus Energy</h4>
-          <h5 className="my-2">
+          <div className="my-2 text-2xl text-blue-700">Octopus Energy</div>
+          <div className="my-2 text-xl text-purple-600">
             <a href="https://octopusenergy.co.jp/">octopusenergy.co.jp</a>
-          </h5>
+          </div>
           <p>
             I am a senior frontend developer at Octopus Energy, an energy
             company that provides Japanese households with electricity from
@@ -127,10 +127,10 @@ const Home: NextPage = () => {
           />
         </div>
         <div>
-          <h4 className="my-2">Code Chrysalis</h4>
-          <h5 className="my-2">
+          <div className="my-2 text-2xl text-blue-700">Code Chrysalis</div>
+          <div className="my-2 text-xl text-purple-600">
             <a href="https://www.codechrysalis.io/">codechrysalis.io</a>
-          </h5>
+          </div>
           <p>
             I am an instructor for Immersive Part-time, an advanced JavaScript
             course that trains engineers to become professional software
@@ -164,10 +164,10 @@ const Home: NextPage = () => {
           />
         </div>
         <div>
-          <h4 className="my-2">Basal</h4>
-          <h5 className="my-2">
+          <div className="my-2 text-2xl text-blue-700">Basal</div>
+          <div className="my-2 text-xl text-purple-600">
             <a href="https://basal.dev/">basal.dev</a>
-          </h5>
+          </div>
           <p>
             I was a senior full-stack engineer and team lead at Basal, a
             software development center based in Tokyo.
@@ -206,10 +206,10 @@ const Home: NextPage = () => {
           />
         </div>
         <div>
-          <h4 className="my-2">Zehitomo</h4>
-          <h5 className="my-2">
+          <div className="my-2 text-2xl text-blue-700">Zehitomo</div>
+          <div className="my-2 text-xl text-purple-600">
             <a href="https://www.zehitomo.com/">zehitomo.com</a>
-          </h5>
+          </div>
           <p>
             I was a full-stack developer at Zehitomo, a local services
             marketplace that is enabling freelance professionals throughout
@@ -241,12 +241,14 @@ const Home: NextPage = () => {
           />
         </div>
         <div>
-          <h4 className="my-2">Six Degrees of Kevin Bacon</h4>
-          <h5 className="my-2">
+          <div className="my-2 text-2xl text-blue-700">
+            Six Degrees of Kevin Bacon
+          </div>
+          <div className="my-2 text-xl text-purple-600">
             <a href="http://six-degrees-of-kevin-bacon.beaunus.com/">
               six-degrees-of-kevin-bacon.beaunus.com
             </a>
-          </h5>
+          </div>
           <p>
             I created a way to visualize the game,
             <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon">
@@ -276,12 +278,12 @@ const Home: NextPage = () => {
           />
         </div>
         <div>
-          <h4 className="my-2">Second Shift</h4>
-          <h5 className="my-2">
+          <div className="my-2 text-2xl text-blue-700">Second Shift</div>
+          <div className="my-2 text-xl text-purple-600">
             <a href="http://secondshiftmusic.com/catalog/">
               secondshiftmusic.com
             </a>
-          </h5>
+          </div>
           <p>
             I played guitar and wrote songs in a rock band with my best friends
             for about 10 years.
@@ -302,10 +304,10 @@ const Home: NextPage = () => {
           />
         </div>
         <div>
-          <h4 className="my-2">Beaunus Sound</h4>
-          <h5 className="my-2">
+          <div className="my-2 text-2xl text-blue-700">Beaunus Sound</div>
+          <div className="my-2 text-xl text-purple-600">
             <a href="http://beaunussound.com/">beaunussound.com</a>
-          </h5>
+          </div>
           <p>I ran an audio production company for a few years.</p>
         </div>
       </section>
@@ -324,12 +326,12 @@ const Home: NextPage = () => {
           </a>
         </div>
         <div>
-          <h4 className="my-2">Scales and Modes</h4>
-          <h5 className="my-2">
+          <div className="my-2 text-2xl text-blue-700">Scales and Modes</div>
+          <div className="my-2 text-xl text-purple-600">
             <a href="http://scales-and-modes.beaunus.com/">
               scales-and-modes.beaunus.com
             </a>
-          </h5>
+          </div>
           <p>
             A WIP project to explore the tonality and <i>mood</i> of different
             musical scales.
