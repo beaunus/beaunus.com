@@ -46,7 +46,7 @@ const Home: NextPage = () => (
         <div className="my-2 text-2xl font-semibold text-cyan-700">
           Software Engineer
         </div>
-        <div className="flex flex-wrap gap-x-5 justify-center">
+        <div className="flex flex-wrap gap-5 justify-center">
           <div>
             <FontAwesomeIcon className="mr-2 text-blue-700" icon={faTerminal} />
             <span>Code</span>
