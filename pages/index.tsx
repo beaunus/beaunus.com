@@ -71,7 +71,7 @@ const Home: NextPage = () => (
           </div>
         </div>
       </div>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-slate-100">
+      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <div>
           <Image
             alt="Octopus Energy"
@@ -118,7 +118,7 @@ const Home: NextPage = () => (
           <Logo src="/img/logos/sentry.png" title="Sentry" />
         </div>
       </section>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-slate-100">
+      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <div>
           <Image
             alt="Code Chrysalis"
@@ -162,7 +162,7 @@ const Home: NextPage = () => (
           <Logo src="/img/logos/css.png" title="CSS" />
         </div>
       </section>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-slate-100">
+      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <div>
           <Image
             alt="Basal"
@@ -209,7 +209,7 @@ const Home: NextPage = () => (
           <Logo src="/img/logos/redis.svg" title="Redis" />
         </div>
       </section>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-slate-100">
+      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <div>
           <Image
             alt="Zehitomo"
@@ -251,7 +251,7 @@ const Home: NextPage = () => (
           <Logo src="/img/logos/sentry.png" title="Sentry" />
         </div>
       </section>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-slate-100">
+      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <div>
           <Image
             alt="Six Degrees of Kevin Bacon"
@@ -294,7 +294,7 @@ const Home: NextPage = () => (
           <Logo src="/img/logos/themoviedb.svg" title="The Movie Database" />
         </div>
       </section>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-slate-100">
+      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <div>
           <Image
             alt="Second Shift"
@@ -325,7 +325,7 @@ const Home: NextPage = () => (
           <p>I co-produced and engineered most of our self-made recordings.</p>
         </div>
       </section>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-slate-100">
+      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <div>
           <Image
             alt="Beaunus Sound"
@@ -352,7 +352,7 @@ const Home: NextPage = () => (
           <p>I ran an audio production company for a few years.</p>
         </div>
       </section>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-slate-100">
+      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <div>
           <a
             className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
@@ -387,7 +387,7 @@ const Home: NextPage = () => (
           </p>
         </div>
       </section>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-slate-100">
+      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <p>
           <FontAwesomeIcon icon={faHandPeace} />
         </p>
