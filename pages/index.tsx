@@ -23,7 +23,7 @@ const Home: NextPage = () => (
       <meta content="" name="description" />
       <meta content="width=device-width,initial-scale=1" name="viewport" />
     </Head>
-    <div className="text-center">
+    <div className="flex flex-col gap-2 text-center">
       <header className="flex flex-row-reverse p-3 mb-8">
         <Image
           alt="Beaunus Logo"
@@ -33,15 +33,17 @@ const Home: NextPage = () => (
           width={119.25}
         />
       </header>
-      <div>
-        <Image
-          alt="Beau Dobbin"
-          className="rounded-full"
-          height={200}
-          objectFit="contain"
-          src="/img/beau-dobbin-photo.jpg"
-          width={200}
-        />
+      <div className="flex flex-col gap-2">
+        <div>
+          <Image
+            alt="Beau Dobbin"
+            className="rounded-full"
+            height={200}
+            objectFit="contain"
+            src="/img/beau-dobbin-photo.jpg"
+            width={200}
+          />
+        </div>
         <div className="my-2 text-4xl font-semibold">Beau Dobbin</div>
         <div className="my-2 text-2xl font-semibold text-cyan-700">
           Software Engineer
@@ -71,7 +73,7 @@ const Home: NextPage = () => (
           </div>
         </div>
       </div>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
+      <section className="flex flex-col gap-3 justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <div>
           <Image
             alt="Octopus Energy"
@@ -83,24 +85,22 @@ const Home: NextPage = () => (
             width={200}
           />
         </div>
-        <div>
-          <div className="my-2 text-2xl font-semibold text-cyan-700">
-            Octopus Energy
-          </div>
-          <div className="my-2 text-xl font-semibold text-purple-800">
-            <a
-              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
-              href="https://octopusenergy.co.jp/"
-            >
-              octopusenergy.co.jp
-            </a>
-          </div>
-          <p>
-            I am a senior frontend developer at Octopus Energy, an energy
-            company that provides Japanese households with electricity from
-            sustainable sources.
-          </p>
+        <div className="text-2xl font-semibold text-cyan-700">
+          Octopus Energy
         </div>
+        <div className="text-xl font-semibold text-purple-800">
+          <a
+            className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
+            href="https://octopusenergy.co.jp/"
+          >
+            octopusenergy.co.jp
+          </a>
+        </div>
+        <p>
+          I am a senior frontend developer at Octopus Energy, an energy company
+          that provides Japanese households with electricity from sustainable
+          sources.
+        </p>
         <div className="flex flex-wrap gap-4 justify-center">
           <Logo src="/img/logos/typescript.svg" title="TypeScript" />
           <Logo src="/img/logos/node.png" title="NodeJS" />
@@ -118,7 +118,7 @@ const Home: NextPage = () => (
           <Logo src="/img/logos/sentry.png" title="Sentry" />
         </div>
       </section>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
+      <section className="flex flex-col gap-3 justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <div>
           <Image
             alt="Code Chrysalis"
@@ -130,29 +130,27 @@ const Home: NextPage = () => (
             width={200}
           />
         </div>
-        <div>
-          <div className="my-2 text-2xl font-semibold text-cyan-700">
-            Code Chrysalis
-          </div>
-          <div className="my-2 text-xl font-semibold text-purple-800">
-            <a
-              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
-              href="https://www.codechrysalis.io/"
-            >
-              codechrysalis.io
-            </a>
-          </div>
-          <p>
-            I am an instructor for Immersive Part-time, an advanced JavaScript
-            course that trains engineers to become professional software
-            engineering leaders.
-          </p>
-          <p>
-            I am a lead instructor and core curriculum contributor for
-            Foundations, a JavaScript / HTML / CSS course that prepares absolute
-            beginners for an advanced programming bootcamp.
-          </p>
+        <div className="text-2xl font-semibold text-cyan-700">
+          Code Chrysalis
         </div>
+        <div className="text-xl font-semibold text-purple-800">
+          <a
+            className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
+            href="https://www.codechrysalis.io/"
+          >
+            codechrysalis.io
+          </a>
+        </div>
+        <p>
+          I am an instructor for Immersive Part-time, an advanced JavaScript
+          course that trains engineers to become professional software
+          engineering leaders.
+        </p>
+        <p>
+          I am a lead instructor and core curriculum contributor for
+          Foundations, a JavaScript / HTML / CSS course that prepares absolute
+          beginners for an advanced programming bootcamp.
+        </p>
         <div className="flex flex-wrap gap-4 justify-center">
           <Logo src="/img/logos/node.png" title="NodeJS" />
           <Logo src="/img/logos/express.png" title="ExpressJS" />
@@ -162,7 +160,7 @@ const Home: NextPage = () => (
           <Logo src="/img/logos/css.png" title="CSS" />
         </div>
       </section>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
+      <section className="flex flex-col gap-3 justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <div>
           <Image
             alt="Basal"
@@ -174,21 +172,19 @@ const Home: NextPage = () => (
             width={200}
           />
         </div>
-        <div>
-          <div className="my-2 text-2xl font-semibold text-cyan-700">Basal</div>
-          <div className="my-2 text-xl font-semibold text-purple-800">
-            <a
-              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
-              href="https://basal.dev/"
-            >
-              basal.dev
-            </a>
-          </div>
-          <p>
-            I was a senior full-stack engineer and team lead at Basal, a
-            software development center based in Tokyo.
-          </p>
+        <div className="my-2 text-2xl font-semibold text-cyan-700">Basal</div>
+        <div className="text-xl font-semibold text-purple-800">
+          <a
+            className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
+            href="https://basal.dev/"
+          >
+            basal.dev
+          </a>
         </div>
+        <p>
+          I was a senior full-stack engineer and team lead at Basal, a software
+          development center based in Tokyo.
+        </p>
         <div className="flex flex-wrap gap-4 justify-center">
           <Logo src="/img/logos/typescript.svg" title="TypeScript" />
           <Logo src="/img/logos/node.png" title="NodeJS" />
@@ -209,7 +205,7 @@ const Home: NextPage = () => (
           <Logo src="/img/logos/redis.svg" title="Redis" />
         </div>
       </section>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
+      <section className="flex flex-col gap-3 justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <div>
           <Image
             alt="Zehitomo"
@@ -221,24 +217,19 @@ const Home: NextPage = () => (
             width={190.81}
           />
         </div>
-        <div>
-          <div className="my-2 text-2xl font-semibold text-cyan-700">
-            Zehitomo
-          </div>
-          <div className="my-2 text-xl font-semibold text-purple-800">
-            <a
-              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
-              href="https://www.zehitomo.com/"
-            >
-              zehitomo.com
-            </a>
-          </div>
-          <p>
-            I was a full-stack developer at Zehitomo, a local services
-            marketplace that is enabling freelance professionals throughout
-            Japan.
-          </p>
+        <div className="text-2xl font-semibold text-cyan-700">Zehitomo</div>
+        <div className="text-xl font-semibold text-purple-800">
+          <a
+            className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
+            href="https://www.zehitomo.com/"
+          >
+            zehitomo.com
+          </a>
         </div>
+        <p>
+          I was a full-stack developer at Zehitomo, a local services marketplace
+          that is enabling freelance professionals throughout Japan.
+        </p>
         <div className="flex flex-wrap gap-4 justify-center">
           <Logo src="/img/logos/node.png" title="NodeJS" />
           <Logo src="/img/logos/typescript.svg" title="TypeScript" />
@@ -251,7 +242,7 @@ const Home: NextPage = () => (
           <Logo src="/img/logos/sentry.png" title="Sentry" />
         </div>
       </section>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
+      <section className="flex flex-col gap-3 justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <div>
           <Image
             alt="Six Degrees of Kevin Bacon"
@@ -263,29 +254,27 @@ const Home: NextPage = () => (
             width={200}
           />
         </div>
-        <div>
-          <div className="my-2 text-2xl font-semibold text-cyan-700">
-            Six Degrees of Kevin Bacon
-          </div>
-          <div className="my-2 text-xl font-semibold text-purple-800">
-            <a
-              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
-              href="http://six-degrees-of-kevin-bacon.beaunus.com/"
-            >
-              six-degrees-of-kevin-bacon.beaunus.com
-            </a>
-          </div>
-          <p>
-            I created a way to visualize the game,
-            <a
-              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
-              href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon"
-            >
-              Six Degrees of Kevin Bacon
-            </a>
-            .
-          </p>
+        <div className="text-2xl font-semibold text-cyan-700">
+          Six Degrees of Kevin Bacon
         </div>
+        <div className="text-xl font-semibold text-purple-800">
+          <a
+            className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
+            href="http://six-degrees-of-kevin-bacon.beaunus.com/"
+          >
+            six-degrees-of-kevin-bacon.beaunus.com
+          </a>
+        </div>
+        <p>
+          I created a way to visualize the game,&nbsp;
+          <a
+            className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
+            href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon"
+          >
+            Six Degrees of Kevin Bacon
+          </a>
+          .
+        </p>
         <div className="flex flex-wrap gap-4 justify-center">
           <Logo src="/img/logos/typescript.svg" title="TypeScript" />
           <Logo src="/img/logos/react.png" title="React" />
@@ -294,7 +283,7 @@ const Home: NextPage = () => (
           <Logo src="/img/logos/themoviedb.svg" title="The Movie Database" />
         </div>
       </section>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
+      <section className="flex flex-col gap-3 justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <div>
           <Image
             alt="Second Shift"
@@ -306,26 +295,22 @@ const Home: NextPage = () => (
             width={200}
           />
         </div>
-        <div>
-          <div className="my-2 text-2xl font-semibold text-cyan-700">
-            Second Shift
-          </div>
-          <div className="my-2 text-xl font-semibold text-purple-800">
-            <a
-              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
-              href="http://secondshiftmusic.com/catalog/"
-            >
-              secondshiftmusic.com
-            </a>
-          </div>
-          <p>
-            I played guitar and wrote songs in a rock band with my best friends
-            for about 10 years.
-          </p>
-          <p>I co-produced and engineered most of our self-made recordings.</p>
+        <div className="text-2xl font-semibold text-cyan-700">Second Shift</div>
+        <div className="text-xl font-semibold text-purple-800">
+          <a
+            className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
+            href="http://secondshiftmusic.com/catalog/"
+          >
+            secondshiftmusic.com
+          </a>
         </div>
+        <p>
+          I played guitar and wrote songs in a rock band with my best friends
+          for about 10 years.
+        </p>
+        <p>I co-produced and engineered most of our self-made recordings.</p>
       </section>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
+      <section className="flex flex-col gap-3 justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <div>
           <Image
             alt="Beaunus Sound"
@@ -337,22 +322,20 @@ const Home: NextPage = () => (
             width={200}
           />
         </div>
-        <div>
-          <div className="my-2 text-2xl font-semibold text-cyan-700">
-            Beaunus Sound
-          </div>
-          <div className="my-2 text-xl font-semibold text-purple-800">
-            <a
-              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
-              href="http://beaunussound.com/"
-            >
-              beaunussound.com
-            </a>
-          </div>
-          <p>I ran an audio production company for a few years.</p>
+        <div className="text-2xl font-semibold text-cyan-700">
+          Beaunus Sound
         </div>
+        <div className="text-xl font-semibold text-purple-800">
+          <a
+            className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
+            href="http://beaunussound.com/"
+          >
+            beaunussound.com
+          </a>
+        </div>
+        <p>I ran an audio production company for a few years.</p>
       </section>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
+      <section className="flex flex-col gap-3 justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <div>
           <a
             className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
@@ -369,25 +352,23 @@ const Home: NextPage = () => (
             />
           </a>
         </div>
-        <div>
-          <div className="my-2 text-2xl font-semibold text-cyan-700">
-            Scales and Modes
-          </div>
-          <div className="my-2 text-xl font-semibold text-purple-800">
-            <a
-              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
-              href="http://scales-and-modes.beaunus.com/"
-            >
-              scales-and-modes.beaunus.com
-            </a>
-          </div>
-          <p>
-            A WIP project to explore the tonality and <i>mood</i> of different
-            musical scales.
-          </p>
+        <div className="text-2xl font-semibold text-cyan-700">
+          Scales and Modes
         </div>
+        <div className="text-xl font-semibold text-purple-800">
+          <a
+            className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
+            href="http://scales-and-modes.beaunus.com/"
+          >
+            scales-and-modes.beaunus.com
+          </a>
+        </div>
+        <p>
+          A WIP project to explore the tonality and <i>mood</i> of different
+          musical scales.
+        </p>
       </section>
-      <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
+      <section className="flex flex-col gap-3 justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <p>
           <FontAwesomeIcon icon={faHandPeace} />
         </p>
