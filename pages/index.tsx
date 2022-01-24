@@ -43,26 +43,26 @@ const Home: NextPage = () => (
           width={200}
         />
         <div className="my-2 text-4xl">Beau Dobbin</div>
-        <div className="my-2 text-2xl text-blue-700">Software Engineer</div>
+        <div className="my-2 text-2xl text-cyan-700">Software Engineer</div>
         <div className="flex flex-wrap gap-x-5 justify-center">
           <div>
-            <FontAwesomeIcon className="mr-2 text-blue-600" icon={faTerminal} />
+            <FontAwesomeIcon className="mr-2 text-blue-700" icon={faTerminal} />
             <span>Code</span>
           </div>
           <div>
             <FontAwesomeIcon
-              className="mr-2 text-green-600"
+              className="mr-2 text-green-800"
               icon={faHandshake}
             />
             <span>Education</span>
           </div>
           <div>
-            <FontAwesomeIcon className="mr-2 text-orange-300" icon={faMusic} />
+            <FontAwesomeIcon className="mr-2 text-amber-500" icon={faMusic} />
             <span>Music</span>
           </div>
           <div>
             <FontAwesomeIcon
-              className="mr-2 text-red-500"
+              className="mr-2 text-red-600"
               icon={faHeadphonesAlt}
             />
             <span>Audio Engineering</span>
@@ -82,10 +82,10 @@ const Home: NextPage = () => (
           />
         </div>
         <div>
-          <div className="my-2 text-2xl text-blue-700">Octopus Energy</div>
-          <div className="my-2 text-xl text-purple-600">
+          <div className="my-2 text-2xl text-cyan-700">Octopus Energy</div>
+          <div className="my-2 text-xl text-purple-800">
             <a
-              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="https://octopusenergy.co.jp/"
             >
               octopusenergy.co.jp
@@ -127,10 +127,10 @@ const Home: NextPage = () => (
           />
         </div>
         <div>
-          <div className="my-2 text-2xl text-blue-700">Code Chrysalis</div>
-          <div className="my-2 text-xl text-purple-600">
+          <div className="my-2 text-2xl text-cyan-700">Code Chrysalis</div>
+          <div className="my-2 text-xl text-purple-800">
             <a
-              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="https://www.codechrysalis.io/"
             >
               codechrysalis.io
@@ -169,10 +169,10 @@ const Home: NextPage = () => (
           />
         </div>
         <div>
-          <div className="my-2 text-2xl text-blue-700">Basal</div>
-          <div className="my-2 text-xl text-purple-600">
+          <div className="my-2 text-2xl text-cyan-700">Basal</div>
+          <div className="my-2 text-xl text-purple-800">
             <a
-              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="https://basal.dev/"
             >
               basal.dev
@@ -216,10 +216,10 @@ const Home: NextPage = () => (
           />
         </div>
         <div>
-          <div className="my-2 text-2xl text-blue-700">Zehitomo</div>
-          <div className="my-2 text-xl text-purple-600">
+          <div className="my-2 text-2xl text-cyan-700">Zehitomo</div>
+          <div className="my-2 text-xl text-purple-800">
             <a
-              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="https://www.zehitomo.com/"
             >
               zehitomo.com
@@ -256,12 +256,12 @@ const Home: NextPage = () => (
           />
         </div>
         <div>
-          <div className="my-2 text-2xl text-blue-700">
+          <div className="my-2 text-2xl text-cyan-700">
             Six Degrees of Kevin Bacon
           </div>
-          <div className="my-2 text-xl text-purple-600">
+          <div className="my-2 text-xl text-purple-800">
             <a
-              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="http://six-degrees-of-kevin-bacon.beaunus.com/"
             >
               six-degrees-of-kevin-bacon.beaunus.com
@@ -270,7 +270,7 @@ const Home: NextPage = () => (
           <p>
             I created a way to visualize the game,
             <a
-              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon"
             >
               Six Degrees of Kevin Bacon
@@ -299,10 +299,10 @@ const Home: NextPage = () => (
           />
         </div>
         <div>
-          <div className="my-2 text-2xl text-blue-700">Second Shift</div>
-          <div className="my-2 text-xl text-purple-600">
+          <div className="my-2 text-2xl text-cyan-700">Second Shift</div>
+          <div className="my-2 text-xl text-purple-800">
             <a
-              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="http://secondshiftmusic.com/catalog/"
             >
               secondshiftmusic.com
@@ -328,10 +328,10 @@ const Home: NextPage = () => (
           />
         </div>
         <div>
-          <div className="my-2 text-2xl text-blue-700">Beaunus Sound</div>
-          <div className="my-2 text-xl text-purple-600">
+          <div className="my-2 text-2xl text-cyan-700">Beaunus Sound</div>
+          <div className="my-2 text-xl text-purple-800">
             <a
-              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="http://beaunussound.com/"
             >
               beaunussound.com
@@ -343,7 +343,7 @@ const Home: NextPage = () => (
       <section className="flex flex-col flex-wrap justify-evenly py-16 px-5 odd:mt-2 odd:bg-slate-100">
         <div>
           <a
-            className="hover:bg-blue-200 border-b-2 border-b-blue-200 transition duration-75 ease-in-out"
+            className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
             href="https://unsplash.com/photos/S4eh9DWTId4?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink"
           >
             <Image
@@ -358,10 +358,10 @@ const Home: NextPage = () => (
           </a>
         </div>
         <div>
-          <div className="my-2 text-2xl text-blue-700">Scales and Modes</div>
-          <div className="my-2 text-xl text-purple-600">
+          <div className="my-2 text-2xl text-cyan-700">Scales and Modes</div>
+          <div className="my-2 text-xl text-purple-800">
             <a
-              className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="http://scales-and-modes.beaunus.com/"
             >
               scales-and-modes.beaunus.com
@@ -379,7 +379,7 @@ const Home: NextPage = () => (
         </p>
         <p>
           <a
-            className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+            className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
             href="mailto:beau@beaunus.com"
           >
             beau@beaunus.com
@@ -387,7 +387,7 @@ const Home: NextPage = () => (
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
           <a
-            className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+            className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
             href="https://github.com/beaunus"
           >
             <Image
@@ -401,7 +401,7 @@ const Home: NextPage = () => (
             />
           </a>
           <a
-            className="hover:bg-blue-200 border-b-2 border-b-blue-200 shadow-inner transition duration-75 ease-in-out"
+            className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
             href="https://www.linkedin.com/in/beaunus/"
           >
             <Image

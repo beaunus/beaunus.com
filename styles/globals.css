@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --color-purple: #5e239d;
-  --color-blue: #007b89;
-  --color-pink: #ec048c;
-  --color-highlight: hsl(186, 50%, 80%);
-  --color-alternate-background: hsl(325, 5%, 95%);
-}
-
 * {
   box-sizing: border-box;
 }
