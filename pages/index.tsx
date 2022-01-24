@@ -368,7 +368,7 @@ const Home: NextPage = () => (
           musical scales.
         </p>
       </section>
-      <section className="flex flex-col gap-3 justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
+      <section className="flex flex-col gap-8 justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <p>
           <FontAwesomeIcon icon={faHandPeace} />
         </p>
@@ -380,7 +380,7 @@ const Home: NextPage = () => (
             beau@beaunus.com
           </a>
         </p>
-        <div className="flex flex-wrap gap-4 justify-center">
+        <div className="flex flex-wrap gap-8 justify-center">
           <a
             className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
             href="https://github.com/beaunus"
