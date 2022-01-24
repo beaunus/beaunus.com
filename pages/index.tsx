@@ -13,7 +13,7 @@ import { FC } from "react";
 
 const Logo: FC<{ src: string; title: string }> = ({ title, src }) => (
   // eslint-disable-next-line @next/next/no-img-element
-  <img alt={title} className="h-7" src={src} title={title} />
+  <img alt={title} className="h-6" src={src} title={title} />
 );
 
 const Home: NextPage = () => (
