@@ -42,8 +42,10 @@ const Home: NextPage = () => (
           src="/img/beau-dobbin-photo.jpg"
           width={200}
         />
-        <div className="my-2 text-4xl">Beau Dobbin</div>
-        <div className="my-2 text-2xl text-cyan-700">Software Engineer</div>
+        <div className="my-2 text-4xl font-semibold">Beau Dobbin</div>
+        <div className="my-2 text-2xl font-semibold text-cyan-700">
+          Software Engineer
+        </div>
         <div className="flex flex-wrap gap-x-5 justify-center">
           <div>
             <FontAwesomeIcon className="mr-2 text-blue-700" icon={faTerminal} />
@@ -82,8 +84,10 @@ const Home: NextPage = () => (
           />
         </div>
         <div>
-          <div className="my-2 text-2xl text-cyan-700">Octopus Energy</div>
-          <div className="my-2 text-xl text-purple-800">
+          <div className="my-2 text-2xl font-semibold text-cyan-700">
+            Octopus Energy
+          </div>
+          <div className="my-2 text-xl font-semibold text-purple-800">
             <a
               className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="https://octopusenergy.co.jp/"
@@ -127,8 +131,10 @@ const Home: NextPage = () => (
           />
         </div>
         <div>
-          <div className="my-2 text-2xl text-cyan-700">Code Chrysalis</div>
-          <div className="my-2 text-xl text-purple-800">
+          <div className="my-2 text-2xl font-semibold text-cyan-700">
+            Code Chrysalis
+          </div>
+          <div className="my-2 text-xl font-semibold text-purple-800">
             <a
               className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="https://www.codechrysalis.io/"
@@ -169,8 +175,8 @@ const Home: NextPage = () => (
           />
         </div>
         <div>
-          <div className="my-2 text-2xl text-cyan-700">Basal</div>
-          <div className="my-2 text-xl text-purple-800">
+          <div className="my-2 text-2xl font-semibold text-cyan-700">Basal</div>
+          <div className="my-2 text-xl font-semibold text-purple-800">
             <a
               className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="https://basal.dev/"
@@ -216,8 +222,10 @@ const Home: NextPage = () => (
           />
         </div>
         <div>
-          <div className="my-2 text-2xl text-cyan-700">Zehitomo</div>
-          <div className="my-2 text-xl text-purple-800">
+          <div className="my-2 text-2xl font-semibold text-cyan-700">
+            Zehitomo
+          </div>
+          <div className="my-2 text-xl font-semibold text-purple-800">
             <a
               className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="https://www.zehitomo.com/"
@@ -256,10 +264,10 @@ const Home: NextPage = () => (
           />
         </div>
         <div>
-          <div className="my-2 text-2xl text-cyan-700">
+          <div className="my-2 text-2xl font-semibold text-cyan-700">
             Six Degrees of Kevin Bacon
           </div>
-          <div className="my-2 text-xl text-purple-800">
+          <div className="my-2 text-xl font-semibold text-purple-800">
             <a
               className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="http://six-degrees-of-kevin-bacon.beaunus.com/"
@@ -299,8 +307,10 @@ const Home: NextPage = () => (
           />
         </div>
         <div>
-          <div className="my-2 text-2xl text-cyan-700">Second Shift</div>
-          <div className="my-2 text-xl text-purple-800">
+          <div className="my-2 text-2xl font-semibold text-cyan-700">
+            Second Shift
+          </div>
+          <div className="my-2 text-xl font-semibold text-purple-800">
             <a
               className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="http://secondshiftmusic.com/catalog/"
@@ -328,8 +338,10 @@ const Home: NextPage = () => (
           />
         </div>
         <div>
-          <div className="my-2 text-2xl text-cyan-700">Beaunus Sound</div>
-          <div className="my-2 text-xl text-purple-800">
+          <div className="my-2 text-2xl font-semibold text-cyan-700">
+            Beaunus Sound
+          </div>
+          <div className="my-2 text-xl font-semibold text-purple-800">
             <a
               className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="http://beaunussound.com/"
@@ -358,8 +370,10 @@ const Home: NextPage = () => (
           </a>
         </div>
         <div>
-          <div className="my-2 text-2xl text-cyan-700">Scales and Modes</div>
-          <div className="my-2 text-xl text-purple-800">
+          <div className="my-2 text-2xl font-semibold text-cyan-700">
+            Scales and Modes
+          </div>
+          <div className="my-2 text-xl font-semibold text-purple-800">
             <a
               className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
               href="http://scales-and-modes.beaunus.com/"
