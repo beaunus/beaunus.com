@@ -27,10 +27,10 @@ const Home: NextPage = () => (
       <header className="flex flex-row-reverse p-3 mb-8">
         <Image
           alt="Beaunus Logo"
-          height={24}
+          height={25}
           objectFit="contain"
           src="/img/beaunus_logo_pixels.png"
-          width="100%"
+          width={119.25}
         />
       </header>
       <div>
@@ -214,11 +214,11 @@ const Home: NextPage = () => (
           <Image
             alt="Zehitomo"
             className="rounded-3xl"
-            height={200}
+            height={400}
             objectFit="contain"
             src="/img/zehitomo-iphone.png"
             title="Zehitomo"
-            width={200}
+            width={190.81}
           />
         </div>
         <div>
@@ -256,7 +256,7 @@ const Home: NextPage = () => (
           <Image
             alt="Six Degrees of Kevin Bacon"
             className="rounded-3xl"
-            height={200}
+            height={153.2}
             objectFit="contain"
             src="/img/logos/six-degrees-of-kevin-bacon.png"
             title="Six Degrees of Kevin Bacon"
@@ -299,7 +299,7 @@ const Home: NextPage = () => (
           <Image
             alt="Second Shift"
             className="rounded-3xl"
-            height={200}
+            height={132.95}
             objectFit="contain"
             src="/img/background_splash_bbq.jpg"
             title="Second Shift"
@@ -330,7 +330,7 @@ const Home: NextPage = () => (
           <Image
             alt="Beaunus Sound"
             className="rounded-3xl"
-            height={200}
+            height={43.38}
             objectFit="contain"
             src="/img/logos/beaunussound.png"
             title="Beaunus Sound"
@@ -361,7 +361,7 @@ const Home: NextPage = () => (
             <Image
               alt="Scales and Modes"
               className="rounded-3xl"
-              height={200}
+              height={300}
               objectFit="contain"
               src="/img/kelly-sikkema-S4eh9DWTId4-unsplash.jpg"
               title="Scales and Modes"
