@@ -297,13 +297,9 @@ const Home: NextPage = () => (
           <div className="flex flex-wrap gap-4 justify-center">{techLogos}</div>
         </section>
       ))}
-      <footer className="flex flex-col gap-8 justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
-        <p>
-          <FontAwesomeIcon icon={faHandPeace} />
-        </p>
-        <p>
-          <Link href="mailto:beau@beaunus.com" label="beau@beaunus.com" />
-        </p>
+      <footer className="flex flex-col gap-8 justify-evenly items-center py-16 px-5 odd:mt-2 odd:bg-gray-100">
+        <FontAwesomeIcon icon={faHandPeace} />
+        <Link href="mailto:beau@beaunus.com" label="beau@beaunus.com" />
         <div className="flex flex-wrap gap-8 justify-center">
           <Link
             href="https://github.com/beaunus"
