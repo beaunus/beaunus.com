@@ -4,8 +4,8 @@ module.exports = {
   ...beaunusStyleConfig,
   extends: [
     ...beaunusStyleConfig.extends,
-    "next/core-web-vitals",
     "plugin:tailwindcss/recommended",
+    "plugin:@next/next/recommended",
   ],
   settings: {
     ...beaunusStyleConfig.settings,

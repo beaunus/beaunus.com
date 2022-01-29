@@ -10,7 +10,7 @@ import _ from "lodash";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { FC, ReactNode } from "react";
+import React, { FC, ReactNode } from "react";
 
 const Logo: FC<{ src: string; title: string }> = ({ title, src }) => (
   // eslint-disable-next-line @next/next/no-img-element
