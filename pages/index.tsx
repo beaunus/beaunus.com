@@ -43,7 +43,7 @@ const Home: NextPage = () => (
           width={119.25}
         />
       </header>
-      <div className="flex flex-col gap-5 px-3">
+      <div className="flex flex-col grow shrink-0 gap-5 px-3">
         <div>
           <Image
             alt="Beau Dobbin"
@@ -295,7 +295,7 @@ const Home: NextPage = () => (
           <div className="flex flex-wrap gap-5 justify-center">{techLogos}</div>
         </section>
       ))}
-      <footer className="flex flex-col gap-8 justify-evenly items-center py-16 px-5 odd:mt-2 odd:bg-gray-100">
+      <footer className="flex flex-col shrink-0 gap-8 justify-evenly items-center py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <FontAwesomeIcon icon={faHandPeace} />
         <Link href="mailto:beau@beaunus.com" label="beau@beaunus.com" />
         <div className="flex flex-wrap gap-8 justify-center">

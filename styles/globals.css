@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+body > div:first-child,
+div#__next,
+div#__next > div {
+  height: 100%;
+}
+
 section:nth-child(odd):not(:last-of-type) {
   -webkit-clip-path: polygon(0 0%, 100% 4%, 100% 96%, 0% 100%);
   clip-path: polygon(0 0%, 100% 4%, 100% 96%, 0% 100%);
