@@ -10,11 +10,20 @@ import _ from "lodash";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 
 const Logo: FC<{ src: string; title: string }> = ({ title, src }) => (
   // eslint-disable-next-line @next/next/no-img-element
   <img alt={title} className="h-6" src={src} title={title} />
+);
+
+const Link: FC<{ href: string; label: ReactNode }> = ({ href, label }) => (
+  <a
+    className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
+    href={href}
+  >
+    {label}
+  </a>
 );
 
 const Home: NextPage = () => (
@@ -202,12 +211,10 @@ const Home: NextPage = () => (
           content: (
             <p>
               I created a way to visualize the game,&nbsp;
-              <a
-                className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
+              <Link
                 href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon"
-              >
-                Six Degrees of Kevin Bacon
-              </a>
+                label="Six Degrees of Kevin Bacon"
+              />
               .
             </p>
           ),
@@ -284,12 +291,7 @@ const Home: NextPage = () => (
           </div>
           <div className="text-2xl font-semibold text-cyan-700">{title}</div>
           <div className="text-xl font-semibold text-purple-800">
-            <a
-              className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
-              href={url}
-            >
-              {url.replace(/https?:\/\//, "")}
-            </a>
+            <Link href={url} label={url.replace(/https?:\/\//, "")} />
           </div>
           {content}
           <div className="flex flex-wrap gap-4 justify-center">{techLogos}</div>
@@ -300,42 +302,37 @@ const Home: NextPage = () => (
           <FontAwesomeIcon icon={faHandPeace} />
         </p>
         <p>
-          <a
-            className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
-            href="mailto:beau@beaunus.com"
-          >
-            beau@beaunus.com
-          </a>
+          <Link href="mailto:beau@beaunus.com" label="beau@beaunus.com" />
         </p>
         <div className="flex flex-wrap gap-8 justify-center">
-          <a
-            className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
+          <Link
             href="https://github.com/beaunus"
-          >
-            <Image
-              alt="Github"
-              className="rounded-3xl"
-              height={24}
-              objectFit="contain"
-              src="/img/logos/github.png"
-              title="Github"
-              width="100%"
-            />
-          </a>
-          <a
-            className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
+            label={
+              <Image
+                alt="Github"
+                className="rounded-3xl"
+                height={24}
+                objectFit="contain"
+                src="/img/logos/github.png"
+                title="Github"
+                width="100%"
+              />
+            }
+          />
+          <Link
             href="https://www.linkedin.com/in/beaunus/"
-          >
-            <Image
-              alt="Linkedin"
-              className="rounded-3xl"
-              height={24}
-              objectFit="contain"
-              src="/img/logos/linkedin.png"
-              title="Linkedin"
-              width="100%"
-            />
-          </a>
+            label={
+              <Image
+                alt="Linkedin"
+                className="rounded-3xl"
+                height={24}
+                objectFit="contain"
+                src="/img/logos/linkedin.png"
+                title="Linkedin"
+                width="100%"
+              />
+            }
+          />
         </div>
       </section>
     </div>
