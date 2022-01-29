@@ -1,7 +1,7 @@
 import {
   faHandPeace,
   faHandshake,
-  faHeadphonesAlt,
+  faHeadphones,
   faMusic,
   faTerminal,
 } from "@fortawesome/free-solid-svg-icons";
@@ -74,7 +74,7 @@ const Home: NextPage = () => (
             <div>Music</div>
           </div>
           <div className="flex gap-2 items-center">
-            <FontAwesomeIcon className="text-red-600" icon={faHeadphonesAlt} />
+            <FontAwesomeIcon className="text-red-600" icon={faHeadphones} />
             <div>Audio Engineering</div>
           </div>
         </div>
