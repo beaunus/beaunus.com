@@ -43,7 +43,7 @@ const Home: NextPage = () => (
           width={119.25}
         />
       </header>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 px-3">
         <div>
           <Image
             alt="Beau Dobbin"
@@ -275,7 +275,7 @@ const Home: NextPage = () => (
         },
       ].map(({ title, logoImage, url, content, techLogos }) => (
         <section
-          className="flex flex-col gap-3 justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100"
+          className="flex flex-col gap-6 justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100"
           key={_.uniqueId("section")}
         >
           <div>
@@ -289,9 +289,11 @@ const Home: NextPage = () => (
               width={logoImage.width ?? 200}
             />
           </div>
-          <div className="text-2xl font-semibold text-cyan-700">{title}</div>
-          <div className="text-xl font-semibold text-purple-800">
-            <Link href={url} label={url.replace(/https?:\/\//, "")} />
+          <div>
+            <div className="text-2xl font-semibold text-cyan-700">{title}</div>
+            <div className="text-xl font-semibold text-purple-800">
+              <Link href={url} label={url.replace(/https?:\/\//, "")} />
+            </div>
           </div>
           {content}
           <div className="flex flex-wrap gap-4 justify-center">{techLogos}</div>
