@@ -297,7 +297,7 @@ const Home: NextPage = () => (
           <div className="flex flex-wrap gap-4 justify-center">{techLogos}</div>
         </section>
       ))}
-      <section className="flex flex-col gap-8 justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
+      <footer className="flex flex-col gap-8 justify-evenly py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <p>
           <FontAwesomeIcon icon={faHandPeace} />
         </p>
@@ -334,7 +334,7 @@ const Home: NextPage = () => (
             }
           />
         </div>
-      </section>
+      </footer>
     </div>
   </>
 );
