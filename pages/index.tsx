@@ -63,19 +63,19 @@ const Home: NextPage = () => (
         <div className="flex flex-wrap gap-5 justify-center">
           <div className="flex gap-2 items-center">
             <FontAwesomeIcon className="text-blue-700" icon={faTerminal} />
-            <span>Code</span>
+            <div>Code</div>
           </div>
           <div className="flex gap-2 items-center">
             <FontAwesomeIcon className="text-green-800" icon={faHandshake} />
-            <span>Education</span>
+            <div>Education</div>
           </div>
           <div className="flex gap-2 items-center">
             <FontAwesomeIcon className="text-amber-500" icon={faMusic} />
-            <span>Music</span>
+            <div>Music</div>
           </div>
           <div className="flex gap-2 items-center">
             <FontAwesomeIcon className="text-red-600" icon={faHeadphonesAlt} />
-            <span>Audio Engineering</span>
+            <div>Audio Engineering</div>
           </div>
         </div>
       </div>
