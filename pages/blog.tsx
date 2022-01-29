@@ -9,8 +9,6 @@ const Blog: NextPage = () => (
   <>
     <Head>
       <title>Blog | Beaunus</title>
-      <meta content="" name="description" />
-      <meta content="width=device-width,initial-scale=1" name="viewport" />
     </Head>
     <div className="flex flex-col gap-2 text-center">
       <Header />
