@@ -1,35 +1,20 @@
 import {
-  faHandPeace,
   faHandshake,
   faHeadphones,
   faMusic,
   faTerminal,
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import React from "react";
 
-import { HighlightedLink } from "../components/HighlightedLink";
+import { Footer } from "../components/Footer";
+import { Header } from "../components/Header";
 import { Icon } from "../components/Icon";
 import { JobsSection } from "../components/JobsSection";
 import { Segment } from "../components/Segment";
-import * as Logos from "../images/logos";
 import * as Photos from "../images/photos";
-
-const Header: React.FC = () => (
-  <header className="flex flex-row-reverse p-3 mb-8">
-    <Image
-      alt="Beaunus Logo"
-      height={25}
-      priority={true}
-      quality={100}
-      src={Logos.BeaunusPixels}
-      width={119.25}
-    />
-  </header>
-);
 
 const TitleSection: React.FC = () => (
   <Segment
@@ -64,25 +49,6 @@ const TitleSection: React.FC = () => (
       />
     }
   />
-);
-
-const Footer: React.FC = () => (
-  <footer className="flex flex-col shrink-0 gap-8 justify-evenly items-center py-16 px-5 even:mt-2 w-full even:bg-gray-100">
-    <FontAwesomeIcon color="rgb(232,25,140)" icon={faHandPeace} />
-    <HighlightedLink href="mailto:beau@beaunus.com" label="beau@beaunus.com" />
-    <div className="flex flex-wrap gap-8 justify-center">
-      <HighlightedLink
-        href="https://github.com/beaunus"
-        label={<Image alt="Github" height={24} src={Logos.Github} width={24} />}
-      />
-      <HighlightedLink
-        href="https://www.linkedin.com/in/beaunus/"
-        label={
-          <Image alt="Linkedin" height={24} src={Logos.LinkedIn} width={24} />
-        }
-      />
-    </div>
-  </footer>
 );
 
 const Home: NextPage = () => (
