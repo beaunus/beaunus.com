@@ -88,7 +88,7 @@ const Home: NextPage = () => (
               sustainable sources.
             </p>
           ),
-          logoImage: { src: "/img/logos/octopus.jpeg" },
+          logoImage: { isRounded: true, src: "/img/logos/octopus.jpeg" },
           techLogos: (
             <>
               <Logo src="/img/logos/typescript.svg" title="TypeScript" />
@@ -125,7 +125,7 @@ const Home: NextPage = () => (
               </p>
             </>
           ),
-          logoImage: { src: "/img/logos/code-chrysalis.png" },
+          logoImage: { isRounded: true, src: "/img/logos/code-chrysalis.png" },
           techLogos: (
             <>
               <Logo src="/img/logos/node.png" title="NodeJS" />
@@ -146,7 +146,7 @@ const Home: NextPage = () => (
               software development center based in Tokyo.
             </p>
           ),
-          logoImage: { src: "/img/logos/basal.png" },
+          logoImage: { isRounded: true, src: "/img/logos/basal.png" },
           techLogos: (
             <>
               <Logo src="/img/logos/typescript.svg" title="TypeScript" />
@@ -184,6 +184,7 @@ const Home: NextPage = () => (
           ),
           logoImage: {
             height: 400,
+            isRounded: true,
             src: "/img/zehitomo-iphone.png",
             width: 190.81,
           },
@@ -216,6 +217,7 @@ const Home: NextPage = () => (
           ),
           logoImage: {
             height: 153.2,
+            isRounded: true,
             src: "/img/logos/six-degrees-of-kevin-bacon.png",
           },
           techLogos: (
@@ -245,13 +247,20 @@ const Home: NextPage = () => (
               </p>
             </>
           ),
-          logoImage: { height: 132.95, src: "/img/background_splash_bbq.jpg" },
+          logoImage: {
+            height: 132.95,
+            isRounded: true,
+            src: "/img/background_splash_bbq.jpg",
+          },
           title: "Second Shift",
           url: "http://secondshiftmusic.com",
         },
         {
           content: <p>I ran an audio production company for a few years.</p>,
-          logoImage: { height: 43.38, src: "/img/logos/beaunussound.png" },
+          logoImage: {
+            height: 43.38,
+            src: "/img/logos/beaunussound.png",
+          },
           title: "Beaunus Sound",
           url: "http://beaunussound.com",
         },
@@ -264,6 +273,7 @@ const Home: NextPage = () => (
           ),
           logoImage: {
             height: 300,
+            isRounded: true,
             src: "/img/kelly-sikkema-S4eh9DWTId4-unsplash.jpg",
           },
           title: "Scales and Modes",
@@ -277,7 +287,7 @@ const Home: NextPage = () => (
           <div>
             <Image
               alt={title}
-              className="rounded-3xl"
+              className={logoImage.isRounded ? "rounded-3xl" : ""}
               height={logoImage.height ?? 200}
               objectFit="contain"
               src={logoImage.src}
