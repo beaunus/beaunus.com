@@ -384,17 +384,15 @@ const Home: NextPage = () => (
           className="flex flex-col gap-6 justify-evenly items-center py-16 px-5 odd:mt-2 odd:bg-gray-100"
           key={`section-${index}`}
         >
-          <div>
-            <Image
-              alt={title}
-              className={logoImage.isRounded ? "rounded-3xl" : ""}
-              height={logoImage.height ?? 200}
-              priority={true}
-              src={logoImage.src}
-              title={title}
-              width={logoImage.width ?? 200}
-            />
-          </div>
+          <Image
+            alt={title}
+            className={logoImage.isRounded ? "rounded-3xl" : ""}
+            height={logoImage.height ?? 200}
+            priority={true}
+            src={logoImage.src}
+            title={title}
+            width={logoImage.width ?? 200}
+          />
           <div>
             <div className="text-2xl font-semibold text-cyan-700">{title}</div>
             <div className="text-xl font-semibold text-purple-800">
