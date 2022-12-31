@@ -6,7 +6,6 @@ import {
   faTerminal,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import _ from "lodash";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -380,10 +379,10 @@ const Home: NextPage = () => (
           title: "Scales and Modes",
           url: "http://scales-and-modes.beaunus.com",
         },
-      ].map(({ title, logoImage, url, content, techLogos }) => (
+      ].map(({ title, logoImage, url, content, techLogos }, index) => (
         <section
           className="flex flex-col gap-6 justify-evenly items-center py-16 px-5 odd:mt-2 odd:bg-gray-100"
-          key={_.uniqueId("section")}
+          key={`section-${index}`}
         >
           <div>
             <Image
