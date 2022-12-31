@@ -389,6 +389,7 @@ const Home: NextPage = () => (
               alt={title}
               className={logoImage.isRounded ? "rounded-3xl" : ""}
               height={logoImage.height ?? 200}
+              priority={true}
               src={logoImage.src}
               title={title}
               width={logoImage.width ?? 200}
