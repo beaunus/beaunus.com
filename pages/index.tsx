@@ -66,6 +66,7 @@ const Home: NextPage = () => (
         <Image
           alt="Beaunus Logo"
           height={25}
+          priority={true}
           src="/img/beaunus_logo_pixels.png"
           width={119.25}
         />
@@ -76,6 +77,7 @@ const Home: NextPage = () => (
             alt="Beau Dobbin"
             className="rounded-full"
             height={200}
+            priority={true}
             src="/img/beau-dobbin-photo.jpg"
             width={200}
           />
