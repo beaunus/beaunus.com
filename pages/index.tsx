@@ -57,7 +57,10 @@ const Home: NextPage = () => (
   <>
     <Head>
       <title>Beaunus</title>
-      <meta content="" name="description" />
+      <meta
+        content="Beau Dobbin is a software engineering leader based in Tokyo, Japan."
+        name="description"
+      />
       <meta content="width=device-width,initial-scale=1" name="viewport" />
     </Head>
     <div className="flex flex-col gap-2 text-center">
