@@ -1,7 +1,11 @@
 import "../styles/globals.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
 import { Nunito } from "@next/font/google";
 import type { AppProps } from "next/app";
 import React from "react";
+
+import "@fortawesome/fontawesome-svg-core/styles.css";
+config.autoAddCss = false;
 
 const nunito = Nunito({ subsets: ["latin"] });
 
