@@ -4,7 +4,7 @@ import React from "react";
 import * as Logos from "../images/logos";
 import * as Photos from "../images/photos";
 
-import { Link } from "./Link";
+import { HighlightedLink } from "./HighlightedLink";
 
 const jobs = [
   {
@@ -150,7 +150,7 @@ const jobs = [
     content: (
       <p>
         I created a way to visualize the game,&nbsp;
-        <Link
+        <HighlightedLink
           href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon"
           label="Six Degrees of Kevin Bacon"
         />
@@ -239,7 +239,10 @@ export const JobsSection = () => (
         <div>
           <div className="text-2xl font-semibold text-cyan-700">{title}</div>
           <div className="text-xl font-semibold text-purple-800">
-            <Link href={url} label={url.replace(/https?:\/\//, "")} />
+            <HighlightedLink
+              href={url}
+              label={url.replace(/https?:\/\//, "")}
+            />
           </div>
         </div>
         {content}

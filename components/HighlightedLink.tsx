@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from "react";
 
-export const Link: FC<{ href: string; label: ReactNode }> = ({
+export const HighlightedLink: FC<{ href: string; label: ReactNode }> = ({
   href,
   label,
 }) => (

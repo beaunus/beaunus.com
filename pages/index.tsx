@@ -11,8 +11,8 @@ import Head from "next/head";
 import Image from "next/image";
 import React from "react";
 
+import { HighlightedLink } from "../components/HighlightedLink";
 import { JobsSection } from "../components/JobsSection";
-import { Link } from "../components/Link";
 import * as Logos from "../images/logos";
 import * as Photos from "../images/photos";
 
@@ -75,15 +75,18 @@ const Home: NextPage = () => (
       <JobsSection />
       <footer className="flex flex-col shrink-0 gap-8 justify-evenly items-center py-16 px-5 odd:mt-2 odd:bg-gray-100">
         <FontAwesomeIcon icon={faHandPeace} />
-        <Link href="mailto:beau@beaunus.com" label="beau@beaunus.com" />
+        <HighlightedLink
+          href="mailto:beau@beaunus.com"
+          label="beau@beaunus.com"
+        />
         <div className="flex flex-wrap gap-8 justify-center">
-          <Link
+          <HighlightedLink
             href="https://github.com/beaunus"
             label={
               <Image alt="Github" height={24} src={Logos.Github} width={89} />
             }
           />
-          <Link
+          <HighlightedLink
             href="https://www.linkedin.com/in/beaunus/"
             label={
               <Image
