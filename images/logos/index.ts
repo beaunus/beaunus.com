@@ -2,6 +2,7 @@ export * as AngularJS from "./angularjs.png";
 export * as AntDesign from "./ant-design.svg";
 export * as AmazonWebServices from "./aws.png";
 export * as Basal from "./basal.png";
+export * as BeaunusPixels from "./beaunus_logo_pixels.png";
 export * as BeaunusSound from "./beaunussound.png";
 export * as CodeChrysalis from "./code-chrysalis.png";
 export * as CSS from "./css.png";

@@ -12,6 +12,7 @@ import Image from "next/image";
 import React, { FC, ReactNode } from "react";
 
 import * as Logos from "../images/logos";
+import * as Photos from "../images/photos";
 
 const Link: FC<{ href: string; label: ReactNode }> = ({ href, label }) => (
   <a
@@ -38,7 +39,7 @@ const Home: NextPage = () => (
           alt="Beaunus Logo"
           height={25}
           priority={true}
-          src="/img/beaunus_logo_pixels.png"
+          src={Logos.BeaunusPixels}
           width={119.25}
         />
       </header>
@@ -49,7 +50,7 @@ const Home: NextPage = () => (
             className="rounded-full"
             height={200}
             priority={true}
-            src="/img/beau-dobbin-photo.jpg"
+            src={Photos.BeauDobbinPhoto}
             width={200}
           />
         </div>
@@ -225,7 +226,7 @@ const Home: NextPage = () => (
           logoImage: {
             height: 400,
             isRounded: true,
-            src: "/img/zehitomo-iphone.png",
+            src: Photos.ZehitomoIPhone,
             width: 190.81,
           },
           techLogos: (
@@ -322,7 +323,7 @@ const Home: NextPage = () => (
           logoImage: {
             height: 132.95,
             isRounded: true,
-            src: "/img/background_splash_bbq.jpg",
+            src: Photos.SecondShiftBBQ,
           },
           title: "Second Shift",
           url: "http://secondshiftmusic.com",
@@ -346,7 +347,7 @@ const Home: NextPage = () => (
           logoImage: {
             height: 300,
             isRounded: true,
-            src: "/img/kelly-sikkema-S4eh9DWTId4-unsplash.jpg",
+            src: Photos.BoyPiano,
           },
           title: "Scales and Modes",
           url: "http://scales-and-modes.beaunus.com",
