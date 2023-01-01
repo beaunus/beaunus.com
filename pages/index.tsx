@@ -83,7 +83,7 @@ const Home: NextPage = () => (
         {
           content: (
             <p>
-              I am a senior frontend developer at Octopus Energy, an energy
+              I am the Front-end lead for APAC at Octopus Energy, an energy
               company that provides Japanese households with electricity from
               sustainable sources.
             </p>
