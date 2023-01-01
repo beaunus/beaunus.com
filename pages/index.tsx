@@ -330,10 +330,7 @@ const Home: NextPage = () => (
         },
         {
           content: <p>I ran an audio production company for a few years.</p>,
-          logoImage: {
-            height: 43.38,
-            src: Logos.BeaunusSound,
-          },
+          logoImage: { height: 43.38, src: Logos.BeaunusSound },
           title: "Beaunus Sound",
           url: "http://beaunussound.com",
         },
@@ -344,11 +341,7 @@ const Home: NextPage = () => (
               musical scales.
             </p>
           ),
-          logoImage: {
-            height: 300,
-            isRounded: true,
-            src: Photos.BoyPiano,
-          },
+          logoImage: { height: 300, isRounded: true, src: Photos.BoyPiano },
           title: "Scales and Modes",
           url: "http://scales-and-modes.beaunus.com",
         },
