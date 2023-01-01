@@ -131,7 +131,7 @@ const Home: NextPage = () => (
                 software engineering leaders.
               </p>
               <p>
-                I am a lead instructor and core curriculum contributor for
+                I was a lead instructor and core curriculum contributor for
                 Foundations, a JavaScript / HTML / CSS course that prepares
                 absolute beginners for an advanced programming bootcamp.
               </p>
