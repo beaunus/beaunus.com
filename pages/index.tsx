@@ -43,16 +43,14 @@ const TitleSection: React.FC = () => {
 
   return (
     <div className="flex flex-col grow shrink-0 gap-5 items-center px-3">
-      <div>
-        <Image
-          alt="Beau Dobbin"
-          className="rounded-full"
-          height={200}
-          priority={true}
-          src={Photos.BeauDobbinPhoto}
-          width={200}
-        />
-      </div>
+      <Image
+        alt="Beau Dobbin"
+        className="rounded-full"
+        height={200}
+        priority={true}
+        src={Photos.BeauDobbinPhoto}
+        width={200}
+      />
       <div>
         <div className="text-4xl font-semibold">Beau Dobbin</div>
         <div className="text-2xl font-semibold text-cyan-700">
