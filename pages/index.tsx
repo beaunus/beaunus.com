@@ -11,38 +11,7 @@ import Head from "next/head";
 import Image from "next/image";
 import React, { FC, ReactNode } from "react";
 
-import LogoAngularJS from "../images/logos/angularjs.png";
-import LogoAntDesign from "../images/logos/ant-design.svg";
-import LogoAmazonWebServices from "../images/logos/aws.png";
-import LogoBasal from "../images/logos/basal.png";
-import LogoBeaunusSound from "../images/logos/beaunussound.png";
-import LogoCodeChrysalis from "../images/logos/code-chrysalis.png";
-import LogoCSS from "../images/logos/css.png";
-import LogoCypress from "../images/logos/cypress-logo.webp";
-import LogoD3 from "../images/logos/d3.svg";
-import LogoExpressJS from "../images/logos/express.png";
-import LogoGithub from "../images/logos/github.png";
-import LogoGoogleCloudPlatform from "../images/logos/google-cloud-logo.svg";
-import LogoGraphQL from "../images/logos/graph-ql.svg";
-import LogoHTML from "../images/logos/html.png";
-import LogoIonic from "../images/logos/ionicframework.png";
-import LogoJest from "../images/logos/jest.svg";
-import LogoLinkedIn from "../images/logos/linkedin.png";
-import LogoMongoDB from "../images/logos/mongodb.png";
-import LogoNextJS from "../images/logos/nextjs.svg";
-import LogoNode from "../images/logos/node.png";
-import LogoOctopusEnergy from "../images/logos/octopus.jpeg";
-import LogoPython from "../images/logos/python.svg";
-import LogoReactTestingLibrary from "../images/logos/react-testing-library.png";
-import LogoReact from "../images/logos/react.png";
-import LogoRedis from "../images/logos/redis.svg";
-import LogoSentry from "../images/logos/sentry.png";
-import LogoSixDegreesOfKevinBacon from "../images/logos/six-degrees-of-kevin-bacon.png";
-import LogoTailwindCSS from "../images/logos/tailwind-css.svg";
-import LogoTheMovieDB from "../images/logos/themoviedb.svg";
-import LogoTypeScript from "../images/logos/typescript.svg";
-import LogoVercel from "../images/logos/vercel.png";
-import LogoWebpack from "../images/logos/webpack.png";
+import * as Logos from "../images/logos";
 
 const Link: FC<{ href: string; label: ReactNode }> = ({ href, label }) => (
   <a
@@ -118,35 +87,35 @@ const Home: NextPage = () => (
               sustainable sources.
             </p>
           ),
-          logoImage: { isRounded: true, src: LogoOctopusEnergy },
+          logoImage: { isRounded: true, src: Logos.OctopusEnergy },
           techLogos: (
             <>
               <Image
                 alt="TypeScript"
                 height={24}
-                src={LogoTypeScript}
+                src={Logos.TypeScript}
                 width={98}
               />
-              <Image alt="NodeJS" height={24} src={LogoNode} width={89} />
-              <Image alt="GraphQL" height={24} src={LogoGraphQL} width={88} />
-              <Image alt="Python" height={24} src={LogoPython} width={81} />
+              <Image alt="NodeJS" height={24} src={Logos.Node} width={89} />
+              <Image alt="GraphQL" height={24} src={Logos.GraphQL} width={88} />
+              <Image alt="Python" height={24} src={Logos.Python} width={81} />
               <Image
                 alt="React Testing Library"
                 height={24}
-                src={LogoReactTestingLibrary}
+                src={Logos.ReactTestingLibrary}
                 width={24}
               />
-              <Image alt="Jest" height={24} src={LogoJest} width={22} />
-              <Image alt="React" height={24} src={LogoReact} width={71} />
-              <Image alt="Next.js" height={24} src={LogoNextJS} width={40} />
+              <Image alt="Jest" height={24} src={Logos.Jest} width={22} />
+              <Image alt="React" height={24} src={Logos.React} width={71} />
+              <Image alt="Next.js" height={24} src={Logos.NextJS} width={40} />
               <Image
                 alt="Tailwind CSS"
                 height={24}
-                src={LogoTailwindCSS}
+                src={Logos.TailwindCSS}
                 width={102}
               />
-              <Image alt="Vercel" height={24} src={LogoVercel} width={106} />
-              <Image alt="Sentry" height={24} src={LogoSentry} width={100} />
+              <Image alt="Vercel" height={24} src={Logos.Vercel} width={106} />
+              <Image alt="Sentry" height={24} src={Logos.Sentry} width={100} />
             </>
           ),
           title: "Octopus Energy",
@@ -167,20 +136,20 @@ const Home: NextPage = () => (
               </p>
             </>
           ),
-          logoImage: { isRounded: true, src: LogoCodeChrysalis },
+          logoImage: { isRounded: true, src: Logos.CodeChrysalis },
           techLogos: (
             <>
-              <Image alt="NodeJS" height={24} src={LogoNode} width={89} />
+              <Image alt="NodeJS" height={24} src={Logos.Node} width={89} />
               <Image
                 alt="ExpressJS"
                 height={24}
-                src={LogoExpressJS}
+                src={Logos.ExpressJS}
                 width={88}
               />
-              <Image alt="React" height={24} src={LogoReact} width={71} />
-              <Image alt="GraphQL" height={24} src={LogoGraphQL} width={88} />
-              <Image alt="HTML" height={24} src={LogoHTML} width={17} />
-              <Image alt="CSS" height={24} src={LogoCSS} width={17} />
+              <Image alt="React" height={24} src={Logos.React} width={71} />
+              <Image alt="GraphQL" height={24} src={Logos.GraphQL} width={88} />
+              <Image alt="HTML" height={24} src={Logos.HTML} width={17} />
+              <Image alt="CSS" height={24} src={Logos.CSS} width={17} />
             </>
           ),
           title: "Code Chrysalis",
@@ -193,53 +162,53 @@ const Home: NextPage = () => (
               software development center based in Tokyo.
             </p>
           ),
-          logoImage: { isRounded: true, src: LogoBasal },
+          logoImage: { isRounded: true, src: Logos.Basal },
           techLogos: (
             <>
               <Image
                 alt="TypeScript"
                 height={24}
-                src={LogoTypeScript}
+                src={Logos.TypeScript}
                 width={98}
               />
-              <Image alt="NodeJS" height={24} src={LogoNode} width={89} />
-              <Image alt="GraphQL" height={24} src={LogoGraphQL} width={88} />
+              <Image alt="NodeJS" height={24} src={Logos.Node} width={89} />
+              <Image alt="GraphQL" height={24} src={Logos.GraphQL} width={88} />
               <Image
                 alt="Google Cloud Platform"
                 height={24}
-                src={LogoGoogleCloudPlatform}
+                src={Logos.GoogleCloudPlatform}
                 width={155}
               />
-              <Image alt="MongoDB" height={24} src={LogoMongoDB} width={88} />
+              <Image alt="MongoDB" height={24} src={Logos.MongoDB} width={88} />
               <Image
                 alt="ExpressJS"
                 height={24}
-                src={LogoExpressJS}
+                src={Logos.ExpressJS}
                 width={88}
               />
-              <Image alt="Cypress" height={24} src={LogoCypress} width={72} />
-              <Image alt="Jest" height={24} src={LogoJest} width={22} />
-              <Image alt="React" height={24} src={LogoReact} width={71} />
-              <Image alt="Webpack" height={24} src={LogoWebpack} width={84} />
+              <Image alt="Cypress" height={24} src={Logos.Cypress} width={72} />
+              <Image alt="Jest" height={24} src={Logos.Jest} width={22} />
+              <Image alt="React" height={24} src={Logos.React} width={71} />
+              <Image alt="Webpack" height={24} src={Logos.Webpack} width={84} />
               <Image
                 alt="Ant Design"
                 height={24}
-                src={LogoAntDesign}
+                src={Logos.AntDesign}
                 width={24}
               />
               <Image
                 alt="Ionic Framework"
                 height={24}
-                src={LogoIonic}
+                src={Logos.Ionic}
                 width={71}
               />
               <Image
                 alt="Amazon Web Services"
                 height={24}
-                src={LogoAmazonWebServices}
+                src={Logos.AmazonWebServices}
                 width={55}
               />
-              <Image alt="Redis" height={24} src={LogoRedis} width={72} />
+              <Image alt="Redis" height={24} src={Logos.Redis} width={72} />
             </>
           ),
           title: "Basal",
@@ -261,35 +230,35 @@ const Home: NextPage = () => (
           },
           techLogos: (
             <>
-              <Image alt="NodeJS" height={24} src={LogoNode} width={89} />
+              <Image alt="NodeJS" height={24} src={Logos.Node} width={89} />
               <Image
                 alt="TypeScript"
                 height={24}
-                src={LogoTypeScript}
+                src={Logos.TypeScript}
                 width={98}
               />
-              <Image alt="MongoDB" height={24} src={LogoMongoDB} width={88} />
+              <Image alt="MongoDB" height={24} src={Logos.MongoDB} width={88} />
               <Image
                 alt="ExpressJS"
                 height={24}
-                src={LogoExpressJS}
+                src={Logos.ExpressJS}
                 width={88}
               />
-              <Image alt="React" height={24} src={LogoReact} width={71} />
+              <Image alt="React" height={24} src={Logos.React} width={71} />
               <Image
                 alt="AngularJS"
                 height={24}
-                src={LogoAngularJS}
+                src={Logos.AngularJS}
                 width={85}
               />
               <Image
                 alt="Amazon Web Services"
                 height={24}
-                src={LogoAmazonWebServices}
+                src={Logos.AmazonWebServices}
                 width={55}
               />
-              <Image alt="Redis" height={24} src={LogoRedis} width={72} />
-              <Image alt="Sentry" height={24} src={LogoSentry} width={100} />
+              <Image alt="Redis" height={24} src={Logos.Redis} width={72} />
+              <Image alt="Sentry" height={24} src={Logos.Sentry} width={100} />
             </>
           ),
           title: "Zehitomo",
@@ -309,28 +278,28 @@ const Home: NextPage = () => (
           logoImage: {
             height: 153.2,
             isRounded: true,
-            src: LogoSixDegreesOfKevinBacon,
+            src: Logos.SixDegreesOfKevinBacon,
           },
           techLogos: (
             <>
               <Image
                 alt="TypeScript"
                 height={24}
-                src={LogoTypeScript}
+                src={Logos.TypeScript}
                 width={98}
               />
-              <Image alt="React" height={24} src={LogoReact} width={71} />
+              <Image alt="React" height={24} src={Logos.React} width={71} />
               <Image
                 alt="Amazon Web Services"
                 height={24}
-                src={LogoAmazonWebServices}
+                src={Logos.AmazonWebServices}
                 width={55}
               />
-              <Image alt="D3.JS" height={24} src={LogoD3} width={25} />
+              <Image alt="D3.JS" height={24} src={Logos.D3} width={25} />
               <Image
                 alt="The Movie Database"
                 height={24}
-                src={LogoTheMovieDB}
+                src={Logos.TheMovieDB}
                 width={185}
               />
             </>
@@ -362,7 +331,7 @@ const Home: NextPage = () => (
           content: <p>I ran an audio production company for a few years.</p>,
           logoImage: {
             height: 43.38,
-            src: LogoBeaunusSound,
+            src: Logos.BeaunusSound,
           },
           title: "Beaunus Sound",
           url: "http://beaunussound.com",
@@ -412,13 +381,18 @@ const Home: NextPage = () => (
           <Link
             href="https://github.com/beaunus"
             label={
-              <Image alt="Github" height={24} src={LogoGithub} width={89} />
+              <Image alt="Github" height={24} src={Logos.Github} width={89} />
             }
           />
           <Link
             href="https://www.linkedin.com/in/beaunus/"
             label={
-              <Image alt="Linkedin" height={24} src={LogoLinkedIn} width={91} />
+              <Image
+                alt="Linkedin"
+                height={24}
+                src={Logos.LinkedIn}
+                width={91}
+              />
             }
           />
         </div>
