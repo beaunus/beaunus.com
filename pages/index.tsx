@@ -1,3 +1,4 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import {
   faHandPeace,
   faHandshake,
@@ -28,44 +29,45 @@ const Header: React.FC = () => (
   </header>
 );
 
-const TitleSection: React.FC = () => (
-  <div className="flex flex-col grow shrink-0 gap-5 items-center px-3">
-    <div>
-      <Image
-        alt="Beau Dobbin"
-        className="rounded-full"
-        height={200}
-        priority={true}
-        src={Photos.BeauDobbinPhoto}
-        width={200}
-      />
+const TitleSection: React.FC = () => {
+  const Icon: React.FC<{ color: string; icon: IconProp; label: string }> = ({
+    color,
+    icon,
+    label,
+  }) => (
+    <div className="flex gap-2 items-center">
+      <FontAwesomeIcon className={color} icon={icon} />
+      <div>{label}</div>
     </div>
-    <div>
-      <div className="text-4xl font-semibold">Beau Dobbin</div>
-      <div className="text-2xl font-semibold text-cyan-700">
-        Software Engineer
+  );
+
+  return (
+    <div className="flex flex-col grow shrink-0 gap-5 items-center px-3">
+      <div>
+        <Image
+          alt="Beau Dobbin"
+          className="rounded-full"
+          height={200}
+          priority={true}
+          src={Photos.BeauDobbinPhoto}
+          width={200}
+        />
+      </div>
+      <div>
+        <div className="text-4xl font-semibold">Beau Dobbin</div>
+        <div className="text-2xl font-semibold text-cyan-700">
+          Software Engineer
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-5 justify-center">
+        <Icon color="text-blue-700" icon={faTerminal} label="Code" />
+        <Icon color="text-green-800" icon={faHandshake} label="Education" />
+        <Icon color="text-amber-500" icon={faMusic} label="Music" />
+        <Icon color="text-red-600" icon={faHeadphones} label="Engineering" />
       </div>
     </div>
-    <div className="flex flex-wrap gap-5 justify-center">
-      <div className="flex gap-2 items-center">
-        <FontAwesomeIcon className="text-blue-700" icon={faTerminal} />
-        <div>Code</div>
-      </div>
-      <div className="flex gap-2 items-center">
-        <FontAwesomeIcon className="text-green-800" icon={faHandshake} />
-        <div>Education</div>
-      </div>
-      <div className="flex gap-2 items-center">
-        <FontAwesomeIcon className="text-amber-500" icon={faMusic} />
-        <div>Music</div>
-      </div>
-      <div className="flex gap-2 items-center">
-        <FontAwesomeIcon className="text-red-600" icon={faHeadphones} />
-        <div>Audio Engineering</div>
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 const Footer: React.FC = () => (
   <footer className="flex flex-col shrink-0 gap-8 justify-evenly items-center py-16 px-5 odd:mt-2 odd:bg-gray-100">
