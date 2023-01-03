@@ -10,6 +10,7 @@ export * as Cypress from "./cypress-logo.webp";
 export * as D3 from "./d3.svg";
 export * as Datadog from "./datadog.svg";
 export * as ExpressJS from "./express.png";
+export * as Figma from "./figma.svg";
 export * as Github from "./github.png";
 export * as GoogleCloudPlatform from "./google-cloud-logo.svg";
 export * as GraphQL from "./graph-ql.svg";
