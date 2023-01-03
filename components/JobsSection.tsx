@@ -29,6 +29,7 @@ const jobs = [
           width={24}
         />
         <Image alt="Jest" height={24} src={Logos.Jest} width={22} />
+        <Image alt="Cypress" height={24} src={Logos.Cypress} width={72} />
         <Image alt="React" height={24} src={Logos.React} width={71} />
         <Image alt="Next.js" height={24} src={Logos.NextJS} width={40} />
         <Image
@@ -37,6 +38,7 @@ const jobs = [
           src={Logos.TailwindCSS}
           width={102}
         />
+        <Image alt="XState" height={24} src={Logos.XState} width={68} />
         <Image alt="Vercel" height={24} src={Logos.Vercel} width={106} />
         <Image alt="Sentry" height={24} src={Logos.Sentry} width={100} />
       </>

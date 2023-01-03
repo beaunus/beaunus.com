@@ -31,3 +31,4 @@ export * as TheMovieDB from "./themoviedb.svg";
 export * as TypeScript from "./typescript.svg";
 export * as Vercel from "./vercel.png";
 export * as Webpack from "./webpack.png";
+export * as XState from "./xstate.svg";
