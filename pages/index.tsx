@@ -14,6 +14,7 @@ import React from "react";
 import { HighlightedLink } from "../components/HighlightedLink";
 import { Icon } from "../components/Icon";
 import { JobsSection } from "../components/JobsSection";
+import { Segment } from "../components/Segment";
 import * as Logos from "../images/logos";
 import * as Photos from "../images/photos";
 
@@ -30,28 +31,34 @@ const Header: React.FC = () => (
 );
 
 const TitleSection: React.FC = () => (
-  <div className="flex flex-col grow shrink-0 gap-5 items-center px-3">
-    <Image
-      alt="Beau Dobbin"
-      className="rounded-full"
-      height={200}
-      priority={true}
-      src={Photos.BeauDobbinPhoto}
-      width={200}
-    />
-    <div>
-      <div className="text-4xl font-semibold">Beau Dobbin</div>
-      <div className="text-2xl font-semibold text-cyan-700">
-        Software Engineer
+  <Segment
+    body={
+      <div className="flex flex-col gap-5 items-center px-3 w-full max-w-lg">
+        <div>
+          <div className="text-4xl font-semibold">Beau Dobbin</div>
+          <div className="text-2xl font-semibold text-cyan-700">
+            Software Engineer
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-5 justify-around w-full">
+          <Icon color="text-blue-700" icon={faTerminal} label="Code" />
+          <Icon color="text-green-800" icon={faHandshake} label="Education" />
+          <Icon color="text-amber-500" icon={faMusic} label="Music" />
+          <Icon color="text-red-600" icon={faHeadphones} label="Engineering" />
+        </div>
       </div>
-    </div>
-    <div className="flex flex-wrap gap-5 justify-center">
-      <Icon color="text-blue-700" icon={faTerminal} label="Code" />
-      <Icon color="text-green-800" icon={faHandshake} label="Education" />
-      <Icon color="text-amber-500" icon={faMusic} label="Music" />
-      <Icon color="text-red-600" icon={faHeadphones} label="Engineering" />
-    </div>
-  </div>
+    }
+    image={
+      <Image
+        alt="Beau Dobbin"
+        className="rounded-full"
+        height={200}
+        priority={true}
+        src={Photos.BeauDobbinPhoto}
+        width={200}
+      />
+    }
+  />
 );
 
 const Footer: React.FC = () => (
@@ -84,7 +91,7 @@ const Home: NextPage = () => (
       <meta content="width=device-width,initial-scale=1" name="viewport" />
     </Head>
     <Header />
-    <div className="flex flex-col gap-2 text-center">
+    <div className="flex flex-col gap-2 items-center text-center">
       <TitleSection />
       <JobsSection />
       <Footer />

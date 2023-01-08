@@ -230,7 +230,7 @@ export const JobsSection = () => (
   <>
     {jobs.map(({ title, logoImage, url, content, techLogos }, index) => (
       <section
-        className="flex flex-col gap-6 justify-evenly items-center py-16 px-5 odd:mt-2 odd:bg-gray-100"
+        className="flex flex-col gap-6 justify-evenly items-center py-16 px-5 odd:mt-2 w-full odd:bg-gray-100"
         key={`section-${index}`}
       >
         <Image
