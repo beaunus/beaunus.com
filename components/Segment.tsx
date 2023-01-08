@@ -4,7 +4,7 @@ export const Segment: FC<{ body: ReactNode; image: ReactNode }> = ({
   image,
   body,
 }) => (
-  <div className="flex flex-col gap-5 items-center px-3 w-full sm:flex-row sm:gap-10 sm:justify-center">
+  <div className="flex flex-col gap-5 items-center px-3 w-full md:flex-row md:gap-10 md:justify-center">
     {image}
     <div className="flex flex-col gap-5 items-center px-3 w-full max-w-lg">
       {body}

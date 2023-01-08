@@ -62,7 +62,7 @@ const TitleSection: React.FC = () => (
 );
 
 const Footer: React.FC = () => (
-  <footer className="flex flex-col shrink-0 gap-8 justify-evenly items-center py-16 px-5 odd:mt-2 odd:bg-gray-100">
+  <footer className="flex flex-col shrink-0 gap-8 justify-evenly items-center py-16 px-5 even:mt-2 w-full even:bg-gray-100">
     <FontAwesomeIcon icon={faHandPeace} />
     <HighlightedLink href="mailto:beau@beaunus.com" label="beau@beaunus.com" />
     <div className="flex flex-wrap gap-8 justify-center">
@@ -91,7 +91,7 @@ const Home: NextPage = () => (
       <meta content="width=device-width,initial-scale=1" name="viewport" />
     </Head>
     <Header />
-    <div className="flex flex-col gap-2 items-center text-center">
+    <div className="flex flex-col gap-20 items-center text-center">
       <TitleSection />
       <JobsSection />
       <Footer />
