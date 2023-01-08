@@ -42,9 +42,13 @@ const TitleSection: React.FC = () => (
         </div>
         <div className="flex flex-wrap gap-5 justify-around w-full">
           <Icon color="text-blue-700" icon={faTerminal} label="Code" />
-          <Icon color="text-green-800" icon={faHandshake} label="Education" />
-          <Icon color="text-amber-500" icon={faMusic} label="Music" />
-          <Icon color="text-red-600" icon={faHeadphones} label="Engineering" />
+          <Icon color="text-orange-500" icon={faHandshake} label="Education" />
+          <Icon color="text-green-600" icon={faMusic} label="Music" />
+          <Icon
+            color="text-indigo-400"
+            icon={faHeadphones}
+            label="Engineering"
+          />
         </div>
       </div>
     }
