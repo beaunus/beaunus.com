@@ -24,6 +24,7 @@ const Header: React.FC = () => (
       alt="Beaunus Logo"
       height={25}
       priority={true}
+      quality={100}
       src={Logos.BeaunusPixels}
       width={119.25}
     />
@@ -67,7 +68,7 @@ const TitleSection: React.FC = () => (
 
 const Footer: React.FC = () => (
   <footer className="flex flex-col shrink-0 gap-8 justify-evenly items-center py-16 px-5 even:mt-2 w-full even:bg-gray-100">
-    <FontAwesomeIcon icon={faHandPeace} />
+    <FontAwesomeIcon color="rgb(232,25,140)" icon={faHandPeace} />
     <HighlightedLink href="mailto:beau@beaunus.com" label="beau@beaunus.com" />
     <div className="flex flex-wrap gap-8 justify-center">
       <HighlightedLink
