@@ -41,7 +41,7 @@ const jobs = [
         />
         <Image alt="XState" height={24} src={Logos.XState} width={68} />
         <Image alt="Vercel" height={24} src={Logos.Vercel} width={106.512} />
-        <Image alt="Sentry" height={24} src={Logos.Sentry} width={100} />
+        <Image alt="Sentry" height={24} src={Logos.Sentry} width={80.672} />
         <Image alt="Datadog" height={24} src={Logos.Datadog} width={94} />
         <Image alt="Figma" height={24} src={Logos.Figma} width={16} />
         <Image alt="Notion" height={24} src={Logos.Notion} width={24} />
@@ -146,7 +146,7 @@ const jobs = [
           width={55}
         />
         <Image alt="Redis" height={24} src={Logos.Redis} width={72} />
-        <Image alt="Sentry" height={24} src={Logos.Sentry} width={100} />
+        <Image alt="Sentry" height={24} src={Logos.Sentry} width={80.672} />
       </>
     ),
     title: "Zehitomo",

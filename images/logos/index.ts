@@ -27,7 +27,7 @@ export * as Python from "./python.svg";
 export * as ReactTestingLibrary from "./react-testing-library.png";
 export * as React from "./react.svg";
 export * as Redis from "./redis.svg";
-export * as Sentry from "./sentry.png";
+export * as Sentry from "./sentry.svg";
 export * as SixDegreesOfKevinBacon from "./six-degrees-of-kevin-bacon.png";
 export * as TailwindCSS from "./tailwind-css.svg";
 export * as TheMovieDB from "./themoviedb.svg";
