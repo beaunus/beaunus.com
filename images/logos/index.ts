@@ -11,7 +11,7 @@ export * as D3 from "./d3.svg";
 export * as Datadog from "./datadog.svg";
 export * as ExpressJS from "./expressjs.svg";
 export * as Figma from "./figma.svg";
-export * as Github from "./github.png";
+export * as Github from "./github.svg";
 export * as GoogleCloudPlatform from "./google-cloud-logo.svg";
 export * as GraphQL from "./graph-ql.svg";
 export * as HTML from "./html.png";

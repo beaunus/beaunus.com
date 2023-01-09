@@ -73,7 +73,7 @@ const Footer: React.FC = () => (
     <div className="flex flex-wrap gap-8 justify-center">
       <HighlightedLink
         href="https://github.com/beaunus"
-        label={<Image alt="Github" height={24} src={Logos.Github} width={89} />}
+        label={<Image alt="Github" height={24} src={Logos.Github} width={24} />}
       />
       <HighlightedLink
         href="https://www.linkedin.com/in/beaunus/"
