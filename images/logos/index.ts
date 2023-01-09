@@ -6,7 +6,7 @@ export * as BeaunusPixels from "./beaunus_logo_pixels.png";
 export * as BeaunusSound from "./beaunussound.png";
 export * as CodeChrysalis from "./code-chrysalis.png";
 export * as CSS from "./css.png";
-export * as Cypress from "./cypress-logo.webp";
+export * as Cypress from "./cypress.svg";
 export * as D3 from "./d3.svg";
 export * as Datadog from "./datadog.svg";
 export * as ExpressJS from "./express.png";

@@ -30,7 +30,7 @@ const jobs = [
           width={24}
         />
         <Image alt="Jest" height={24} src={Logos.Jest} width={22} />
-        <Image alt="Cypress" height={24} src={Logos.Cypress} width={72} />
+        <Image alt="Cypress" height={24} src={Logos.Cypress} width={59.5} />
         <Image alt="React" height={24} src={Logos.React} width={71} />
         <Image alt="Next.js" height={24} src={Logos.NextJS} width={40} />
         <Image
@@ -100,7 +100,7 @@ const jobs = [
         />
         <Image alt="MongoDB" height={24} src={Logos.MongoDB} width={88} />
         <Image alt="ExpressJS" height={24} src={Logos.ExpressJS} width={88} />
-        <Image alt="Cypress" height={24} src={Logos.Cypress} width={72} />
+        <Image alt="Cypress" height={24} src={Logos.Cypress} width={59.5} />
         <Image alt="Jest" height={24} src={Logos.Jest} width={22} />
         <Image alt="React" height={24} src={Logos.React} width={71} />
         <Image alt="Webpack" height={24} src={Logos.Webpack} width={84} />
