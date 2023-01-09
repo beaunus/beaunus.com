@@ -40,7 +40,7 @@ const TitleSection: React.FC = () => (
             Software Engineer
           </div>
         </div>
-        <div className="flex flex-wrap gap-5 justify-around w-full">
+        <div className="flex flex-wrap gap-5 justify-around w-full max-w-md">
           <Icon color="text-blue-700" icon={faTerminal} label="Code" />
           <Icon color="text-orange-500" icon={faHandshake} label="Education" />
           <Icon color="text-green-600" icon={faMusic} label="Music" />
