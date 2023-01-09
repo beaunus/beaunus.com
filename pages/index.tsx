@@ -78,7 +78,7 @@ const Footer: React.FC = () => (
       <HighlightedLink
         href="https://www.linkedin.com/in/beaunus/"
         label={
-          <Image alt="Linkedin" height={24} src={Logos.LinkedIn} width={91} />
+          <Image alt="Linkedin" height={24} src={Logos.LinkedIn} width={24} />
         }
       />
     </div>

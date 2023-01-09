@@ -17,7 +17,7 @@ export * as GraphQL from "./graph-ql.svg";
 export * as HTML from "./html.png";
 export * as Ionic from "./ionic.svg";
 export * as Jest from "./jest.svg";
-export * as LinkedIn from "./linkedin.png";
+export * as LinkedIn from "./linkedin.svg";
 export * as MongoDB from "./mongodb.svg";
 export * as NextJS from "./nextjs.svg";
 export * as Node from "./node.svg";
