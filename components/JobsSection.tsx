@@ -230,44 +230,40 @@ const jobs = [
 export const JobsSection = () => (
   <>
     {jobs.map(({ title, logoImage, url, content, techLogos }, index) => (
-      <section
-        className="flex flex-col gap-6 justify-evenly items-center py-16 px-5 even:mt-2 w-full even:bg-gray-100"
-        key={`section-${index}`}
-      >
-        <Segment
-          body={
-            <div className="flex flex-col gap-8">
-              <div>
-                <div className="text-2xl font-semibold text-cyan-700">
-                  {title}
-                </div>
-                <div className="text-xl font-semibold text-purple-800">
-                  <HighlightedLink
-                    href={url}
-                    label={url.replace(/https?:\/\//, "")}
-                  />
-                </div>
+      <Segment
+        body={
+          <div className="flex flex-col gap-8">
+            <div>
+              <div className="text-2xl font-semibold text-cyan-700">
+                {title}
               </div>
-              <div className="flex flex-col gap-4">{content}</div>
-              <div className="flex flex-wrap gap-5 justify-center">
-                {techLogos}
+              <div className="text-xl font-semibold text-purple-800">
+                <HighlightedLink
+                  href={url}
+                  label={url.replace(/https?:\/\//, "")}
+                />
               </div>
             </div>
-          }
-          image={
-            <Image
-              alt={title}
-              className={` min-w-[200px] ${
-                logoImage.isRounded ? "rounded-3xl" : ""
-              }`}
-              height={logoImage.height ?? 200}
-              src={logoImage.src}
-              title={title}
-              width={logoImage.width ?? 200}
-            />
-          }
-        />
-      </section>
+            <div className="flex flex-col gap-4">{content}</div>
+            <div className="flex flex-wrap gap-5 justify-center">
+              {techLogos}
+            </div>
+          </div>
+        }
+        image={
+          <Image
+            alt={title}
+            className={` min-w-[200px] ${
+              logoImage.isRounded ? "rounded-3xl" : ""
+            }`}
+            height={logoImage.height ?? 200}
+            src={logoImage.src}
+            title={title}
+            width={logoImage.width ?? 200}
+          />
+        }
+        key={`job-${index}`}
+      />
     ))}
   </>
 );

@@ -33,7 +33,7 @@ const Header: React.FC = () => (
 const TitleSection: React.FC = () => (
   <Segment
     body={
-      <div className="flex flex-col gap-5 items-center px-3 w-full">
+      <>
         <div>
           <div className="text-4xl font-semibold">Beau Dobbin</div>
           <div className="text-2xl font-semibold text-cyan-700">
@@ -50,7 +50,7 @@ const TitleSection: React.FC = () => (
             label="Engineering"
           />
         </div>
-      </div>
+      </>
     }
     image={
       <Image
