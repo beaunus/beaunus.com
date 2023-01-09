@@ -22,7 +22,7 @@ export * as MongoDB from "./mongodb.svg";
 export * as NextJS from "./nextjs.svg";
 export * as Node from "./node.svg";
 export * as Notion from "./notion.svg";
-export * as OctopusEnergy from "./octopus.jpeg";
+export * as OctopusEnergy from "./octopus.svg";
 export * as Python from "./python.svg";
 export * as ReactTestingLibrary from "./react-testing-library.png";
 export * as React from "./react.svg";
