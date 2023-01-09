@@ -15,7 +15,7 @@ export * as Github from "./github.png";
 export * as GoogleCloudPlatform from "./google-cloud-logo.svg";
 export * as GraphQL from "./graph-ql.svg";
 export * as HTML from "./html.png";
-export * as Ionic from "./ionicframework.png";
+export * as Ionic from "./ionic.svg";
 export * as Jest from "./jest.svg";
 export * as LinkedIn from "./linkedin.png";
 export * as MongoDB from "./mongodb.svg";

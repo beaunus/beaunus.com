@@ -105,7 +105,12 @@ const jobs = [
         <Image alt="React" height={24} src={Logos.React} width={24} />
         <Image alt="Webpack" height={24} src={Logos.Webpack} width={83.5} />
         <Image alt="Ant Design" height={24} src={Logos.AntDesign} width={24} />
-        <Image alt="Ionic Framework" height={24} src={Logos.Ionic} width={71} />
+        <Image
+          alt="Ionic Framework"
+          height={24}
+          src={Logos.Ionic}
+          width={70.286}
+        />
         <Image
           alt="Amazon Web Services"
           height={24}
