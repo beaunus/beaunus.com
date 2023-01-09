@@ -25,7 +25,7 @@ export * as Notion from "./notion.svg";
 export * as OctopusEnergy from "./octopus.jpeg";
 export * as Python from "./python.svg";
 export * as ReactTestingLibrary from "./react-testing-library.png";
-export * as React from "./react.png";
+export * as React from "./react.svg";
 export * as Redis from "./redis.svg";
 export * as Sentry from "./sentry.png";
 export * as SixDegreesOfKevinBacon from "./six-degrees-of-kevin-bacon.png";

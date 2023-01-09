@@ -31,7 +31,7 @@ const jobs = [
         />
         <Image alt="Jest" height={24} src={Logos.Jest} width={22} />
         <Image alt="Cypress" height={24} src={Logos.Cypress} width={59.5} />
-        <Image alt="React" height={24} src={Logos.React} width={71} />
+        <Image alt="React" height={24} src={Logos.React} width={24} />
         <Image alt="Next.js" height={24} src={Logos.NextJS} width={40} />
         <Image
           alt="Tailwind CSS"
@@ -70,7 +70,7 @@ const jobs = [
       <>
         <Image alt="NodeJS" height={24} src={Logos.Node} width={39.187} />
         <Image alt="ExpressJS" height={24} src={Logos.ExpressJS} width={88} />
-        <Image alt="React" height={24} src={Logos.React} width={71} />
+        <Image alt="React" height={24} src={Logos.React} width={24} />
         <Image alt="GraphQL" height={24} src={Logos.GraphQL} width={88} />
         <Image alt="HTML" height={24} src={Logos.HTML} width={17} />
         <Image alt="CSS" height={24} src={Logos.CSS} width={17} />
@@ -102,7 +102,7 @@ const jobs = [
         <Image alt="ExpressJS" height={24} src={Logos.ExpressJS} width={88} />
         <Image alt="Cypress" height={24} src={Logos.Cypress} width={59.5} />
         <Image alt="Jest" height={24} src={Logos.Jest} width={22} />
-        <Image alt="React" height={24} src={Logos.React} width={71} />
+        <Image alt="React" height={24} src={Logos.React} width={24} />
         <Image alt="Webpack" height={24} src={Logos.Webpack} width={84} />
         <Image alt="Ant Design" height={24} src={Logos.AntDesign} width={24} />
         <Image alt="Ionic Framework" height={24} src={Logos.Ionic} width={71} />
@@ -137,7 +137,7 @@ const jobs = [
         <Image alt="TypeScript" height={24} src={Logos.TypeScript} width={98} />
         <Image alt="MongoDB" height={24} src={Logos.MongoDB} width={88} />
         <Image alt="ExpressJS" height={24} src={Logos.ExpressJS} width={88} />
-        <Image alt="React" height={24} src={Logos.React} width={71} />
+        <Image alt="React" height={24} src={Logos.React} width={24} />
         <Image alt="AngularJS" height={24} src={Logos.AngularJS} width={85} />
         <Image
           alt="Amazon Web Services"
@@ -171,7 +171,7 @@ const jobs = [
     techLogos: (
       <>
         <Image alt="TypeScript" height={24} src={Logos.TypeScript} width={98} />
-        <Image alt="React" height={24} src={Logos.React} width={71} />
+        <Image alt="React" height={24} src={Logos.React} width={24} />
         <Image
           alt="Amazon Web Services"
           height={24}
