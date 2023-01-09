@@ -20,7 +20,7 @@ const jobs = [
     techLogos: (
       <>
         <Image alt="TypeScript" height={24} src={Logos.TypeScript} width={98} />
-        <Image alt="NodeJS" height={24} src={Logos.Node} width={89} />
+        <Image alt="NodeJS" height={24} src={Logos.Node} width={39.187} />
         <Image alt="GraphQL" height={24} src={Logos.GraphQL} width={88} />
         <Image alt="Python" height={24} src={Logos.Python} width={81} />
         <Image
@@ -68,7 +68,7 @@ const jobs = [
     logoImage: { isRounded: true, src: Logos.CodeChrysalis },
     techLogos: (
       <>
-        <Image alt="NodeJS" height={24} src={Logos.Node} width={89} />
+        <Image alt="NodeJS" height={24} src={Logos.Node} width={39.187} />
         <Image alt="ExpressJS" height={24} src={Logos.ExpressJS} width={88} />
         <Image alt="React" height={24} src={Logos.React} width={71} />
         <Image alt="GraphQL" height={24} src={Logos.GraphQL} width={88} />
@@ -90,7 +90,7 @@ const jobs = [
     techLogos: (
       <>
         <Image alt="TypeScript" height={24} src={Logos.TypeScript} width={98} />
-        <Image alt="NodeJS" height={24} src={Logos.Node} width={89} />
+        <Image alt="NodeJS" height={24} src={Logos.Node} width={39.187} />
         <Image alt="GraphQL" height={24} src={Logos.GraphQL} width={88} />
         <Image
           alt="Google Cloud Platform"
@@ -133,7 +133,7 @@ const jobs = [
     },
     techLogos: (
       <>
-        <Image alt="NodeJS" height={24} src={Logos.Node} width={89} />
+        <Image alt="NodeJS" height={24} src={Logos.Node} width={39.187} />
         <Image alt="TypeScript" height={24} src={Logos.TypeScript} width={98} />
         <Image alt="MongoDB" height={24} src={Logos.MongoDB} width={88} />
         <Image alt="ExpressJS" height={24} src={Logos.ExpressJS} width={88} />

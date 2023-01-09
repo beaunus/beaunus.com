@@ -20,7 +20,7 @@ export * as Jest from "./jest.svg";
 export * as LinkedIn from "./linkedin.png";
 export * as MongoDB from "./mongodb.png";
 export * as NextJS from "./nextjs.svg";
-export * as Node from "./node.png";
+export * as Node from "./node.svg";
 export * as Notion from "./notion.svg";
 export * as OctopusEnergy from "./octopus.jpeg";
 export * as Python from "./python.svg";
