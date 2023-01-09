@@ -1,4 +1,4 @@
-export * as AngularJS from "./angularjs.png";
+export * as AngularJS from "./angularjs.svg";
 export * as AntDesign from "./ant-design.svg";
 export * as AmazonWebServices from "./aws.svg";
 export * as Basal from "./basal.png";

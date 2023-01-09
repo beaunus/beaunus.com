@@ -143,7 +143,12 @@ const jobs = [
         <Image alt="MongoDB" height={24} src={Logos.MongoDB} width={95.137} />
         <Image alt="ExpressJS" height={24} src={Logos.ExpressJS} width={48} />
         <Image alt="React" height={24} src={Logos.React} width={24} />
-        <Image alt="AngularJS" height={24} src={Logos.AngularJS} width={85} />
+        <Image
+          alt="AngularJS"
+          height={24}
+          src={Logos.AngularJS}
+          width={93.682}
+        />
         <Image
           alt="Amazon Web Services"
           height={24}
