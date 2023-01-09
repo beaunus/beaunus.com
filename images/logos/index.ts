@@ -18,7 +18,7 @@ export * as HTML from "./html.png";
 export * as Ionic from "./ionicframework.png";
 export * as Jest from "./jest.svg";
 export * as LinkedIn from "./linkedin.png";
-export * as MongoDB from "./mongodb.png";
+export * as MongoDB from "./mongodb.svg";
 export * as NextJS from "./nextjs.svg";
 export * as Node from "./node.svg";
 export * as Notion from "./notion.svg";
