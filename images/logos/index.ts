@@ -33,5 +33,5 @@ export * as TailwindCSS from "./tailwind-css.svg";
 export * as TheMovieDB from "./themoviedb.svg";
 export * as TypeScript from "./typescript.svg";
 export * as Vercel from "./vercel.svg";
-export * as Webpack from "./webpack.png";
+export * as Webpack from "./webpack.svg";
 export * as XState from "./xstate.svg";

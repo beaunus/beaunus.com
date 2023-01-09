@@ -103,7 +103,7 @@ const jobs = [
         <Image alt="Cypress" height={24} src={Logos.Cypress} width={59.5} />
         <Image alt="Jest" height={24} src={Logos.Jest} width={22} />
         <Image alt="React" height={24} src={Logos.React} width={24} />
-        <Image alt="Webpack" height={24} src={Logos.Webpack} width={84} />
+        <Image alt="Webpack" height={24} src={Logos.Webpack} width={83.5} />
         <Image alt="Ant Design" height={24} src={Logos.AntDesign} width={24} />
         <Image alt="Ionic Framework" height={24} src={Logos.Ionic} width={71} />
         <Image
