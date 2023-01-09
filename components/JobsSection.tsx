@@ -115,7 +115,7 @@ const jobs = [
           alt="Amazon Web Services"
           height={24}
           src={Logos.AmazonWebServices}
-          width={55}
+          width={40.188}
         />
         <Image alt="Redis" height={24} src={Logos.Redis} width={72} />
       </>
@@ -148,7 +148,7 @@ const jobs = [
           alt="Amazon Web Services"
           height={24}
           src={Logos.AmazonWebServices}
-          width={55}
+          width={40.188}
         />
         <Image alt="Redis" height={24} src={Logos.Redis} width={72} />
         <Image alt="Sentry" height={24} src={Logos.Sentry} width={80.672} />
@@ -181,7 +181,7 @@ const jobs = [
           alt="Amazon Web Services"
           height={24}
           src={Logos.AmazonWebServices}
-          width={55}
+          width={40.188}
         />
         <Image alt="D3.JS" height={24} src={Logos.D3} width={25} />
         <Image
