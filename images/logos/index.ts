@@ -32,6 +32,6 @@ export * as SixDegreesOfKevinBacon from "./six-degrees-of-kevin-bacon.png";
 export * as TailwindCSS from "./tailwind-css.svg";
 export * as TheMovieDB from "./themoviedb.svg";
 export * as TypeScript from "./typescript.svg";
-export * as Vercel from "./vercel.png";
+export * as Vercel from "./vercel.svg";
 export * as Webpack from "./webpack.png";
 export * as XState from "./xstate.svg";
