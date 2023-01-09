@@ -69,7 +69,7 @@ const jobs = [
     techLogos: (
       <>
         <Image alt="NodeJS" height={24} src={Logos.Node} width={39.187} />
-        <Image alt="ExpressJS" height={24} src={Logos.ExpressJS} width={88} />
+        <Image alt="ExpressJS" height={24} src={Logos.ExpressJS} width={48} />
         <Image alt="React" height={24} src={Logos.React} width={24} />
         <Image alt="GraphQL" height={24} src={Logos.GraphQL} width={88} />
         <Image alt="HTML" height={24} src={Logos.HTML} width={17} />
@@ -99,7 +99,7 @@ const jobs = [
           width={155}
         />
         <Image alt="MongoDB" height={24} src={Logos.MongoDB} width={88} />
-        <Image alt="ExpressJS" height={24} src={Logos.ExpressJS} width={88} />
+        <Image alt="ExpressJS" height={24} src={Logos.ExpressJS} width={48} />
         <Image alt="Cypress" height={24} src={Logos.Cypress} width={59.5} />
         <Image alt="Jest" height={24} src={Logos.Jest} width={22} />
         <Image alt="React" height={24} src={Logos.React} width={24} />
@@ -136,7 +136,7 @@ const jobs = [
         <Image alt="NodeJS" height={24} src={Logos.Node} width={39.187} />
         <Image alt="TypeScript" height={24} src={Logos.TypeScript} width={98} />
         <Image alt="MongoDB" height={24} src={Logos.MongoDB} width={88} />
-        <Image alt="ExpressJS" height={24} src={Logos.ExpressJS} width={88} />
+        <Image alt="ExpressJS" height={24} src={Logos.ExpressJS} width={48} />
         <Image alt="React" height={24} src={Logos.React} width={24} />
         <Image alt="AngularJS" height={24} src={Logos.AngularJS} width={85} />
         <Image
