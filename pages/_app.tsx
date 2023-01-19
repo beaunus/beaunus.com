@@ -12,7 +12,9 @@ const nunito = Nunito({ subsets: ["latin"] });
 // eslint-disable-next-line @typescript-eslint/naming-convention
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <main className={nunito.className}>
+    <main
+      className={`${nunito.className} flex flex-col justify-between h-screen`}
+    >
       <Component {...pageProps} />
     </main>
   );

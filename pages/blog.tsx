@@ -13,8 +13,8 @@ const Blog: NextPage = () => (
     <div className="flex flex-col gap-2 text-center">
       <Header />
       <div className="flex flex-col grow shrink-0 gap-5 px-3">Blog</div>
-      <Footer />
     </div>
+    <Footer />
   </>
 );
 

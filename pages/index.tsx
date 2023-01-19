@@ -60,8 +60,8 @@ const Home: NextPage = () => (
     <div className="flex flex-col gap-20 items-center text-center">
       <TitleSection />
       <JobsSection />
-      <Footer />
     </div>
+    <Footer />
   </>
 );
 
