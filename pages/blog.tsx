@@ -8,7 +8,7 @@ const Blog: NextPage = () => (
       <title>Blog | Beaunus</title>
     </Head>
     <div className="flex flex-col grow gap-2 text-center">
-      <div className="flex flex-col grow shrink-0 gap-5 px-3">Blog</div>
+      <div className="flex flex-col gap-5 px-3">Blog</div>
     </div>
   </>
 );
