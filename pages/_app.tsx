@@ -5,6 +5,8 @@ import type { AppProps } from "next/app";
 import React from "react";
 
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import { Footer } from "../components/Footer";
+import { Header } from "../components/Header";
 config.autoAddCss = false;
 
 const nunito = Nunito({ subsets: ["latin"] });
@@ -15,7 +17,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <main
       className={`${nunito.className} flex flex-col justify-between h-screen`}
     >
+      <Header />
       <Component {...pageProps} />
+      <Footer />
     </main>
   );
 }

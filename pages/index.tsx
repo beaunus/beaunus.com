@@ -9,8 +9,6 @@ import Head from "next/head";
 import Image from "next/image";
 import React from "react";
 
-import { Footer } from "../components/Footer";
-import { Header } from "../components/Header";
 import { Icon } from "../components/Icon";
 import { JobsSection } from "../components/JobsSection";
 import { Segment } from "../components/Segment";
@@ -56,12 +54,10 @@ const Home: NextPage = () => (
     <Head>
       <title>Beaunus</title>
     </Head>
-    <Header />
-    <div className="flex flex-col gap-20 items-center text-center">
+    <div className="flex flex-col grow gap-20 items-center text-center">
       <TitleSection />
       <JobsSection />
     </div>
-    <Footer />
   </>
 );
 
