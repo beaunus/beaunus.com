@@ -32,6 +32,8 @@ const Poisson: NextPage = () => {
     Array.from({ length: 100 }, () => false)
   );
   const [shouldShowSteps, setShouldShowSteps] = React.useState(false);
+  const [numTrialsExponent, setNumTrialsExponent] = React.useState(5);
+  const [windowSizeExponent, setWindowSizeExponent] = React.useState(1);
 
   const generateExperiment = (): Experiment => {
     let isRunningBit: boolean;
@@ -46,7 +48,7 @@ const Poisson: NextPage = () => {
 
         for (
           let i = 0, mostRecentTrueIndex = 0;
-          isRunningBit && i < 1000000;
+          isRunningBit && i < 10 ** numTrialsExponent;
           ++i
         ) {
           const didEventHappen = Math.random() < probabilityOfEvent;
@@ -56,7 +58,7 @@ const Poisson: NextPage = () => {
             mostRecentTrueIndex = i;
           }
           samples = samples.slice(1).concat(didEventHappen);
-          if (shouldShowSteps && i % 1 === 0) {
+          if (shouldShowSteps && i % 10 ** windowSizeExponent === 0) {
             setCountByGapSizeState(countByGapSize);
             setSamplesState(samples);
             await sleep(0);
@@ -134,6 +136,50 @@ const Poisson: NextPage = () => {
               <Grid item>
                 <Typography gutterBottom id="input-slider">
                   {probabilityOfEvent.toFixed(2)}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Box>
+          <Box>
+            <Typography gutterBottom id="input-slider">
+              Num Trials
+            </Typography>
+            <Grid alignItems="center" container spacing={2}>
+              <Grid item xs>
+                <Slider
+                  max={10}
+                  min={0}
+                  onChange={(_event, newValue) =>
+                    setNumTrialsExponent(newValue as number)
+                  }
+                  value={numTrialsExponent}
+                />
+              </Grid>
+              <Grid item>
+                <Typography gutterBottom id="input-slider">
+                  {10 ** numTrialsExponent}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Box>
+          <Box>
+            <Typography gutterBottom id="input-slider">
+              Window size
+            </Typography>
+            <Grid alignItems="center" container spacing={2}>
+              <Grid item xs>
+                <Slider
+                  max={10}
+                  min={0}
+                  onChange={(_event, newValue) =>
+                    setWindowSizeExponent(newValue as number)
+                  }
+                  value={windowSizeExponent}
+                />
+              </Grid>
+              <Grid item>
+                <Typography gutterBottom id="input-slider">
+                  {10 ** windowSizeExponent}
                 </Typography>
               </Grid>
             </Grid>
