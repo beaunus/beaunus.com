@@ -263,7 +263,7 @@ export const JobsSection = () => (
         image={
           <Image
             alt={title}
-            className={`min-w-[200px] max-h-[200px] ${
+            className={` min-w-[200px] ${
               logoImage.isRounded ? "rounded-3xl" : ""
             }`}
             height={logoImage.height ?? 200}
