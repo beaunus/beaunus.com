@@ -63,7 +63,7 @@ const Poisson: NextPage = () => {
   const [samplesState, setSamplesState] = React.useState(
     Array.from({ length: 100 }, () => false)
   );
-  const [shouldShowSteps, setShouldShowSteps] = React.useState(false);
+  const [shouldShowSteps, setShouldShowSteps] = React.useState(true);
   const [numTrialsExponent, setNumTrialsExponent] = React.useState(5);
   const [percentProgress, setPercentProgress] = React.useState(0);
   const [windowSizeExponent, setWindowSizeExponent] = React.useState(1);
@@ -227,6 +227,7 @@ const Poisson: NextPage = () => {
           <FormControlLabel
             control={
               <Switch
+                defaultChecked={shouldShowSteps}
                 onChange={(_event, newValue) => setShouldShowSteps(newValue)}
               />
             }
