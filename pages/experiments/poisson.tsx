@@ -131,8 +131,8 @@ const Poisson: NextPage = () => {
           </Button>
 
           <div className="w-full">
-            <canvas ref={samplesChartRef}></canvas>
-            <canvas ref={barChartRef}></canvas>
+            <canvas className="max-h-10" ref={samplesChartRef}></canvas>
+            <canvas className="max-h-96" ref={barChartRef}></canvas>
           </div>
         </div>
       </div>
