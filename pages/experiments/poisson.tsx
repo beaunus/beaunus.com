@@ -15,20 +15,22 @@ const Poisson: NextPage = () => {
   const [i, setI] = React.useState(1);
   const [mostRecentTrueIndex, setMostRecentTrueIndex] = React.useState(0);
 
+  function performTrial() {
+    setI((old) => old + 1);
+    const didEventHappen = Math.random() < 0.05;
+    if (didEventHappen) {
+      const thisGap = i - mostRecentTrueIndex;
+      setMostRecentTrueIndex(i);
+      setCountByGapSize((old) => ({
+        ...old,
+        [thisGap]: (old[thisGap] ?? 0) + 1,
+      }));
+    }
+    setSamples((old) => old.slice(1).concat(didEventHappen));
+  }
+
   React.useEffect(() => {
-    const interval = setInterval(() => {
-      setI((old) => old + 1);
-      const didEventHappen = Math.random() < 0.05;
-      if (didEventHappen) {
-        const thisGap = i - mostRecentTrueIndex;
-        setMostRecentTrueIndex(i);
-        setCountByGapSize((old) => ({
-          ...old,
-          [thisGap]: (old[thisGap] ?? 0) + 1,
-        }));
-      }
-      setSamples((old) => old.slice(1).concat(didEventHappen));
-    }, 1);
+    const interval = setInterval(performTrial, 1);
 
     return () => clearInterval(interval);
   });
