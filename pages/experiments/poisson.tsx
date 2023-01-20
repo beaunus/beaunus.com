@@ -17,7 +17,7 @@ const Poisson: NextPage = () => {
   );
 
   function performTrial() {
-    const didEventHappen = Math.random() < 0.05;
+    const didEventHappen = Math.random() < 0.2;
     if (numExperiments > 0 && didEventHappen) {
       const thisGap = numExperiments - mostRecentTrueIndex;
       setCountByGapSize((old) => ({
