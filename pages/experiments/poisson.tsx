@@ -10,23 +10,23 @@ const Poisson: NextPage = () => {
   const [countByGapSize, setCountByGapSize] = React.useState<
     Record<number, number>
   >({});
-  const [i, setI] = React.useState(1);
+  const [numExperiments, setNumExperiments] = React.useState(0);
   const [mostRecentTrueIndex, setMostRecentTrueIndex] = React.useState(0);
   const [samples, setSamples] = React.useState(
     Array.from({ length: 100 }, () => false)
   );
 
   function performTrial() {
-    setI((old) => old + 1);
     const didEventHappen = Math.random() < 0.05;
-    if (didEventHappen) {
-      const thisGap = i - mostRecentTrueIndex;
+    if (numExperiments > 0 && didEventHappen) {
+      const thisGap = numExperiments - mostRecentTrueIndex;
       setCountByGapSize((old) => ({
         ...old,
         [thisGap]: (old[thisGap] ?? 0) + 1,
       }));
-      setMostRecentTrueIndex(i);
+      setMostRecentTrueIndex(numExperiments);
     }
+    setNumExperiments((old) => old + 1);
     setSamples((old) => old.slice(1).concat(didEventHappen));
   }
 
