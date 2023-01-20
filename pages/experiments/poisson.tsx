@@ -236,6 +236,11 @@ const Poisson: NextPage = () => {
           <CircularProgressWithLabel
             value={100 * (numPositivesState / numTrialsSoFar)}
           />
+          <CircularProgressWithLabel
+            value={
+              100 * (samplesState.filter(Boolean).length / samplesState.length)
+            }
+          />
           <Button
             onClick={() => {
               currentExperiment?.pause();
