@@ -12,6 +12,12 @@ import React from "react";
 
 import { sleep } from "../../utils/index";
 
+type Experiment = {
+  isRunning: () => boolean;
+  pause: VoidFunction;
+  performExperiment: VoidFunction;
+};
+
 const Poisson: NextPage = () => {
   const samplesChartRef = React.useRef<HTMLCanvasElement>(null);
   const barChartRef = React.useRef<HTMLCanvasElement>(null);
@@ -19,33 +25,48 @@ const Poisson: NextPage = () => {
   const [countByGapSizeState, setCountByGapSizeState] = React.useState<
     Record<number, number>
   >({});
+  const [currentExperiment, setCurrentExperiment] =
+    React.useState<Experiment>();
   const [probabilityOfEvent, setProbabilityOfEvent] = React.useState(0.5);
   const [samplesState, setSamplesState] = React.useState(
     Array.from({ length: 100 }, () => false)
   );
   const [shouldShowSteps, setShouldShowSteps] = React.useState(false);
 
-  async function performTrial() {
+  const generateExperiment = (): Experiment => {
+    let isRunningBit: boolean;
     const countByGapSize: Record<number, number> = {};
-    let mostRecentTrueIndex = 0;
     let samples = Array.from({ length: 100 }, () => false);
-    for (let i = 0; i < 1000000; ++i) {
-      const didEventHappen = Math.random() < probabilityOfEvent;
-      if (i > 0 && didEventHappen) {
-        const thisGap = i - mostRecentTrueIndex;
-        countByGapSize[thisGap] = (countByGapSize[thisGap] ?? 0) + 1;
-        mostRecentTrueIndex = i;
-      }
-      samples = samples.slice(1).concat(didEventHappen);
-      if (shouldShowSteps && i % 1 === 0) {
+
+    return {
+      isRunning: () => isRunningBit,
+      pause: () => (isRunningBit = false),
+      performExperiment: async () => {
+        isRunningBit = true;
+
+        for (
+          let i = 0, mostRecentTrueIndex = 0;
+          isRunningBit && i < 1000000;
+          ++i
+        ) {
+          const didEventHappen = Math.random() < probabilityOfEvent;
+          if (i > 0 && didEventHappen) {
+            const thisGap = i - mostRecentTrueIndex;
+            countByGapSize[thisGap] = (countByGapSize[thisGap] ?? 0) + 1;
+            mostRecentTrueIndex = i;
+          }
+          samples = samples.slice(1).concat(didEventHappen);
+          if (shouldShowSteps && i % 1 === 0) {
+            setCountByGapSizeState(countByGapSize);
+            setSamplesState(samples);
+            await sleep(0);
+          }
+        }
         setCountByGapSizeState(countByGapSize);
         setSamplesState(samples);
-        await sleep(0);
-      }
-    }
-    setCountByGapSizeState(countByGapSize);
-    setSamplesState(samples);
-  }
+      },
+    };
+  };
 
   React.useEffect(() => {
     if (samplesChartRef.current && barChartRef.current) {
@@ -126,8 +147,26 @@ const Poisson: NextPage = () => {
             }
             label="Show steps"
           />
-          <Button onClick={performTrial} variant="outlined">
+          <Button
+            onClick={() => {
+              currentExperiment?.pause();
+              const a = generateExperiment();
+              setCurrentExperiment(a);
+              a.performExperiment();
+            }}
+            variant="outlined"
+          >
             Start
+          </Button>
+          <Button
+            onClick={() => {
+              currentExperiment?.isRunning()
+                ? currentExperiment?.pause()
+                : currentExperiment?.performExperiment();
+            }}
+            variant="outlined"
+          >
+            Toggle
           </Button>
 
           <div className="w-full">
