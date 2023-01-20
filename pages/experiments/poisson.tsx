@@ -118,11 +118,10 @@ const Poisson: NextPage = () => {
           <p>Poisson</p>
 
           <Box>
-            <Typography gutterBottom id="input-slider">
-              Probability of event
-            </Typography>
             <Grid alignItems="center" container spacing={2}>
-              <Grid item>%</Grid>
+              <Grid item>
+                <Typography gutterBottom>Probability of event</Typography>
+              </Grid>
               <Grid item xs>
                 <Slider
                   max={100}
@@ -134,17 +133,17 @@ const Poisson: NextPage = () => {
                 />
               </Grid>
               <Grid item>
-                <Typography gutterBottom id="input-slider">
+                <Typography gutterBottom>
                   {probabilityOfEvent.toFixed(2)}
                 </Typography>
               </Grid>
             </Grid>
           </Box>
           <Box>
-            <Typography gutterBottom id="input-slider">
-              Num Trials
-            </Typography>
             <Grid alignItems="center" container spacing={2}>
+              <Grid item>
+                <Typography gutterBottom>Num Trials</Typography>
+              </Grid>
               <Grid item xs>
                 <Slider
                   max={10}
@@ -156,17 +155,15 @@ const Poisson: NextPage = () => {
                 />
               </Grid>
               <Grid item>
-                <Typography gutterBottom id="input-slider">
-                  {10 ** numTrialsExponent}
-                </Typography>
+                <Typography gutterBottom>{10 ** numTrialsExponent}</Typography>
               </Grid>
             </Grid>
           </Box>
           <Box>
-            <Typography gutterBottom id="input-slider">
-              Window size
-            </Typography>
             <Grid alignItems="center" container spacing={2}>
+              <Grid item>
+                <Typography gutterBottom>Window size</Typography>
+              </Grid>
               <Grid item xs>
                 <Slider
                   max={10}
@@ -178,9 +175,7 @@ const Poisson: NextPage = () => {
                 />
               </Grid>
               <Grid item>
-                <Typography gutterBottom id="input-slider">
-                  {10 ** windowSizeExponent}
-                </Typography>
+                <Typography gutterBottom>{10 ** windowSizeExponent}</Typography>
               </Grid>
             </Grid>
           </Box>
