@@ -6,25 +6,26 @@ import React from "react";
 const Poisson: NextPage = () => {
   const samplesChartRef = React.useRef<HTMLCanvasElement>(null);
   const barChartRef = React.useRef<HTMLCanvasElement>(null);
-  const [samples, setSamples] = React.useState(
-    Array.from({ length: 100 }, () => false)
-  );
+
   const [countByGapSize, setCountByGapSize] = React.useState<
     Record<number, number>
   >({});
   const [i, setI] = React.useState(1);
   const [mostRecentTrueIndex, setMostRecentTrueIndex] = React.useState(0);
+  const [samples, setSamples] = React.useState(
+    Array.from({ length: 100 }, () => false)
+  );
 
   function performTrial() {
     setI((old) => old + 1);
     const didEventHappen = Math.random() < 0.05;
     if (didEventHappen) {
       const thisGap = i - mostRecentTrueIndex;
-      setMostRecentTrueIndex(i);
       setCountByGapSize((old) => ({
         ...old,
         [thisGap]: (old[thisGap] ?? 0) + 1,
       }));
+      setMostRecentTrueIndex(i);
     }
     setSamples((old) => old.slice(1).concat(didEventHappen));
   }
