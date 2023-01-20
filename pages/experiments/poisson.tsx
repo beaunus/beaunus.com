@@ -1,7 +1,11 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import CircularProgress, {
+  CircularProgressProps,
+} from "@mui/material/CircularProgress";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
+import LinearProgress from "@mui/material/LinearProgress";
 import Slider from "@mui/material/Slider";
 import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
@@ -18,6 +22,34 @@ type Experiment = {
   performExperiment: VoidFunction;
 };
 
+function CircularProgressWithLabel(
+  props: CircularProgressProps & { value: number }
+) {
+  return (
+    <Box sx={{ position: "relative", display: "inline-flex" }}>
+      <CircularProgress variant="determinate" {...props} />
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          position: "absolute",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography
+          color="text.secondary"
+          component="div"
+          variant="caption"
+        >{`${props.value.toFixed(2)}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
+
 const Poisson: NextPage = () => {
   const samplesChartRef = React.useRef<HTMLCanvasElement>(null);
   const barChartRef = React.useRef<HTMLCanvasElement>(null);
@@ -33,12 +65,21 @@ const Poisson: NextPage = () => {
   );
   const [shouldShowSteps, setShouldShowSteps] = React.useState(false);
   const [numTrialsExponent, setNumTrialsExponent] = React.useState(5);
+  const [percentProgress, setPercentProgress] = React.useState(0);
   const [windowSizeExponent, setWindowSizeExponent] = React.useState(1);
+  const [numTrialsSoFar, setNumTrialsSoFar] = React.useState(0);
+  const [numPositivesState, setNumPositives] = React.useState(0);
 
   const generateExperiment = (): Experiment => {
     let isRunningBit: boolean;
     const countByGapSize: Record<number, number> = {};
     let samples = Array.from({ length: 100 }, () => false);
+    let i = 0,
+      mostRecentTrueIndex = 0;
+    let numPositives = 0;
+    setNumTrialsSoFar(0);
+    setNumPositives(0);
+    setPercentProgress(0);
 
     return {
       isRunning: () => isRunningBit,
@@ -46,26 +87,29 @@ const Poisson: NextPage = () => {
       performExperiment: async () => {
         isRunningBit = true;
 
-        for (
-          let i = 0, mostRecentTrueIndex = 0;
-          isRunningBit && i < 10 ** numTrialsExponent;
-          ++i
-        ) {
+        for (; isRunningBit && i < 10 ** numTrialsExponent; ++i) {
           const didEventHappen = Math.random() < probabilityOfEvent;
           if (i > 0 && didEventHappen) {
             const thisGap = i - mostRecentTrueIndex;
             countByGapSize[thisGap] = (countByGapSize[thisGap] ?? 0) + 1;
             mostRecentTrueIndex = i;
+            ++numPositives;
           }
           samples = samples.slice(1).concat(didEventHappen);
           if (shouldShowSteps && i % 10 ** windowSizeExponent === 0) {
             setCountByGapSizeState(countByGapSize);
             setSamplesState(samples);
+            setPercentProgress(100 * (i / 10 ** numTrialsExponent));
+            setNumTrialsSoFar(i);
+            setNumPositives(numPositives);
             await sleep(0);
           }
         }
-        setCountByGapSizeState(countByGapSize);
-        setSamplesState(samples);
+        if (i === 10 ** numTrialsExponent) {
+          setCountByGapSizeState(countByGapSize);
+          setSamplesState(samples);
+          setPercentProgress(100);
+        }
       },
     };
   };
@@ -188,6 +232,9 @@ const Poisson: NextPage = () => {
             }
             label="Show steps"
           />
+          <CircularProgressWithLabel
+            value={100 * (numPositivesState / numTrialsSoFar)}
+          />
           <Button
             onClick={() => {
               currentExperiment?.pause();
@@ -211,6 +258,7 @@ const Poisson: NextPage = () => {
           </Button>
 
           <div className="w-full">
+            <LinearProgress value={percentProgress} variant="determinate" />
             <canvas className="max-h-10" ref={samplesChartRef}></canvas>
             <canvas className="max-h-96" ref={barChartRef}></canvas>
           </div>
