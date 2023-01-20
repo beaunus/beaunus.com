@@ -1,48 +1,58 @@
-import Chart from "chart.js/auto";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Slider from "@mui/material/Slider";
+import Switch from "@mui/material/Switch";
+import Typography from "@mui/material/Typography";
+import ChartJS from "chart.js/auto";
 import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
+
+import { sleep } from "../../utils/index";
 
 const Poisson: NextPage = () => {
   const samplesChartRef = React.useRef<HTMLCanvasElement>(null);
   const barChartRef = React.useRef<HTMLCanvasElement>(null);
 
-  const [countByGapSize, setCountByGapSize] = React.useState<
+  const [countByGapSizeState, setCountByGapSizeState] = React.useState<
     Record<number, number>
   >({});
-  const [numExperiments, setNumExperiments] = React.useState(0);
-  const [mostRecentTrueIndex, setMostRecentTrueIndex] = React.useState(0);
-  const [probabilityOfEvent] = React.useState(0.3);
-  const [samples, setSamples] = React.useState(
+  const [probabilityOfEvent, setProbabilityOfEvent] = React.useState(0.01);
+  const [samplesState, setSamplesState] = React.useState(
     Array.from({ length: 100 }, () => false)
   );
+  const [shouldShowSteps, setShouldShowSteps] = React.useState(false);
 
-  function performTrial() {
-    const didEventHappen = Math.random() < probabilityOfEvent;
-    if (numExperiments > 0 && didEventHappen) {
-      const thisGap = numExperiments - mostRecentTrueIndex;
-      setCountByGapSize((old) => ({
-        ...old,
-        [thisGap]: (old[thisGap] ?? 0) + 1,
-      }));
-      setMostRecentTrueIndex(numExperiments);
+  async function performTrial() {
+    const countByGapSize: Record<number, number> = {};
+    let mostRecentTrueIndex = 0;
+    let samples = Array.from({ length: 100 }, () => false);
+    for (let i = 0; i < 1000000; ++i) {
+      const didEventHappen = Math.random() < probabilityOfEvent;
+      if (i > 0 && didEventHappen) {
+        const thisGap = i - mostRecentTrueIndex;
+        countByGapSize[thisGap] = (countByGapSize[thisGap] ?? 0) + 1;
+        mostRecentTrueIndex = i;
+      }
+      samples = samples.slice(1).concat(didEventHappen);
+      if (shouldShowSteps && i % 1 === 0) {
+        setCountByGapSizeState(countByGapSize);
+        setSamplesState(samples);
+        await sleep(0);
+      }
     }
-    setNumExperiments((old) => old + 1);
-    setSamples((old) => old.slice(1).concat(didEventHappen));
+    setCountByGapSizeState(countByGapSize);
+    setSamplesState(samples);
   }
 
   React.useEffect(() => {
-    const interval = setInterval(performTrial, 1);
-
-    return () => clearInterval(interval);
-  });
-
-  React.useEffect(() => {
     if (samplesChartRef.current && barChartRef.current) {
-      const samplesChart = new Chart(samplesChartRef.current, {
+      const samplesChart = new ChartJS(samplesChartRef.current, {
         data: {
-          datasets: [{ data: samples.map(Number) }],
-          labels: samples.map(() => ""),
+          datasets: [{ data: samplesState.map(Number) }],
+          labels: samplesState.map(() => ""),
         },
         options: {
           animation: { duration: 0 },
@@ -52,10 +62,10 @@ const Poisson: NextPage = () => {
         type: "bar",
       });
 
-      const barChart = new Chart(barChartRef.current, {
+      const barChart = new ChartJS(barChartRef.current, {
         data: {
-          datasets: [{ data: Object.values(countByGapSize) }],
-          labels: Object.keys(countByGapSize),
+          datasets: [{ data: Object.values(countByGapSizeState) }],
+          labels: Object.keys(countByGapSizeState),
         },
         options: {
           animation: { duration: 0 },
@@ -73,7 +83,7 @@ const Poisson: NextPage = () => {
         barChart.destroy();
       };
     }
-  }, [samples]);
+  }, [samplesState]);
 
   return (
     <>
@@ -84,7 +94,41 @@ const Poisson: NextPage = () => {
         <div className="flex flex-col gap-5 px-3">
           <p>Poisson</p>
 
-          <p>Probability of event: {probabilityOfEvent}</p>
+          <Box>
+            <Typography gutterBottom id="input-slider">
+              Probability of event
+            </Typography>
+            <Grid alignItems="center" container spacing={2}>
+              <Grid item>%</Grid>
+              <Grid item xs>
+                <Slider
+                  max={100}
+                  min={0}
+                  onChange={(_event, newValue) =>
+                    setProbabilityOfEvent((newValue as number) / 100)
+                  }
+                  value={probabilityOfEvent * 100}
+                />
+              </Grid>
+              <Grid item>
+                <Typography gutterBottom id="input-slider">
+                  {probabilityOfEvent.toFixed(2)}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Box>
+
+          <FormControlLabel
+            control={
+              <Switch
+                onChange={(_event, newValue) => setShouldShowSteps(newValue)}
+              />
+            }
+            label="Show steps"
+          />
+          <Button onClick={performTrial} variant="outlined">
+            Start
+          </Button>
 
           <div className="w-full">
             <canvas ref={samplesChartRef}></canvas>
