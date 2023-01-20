@@ -12,12 +12,13 @@ const Poisson: NextPage = () => {
   >({});
   const [numExperiments, setNumExperiments] = React.useState(0);
   const [mostRecentTrueIndex, setMostRecentTrueIndex] = React.useState(0);
+  const [probabilityOfEvent] = React.useState(0.3);
   const [samples, setSamples] = React.useState(
     Array.from({ length: 100 }, () => false)
   );
 
   function performTrial() {
-    const didEventHappen = Math.random() < 0.2;
+    const didEventHappen = Math.random() < probabilityOfEvent;
     if (numExperiments > 0 && didEventHappen) {
       const thisGap = numExperiments - mostRecentTrueIndex;
       setCountByGapSize((old) => ({
@@ -58,7 +59,10 @@ const Poisson: NextPage = () => {
         },
         options: {
           animation: { duration: 0 },
-          plugins: { legend: { display: false } },
+          plugins: {
+            legend: { display: false },
+            title: { display: true, text: "Gap between positive results" },
+          },
           scales: { y: { title: { display: true } } },
         },
         type: "bar",
@@ -77,10 +81,15 @@ const Poisson: NextPage = () => {
         <title>Poisson | Beaunus</title>
       </Head>
       <div className="flex flex-col grow gap-2 text-center">
-        <div className="flex flex-col gap-5 px-3">Poisson</div>
-        <div className="w-full">
-          <canvas ref={samplesChartRef}></canvas>
-          <canvas ref={barChartRef}></canvas>
+        <div className="flex flex-col gap-5 px-3">
+          <p>Poisson</p>
+
+          <p>Probability of event: {probabilityOfEvent}</p>
+
+          <div className="w-full">
+            <canvas ref={samplesChartRef}></canvas>
+            <canvas ref={barChartRef}></canvas>
+          </div>
         </div>
       </div>
     </>
