@@ -19,7 +19,7 @@ const Poisson: NextPage = () => {
   const [countByGapSizeState, setCountByGapSizeState] = React.useState<
     Record<number, number>
   >({});
-  const [probabilityOfEvent, setProbabilityOfEvent] = React.useState(0.01);
+  const [probabilityOfEvent, setProbabilityOfEvent] = React.useState(0.5);
   const [samplesState, setSamplesState] = React.useState(
     Array.from({ length: 100 }, () => false)
   );
