@@ -166,54 +166,28 @@ const Poisson: NextPage = () => {
               }
               sliderValue={probabilityOfEvent * 100}
             />
-            <Box>
-              <Grid alignItems="center" container spacing={2}>
-                <Grid item xs>
-                  <Typography gutterBottom>
-                    <Tooltip title="How many individual events do you want to do?">
-                      <span>Num Trials</span>
-                    </Tooltip>
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography gutterBottom>
-                    {(10 ** numTrialsExponent).toLocaleString()}
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Slider
-                max={10}
-                min={0}
-                onChange={(_event, newValue) =>
-                  setNumTrialsExponent(newValue as number)
-                }
-                value={numTrialsExponent}
-              />
-            </Box>
-            <Box>
-              <Grid alignItems="center" container spacing={2}>
-                <Grid item xs>
-                  <Typography gutterBottom>
-                    <Tooltip title="After how many individual events do you want to 'peek' at the results so far?">
-                      <span>Window size</span>
-                    </Tooltip>
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography gutterBottom>
-                    {(10 ** windowSizeExponent).toLocaleString()}
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Slider
-                max={10}
-                min={0}
-                onChange={(_event, newValue) =>
-                  setWindowSizeExponent(newValue as number)
-                }
-                value={windowSizeExponent}
-              />
-            </Box>
+            <SliderWithLabels
+              caption="How many individual events do you want to do?"
+              displayValue={(10 ** numTrialsExponent).toLocaleString()}
+              label="Number of Trials"
+              sliderMax={10}
+              sliderMin={0}
+              sliderOnChange={(_event, newValue) =>
+                setNumTrialsExponent(newValue as number)
+              }
+              sliderValue={numTrialsExponent}
+            />
+            <SliderWithLabels
+              caption="After how many individual events do you want to 'peek' at the results so far?"
+              displayValue={(10 ** windowSizeExponent).toLocaleString()}
+              label="Window size"
+              sliderMax={10}
+              sliderMin={0}
+              sliderOnChange={(_event, newValue) =>
+                setWindowSizeExponent(newValue as number)
+              }
+              sliderValue={windowSizeExponent}
+            />
             <Grid container spacing={2} width="100%">
               <Grid item>
                 <Button
