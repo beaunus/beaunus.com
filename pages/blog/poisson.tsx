@@ -167,7 +167,7 @@ const Poisson: NextPage = () => {
             <SliderWithLabels
               displayValue={(10 ** numTrialsExponent).toLocaleString()}
               label="Number of Trials"
-              sliderMax={10}
+              sliderMax={6}
               sliderMin={0}
               sliderOnChange={(_event, newValue) =>
                 setNumTrialsExponent(newValue as number)
@@ -177,7 +177,7 @@ const Poisson: NextPage = () => {
             <SliderWithLabels
               displayValue={(10 ** windowSizeExponent).toLocaleString()}
               label="Number of experiments between snapshots"
-              sliderMax={10}
+              sliderMax={6}
               sliderMin={0}
               sliderOnChange={(_event, newValue) =>
                 setWindowSizeExponent(newValue as number)
