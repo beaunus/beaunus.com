@@ -1,3 +1,4 @@
+import { List, ListItem } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -137,7 +138,7 @@ const Poisson: NextPage = () => {
             </p>
             <ul className="list-disc list-inside">
               I thought that this would be a good opportunity for me to:
-              <li>Run an experiment to see how it looks, and</li>
+              <li>Run an experiment to see how it looks</li>
               <li>
                 Integrate{" "}
                 <HighlightedLink href="https://www.chartjs.org">
@@ -146,6 +147,25 @@ const Poisson: NextPage = () => {
                 into my blog
               </li>
             </ul>
+            <ul className="list-disc list-inside">
+              Here&apos;s what I wanted to learn:
+              <li>
+                When random events happen, do they really appear in clusters?
+              </li>
+              <li>
+                After many trials, what is the distribution of <i>gaps</i>{" "}
+                between events?
+              </li>
+            </ul>
+            <p>
+              You can just click START below to see what happens when there are
+              100 trials. If you increase the <b>Number of trials</b> slider,
+              the experiment will do more trials, which will eventually lead to
+              more &apos;accurate&apos; results. If you increase the{" "}
+              <b>Number of experiments between snapshots</b> slider, you can{" "}
+              <i>proceed</i> through the experiment faster, without waiting for
+              each individual trial, one by one.
+            </p>
             <p>
               The code itself can be found{" "}
               <HighlightedLink href="https://github.com/beaunus/beaunus.com/search?q=poisson+performExperiment">
@@ -165,7 +185,7 @@ const Poisson: NextPage = () => {
             />
             <SliderWithLabels
               displayValue={(10 ** numTrialsExponent).toLocaleString()}
-              label="Number of Trials"
+              label="Number of trials"
               sliderMax={6}
               sliderMin={0}
               sliderOnChange={(_event, newValue) =>
