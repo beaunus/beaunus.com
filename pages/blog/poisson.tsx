@@ -1,8 +1,5 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import CircularProgress, {
-  CircularProgressProps,
-} from "@mui/material/CircularProgress";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -160,46 +157,36 @@ const Poisson: NextPage = () => {
 
             <Box>
               <Grid alignItems="center" container spacing={2}>
-                <Grid item>
-                  <Tooltip title="How likely is the event?">
-                    <Typography gutterBottom>Probability of event</Typography>
-                  </Tooltip>
-                </Grid>
                 <Grid item xs>
-                  <Slider
-                    max={100}
-                    min={0}
-                    onChange={(_event, newValue) =>
-                      setProbabilityOfEvent((newValue as number) / 100)
-                    }
-                    value={probabilityOfEvent * 100}
-                  />
+                  <Typography gutterBottom>
+                    <Tooltip title="How likely is the event?">
+                      <span>Probability of event</span>
+                    </Tooltip>
+                  </Typography>
                 </Grid>
                 <Grid item>
                   <Typography gutterBottom>
-                    {(Math.round(probabilityOfEvent * 100) / 100)
-                      .toLocaleString()
-                      .padEnd(4, "0")}
+                    {probabilityOfEvent.toFixed(2)}
                   </Typography>
                 </Grid>
               </Grid>
+              <Slider
+                max={100}
+                min={0}
+                onChange={(_event, newValue) =>
+                  setProbabilityOfEvent((newValue as number) / 100)
+                }
+                value={probabilityOfEvent * 100}
+              />
             </Box>
             <Box>
               <Grid alignItems="center" container spacing={2}>
-                <Grid item>
-                  <Tooltip title="How many individual events do you want to do?">
-                    <Typography gutterBottom>Num Trials</Typography>
-                  </Tooltip>
-                </Grid>
                 <Grid item xs>
-                  <Slider
-                    max={10}
-                    min={0}
-                    onChange={(_event, newValue) =>
-                      setNumTrialsExponent(newValue as number)
-                    }
-                    value={numTrialsExponent}
-                  />
+                  <Typography gutterBottom>
+                    <Tooltip title="How many individual events do you want to do?">
+                      <span>Num Trials</span>
+                    </Tooltip>
+                  </Typography>
                 </Grid>
                 <Grid item>
                   <Typography gutterBottom>
@@ -207,23 +194,23 @@ const Poisson: NextPage = () => {
                   </Typography>
                 </Grid>
               </Grid>
+              <Slider
+                max={10}
+                min={0}
+                onChange={(_event, newValue) =>
+                  setNumTrialsExponent(newValue as number)
+                }
+                value={numTrialsExponent}
+              />
             </Box>
             <Box>
               <Grid alignItems="center" container spacing={2}>
-                <Grid item>
-                  <Tooltip title="After how many individual events do you want to 'peek' at the results so far?">
-                    <Typography gutterBottom>Window size</Typography>
-                  </Tooltip>
-                </Grid>
                 <Grid item xs>
-                  <Slider
-                    max={10}
-                    min={0}
-                    onChange={(_event, newValue) =>
-                      setWindowSizeExponent(newValue as number)
-                    }
-                    value={windowSizeExponent}
-                  />
+                  <Typography gutterBottom>
+                    <Tooltip title="After how many individual events do you want to 'peek' at the results so far?">
+                      <span>Window size</span>
+                    </Tooltip>
+                  </Typography>
                 </Grid>
                 <Grid item>
                   <Typography gutterBottom>
@@ -231,49 +218,68 @@ const Poisson: NextPage = () => {
                   </Typography>
                 </Grid>
               </Grid>
-            </Box>
-            <Tooltip title="Do you want to 'peek' at the results throughout the experiment?">
-              <FormControlLabel
-                control={
-                  <Switch
-                    defaultChecked={shouldShowSteps}
-                    onChange={(_event, newValue) =>
-                      setShouldShowSteps(newValue)
-                    }
-                  />
+              <Slider
+                max={10}
+                min={0}
+                onChange={(_event, newValue) =>
+                  setWindowSizeExponent(newValue as number)
                 }
-                label="Show steps"
+                value={windowSizeExponent}
               />
-            </Tooltip>
-            <Tooltip title="Start a new experiment with the above configuration">
-              <Button
-                onClick={() => {
-                  currentExperiment?.pause();
-                  const a = generateExperiment();
-                  setCurrentExperiment(a);
-                  a.performExperiment();
-                }}
-                variant="outlined"
-              >
-                Start
-              </Button>
-            </Tooltip>
-            <Tooltip title="Pause or resume the currently running experiment">
-              <Button
-                onClick={() => {
-                  currentExperiment?.isRunning()
-                    ? currentExperiment?.pause()
-                    : currentExperiment?.performExperiment();
-                }}
-                variant="outlined"
-              >
-                Toggle
-              </Button>
-            </Tooltip>
+            </Box>
+            <Grid container spacing={2} width="100%">
+              <Grid item>
+                <Button
+                  onClick={() => {
+                    currentExperiment?.pause();
+                    const a = generateExperiment();
+                    setCurrentExperiment(a);
+                    a.performExperiment();
+                  }}
+                  variant="outlined"
+                >
+                  <Tooltip title="Start a new experiment with the above configuration">
+                    <span>Start</span>
+                  </Tooltip>
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  onClick={() => {
+                    currentExperiment?.isRunning()
+                      ? currentExperiment?.pause()
+                      : currentExperiment?.performExperiment();
+                  }}
+                  variant="outlined"
+                >
+                  <Tooltip title="Pause or resume the currently running experiment">
+                    <span>Toggle</span>
+                  </Tooltip>
+                </Button>
+              </Grid>
+              <Grid item>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      defaultChecked={shouldShowSteps}
+                      onChange={(_event, newValue) =>
+                        setShouldShowSteps(newValue)
+                      }
+                    />
+                  }
+                  label={
+                    <Tooltip title="Do you want to 'peek' at the results throughout the experiment?">
+                      <span>Show steps</span>
+                    </Tooltip>
+                  }
+                />
+              </Grid>
+            </Grid>
             <div className="w-full">
-              <Tooltip title="How far along is the whole experiment?">
+              <Box>
+                <Typography gutterBottom>Progress</Typography>
                 <LinearProgress value={percentProgress} variant="determinate" />
-              </Tooltip>
+              </Box>
               <canvas className="max-h-10" ref={samplesChartRef}></canvas>
               <canvas className="max-h-96" ref={barChartRef}></canvas>
             </div>
