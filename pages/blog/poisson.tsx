@@ -1,10 +1,7 @@
-import { List, ListItem } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import LinearProgress from "@mui/material/LinearProgress";
-import Switch from "@mui/material/Switch";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import ChartJS from "chart.js/auto";
