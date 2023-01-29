@@ -88,7 +88,10 @@ const Poisson: NextPage = () => {
         options: {
           animation: { duration: 0 },
           plugins: { legend: { display: false } },
-          scales: { y: { title: { display: true } } },
+          scales: {
+            x: { display: false },
+            y: { title: { display: true } },
+          },
         },
         type: "bar",
       });
