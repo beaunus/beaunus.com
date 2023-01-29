@@ -15,13 +15,13 @@ const BlogIndex: NextPage = () => (
         Blog
       </div>
       <Segment>
-        <div className="flex gap-5 items-center">
+        <div className="flex flex-wrap gap-5 items-center">
           <div className="text-xl font-semibold text-purple-800 whitespace-nowrap">
             <HighlightedLink href="/blog/poisson">
               Poisson Process
             </HighlightedLink>
           </div>
-          <div className="">
+          <div>
             &quot;The thing about a Poisson process (a purely random process) is
             that events seem to cluster.&quot; -- Steven Pinker
           </div>
