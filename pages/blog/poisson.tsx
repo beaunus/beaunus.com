@@ -188,9 +188,23 @@ const Poisson: NextPage = () => {
               }
               sliderValue={windowSizeExponent}
             />
+            <FormControlLabel
+              control={
+                <Switch
+                  defaultChecked={shouldShowSteps}
+                  onChange={(_event, newValue) => setShouldShowSteps(newValue)}
+                />
+              }
+              label={
+                <Tooltip title="Do you want to 'peek' at the results throughout the experiment?">
+                  <span>Show steps</span>
+                </Tooltip>
+              }
+            />
             <Grid container spacing={2} width="100%">
-              <Grid item>
+              <Grid item xs={6}>
                 <Button
+                  fullWidth
                   onClick={() => {
                     currentExperiment?.pause();
                     const a = generateExperiment();
@@ -204,8 +218,9 @@ const Poisson: NextPage = () => {
                   </Tooltip>
                 </Button>
               </Grid>
-              <Grid item>
+              <Grid item xs={6}>
                 <Button
+                  fullWidth
                   onClick={() => {
                     currentExperiment?.isRunning()
                       ? currentExperiment?.pause()
@@ -217,23 +232,6 @@ const Poisson: NextPage = () => {
                     <span>Toggle</span>
                   </Tooltip>
                 </Button>
-              </Grid>
-              <Grid item>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      defaultChecked={shouldShowSteps}
-                      onChange={(_event, newValue) =>
-                        setShouldShowSteps(newValue)
-                      }
-                    />
-                  }
-                  label={
-                    <Tooltip title="Do you want to 'peek' at the results throughout the experiment?">
-                      <span>Show steps</span>
-                    </Tooltip>
-                  }
-                />
               </Grid>
             </Grid>
             <Box>
