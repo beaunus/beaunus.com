@@ -237,7 +237,33 @@ const Poisson: NextPage = () => {
             </Box>
             <Box>
               <canvas className="max-h-10" ref={samplesChartRef} />
+              <Typography variant="body2">
+                Each{" "}
+                <span className="bg-blue-200">
+                  blue <i>blip</i>
+                </span>{" "}
+                represents <i>the event happened</i>. Notice:
+              </Typography>
+              <ul className="text-sm list-disc list-inside">
+                <li>
+                  Even with <i>low probability</i> events, the events still
+                  often appear in <i>clusters</i>.
+                </li>
+                <li>
+                  Even with <i>high probability</i> events, the events sometimes
+                  appear <i>far away from each other</i>.
+                </li>
+              </ul>
               <canvas className="max-h-96" ref={barChartRef} />
+              <Typography variant="body2">
+                Each bar represents{" "}
+                <i>
+                  how many times did events happen{" "}
+                  <b>this close to each other</b>?
+                </i>{" "}
+                Notice how (over time) it is obvious that events are most likely
+                to appear close to each other.
+              </Typography>
             </Box>
           </div>
         </Segment>
