@@ -22,8 +22,8 @@ const BlogIndex: NextPage = () => (
             </HighlightedLink>
           </div>
           <div className="">
-            Given that it is raining today, which day is it most likely to rain
-            again?
+            &quot;The thing about a Poisson process (a purely random process) is
+            that events seem to cluster.&quot; -- Steven Pinker
           </div>
         </div>
       </Segment>

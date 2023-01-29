@@ -14,6 +14,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 
+import { HighlightedLink } from "../../components/HighlightedLink";
 import { Segment } from "../../components/Segment";
 import { sleep } from "../../utils/index";
 
@@ -158,10 +159,32 @@ const Poisson: NextPage = () => {
       <Head>
         <title>Poisson | Beaunus</title>
       </Head>
-      <div className="flex flex-col grow gap-2 text-center">
+      <div className="flex flex-col grow gap-2">
         <Segment>
           <div className="flex flex-col gap-5 px-3 w-full">
-            <p>Poisson</p>
+            <div className="text-2xl font-semibold text-center text-cyan-700">
+              Poisson Process
+            </div>
+            <p>
+              I listened to{" "}
+              <HighlightedLink href="https://open.spotify.com/episode/4MrtwjM1PyWwmPIdvYcQph?si=ca26c63b50a84bab&t=787583">
+                this episode of <i>The Life Of The Mind</i> by Steven Pinker
+              </HighlightedLink>{" "}
+              and was struck by the claim that &quot;the thing about a Poisson
+              process (a purely random process) is that events seem to
+              cluster.&quot;
+            </p>
+            <ul className="list-disc list-inside">
+              I thought that this would be a good opportunity for me to:
+              <li>Run an experiment to see how it looks, and</li>
+              <li>
+                Integrate{" "}
+                <HighlightedLink href="https://www.chartjs.org">
+                  Chart.js
+                </HighlightedLink>{" "}
+                into my blog
+              </li>
+            </ul>
 
             <Box>
               <Grid alignItems="center" container spacing={2}>
@@ -231,7 +254,6 @@ const Poisson: NextPage = () => {
                 </Grid>
               </Grid>
             </Box>
-
             <FormControlLabel
               control={
                 <Switch
@@ -271,7 +293,6 @@ const Poisson: NextPage = () => {
             >
               Toggle
             </Button>
-
             <div className="w-full">
               <LinearProgress value={percentProgress} variant="determinate" />
               <canvas className="max-h-10" ref={samplesChartRef}></canvas>
