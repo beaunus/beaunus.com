@@ -166,10 +166,9 @@ const jobs = [
     content: (
       <p>
         I created a way to visualize the game,&nbsp;
-        <HighlightedLink
-          href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon"
-          label="Six Degrees of Kevin Bacon"
-        />
+        <HighlightedLink href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon">
+          Six Degrees of Kevin Bacon
+        </HighlightedLink>
         .
       </p>
     ),
@@ -248,10 +247,9 @@ export const JobsSection = () => (
                 {title}
               </div>
               <div className="text-xl font-semibold text-purple-800">
-                <HighlightedLink
-                  href={url}
-                  label={url.replace(/https?:\/\//, "")}
-                />
+                <HighlightedLink href={url}>
+                  {url.replace(/https?:\/\//, "")}
+                </HighlightedLink>
               </div>
             </div>
             <div className="flex flex-col gap-4">{content}</div>
