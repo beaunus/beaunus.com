@@ -33,6 +33,7 @@ const Poisson: NextPage = () => {
   const [samplesState, setSamplesState] = React.useState(
     Array.from({ length: 100 }, () => false)
   );
+  const [numCompleteTrials, setNumCompleteTrials] = React.useState(0);
   const [numTrialsExponent, setNumTrialsExponent] = React.useState(2);
   const [percentProgress, setPercentProgress] = React.useState(0);
   const [windowSizeExponent, setWindowSizeExponent] = React.useState(0);
@@ -54,13 +55,14 @@ const Poisson: NextPage = () => {
         for (; isRunningBit && i < 10 ** numTrialsExponent; ++i) {
           const didEventHappen = Math.random() < probabilityOfEvent;
           if (i > 0 && didEventHappen) {
-            const thisGap = i - mostRecentTrueIndex;
+            const thisGap = i - mostRecentTrueIndex - 1;
             countByGapSize[thisGap] = (countByGapSize[thisGap] ?? 0) + 1;
             mostRecentTrueIndex = i;
           }
           samples = samples.slice(1).concat(didEventHappen);
           if (i % 10 ** windowSizeExponent === 0) {
             setCountByGapSizeState(countByGapSize);
+            setNumCompleteTrials(i);
             setSamplesState(samples);
             setPercentProgress(100 * (i / 10 ** numTrialsExponent));
             await sleep(0);
@@ -68,6 +70,7 @@ const Poisson: NextPage = () => {
         }
         if (i === 10 ** numTrialsExponent) {
           setCountByGapSizeState(countByGapSize);
+          setNumCompleteTrials(i);
           setSamplesState(samples);
           setPercentProgress(100);
         }
@@ -92,7 +95,23 @@ const Poisson: NextPage = () => {
 
       const barChart = new ChartJS(barChartRef.current, {
         data: {
-          datasets: [{ data: Object.values(countByGapSizeState) }],
+          datasets: [
+            { data: Object.values(countByGapSizeState), type: "bar" },
+            {
+              data: Object.keys(countByGapSizeState).map((count) => {
+                const probabilityOfTwoEventsHappeningAtAll =
+                  probabilityOfEvent ** 2;
+                const probabilityOfConsecutiveNonEventsInInterval =
+                  (1 - probabilityOfEvent) ** Number(count);
+                return (
+                  numCompleteTrials *
+                  probabilityOfConsecutiveNonEventsInInterval *
+                  probabilityOfTwoEventsHappeningAtAll
+                );
+              }),
+              type: "line",
+            },
+          ],
           labels: Object.keys(countByGapSizeState),
         },
         options: {
@@ -103,7 +122,6 @@ const Poisson: NextPage = () => {
           },
           scales: { y: { title: { display: true } } },
         },
-        type: "bar",
       });
 
       return () => {
@@ -260,13 +278,19 @@ const Poisson: NextPage = () => {
               </ul>
               <canvas className="max-h-96" ref={barChartRef} />
               <Typography variant="body2">
-                Each bar represents{" "}
+                Each <span className="bg-blue-200">bar</span> represents{" "}
                 <i>
                   how many times did events happen{" "}
                   <b>this close to each other</b>?
                 </i>{" "}
                 Notice how (over time) it is obvious that events are most likely
                 to appear close to each other.
+              </Typography>
+              <Typography variant="body2">
+                The <span className="bg-red-200">red line</span> represents the
+                expected number of times consecutive events will happen this
+                close together. Notice that (over time) the observed values will
+                approach the expected number.
               </Typography>
             </Box>
           </div>
