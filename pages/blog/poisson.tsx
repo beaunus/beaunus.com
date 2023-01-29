@@ -130,11 +130,11 @@ const Poisson: NextPage = () => {
             <p>
               I listened to{" "}
               <HighlightedLink href="https://open.spotify.com/episode/4MrtwjM1PyWwmPIdvYcQph?si=ca26c63b50a84bab&t=787583">
-                this episode of <i>The Life Of The Mind</i> by Steven Pinker
+                this episode
               </HighlightedLink>{" "}
-              and was struck by the claim that &quot;the thing about a Poisson
-              process (a purely random process) is that events seem to
-              cluster.&quot;
+              of <i>The Life Of The Mind</i> by Steven Pinker and was struck by
+              the claim that &quot;the thing about a Poisson process (a purely
+              random process) is that events seem to cluster.&quot;
             </p>
             <ul className="list-disc list-inside">
               I thought that this would be a good opportunity for me to:
