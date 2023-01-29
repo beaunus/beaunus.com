@@ -194,14 +194,16 @@ const Poisson: NextPage = () => {
               sliderValue={numTrialsExponent}
             />
             <SliderWithLabels
-              displayValue={(10 ** windowSizeExponent).toLocaleString()}
+              displayValue={(
+                10 ** Math.min(windowSizeExponent, numTrialsExponent)
+              ).toLocaleString()}
               label="Number of experiments between snapshots"
-              sliderMax={6}
+              sliderMax={numTrialsExponent}
               sliderMin={0}
               sliderOnChange={(_event, newValue) =>
                 setWindowSizeExponent(newValue as number)
               }
-              sliderValue={windowSizeExponent}
+              sliderValue={Math.min(windowSizeExponent, numTrialsExponent)}
             />
             <Grid container spacing={2} width="100%">
               <Grid item xs={6}>
