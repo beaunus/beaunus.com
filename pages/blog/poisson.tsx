@@ -180,7 +180,9 @@ const Poisson: NextPage = () => {
                 </Grid>
                 <Grid item>
                   <Typography gutterBottom>
-                    {probabilityOfEvent.toFixed(2)}
+                    {(Math.round(probabilityOfEvent * 100) / 100)
+                      .toLocaleString()
+                      .padEnd(4, "0")}
                   </Typography>
                 </Grid>
               </Grid>
@@ -202,7 +204,7 @@ const Poisson: NextPage = () => {
                 </Grid>
                 <Grid item>
                   <Typography gutterBottom>
-                    {10 ** numTrialsExponent}
+                    {(10 ** numTrialsExponent).toLocaleString()}
                   </Typography>
                 </Grid>
               </Grid>
@@ -224,7 +226,7 @@ const Poisson: NextPage = () => {
                 </Grid>
                 <Grid item>
                   <Typography gutterBottom>
-                    {10 ** windowSizeExponent}
+                    {(10 ** windowSizeExponent).toLocaleString()}
                   </Typography>
                 </Grid>
               </Grid>
