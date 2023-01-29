@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from "react";
 
-export const Segment: FC<{ body: ReactNode; image: ReactNode }> = ({
+export const Segment: FC<{ body: ReactNode; image?: ReactNode }> = ({
   image,
   body,
 }) => (
