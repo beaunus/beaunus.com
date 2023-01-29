@@ -14,6 +14,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 
+import { Segment } from "../../components/Segment";
 import { sleep } from "../../utils/index";
 
 type Experiment = {
@@ -158,117 +159,124 @@ const Poisson: NextPage = () => {
         <title>Poisson | Beaunus</title>
       </Head>
       <div className="flex flex-col grow gap-2 text-center">
-        <div className="flex flex-col gap-5 px-3">
-          <p>Poisson</p>
+        <Segment>
+          <div className="flex flex-col gap-5 px-3 w-full">
+            <p>Poisson</p>
 
-          <Box>
-            <Grid alignItems="center" container spacing={2}>
-              <Grid item>
-                <Typography gutterBottom>Probability of event</Typography>
+            <Box>
+              <Grid alignItems="center" container spacing={2}>
+                <Grid item>
+                  <Typography gutterBottom>Probability of event</Typography>
+                </Grid>
+                <Grid item xs>
+                  <Slider
+                    max={100}
+                    min={0}
+                    onChange={(_event, newValue) =>
+                      setProbabilityOfEvent((newValue as number) / 100)
+                    }
+                    value={probabilityOfEvent * 100}
+                  />
+                </Grid>
+                <Grid item>
+                  <Typography gutterBottom>
+                    {probabilityOfEvent.toFixed(2)}
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item xs>
-                <Slider
-                  max={100}
-                  min={0}
-                  onChange={(_event, newValue) =>
-                    setProbabilityOfEvent((newValue as number) / 100)
-                  }
-                  value={probabilityOfEvent * 100}
-                />
+            </Box>
+            <Box>
+              <Grid alignItems="center" container spacing={2}>
+                <Grid item>
+                  <Typography gutterBottom>Num Trials</Typography>
+                </Grid>
+                <Grid item xs>
+                  <Slider
+                    max={10}
+                    min={0}
+                    onChange={(_event, newValue) =>
+                      setNumTrialsExponent(newValue as number)
+                    }
+                    value={numTrialsExponent}
+                  />
+                </Grid>
+                <Grid item>
+                  <Typography gutterBottom>
+                    {10 ** numTrialsExponent}
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Typography gutterBottom>
-                  {probabilityOfEvent.toFixed(2)}
-                </Typography>
+            </Box>
+            <Box>
+              <Grid alignItems="center" container spacing={2}>
+                <Grid item>
+                  <Typography gutterBottom>Window size</Typography>
+                </Grid>
+                <Grid item xs>
+                  <Slider
+                    max={10}
+                    min={0}
+                    onChange={(_event, newValue) =>
+                      setWindowSizeExponent(newValue as number)
+                    }
+                    value={windowSizeExponent}
+                  />
+                </Grid>
+                <Grid item>
+                  <Typography gutterBottom>
+                    {10 ** windowSizeExponent}
+                  </Typography>
+                </Grid>
               </Grid>
-            </Grid>
-          </Box>
-          <Box>
-            <Grid alignItems="center" container spacing={2}>
-              <Grid item>
-                <Typography gutterBottom>Num Trials</Typography>
-              </Grid>
-              <Grid item xs>
-                <Slider
-                  max={10}
-                  min={0}
-                  onChange={(_event, newValue) =>
-                    setNumTrialsExponent(newValue as number)
-                  }
-                  value={numTrialsExponent}
-                />
-              </Grid>
-              <Grid item>
-                <Typography gutterBottom>{10 ** numTrialsExponent}</Typography>
-              </Grid>
-            </Grid>
-          </Box>
-          <Box>
-            <Grid alignItems="center" container spacing={2}>
-              <Grid item>
-                <Typography gutterBottom>Window size</Typography>
-              </Grid>
-              <Grid item xs>
-                <Slider
-                  max={10}
-                  min={0}
-                  onChange={(_event, newValue) =>
-                    setWindowSizeExponent(newValue as number)
-                  }
-                  value={windowSizeExponent}
-                />
-              </Grid>
-              <Grid item>
-                <Typography gutterBottom>{10 ** windowSizeExponent}</Typography>
-              </Grid>
-            </Grid>
-          </Box>
+            </Box>
 
-          <FormControlLabel
-            control={
-              <Switch
-                defaultChecked={shouldShowSteps}
-                onChange={(_event, newValue) => setShouldShowSteps(newValue)}
-              />
-            }
-            label="Show steps"
-          />
-          <CircularProgressWithLabel
-            value={100 * (numPositivesState / numTrialsSoFar)}
-          />
-          <CircularProgressWithLabel
-            value={
-              100 * (samplesState.filter(Boolean).length / samplesState.length)
-            }
-          />
-          <Button
-            onClick={() => {
-              currentExperiment?.pause();
-              const a = generateExperiment();
-              setCurrentExperiment(a);
-              a.performExperiment();
-            }}
-            variant="outlined"
-          >
-            Start
-          </Button>
-          <Button
-            onClick={() => {
-              currentExperiment?.isRunning()
-                ? currentExperiment?.pause()
-                : currentExperiment?.performExperiment();
-            }}
-            variant="outlined"
-          >
-            Toggle
-          </Button>
+            <FormControlLabel
+              control={
+                <Switch
+                  defaultChecked={shouldShowSteps}
+                  onChange={(_event, newValue) => setShouldShowSteps(newValue)}
+                />
+              }
+              label="Show steps"
+            />
+            <CircularProgressWithLabel
+              value={100 * (numPositivesState / numTrialsSoFar)}
+            />
+            <CircularProgressWithLabel
+              value={
+                100 *
+                (samplesState.filter(Boolean).length / samplesState.length)
+              }
+            />
+            <Button
+              onClick={() => {
+                currentExperiment?.pause();
+                const a = generateExperiment();
+                setCurrentExperiment(a);
+                a.performExperiment();
+              }}
+              variant="outlined"
+            >
+              Start
+            </Button>
+            <Button
+              onClick={() => {
+                currentExperiment?.isRunning()
+                  ? currentExperiment?.pause()
+                  : currentExperiment?.performExperiment();
+              }}
+              variant="outlined"
+            >
+              Toggle
+            </Button>
 
-          <div className="w-full">
-            <LinearProgress value={percentProgress} variant="determinate" />
-            <canvas className="max-h-10" ref={samplesChartRef}></canvas>
-            <canvas className="max-h-96" ref={barChartRef}></canvas>
+            <div className="w-full">
+              <LinearProgress value={percentProgress} variant="determinate" />
+              <canvas className="max-h-10" ref={samplesChartRef}></canvas>
+              <canvas className="max-h-96" ref={barChartRef}></canvas>
+            </div>
           </div>
-        </div>
+        </Segment>
       </div>
     </>
   );
