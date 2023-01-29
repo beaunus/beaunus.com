@@ -14,6 +14,7 @@ import React from "react";
 
 import { HighlightedLink } from "../../components/HighlightedLink";
 import { Segment } from "../../components/Segment";
+import { SliderWithLabels } from "../../components/SliderWithLabels";
 import { sleep } from "../../utils/index";
 
 type Experiment = {
@@ -154,31 +155,17 @@ const Poisson: NextPage = () => {
               </HighlightedLink>
               .
             </p>
-
-            <Box>
-              <Grid alignItems="center" container spacing={2}>
-                <Grid item xs>
-                  <Typography gutterBottom>
-                    <Tooltip title="How likely is the event?">
-                      <span>Probability of event</span>
-                    </Tooltip>
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography gutterBottom>
-                    {probabilityOfEvent.toFixed(2)}
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Slider
-                max={100}
-                min={0}
-                onChange={(_event, newValue) =>
-                  setProbabilityOfEvent((newValue as number) / 100)
-                }
-                value={probabilityOfEvent * 100}
-              />
-            </Box>
+            <SliderWithLabels
+              caption="How likely is the event?"
+              displayValue={probabilityOfEvent.toFixed(2)}
+              label="Probability of event"
+              sliderMax={100}
+              sliderMin={0}
+              sliderOnChange={(_event, newValue) =>
+                setProbabilityOfEvent((newValue as number) / 100)
+              }
+              sliderValue={probabilityOfEvent * 100}
+            />
             <Box>
               <Grid alignItems="center" container spacing={2}>
                 <Grid item xs>
