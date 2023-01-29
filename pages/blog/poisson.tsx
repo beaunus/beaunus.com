@@ -275,14 +275,14 @@ const Poisson: NextPage = () => {
                 />
               </Grid>
             </Grid>
-            <div className="w-full">
-              <Box>
-                <Typography gutterBottom>Progress</Typography>
-                <LinearProgress value={percentProgress} variant="determinate" />
-              </Box>
-              <canvas className="max-h-10" ref={samplesChartRef}></canvas>
-              <canvas className="max-h-96" ref={barChartRef}></canvas>
-            </div>
+            <Box>
+              <Typography gutterBottom>Progress</Typography>
+              <LinearProgress value={percentProgress} variant="determinate" />
+            </Box>
+            <Box>
+              <canvas className="max-h-10" ref={samplesChartRef} />
+              <canvas className="max-h-96" ref={barChartRef} />
+            </Box>
           </div>
         </Segment>
       </div>
