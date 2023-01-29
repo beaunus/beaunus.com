@@ -8,6 +8,7 @@ import Grid from "@mui/material/Grid";
 import LinearProgress from "@mui/material/LinearProgress";
 import Slider from "@mui/material/Slider";
 import Switch from "@mui/material/Switch";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import ChartJS from "chart.js/auto";
 import type { NextPage } from "next";
@@ -24,34 +25,6 @@ type Experiment = {
   performExperiment: VoidFunction;
 };
 
-function CircularProgressWithLabel(
-  props: CircularProgressProps & { value: number }
-) {
-  return (
-    <Box sx={{ display: "inline-flex", position: "relative" }}>
-      <CircularProgress variant="determinate" {...props} />
-      <Box
-        sx={{
-          alignItems: "center",
-          bottom: 0,
-          display: "flex",
-          justifyContent: "center",
-          left: 0,
-          position: "absolute",
-          right: 0,
-          top: 0,
-        }}
-      >
-        <Typography
-          color="text.secondary"
-          component="div"
-          variant="caption"
-        >{`${props.value.toFixed(2)}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}
-
 const Poisson: NextPage = () => {
   const samplesChartRef = React.useRef<HTMLCanvasElement>(null);
   const barChartRef = React.useRef<HTMLCanvasElement>(null);
@@ -66,11 +39,9 @@ const Poisson: NextPage = () => {
     Array.from({ length: 100 }, () => false)
   );
   const [shouldShowSteps, setShouldShowSteps] = React.useState(true);
-  const [numTrialsExponent, setNumTrialsExponent] = React.useState(5);
+  const [numTrialsExponent, setNumTrialsExponent] = React.useState(2);
   const [percentProgress, setPercentProgress] = React.useState(0);
-  const [windowSizeExponent, setWindowSizeExponent] = React.useState(1);
-  const [numTrialsSoFar, setNumTrialsSoFar] = React.useState(0);
-  const [numPositivesState, setNumPositives] = React.useState(0);
+  const [windowSizeExponent, setWindowSizeExponent] = React.useState(0);
 
   const generateExperiment = (): Experiment => {
     let isRunningBit: boolean;
@@ -78,9 +49,6 @@ const Poisson: NextPage = () => {
     let samples = Array.from({ length: 100 }, () => false);
     let i = 0,
       mostRecentTrueIndex = 0;
-    let numPositives = 0;
-    setNumTrialsSoFar(0);
-    setNumPositives(0);
     setPercentProgress(0);
 
     return {
@@ -95,15 +63,12 @@ const Poisson: NextPage = () => {
             const thisGap = i - mostRecentTrueIndex;
             countByGapSize[thisGap] = (countByGapSize[thisGap] ?? 0) + 1;
             mostRecentTrueIndex = i;
-            ++numPositives;
           }
           samples = samples.slice(1).concat(didEventHappen);
           if (shouldShowSteps && i % 10 ** windowSizeExponent === 0) {
             setCountByGapSizeState(countByGapSize);
             setSamplesState(samples);
             setPercentProgress(100 * (i / 10 ** numTrialsExponent));
-            setNumTrialsSoFar(i);
-            setNumPositives(numPositives);
             await sleep(0);
           }
         }
@@ -185,11 +150,20 @@ const Poisson: NextPage = () => {
                 into my blog
               </li>
             </ul>
+            <p>
+              The code itself can be found{" "}
+              <HighlightedLink href="https://github.com/beaunus/beaunus.com/search?q=poisson+performExperiment">
+                on Github
+              </HighlightedLink>
+              .
+            </p>
 
             <Box>
               <Grid alignItems="center" container spacing={2}>
                 <Grid item>
-                  <Typography gutterBottom>Probability of event</Typography>
+                  <Tooltip title="How likely is the event?">
+                    <Typography gutterBottom>Probability of event</Typography>
+                  </Tooltip>
                 </Grid>
                 <Grid item xs>
                   <Slider
@@ -213,7 +187,9 @@ const Poisson: NextPage = () => {
             <Box>
               <Grid alignItems="center" container spacing={2}>
                 <Grid item>
-                  <Typography gutterBottom>Num Trials</Typography>
+                  <Tooltip title="How many individual events do you want to do?">
+                    <Typography gutterBottom>Num Trials</Typography>
+                  </Tooltip>
                 </Grid>
                 <Grid item xs>
                   <Slider
@@ -235,7 +211,9 @@ const Poisson: NextPage = () => {
             <Box>
               <Grid alignItems="center" container spacing={2}>
                 <Grid item>
-                  <Typography gutterBottom>Window size</Typography>
+                  <Tooltip title="After how many individual events do you want to 'peek' at the results so far?">
+                    <Typography gutterBottom>Window size</Typography>
+                  </Tooltip>
                 </Grid>
                 <Grid item xs>
                   <Slider
@@ -254,47 +232,48 @@ const Poisson: NextPage = () => {
                 </Grid>
               </Grid>
             </Box>
-            <FormControlLabel
-              control={
-                <Switch
-                  defaultChecked={shouldShowSteps}
-                  onChange={(_event, newValue) => setShouldShowSteps(newValue)}
-                />
-              }
-              label="Show steps"
-            />
-            <CircularProgressWithLabel
-              value={100 * (numPositivesState / numTrialsSoFar)}
-            />
-            <CircularProgressWithLabel
-              value={
-                100 *
-                (samplesState.filter(Boolean).length / samplesState.length)
-              }
-            />
-            <Button
-              onClick={() => {
-                currentExperiment?.pause();
-                const a = generateExperiment();
-                setCurrentExperiment(a);
-                a.performExperiment();
-              }}
-              variant="outlined"
-            >
-              Start
-            </Button>
-            <Button
-              onClick={() => {
-                currentExperiment?.isRunning()
-                  ? currentExperiment?.pause()
-                  : currentExperiment?.performExperiment();
-              }}
-              variant="outlined"
-            >
-              Toggle
-            </Button>
+            <Tooltip title="Do you want to 'peek' at the results throughout the experiment?">
+              <FormControlLabel
+                control={
+                  <Switch
+                    defaultChecked={shouldShowSteps}
+                    onChange={(_event, newValue) =>
+                      setShouldShowSteps(newValue)
+                    }
+                  />
+                }
+                label="Show steps"
+              />
+            </Tooltip>
+            <Tooltip title="Start a new experiment with the above configuration">
+              <Button
+                onClick={() => {
+                  currentExperiment?.pause();
+                  const a = generateExperiment();
+                  setCurrentExperiment(a);
+                  a.performExperiment();
+                }}
+                variant="outlined"
+              >
+                Start
+              </Button>
+            </Tooltip>
+            <Tooltip title="Pause or resume the currently running experiment">
+              <Button
+                onClick={() => {
+                  currentExperiment?.isRunning()
+                    ? currentExperiment?.pause()
+                    : currentExperiment?.performExperiment();
+                }}
+                variant="outlined"
+              >
+                Toggle
+              </Button>
+            </Tooltip>
             <div className="w-full">
-              <LinearProgress value={percentProgress} variant="determinate" />
+              <Tooltip title="How far along is the whole experiment?">
+                <LinearProgress value={percentProgress} variant="determinate" />
+              </Tooltip>
               <canvas className="max-h-10" ref={samplesChartRef}></canvas>
               <canvas className="max-h-96" ref={barChartRef}></canvas>
             </div>
