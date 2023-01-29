@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 
-const Blog: NextPage = () => (
+const BlogIndex: NextPage = () => (
   <>
     <Head>
       <title>Blog | Beaunus</title>
@@ -13,4 +13,4 @@ const Blog: NextPage = () => (
   </>
 );
 
-export default Blog;
+export default BlogIndex;
