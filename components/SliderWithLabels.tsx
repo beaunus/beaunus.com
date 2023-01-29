@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import React from "react";
 
 export const SliderWithLabels: React.FC<{
-  caption: string;
+  caption?: string;
   displayValue: string;
   label: string;
   sliderMax: number;
@@ -24,9 +24,11 @@ export const SliderWithLabels: React.FC<{
     <Grid item xs>
       <Typography variant="body2">{label}</Typography>
     </Grid>
-    <Grid item>
-      <Typography variant="caption">{caption}</Typography>
-    </Grid>
+    {caption ? (
+      <Grid item>
+        <Typography variant="caption">{caption}</Typography>
+      </Grid>
+    ) : null}
     <Grid item>
       <Typography>{displayValue}</Typography>
     </Grid>

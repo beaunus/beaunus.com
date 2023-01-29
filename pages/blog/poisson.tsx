@@ -156,7 +156,6 @@ const Poisson: NextPage = () => {
               .
             </p>
             <SliderWithLabels
-              caption="How likely is the event?"
               displayValue={probabilityOfEvent.toFixed(2)}
               label="Probability of event"
               sliderMax={100}
@@ -167,7 +166,6 @@ const Poisson: NextPage = () => {
               sliderValue={probabilityOfEvent * 100}
             />
             <SliderWithLabels
-              caption="How many individual events do you want to do?"
               displayValue={(10 ** numTrialsExponent).toLocaleString()}
               label="Number of Trials"
               sliderMax={10}
@@ -178,9 +176,8 @@ const Poisson: NextPage = () => {
               sliderValue={numTrialsExponent}
             />
             <SliderWithLabels
-              caption="After how many individual events do you want to 'peek' at the results so far?"
               displayValue={(10 ** windowSizeExponent).toLocaleString()}
-              label="Window size"
+              label="Number of experiments between snapshots"
               sliderMax={10}
               sliderMin={0}
               sliderOnChange={(_event, newValue) =>
