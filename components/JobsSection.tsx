@@ -240,24 +240,6 @@ export const JobsSection = () => (
   <>
     {jobs.map(({ title, logoImage, url, content, techLogos }, index) => (
       <Segment
-        body={
-          <div className="flex flex-col gap-8">
-            <div>
-              <div className="text-2xl font-semibold text-cyan-700">
-                {title}
-              </div>
-              <div className="text-xl font-semibold text-purple-800">
-                <HighlightedLink href={url}>
-                  {url.replace(/https?:\/\//, "")}
-                </HighlightedLink>
-              </div>
-            </div>
-            <div className="flex flex-col gap-4">{content}</div>
-            <div className="flex flex-wrap gap-5 justify-center">
-              {techLogos}
-            </div>
-          </div>
-        }
         image={
           <Image
             alt={title}
@@ -271,7 +253,20 @@ export const JobsSection = () => (
           />
         }
         key={`job-${index}`}
-      />
+      >
+        <div className="flex flex-col gap-8">
+          <div>
+            <div className="text-2xl font-semibold text-cyan-700">{title}</div>
+            <div className="text-xl font-semibold text-purple-800">
+              <HighlightedLink href={url}>
+                {url.replace(/https?:\/\//, "")}
+              </HighlightedLink>
+            </div>
+          </div>
+          <div className="flex flex-col gap-4">{content}</div>
+          <div className="flex flex-wrap gap-5 justify-center">{techLogos}</div>
+        </div>
+      </Segment>
     ))}
   </>
 );

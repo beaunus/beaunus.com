@@ -16,26 +16,6 @@ import * as Photos from "../images/photos";
 
 const TitleSection: React.FC = () => (
   <Segment
-    body={
-      <>
-        <div>
-          <div className="text-4xl font-semibold">Beau Dobbin</div>
-          <div className="text-2xl font-semibold text-cyan-700">
-            Software Engineer
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-5 justify-around w-full max-w-md">
-          <Icon color="text-blue-700" icon={faTerminal} label="Code" />
-          <Icon color="text-orange-500" icon={faHandshake} label="Education" />
-          <Icon color="text-green-600" icon={faMusic} label="Music" />
-          <Icon
-            color="text-indigo-400"
-            icon={faHeadphones}
-            label="Engineering"
-          />
-        </div>
-      </>
-    }
     image={
       <Image
         alt="Beau Dobbin"
@@ -46,7 +26,20 @@ const TitleSection: React.FC = () => (
         width={200}
       />
     }
-  />
+  >
+    <div>
+      <div className="text-4xl font-semibold">Beau Dobbin</div>
+      <div className="text-2xl font-semibold text-cyan-700">
+        Software Engineer
+      </div>
+    </div>
+    <div className="flex flex-wrap gap-5 justify-around w-full max-w-md">
+      <Icon color="text-blue-700" icon={faTerminal} label="Code" />
+      <Icon color="text-orange-500" icon={faHandshake} label="Education" />
+      <Icon color="text-green-600" icon={faMusic} label="Music" />
+      <Icon color="text-indigo-400" icon={faHeadphones} label="Engineering" />
+    </div>
+  </Segment>
 );
 
 const Home: NextPage = () => (

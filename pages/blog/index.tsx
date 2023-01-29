@@ -14,21 +14,19 @@ const BlogIndex: NextPage = () => (
       <div className="text-2xl font-semibold text-center text-cyan-700">
         Blog
       </div>
-      <Segment
-        body={
-          <div className="flex gap-5 items-center">
-            <div className="text-xl font-semibold text-purple-800 whitespace-nowrap">
-              <HighlightedLink href="/blog/poisson">
-                Poisson Process
-              </HighlightedLink>
-            </div>
-            <div className="">
-              Given that it is raining today, which day is it most likely to
-              rain again?
-            </div>
+      <Segment>
+        <div className="flex gap-5 items-center">
+          <div className="text-xl font-semibold text-purple-800 whitespace-nowrap">
+            <HighlightedLink href="/blog/poisson">
+              Poisson Process
+            </HighlightedLink>
           </div>
-        }
-      />
+          <div className="">
+            Given that it is raining today, which day is it most likely to rain
+            again?
+          </div>
+        </div>
+      </Segment>
     </div>
   </>
 );
