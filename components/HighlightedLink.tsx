@@ -6,7 +6,7 @@ export const HighlightedLink: FC<{ children: ReactNode; href: string }> = ({
   children,
 }) => (
   <Link
-    className="whitespace-nowrap hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out"
+    className="hover:bg-cyan-100 border-b-2 border-b-cyan-100 transition duration-75 ease-in-out sm:whitespace-nowrap"
     href={href}
   >
     {children}

@@ -123,7 +123,7 @@ const Poisson: NextPage = () => {
       </Head>
       <div className="flex flex-col grow gap-2">
         <Segment>
-          <div className="flex flex-col gap-5 px-3 w-full">
+          <div className="flex flex-col gap-5 w-full">
             <div className="text-2xl font-semibold text-center text-cyan-700">
               Poisson Process
             </div>
