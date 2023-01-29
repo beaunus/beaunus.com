@@ -35,7 +35,6 @@ const Poisson: NextPage = () => {
   const [samplesState, setSamplesState] = React.useState(
     Array.from({ length: 100 }, () => false)
   );
-  const [shouldShowSteps, setShouldShowSteps] = React.useState(true);
   const [numTrialsExponent, setNumTrialsExponent] = React.useState(2);
   const [percentProgress, setPercentProgress] = React.useState(0);
   const [windowSizeExponent, setWindowSizeExponent] = React.useState(0);
@@ -62,7 +61,7 @@ const Poisson: NextPage = () => {
             mostRecentTrueIndex = i;
           }
           samples = samples.slice(1).concat(didEventHappen);
-          if (shouldShowSteps && i % 10 ** windowSizeExponent === 0) {
+          if (i % 10 ** windowSizeExponent === 0) {
             setCountByGapSizeState(countByGapSize);
             setSamplesState(samples);
             setPercentProgress(100 * (i / 10 ** numTrialsExponent));
@@ -183,19 +182,6 @@ const Poisson: NextPage = () => {
                 setWindowSizeExponent(newValue as number)
               }
               sliderValue={windowSizeExponent}
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  defaultChecked={shouldShowSteps}
-                  onChange={(_event, newValue) => setShouldShowSteps(newValue)}
-                />
-              }
-              label={
-                <Tooltip title="Do you want to 'peek' at the results throughout the experiment?">
-                  <span>Show steps</span>
-                </Tooltip>
-              }
             />
             <Grid container spacing={2} width="100%">
               <Grid item xs={6}>
