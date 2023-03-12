@@ -1,6 +1,6 @@
 import { NameChangeType } from "./factories";
 
-interface GitCommit {
+export interface GitCommit {
   author: string;
   commitHash: string;
   date: Date;
@@ -18,6 +18,53 @@ interface GitFileChangePath {
   afterChange: string;
   beforeChange?: string;
 }
+
+export type Stats = Required<
+  Pick<GitFileChange, "numLinesAdded" | "numLinesDeleted">
+> & {
+  numCommits: number;
+};
+
+export const computeStatsByFileName = (
+  commits: GitCommit[]
+): Record<string, Stats> => {
+  const fileChanges = commits
+    .slice()
+    .sort((a, b) => (a.date < b.date ? 11 : a.date > b.date ? -1 : 0))
+    .flatMap(({ date, files }) => files.map((file) => ({ date, ...file })));
+  const successorByPredecessor: Record<string, string> = Object.fromEntries(
+    fileChanges
+      .filter(({ path: { beforeChange } }) => beforeChange)
+      .map(({ path: { afterChange, beforeChange } }) => [
+        beforeChange,
+        afterChange,
+      ])
+  );
+
+  return fileChanges.reduce<
+    Record<
+      string,
+      { numCommits: number; numLinesAdded: number; numLinesDeleted: number }
+    >
+  >((statsByPath, fileChange) => {
+    let path = fileChange.path.afterChange;
+    while (successorByPredecessor[path]) {
+      path = successorByPredecessor[path];
+    }
+    return {
+      ...statsByPath,
+      [path]: {
+        numCommits: (statsByPath[path]?.numCommits ?? 0) + 1,
+        numLinesAdded:
+          (statsByPath[path]?.numLinesAdded ?? 0) +
+          (fileChange?.numLinesAdded ?? 0),
+        numLinesDeleted:
+          (statsByPath[path]?.numLinesDeleted ?? 0) +
+          (fileChange?.numLinesDeleted ?? 0),
+      },
+    };
+  }, {});
+};
 
 export const parseCommitString = (commitString: string): GitCommit => {
   const [commitHash, authorString, dateString, , ...messageAndFilesStrings] =
