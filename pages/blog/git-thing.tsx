@@ -102,26 +102,24 @@ const GitThing: NextPage = () => {
   }, [statsByFileName, criteria, scaleType]);
 
   const UploadButton: React.FC = () => (
-    <>
-      <Button component="label" variant="contained">
-        Upload
-        <input
-          accept=".txt"
-          hidden
-          onChange={async (e) => {
-            setStatsByFileName(
-              computeStatsByFileName(
-                `\n${await e.target.files?.[0].text()}`
-                  .split(/\ncommit /)
-                  .slice(1)
-                  .map(parseCommitString)
-              )
-            );
-          }}
-          type="file"
-        />
-      </Button>
-    </>
+    <Button component="label" variant="contained">
+      Upload
+      <input
+        accept=".txt"
+        hidden
+        onChange={async (e) => {
+          setStatsByFileName(
+            computeStatsByFileName(
+              `\n${await e.target.files?.[0].text()}`
+                .split(/\ncommit /)
+                .slice(1)
+                .map(parseCommitString)
+            )
+          );
+        }}
+        type="file"
+      />
+    </Button>
   );
 
   return (
