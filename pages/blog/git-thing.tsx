@@ -99,7 +99,7 @@ const GitThing: NextPage = () => {
         polarAreaChart.destroy();
       };
     }
-  }, [statsByFileName, criteria, scaleType]);
+  }, [criteria, scaleType, statsByFileName]);
 
   const UploadButton: React.FC = () => (
     <Button component="label" variant="contained">
