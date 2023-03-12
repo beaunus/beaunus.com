@@ -11,9 +11,9 @@ import React from "react";
 
 import { Segment } from "../../components/Segment";
 import {
+  computeStatsByFileName,
   parseCommitString,
   Stats,
-  computeStatsByFileName,
 } from "../../utils/git";
 
 type Criteria =
@@ -101,30 +101,28 @@ const GitThing: NextPage = () => {
     }
   }, [statsByFileName, criteria, scaleType]);
 
-  const GitThingButton: React.FC = () => {
-    return (
-      <>
-        <Button component="label" variant="contained">
-          Upload
-          <input
-            accept=".txt"
-            hidden
-            onChange={async (e) => {
-              const commits = `\n${await e.target.files?.[0].text()}`
-                .split(/\ncommit /)
-                .slice(1)
-                .map(parseCommitString);
-
-              console.log(JSON.stringify(commits));
-
-              setStatsByFileName(computeStatsByFileName(commits));
-            }}
-            type="file"
-          />
-        </Button>
-      </>
-    );
-  };
+  const GitThingButton: React.FC = () => (
+    <>
+      <Button component="label" variant="contained">
+        Upload
+        <input
+          accept=".txt"
+          hidden
+          onChange={async (e) => {
+            setStatsByFileName(
+              computeStatsByFileName(
+                `\n${await e.target.files?.[0].text()}`
+                  .split(/\ncommit /)
+                  .slice(1)
+                  .map(parseCommitString)
+              )
+            );
+          }}
+          type="file"
+        />
+      </Button>
+    </>
+  );
 
   return (
     <>
