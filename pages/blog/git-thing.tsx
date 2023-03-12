@@ -101,7 +101,7 @@ const GitThing: NextPage = () => {
     }
   }, [statsByFileName, criteria, scaleType]);
 
-  const GitThingButton: React.FC = () => (
+  const UploadButton: React.FC = () => (
     <>
       <Button component="label" variant="contained">
         Upload
@@ -135,7 +135,7 @@ const GitThing: NextPage = () => {
             <div className="text-2xl font-semibold text-center text-cyan-700">
               Git thing
             </div>
-            <GitThingButton />
+            <UploadButton />
             <FormControl>
               <FormLabel id="criteria-label">Criteria</FormLabel>
               <RadioGroup
