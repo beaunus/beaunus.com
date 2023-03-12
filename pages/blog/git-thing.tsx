@@ -12,7 +12,9 @@ import React from "react";
 import { Segment } from "../../components/Segment";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
 import {
+  computeDateRange,
   computeStatsByFileName,
+  GitCommit,
   parseCommitString,
   Stats,
 } from "../../utils/git";
@@ -68,6 +70,7 @@ const GitThing: NextPage = () => {
   const [criteria, setCriteria] = React.useState<Criteria>("numCommits");
   const [scaleType, setScaleType] = React.useState<ScaleType>("linear");
   const [limit, setLimit] = React.useState<number>(0);
+  const [dateRange, setDateRange] = React.useState<[Date, Date]>();
 
   React.useEffect(() => {
     if (polarAreaChartRef.current) {
@@ -112,14 +115,12 @@ const GitThing: NextPage = () => {
         accept=".txt"
         hidden
         onChange={async (e) => {
-          setStatsByFileName(
-            computeStatsByFileName(
-              `\n${await e.target.files?.[0].text()}`
-                .split(/\ncommit /)
-                .slice(1)
-                .map(parseCommitString)
-            )
-          );
+          const commits: GitCommit[] = `\n${await e.target.files?.[0].text()}`
+            .split(/\ncommit /)
+            .slice(1)
+            .map(parseCommitString);
+          setStatsByFileName(computeStatsByFileName(commits));
+          setDateRange(computeDateRange(commits));
         }}
         type="file"
       />
@@ -199,6 +200,10 @@ const GitThing: NextPage = () => {
                 sliderValue={limit}
               />
             </FormControl>
+            {dateRange
+              ? `This history goes from ${dateRange[0].toLocaleString()} to 
+            ${dateRange[1].toLocaleString()}`
+              : null}
             <canvas className="max-h-screen" ref={polarAreaChartRef} />
           </div>
         </Segment>
