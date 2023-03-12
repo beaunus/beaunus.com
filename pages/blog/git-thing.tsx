@@ -10,6 +10,7 @@ import Head from "next/head";
 import React from "react";
 
 import { Segment } from "../../components/Segment";
+import { SliderWithLabels } from "../../components/SliderWithLabels";
 import {
   computeStatsByFileName,
   parseCommitString,
@@ -66,6 +67,7 @@ const GitThing: NextPage = () => {
   >({});
   const [criteria, setCriteria] = React.useState<Criteria>("numCommits");
   const [scaleType, setScaleType] = React.useState<ScaleType>("linear");
+  const [limit, setLimit] = React.useState<number>(0);
 
   React.useEffect(() => {
     if (polarAreaChartRef.current) {
@@ -78,12 +80,14 @@ const GitThing: NextPage = () => {
         data: {
           datasets: [
             {
-              data: Object.values(statsByFileNameSorted).map(
-                valueIterateeByCriteria[criteria]
-              ),
+              data: Object.values(statsByFileNameSorted)
+                .slice(...(limit ? [0, limit] : []))
+                .map(valueIterateeByCriteria[criteria]),
             },
           ],
-          labels: Object.keys(statsByFileNameSorted),
+          labels: Object.keys(statsByFileNameSorted).slice(
+            ...(limit ? [0, limit] : [])
+          ),
         },
         options: {
           indexAxis: "y",
@@ -99,7 +103,7 @@ const GitThing: NextPage = () => {
         polarAreaChart.destroy();
       };
     }
-  }, [criteria, scaleType, statsByFileName]);
+  }, [criteria, limit, scaleType, statsByFileName]);
 
   const UploadButton: React.FC = () => (
     <Button component="label" variant="contained">
@@ -184,6 +188,16 @@ const GitThing: NextPage = () => {
                   value="logarithmic"
                 />
               </RadioGroup>
+              <SliderWithLabels
+                displayValue={limit.toFixed(0)}
+                label="Limit"
+                sliderMax={Object.keys(statsByFileName).length}
+                sliderMin={0}
+                sliderOnChange={(_event, newValue) =>
+                  setLimit(newValue as number)
+                }
+                sliderValue={limit}
+              />
             </FormControl>
             <canvas className="max-h-screen" ref={polarAreaChartRef} />
           </div>
