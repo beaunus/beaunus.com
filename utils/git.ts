@@ -51,8 +51,7 @@ export const computeStatsByFileName = (
     while (successorByPredecessor[path]) {
       path = successorByPredecessor[path];
     }
-    return {
-      ...statsByPath,
+    return Object.assign(statsByPath, {
       [path]: {
         numCommits: (statsByPath[path]?.numCommits ?? 0) + 1,
         numLinesAdded:
@@ -62,7 +61,7 @@ export const computeStatsByFileName = (
           (statsByPath[path]?.numLinesDeleted ?? 0) +
           (fileChange?.numLinesDeleted ?? 0),
       },
-    };
+    });
   }, {});
 };
 
