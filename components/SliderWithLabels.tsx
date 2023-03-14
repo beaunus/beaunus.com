@@ -3,15 +3,18 @@ import Slider, { SliderProps } from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
 import React from "react";
 
-export const SliderWithLabels: React.FC<{
-  caption?: string;
-  displayValue: string;
-  label: string;
-  sliderMax: number;
-  sliderMin: number;
-  sliderOnChange: SliderProps["onChange"];
-  sliderValue: number;
-}> = ({
+export const SliderWithLabels: React.FC<
+  {
+    caption?: string;
+    displayValue: string;
+    label: string;
+    otherProps?: Partial<SliderProps>;
+    sliderMax: number;
+    sliderMin: number;
+    sliderOnChange: SliderProps["onChange"];
+    sliderValue: number;
+  } & Partial<SliderProps>
+> = ({
   caption,
   displayValue,
   label,
@@ -19,6 +22,7 @@ export const SliderWithLabels: React.FC<{
   sliderMin,
   sliderOnChange,
   sliderValue,
+  ...otherProps
 }) => (
   <Grid alignItems="center" columnSpacing={2} container>
     <Grid item xs>
@@ -38,6 +42,7 @@ export const SliderWithLabels: React.FC<{
         min={sliderMin}
         onChange={sliderOnChange}
         value={sliderValue}
+        {...otherProps}
       />
     </Grid>
   </Grid>
