@@ -1,3 +1,4 @@
+import { FormControlLabel, Switch } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import Slider from "@mui/material/Slider";
@@ -38,6 +39,7 @@ const Radar: NextPage = () => {
         DIMENSION_NAMES.map((name) => [name, { value: 4, weight: 1 }])
       ) as Record<DimensionName, { value: number; weight: number }>
     );
+  const [shouldShowLevels, setShouldShowLevels] = React.useState(true);
 
   const radarChartRef = React.useRef<HTMLCanvasElement>(null);
 
@@ -70,14 +72,19 @@ const Radar: NextPage = () => {
       const radarChart = new ChartJS(radarChartRef.current, {
         data: {
           datasets: [
-            ...Object.entries(STANDARD_LEVELS).map(([name, value]) => ({
-              backgroundColor: "rgb(0, 0, 0, 0)",
-              borderColor: "#ccc",
-              data: Array.from({ length: DIMENSION_NAMES.length }, () => value),
-              fill: true,
-              label: `${name}`,
-              pointBackgroundColor: "#ccc",
-            })),
+            ...(shouldShowLevels
+              ? Object.entries(STANDARD_LEVELS).map(([name, value]) => ({
+                  backgroundColor: "rgb(0, 0, 0, 0)",
+                  borderColor: "#ccc",
+                  data: Array.from(
+                    { length: DIMENSION_NAMES.length },
+                    () => value
+                  ),
+                  fill: true,
+                  label: `${name}`,
+                  pointBackgroundColor: "#ccc",
+                }))
+              : []),
             {
               backgroundColor: "rgba(255, 99, 132, 0.2)",
               borderColor: "rgb(255, 99, 132)",
@@ -129,7 +136,7 @@ const Radar: NextPage = () => {
         radarChart.destroy();
       };
     }
-  }, [valuesAndWeightsByDimensionName]);
+  }, [shouldShowLevels, valuesAndWeightsByDimensionName]);
 
   return (
     <>
@@ -143,20 +150,33 @@ const Radar: NextPage = () => {
               Radar
             </div>
             <FormControl>
-              <Grid container spacing={2}>
-                <Grid item xs={2} />
-                <Grid item xs={10}>
-                  <Slider
-                    defaultValue={[2, 4, 6]}
-                    disabled={true}
-                    marks={Object.entries(STANDARD_LEVELS).map(
-                      ([label, value]) => ({ label, value })
-                    )}
-                    max={range[1]}
-                    min={range[0]}
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={shouldShowLevels}
+                    onChange={({ target }) => {
+                      setShouldShowLevels(target.checked);
+                    }}
                   />
+                }
+                label="Should show levels"
+              />
+              {shouldShowLevels ? (
+                <Grid container spacing={2}>
+                  <Grid item xs={2} />
+                  <Grid item xs={10}>
+                    <Slider
+                      defaultValue={[2, 4, 6]}
+                      disabled={true}
+                      marks={Object.entries(STANDARD_LEVELS).map(
+                        ([label, value]) => ({ label, value })
+                      )}
+                      max={range[1]}
+                      min={range[0]}
+                    />
+                  </Grid>
                 </Grid>
-              </Grid>
+              ) : null}
 
               {Object.entries(valuesAndWeightsByDimensionName).map(
                 ([dimensionName, { value }]) => (
