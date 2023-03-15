@@ -1,7 +1,8 @@
+import { Clear } from "@mui/icons-material";
 import { Button, FormControlLabel, Switch } from "@mui/material";
-import Chip from "@mui/material/Chip";
 import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
 import Slider from "@mui/material/Slider";
 import TextField from "@mui/material/TextField";
 import ChartJS from "chart.js/auto";
@@ -177,26 +178,6 @@ const Radar: NextPage = () => {
                 Add New Dimension
               </Button>
             </div>
-            <div className="flex flex-wrap gap-2 justify-center">
-              {Array.from(Object.keys(valuesAndWeightsByDimensionName)).map(
-                (dimensionName) => (
-                  <Chip
-                    key={dimensionName}
-                    label={dimensionName}
-                    onDelete={() => {
-                      setValuesAndWeightsByDimensionName((old) =>
-                        Object.fromEntries(
-                          Object.entries(old).filter(
-                            ([name]) => name !== dimensionName
-                          )
-                        )
-                      );
-                    }}
-                  />
-                )
-              )}
-            </div>
-
             <FormControl>
               <FormControlLabel
                 control={
@@ -211,8 +192,8 @@ const Radar: NextPage = () => {
               />
               {shouldShowLevels ? (
                 <Grid container spacing={2}>
-                  <Grid item xs={2} />
-                  <Grid item xs={10}>
+                  <Grid item xs={3} />
+                  <Grid item xs={9}>
                     <Slider
                       defaultValue={[2, 4, 6]}
                       disabled={true}
@@ -228,7 +209,30 @@ const Radar: NextPage = () => {
 
               {Object.entries(valuesAndWeightsByDimensionName).map(
                 ([dimensionName, { value }]) => (
-                  <Grid container key={`${dimensionName}-slider`} spacing={2}>
+                  <Grid
+                    alignItems="center"
+                    container
+                    key={`${dimensionName}-slider`}
+                    spacing={2}
+                  >
+                    <Grid item xs={1}>
+                      <IconButton
+                        aria-label="delete-dimension"
+                        color="primary"
+                        component="label"
+                        onClick={() =>
+                          setValuesAndWeightsByDimensionName((old) =>
+                            Object.fromEntries(
+                              Object.entries(old).filter(
+                                ([name]) => name !== dimensionName
+                              )
+                            )
+                          )
+                        }
+                      >
+                        <Clear />
+                      </IconButton>
+                    </Grid>
                     <Grid item xs={2}>
                       <TextField
                         InputLabelProps={{ shrink: true }}
@@ -249,7 +253,7 @@ const Radar: NextPage = () => {
                         }
                       />
                     </Grid>
-                    <Grid item xs={10}>
+                    <Grid item xs={9}>
                       <SliderWithLabels
                         displayValue={value.toString()}
                         label={dimensionName}
