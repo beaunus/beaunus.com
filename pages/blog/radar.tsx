@@ -129,7 +129,7 @@ const Radar: NextPage = () => {
         radarChart.destroy();
       };
     }
-  }, [shouldShowLevels, dimensions]);
+  }, [dimensions, shouldShowLevels]);
 
   return (
     <>
