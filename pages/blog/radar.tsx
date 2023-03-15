@@ -126,14 +126,8 @@ const Radar: NextPage = () => {
         },
         options: {
           animation: false,
-          elements: { line: { borderWidth: 3 } },
-          plugins: { legend: { display: true } },
           scales: {
-            r: {
-              angleLines: { display: true },
-              suggestedMax: SLIDER_RANGE[1],
-              suggestedMin: SLIDER_RANGE[0],
-            },
+            r: { suggestedMax: SLIDER_RANGE[1], suggestedMin: SLIDER_RANGE[0] },
           },
         },
         type: "radar",
