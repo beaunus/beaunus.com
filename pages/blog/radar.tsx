@@ -90,11 +90,8 @@ const Radar: NextPage = () => {
             ...(shouldShowLevels
               ? Object.entries(STANDARD_LEVELS).map(([name, value]) => ({
                   backgroundColor: "rgb(0, 0, 0, 0)",
-                  borderColor: "#ccc",
                   data: Array.from(Object.keys(dimensions), () => value),
-                  fill: true,
                   label: name,
-                  pointBackgroundColor: "#ccc",
                 }))
               : []),
             {
