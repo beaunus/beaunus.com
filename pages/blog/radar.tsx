@@ -260,16 +260,13 @@ const Radar: NextPage = () => {
                       sliderMax={7}
                       sliderMin={1}
                       sliderOnChange={(_event, newValue) =>
-                        setValuesAndWeightsByDimensionName(
-                          (old) =>
-                            ({
-                              ...old,
-                              [dimensionName]: {
-                                ...old[dimensionName],
-                                value: newValue,
-                              },
-                            } as typeof valuesAndWeightsByDimensionName)
-                        )
+                        setValuesAndWeightsByDimensionName((old) => ({
+                          ...old,
+                          [dimensionName]: {
+                            ...old[dimensionName],
+                            value: newValue as number,
+                          },
+                        }))
                       }
                       sliderValue={value}
                       step={1}
