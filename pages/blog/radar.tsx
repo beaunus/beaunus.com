@@ -15,10 +15,7 @@ import { arithmeticMean, geometricMean } from "../../utils/mean";
 
 type ColorName = `rgb(${number}, ${number}, ${number}, ${number})`;
 
-const DEFAULT_VALUES_AND_WEIGHTS_BY_DIMENSION_NAME: Record<
-  string,
-  { value: number; weight: number }
-> = {
+const DEFAULT_DIMENSIONS: Record<string, { value: number; weight: number }> = {
   /* eslint-disable @typescript-eslint/naming-convention, sort-keys */
   "Technical Skills": { value: 4, weight: 1 },
   "Decision Making": { value: 4, weight: 1 },
@@ -59,8 +56,7 @@ const StandardLevelSlider: React.FC = () => (
 );
 
 const Radar: NextPage = () => {
-  const [valuesAndWeightsByDimensionName, setValuesAndWeightsByDimensionName] =
-    React.useState(DEFAULT_VALUES_AND_WEIGHTS_BY_DIMENSION_NAME);
+  const [dimensions, setDimensions] = React.useState(DEFAULT_DIMENSIONS);
   const [shouldShowLevels, setShouldShowLevels] = React.useState(true);
   const [pendingDimensionName, setPendingDimensionName] =
     React.useState<string>("");
@@ -68,10 +64,8 @@ const Radar: NextPage = () => {
   const radarChartRef = React.useRef<HTMLCanvasElement>(null);
 
   React.useEffect(() => {
-    const valuesAccordingToWeights = Object.values(
-      valuesAndWeightsByDimensionName
-    ).flatMap(({ value, weight }) =>
-      Array.from({ length: weight }, () => value)
+    const valuesAccordingToWeights = Object.values(dimensions).flatMap(
+      ({ value, weight }) => Array.from({ length: weight }, () => value)
     );
     const means: Record<
       string,
@@ -97,10 +91,7 @@ const Radar: NextPage = () => {
               ? Object.entries(STANDARD_LEVELS).map(([name, value]) => ({
                   backgroundColor: "rgb(0, 0, 0, 0)",
                   borderColor: "#ccc",
-                  data: Array.from(
-                    Object.keys(valuesAndWeightsByDimensionName),
-                    () => value
-                  ),
+                  data: Array.from(Object.keys(dimensions), () => value),
                   fill: true,
                   label: name,
                   pointBackgroundColor: "#ccc",
@@ -109,9 +100,7 @@ const Radar: NextPage = () => {
             {
               backgroundColor: "rgba(255, 99, 132, 0.2)",
               borderColor: "rgb(255, 99, 132)",
-              data: Object.values(valuesAndWeightsByDimensionName).map(
-                ({ value }) => value
-              ),
+              data: Object.values(dimensions).map(({ value }) => value),
               fill: true,
               label: "Dimension values",
               pointBackgroundColor: "rgb(255, 99, 132)",
@@ -123,10 +112,7 @@ const Radar: NextPage = () => {
               ([name, { colorBackground, colorForeground, value }]) => ({
                 backgroundColor: colorBackground,
                 borderColor: colorForeground,
-                data: Array.from(
-                  Object.keys(valuesAndWeightsByDimensionName),
-                  () => value
-                ),
+                data: Array.from(Object.keys(dimensions), () => value),
                 fill: true,
                 label: `${name} mean`,
                 pointBackgroundColor: colorForeground,
@@ -136,7 +122,7 @@ const Radar: NextPage = () => {
               })
             ),
           ],
-          labels: Object.keys(valuesAndWeightsByDimensionName),
+          labels: Object.keys(dimensions),
         },
         options: {
           animation: false,
@@ -157,7 +143,7 @@ const Radar: NextPage = () => {
         radarChart.destroy();
       };
     }
-  }, [shouldShowLevels, valuesAndWeightsByDimensionName]);
+  }, [shouldShowLevels, dimensions]);
 
   return (
     <>
@@ -184,7 +170,7 @@ const Radar: NextPage = () => {
               <Button
                 onClick={() => {
                   if (pendingDimensionName)
-                    setValuesAndWeightsByDimensionName((old) => ({
+                    setDimensions((old) => ({
                       ...old,
                       [pendingDimensionName]: { value: 4, weight: 1 },
                     }));
@@ -207,74 +193,70 @@ const Radar: NextPage = () => {
               label="Should show levels"
             />
             {shouldShowLevels ? <StandardLevelSlider /> : null}
-            {Object.entries(valuesAndWeightsByDimensionName).map(
-              ([dimensionName, { value }]) => (
-                <Grid
-                  alignItems="center"
-                  container
-                  key={`${dimensionName}-slider`}
-                  spacing={2}
-                >
-                  <Grid item xs={1}>
-                    <IconButton
-                      aria-label="delete-dimension"
-                      color="primary"
-                      component="label"
-                      onClick={() =>
-                        setValuesAndWeightsByDimensionName((old) =>
-                          Object.fromEntries(
-                            Object.entries(old).filter(
-                              ([name]) => name !== dimensionName
-                            )
+            {Object.entries(dimensions).map(([dimensionName, { value }]) => (
+              <Grid
+                alignItems="center"
+                container
+                key={`${dimensionName}-slider`}
+                spacing={2}
+              >
+                <Grid item xs={1}>
+                  <IconButton
+                    aria-label="delete-dimension"
+                    color="primary"
+                    component="label"
+                    onClick={() =>
+                      setDimensions((old) =>
+                        Object.fromEntries(
+                          Object.entries(old).filter(
+                            ([name]) => name !== dimensionName
                           )
                         )
-                      }
-                    >
-                      <Clear />
-                    </IconButton>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <TextField
-                      InputLabelProps={{ shrink: true }}
-                      id="outlined-number"
-                      label="weight"
-                      onChange={({ target }) => {
-                        setValuesAndWeightsByDimensionName((old) => ({
-                          ...old,
-                          [dimensionName]: {
-                            ...old[dimensionName],
-                            weight: Math.max(Number(target.value), 0),
-                          },
-                        }));
-                      }}
-                      type="number"
-                      value={
-                        valuesAndWeightsByDimensionName[dimensionName].weight
-                      }
-                    />
-                  </Grid>
-                  <Grid item xs={9}>
-                    <SliderWithLabels
-                      displayValue={value.toString()}
-                      label={dimensionName}
-                      sliderMax={7}
-                      sliderMin={1}
-                      sliderOnChange={(_event, newValue) =>
-                        setValuesAndWeightsByDimensionName((old) => ({
-                          ...old,
-                          [dimensionName]: {
-                            ...old[dimensionName],
-                            value: newValue as number,
-                          },
-                        }))
-                      }
-                      sliderValue={value}
-                      step={1}
-                    />
-                  </Grid>
+                      )
+                    }
+                  >
+                    <Clear />
+                  </IconButton>
                 </Grid>
-              )
-            )}
+                <Grid item xs={2}>
+                  <TextField
+                    InputLabelProps={{ shrink: true }}
+                    id="outlined-number"
+                    label="weight"
+                    onChange={({ target }) => {
+                      setDimensions((old) => ({
+                        ...old,
+                        [dimensionName]: {
+                          ...old[dimensionName],
+                          weight: Math.max(Number(target.value), 0),
+                        },
+                      }));
+                    }}
+                    type="number"
+                    value={dimensions[dimensionName].weight}
+                  />
+                </Grid>
+                <Grid item xs={9}>
+                  <SliderWithLabels
+                    displayValue={value.toString()}
+                    label={dimensionName}
+                    sliderMax={7}
+                    sliderMin={1}
+                    sliderOnChange={(_event, newValue) =>
+                      setDimensions((old) => ({
+                        ...old,
+                        [dimensionName]: {
+                          ...old[dimensionName],
+                          value: newValue as number,
+                        },
+                      }))
+                    }
+                    sliderValue={value}
+                    step={1}
+                  />
+                </Grid>
+              </Grid>
+            ))}
             <canvas className="max-h-screen" ref={radarChartRef} />
           </div>
         </Segment>
