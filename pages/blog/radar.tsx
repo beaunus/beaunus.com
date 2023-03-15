@@ -1,4 +1,5 @@
 import { FormControlLabel, Switch } from "@mui/material";
+import Chip from "@mui/material/Chip";
 import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import Slider from "@mui/material/Slider";
@@ -33,11 +34,10 @@ const STANDARD_LEVELS: Record<string, number> = {
 const range: [number, number] = [1, 7];
 
 const Radar: NextPage = () => {
-  const [dimensionNames] = React.useState<string[]>(DIMENSION_NAMES);
   const [valuesAndWeightsByDimensionName, setValuesAndWeightsByDimensionName] =
     React.useState<Record<string, { value: number; weight: number }>>(
       Object.fromEntries(
-        dimensionNames.map((name) => [name, { value: 4, weight: 1 }])
+        DIMENSION_NAMES.map((name) => [name, { value: 4, weight: 1 }])
       )
     );
   const [shouldShowLevels, setShouldShowLevels] = React.useState(true);
@@ -150,6 +150,26 @@ const Radar: NextPage = () => {
             <div className="text-2xl font-semibold text-center text-cyan-700">
               Radar
             </div>
+            <div className="flex flex-wrap gap-2 justify-center">
+              {Array.from(Object.keys(valuesAndWeightsByDimensionName)).map(
+                (dimensionName) => (
+                  <Chip
+                    key={dimensionName}
+                    label={dimensionName}
+                    onDelete={() => {
+                      setValuesAndWeightsByDimensionName((old) =>
+                        Object.fromEntries(
+                          Object.entries(old).filter(
+                            ([name]) => name !== dimensionName
+                          )
+                        )
+                      );
+                    }}
+                  />
+                )
+              )}
+            </div>
+
             <FormControl>
               <FormControlLabel
                 control={
