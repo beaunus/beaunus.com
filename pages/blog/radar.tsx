@@ -12,6 +12,7 @@ import React from "react";
 
 import { Segment } from "../../components/Segment";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
+import { geometricMean } from "../../utils/mean";
 
 type ColorName = `rgb(${number}, ${number}, ${number}, ${number})`;
 
@@ -62,17 +63,11 @@ const Radar: NextPage = () => {
         geometric: {
           colorBackground: "rgb(200, 255, 200, 0.2)",
           colorForeground: "rgb(200, 255, 200, 1)",
-          value:
-            Object.values(valuesAndWeightsByDimensionName)
-              .flatMap(({ value, weight }) =>
-                Array.from({ length: weight }, () => value)
-              )
-              .reduce((product, value) => product * value, 1) **
-            (1 /
-              Object.values(valuesAndWeightsByDimensionName).reduce(
-                (sum, { weight }) => sum + weight,
-                0
-              )),
+          value: geometricMean(
+            Object.values(valuesAndWeightsByDimensionName).flatMap(
+              ({ value, weight }) => Array.from({ length: weight }, () => value)
+            )
+          ),
         },
       };
       const radarChart = new ChartJS(radarChartRef.current, {
