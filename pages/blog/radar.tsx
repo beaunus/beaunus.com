@@ -1,4 +1,4 @@
-import { FormControlLabel, Switch } from "@mui/material";
+import { Button, FormControlLabel, Switch } from "@mui/material";
 import Chip from "@mui/material/Chip";
 import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
@@ -41,6 +41,8 @@ const Radar: NextPage = () => {
       )
     );
   const [shouldShowLevels, setShouldShowLevels] = React.useState(true);
+  const [pendingDimensionName, setPendingDimensionName] =
+    React.useState<string>("");
 
   const radarChartRef = React.useRef<HTMLCanvasElement>(null);
 
@@ -149,6 +151,31 @@ const Radar: NextPage = () => {
           <div className="flex flex-col gap-5 w-full">
             <div className="text-2xl font-semibold text-center text-cyan-700">
               Radar
+            </div>
+            <div className="flex gap-4 justify-between items-center w-full">
+              <TextField
+                fullWidth
+                id="new-dimension"
+                label="New Dimension"
+                onChange={(event) =>
+                  setPendingDimensionName(event.target.value)
+                }
+                value={pendingDimensionName}
+                variant="outlined"
+              />
+              <Button
+                onClick={() => {
+                  if (pendingDimensionName)
+                    setValuesAndWeightsByDimensionName((old) => ({
+                      ...old,
+                      [pendingDimensionName]: { value: 4, weight: 1 },
+                    }));
+                  setPendingDimensionName("");
+                }}
+                variant="outlined"
+              >
+                Add New Dimension
+              </Button>
             </div>
             <div className="flex flex-wrap gap-2 justify-center">
               {Array.from(Object.keys(valuesAndWeightsByDimensionName)).map(
