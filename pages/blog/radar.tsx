@@ -220,7 +220,6 @@ const Radar: NextPage = () => {
                 </Grid>
                 <Grid item xs={2}>
                   <TextField
-                    InputLabelProps={{ shrink: true }}
                     id="outlined-number"
                     label="weight"
                     onChange={({ target }) => {
