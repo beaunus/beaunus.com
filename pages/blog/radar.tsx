@@ -15,6 +15,23 @@ import { SliderWithLabels } from "../../components/SliderWithLabels";
 
 type ColorName = `rgb(${number}, ${number}, ${number}, ${number})`;
 
+const DEFAULT_VALUES_AND_WEIGHTS_BY_DIMENSION_NAME: Record<
+  string,
+  { value: number; weight: number }
+> = {
+  /* eslint-disable @typescript-eslint/naming-convention, sort-keys */
+  "Technical Skills": { value: 4, weight: 1 },
+  "Decision Making": { value: 4, weight: 1 },
+  Mentoring: { value: 4, weight: 1 },
+  "Driving Alignment": { value: 4, weight: 1 },
+  "Process Thinking": { value: 4, weight: 1 },
+  "Knowledge Sharing": { value: 4, weight: 1 },
+  Teamwork: { value: 4, weight: 1 },
+  Facilitation: { value: 4, weight: 1 },
+  "X-factor": { value: 4, weight: 1 },
+  /* eslint-enable @typescript-eslint/naming-convention, sort-keys */
+};
+
 const STANDARD_LEVELS: Record<string, number> = {
   junior: 2,
   mid: 4,
@@ -25,19 +42,7 @@ const range: [number, number] = [1, 7];
 
 const Radar: NextPage = () => {
   const [valuesAndWeightsByDimensionName, setValuesAndWeightsByDimensionName] =
-    React.useState<Record<string, { value: number; weight: number }>>({
-      /* eslint-disable @typescript-eslint/naming-convention, sort-keys */
-      "Technical Skills": { value: 4, weight: 1 },
-      "Decision Making": { value: 4, weight: 1 },
-      Mentoring: { value: 4, weight: 1 },
-      "Driving Alignment": { value: 4, weight: 1 },
-      "Process Thinking": { value: 4, weight: 1 },
-      "Knowledge Sharing": { value: 4, weight: 1 },
-      Teamwork: { value: 4, weight: 1 },
-      Facilitation: { value: 4, weight: 1 },
-      "X-factor": { value: 4, weight: 1 },
-      /* eslint-enable @typescript-eslint/naming-convention, sort-keys */
-    });
+    React.useState(DEFAULT_VALUES_AND_WEIGHTS_BY_DIMENSION_NAME);
   const [shouldShowLevels, setShouldShowLevels] = React.useState(true);
   const [pendingDimensionName, setPendingDimensionName] =
     React.useState<string>("");
