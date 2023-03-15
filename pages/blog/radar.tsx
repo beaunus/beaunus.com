@@ -88,7 +88,7 @@ const Radar: NextPage = () => {
                     () => value
                   ),
                   fill: true,
-                  label: `${name}`,
+                  label: name,
                   pointBackgroundColor: "#ccc",
                 }))
               : []),
