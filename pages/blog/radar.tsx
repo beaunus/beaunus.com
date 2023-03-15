@@ -14,17 +14,6 @@ import { Segment } from "../../components/Segment";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
 
 type ColorName = `rgb(${number}, ${number}, ${number}, ${number})`;
-const DIMENSION_NAMES = [
-  "Technical Skills",
-  "Decision Making",
-  "Mentoring",
-  "Driving Alignment",
-  "Process Thinking",
-  "Knowledge Sharing",
-  "Teamwork",
-  "Facilitation",
-  "X-factor",
-];
 
 const STANDARD_LEVELS: Record<string, number> = {
   junior: 2,
@@ -38,7 +27,17 @@ const Radar: NextPage = () => {
   const [valuesAndWeightsByDimensionName, setValuesAndWeightsByDimensionName] =
     React.useState<Record<string, { value: number; weight: number }>>(
       Object.fromEntries(
-        DIMENSION_NAMES.map((name) => [name, { value: 4, weight: 1 }])
+        [
+          "Technical Skills",
+          "Decision Making",
+          "Mentoring",
+          "Driving Alignment",
+          "Process Thinking",
+          "Knowledge Sharing",
+          "Teamwork",
+          "Facilitation",
+          "X-factor",
+        ].map((name) => [name, { value: 4, weight: 1 }])
       )
     );
   const [shouldShowLevels, setShouldShowLevels] = React.useState(true);
@@ -81,7 +80,7 @@ const Radar: NextPage = () => {
                   backgroundColor: "rgb(0, 0, 0, 0)",
                   borderColor: "#ccc",
                   data: Array.from(
-                    { length: DIMENSION_NAMES.length },
+                    Object.keys(valuesAndWeightsByDimensionName),
                     () => value
                   ),
                   fill: true,
@@ -107,7 +106,7 @@ const Radar: NextPage = () => {
                 backgroundColor: colorBackground,
                 borderColor: colorForeground,
                 data: Array.from(
-                  { length: DIMENSION_NAMES.length },
+                  Object.keys(valuesAndWeightsByDimensionName),
                   () => value
                 ),
                 fill: true,
