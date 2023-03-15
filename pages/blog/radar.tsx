@@ -45,7 +45,7 @@ const StandardLevelSlider: React.FC = () => (
     <Grid item xs={3} />
     <Grid item xs={9}>
       <Slider
-        defaultValue={[2, 4, 6]}
+        defaultValue={Object.values(STANDARD_LEVELS)}
         disabled={true}
         marks={Object.entries(STANDARD_LEVELS).map(([label, value]) => ({
           label,
