@@ -40,6 +40,24 @@ const STANDARD_LEVELS: Record<string, number> = {
 
 const SLIDER_RANGE: [number, number] = [1, 7];
 
+const StandardLevelSlider: React.FC = () => (
+  <Grid container spacing={2}>
+    <Grid item xs={3} />
+    <Grid item xs={9}>
+      <Slider
+        defaultValue={[2, 4, 6]}
+        disabled={true}
+        marks={Object.entries(STANDARD_LEVELS).map(([label, value]) => ({
+          label,
+          value,
+        }))}
+        max={SLIDER_RANGE[1]}
+        min={SLIDER_RANGE[0]}
+      />
+    </Grid>
+  </Grid>
+);
+
 const Radar: NextPage = () => {
   const [valuesAndWeightsByDimensionName, setValuesAndWeightsByDimensionName] =
     React.useState(DEFAULT_VALUES_AND_WEIGHTS_BY_DIMENSION_NAME);
@@ -188,23 +206,7 @@ const Radar: NextPage = () => {
               }
               label="Should show levels"
             />
-            {shouldShowLevels ? (
-              <Grid container spacing={2}>
-                <Grid item xs={3} />
-                <Grid item xs={9}>
-                  <Slider
-                    defaultValue={[2, 4, 6]}
-                    disabled={true}
-                    marks={Object.entries(STANDARD_LEVELS).map(
-                      ([label, value]) => ({ label, value })
-                    )}
-                    max={SLIDER_RANGE[1]}
-                    min={SLIDER_RANGE[0]}
-                  />
-                </Grid>
-              </Grid>
-            ) : null}
-
+            {shouldShowLevels ? <StandardLevelSlider /> : null}
             {Object.entries(valuesAndWeightsByDimensionName).map(
               ([dimensionName, { value }]) => (
                 <Grid
