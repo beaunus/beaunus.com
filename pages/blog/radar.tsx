@@ -22,8 +22,7 @@ const DIMENSION_NAMES = [
   "Teamwork",
   "Facilitation",
   "X-factor",
-] as const;
-type DimensionName = (typeof DIMENSION_NAMES)[number];
+];
 
 const STANDARD_LEVELS: Record<string, number> = {
   junior: 2,
@@ -34,11 +33,12 @@ const STANDARD_LEVELS: Record<string, number> = {
 const range: [number, number] = [1, 7];
 
 const Radar: NextPage = () => {
+  const [dimensionNames] = React.useState<string[]>(DIMENSION_NAMES);
   const [valuesAndWeightsByDimensionName, setValuesAndWeightsByDimensionName] =
-    React.useState<Record<DimensionName, { value: number; weight: number }>>(
+    React.useState<Record<string, { value: number; weight: number }>>(
       Object.fromEntries(
-        DIMENSION_NAMES.map((name) => [name, { value: 4, weight: 1 }])
-      ) as Record<DimensionName, { value: number; weight: number }>
+        dimensionNames.map((name) => [name, { value: 4, weight: 1 }])
+      )
     );
   const [shouldShowLevels, setShouldShowLevels] = React.useState(true);
 
@@ -191,16 +191,14 @@ const Radar: NextPage = () => {
                           setValuesAndWeightsByDimensionName((old) => ({
                             ...old,
                             [dimensionName]: {
-                              ...old[dimensionName as DimensionName],
+                              ...old[dimensionName],
                               weight: Math.max(Number(target.value), 0),
                             },
                           }));
                         }}
                         type="number"
                         value={
-                          valuesAndWeightsByDimensionName[
-                            dimensionName as DimensionName
-                          ].weight
+                          valuesAndWeightsByDimensionName[dimensionName].weight
                         }
                       />
                     </Grid>
@@ -211,13 +209,16 @@ const Radar: NextPage = () => {
                         sliderMax={7}
                         sliderMin={1}
                         sliderOnChange={(_event, newValue) =>
-                          setValuesAndWeightsByDimensionName((old) => ({
-                            ...old,
-                            [dimensionName]: {
-                              ...old[dimensionName as DimensionName],
-                              value: newValue,
-                            },
-                          }))
+                          setValuesAndWeightsByDimensionName(
+                            (old) =>
+                              ({
+                                ...old,
+                                [dimensionName]: {
+                                  ...old[dimensionName],
+                                  value: newValue,
+                                },
+                              } as typeof valuesAndWeightsByDimensionName)
+                          )
                         }
                         sliderValue={value}
                         step={1}
