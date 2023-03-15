@@ -147,7 +147,7 @@ const Radar: NextPage = () => {
                 <Grid item xs={2} />
                 <Grid item xs={10}>
                   <Slider
-                    defaultValue={0}
+                    defaultValue={[2, 4, 6]}
                     disabled={true}
                     marks={Object.entries(STANDARD_LEVELS).map(
                       ([label, value]) => ({ label, value })
