@@ -38,7 +38,7 @@ const STANDARD_LEVELS: Record<string, number> = {
   senior: 6,
 };
 
-const range: [number, number] = [1, 7];
+const SLIDER_RANGE: [number, number] = [1, 7];
 
 const Radar: NextPage = () => {
   const [valuesAndWeightsByDimensionName, setValuesAndWeightsByDimensionName] =
@@ -130,8 +130,8 @@ const Radar: NextPage = () => {
           scales: {
             r: {
               angleLines: { display: true },
-              suggestedMax: range[1],
-              suggestedMin: range[0],
+              suggestedMax: SLIDER_RANGE[1],
+              suggestedMin: SLIDER_RANGE[0],
             },
           },
         },
@@ -202,8 +202,8 @@ const Radar: NextPage = () => {
                       marks={Object.entries(STANDARD_LEVELS).map(
                         ([label, value]) => ({ label, value })
                       )}
-                      max={range[1]}
-                      min={range[0]}
+                      max={SLIDER_RANGE[1]}
+                      min={SLIDER_RANGE[0]}
                     />
                   </Grid>
                 </Grid>
