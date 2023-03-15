@@ -12,7 +12,7 @@ import React from "react";
 
 import { Segment } from "../../components/Segment";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
-import { geometricMean } from "../../utils/mean";
+import { arithmeticMean, geometricMean } from "../../utils/mean";
 
 type ColorName = `rgb(${number}, ${number}, ${number}, ${number})`;
 
@@ -60,6 +60,15 @@ const Radar: NextPage = () => {
           value: number;
         }
       > = {
+        arithmetic: {
+          colorBackground: "rgb(200, 200, 255, 0.2)",
+          colorForeground: "rgb(200, 200, 255, 1)",
+          value: arithmeticMean(
+            Object.values(valuesAndWeightsByDimensionName).flatMap(
+              ({ value, weight }) => Array.from({ length: weight }, () => value)
+            )
+          ),
+        },
         geometric: {
           colorBackground: "rgb(200, 255, 200, 0.2)",
           colorForeground: "rgb(200, 255, 200, 1)",
