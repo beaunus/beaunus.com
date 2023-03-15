@@ -52,6 +52,11 @@ const Radar: NextPage = () => {
 
   React.useEffect(() => {
     if (radarChartRef.current) {
+      const valuesAccordingToWeights = Object.values(
+        valuesAndWeightsByDimensionName
+      ).flatMap(({ value, weight }) =>
+        Array.from({ length: weight }, () => value)
+      );
       const means: Record<
         string,
         {
@@ -63,20 +68,12 @@ const Radar: NextPage = () => {
         arithmetic: {
           colorBackground: "rgb(200, 200, 255, 0.2)",
           colorForeground: "rgb(200, 200, 255, 1)",
-          value: arithmeticMean(
-            Object.values(valuesAndWeightsByDimensionName).flatMap(
-              ({ value, weight }) => Array.from({ length: weight }, () => value)
-            )
-          ),
+          value: arithmeticMean(valuesAccordingToWeights),
         },
         geometric: {
           colorBackground: "rgb(200, 255, 200, 0.2)",
           colorForeground: "rgb(200, 255, 200, 1)",
-          value: geometricMean(
-            Object.values(valuesAndWeightsByDimensionName).flatMap(
-              ({ value, weight }) => Array.from({ length: weight }, () => value)
-            )
-          ),
+          value: geometricMean(valuesAccordingToWeights),
         },
       };
       const radarChart = new ChartJS(radarChartRef.current, {
