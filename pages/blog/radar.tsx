@@ -1,6 +1,5 @@
 import { Clear } from "@mui/icons-material";
 import { Button, FormControlLabel, Switch } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Slider from "@mui/material/Slider";
@@ -181,107 +180,105 @@ const Radar: NextPage = () => {
                 Add New Dimension
               </Button>
             </div>
-            <FormControl>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={shouldShowLevels}
-                    onChange={({ target }) => {
-                      setShouldShowLevels(target.checked);
-                    }}
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={shouldShowLevels}
+                  onChange={({ target }) => {
+                    setShouldShowLevels(target.checked);
+                  }}
+                />
+              }
+              label="Should show levels"
+            />
+            {shouldShowLevels ? (
+              <Grid container spacing={2}>
+                <Grid item xs={3} />
+                <Grid item xs={9}>
+                  <Slider
+                    defaultValue={[2, 4, 6]}
+                    disabled={true}
+                    marks={Object.entries(STANDARD_LEVELS).map(
+                      ([label, value]) => ({ label, value })
+                    )}
+                    max={SLIDER_RANGE[1]}
+                    min={SLIDER_RANGE[0]}
                   />
-                }
-                label="Should show levels"
-              />
-              {shouldShowLevels ? (
-                <Grid container spacing={2}>
-                  <Grid item xs={3} />
+                </Grid>
+              </Grid>
+            ) : null}
+
+            {Object.entries(valuesAndWeightsByDimensionName).map(
+              ([dimensionName, { value }]) => (
+                <Grid
+                  alignItems="center"
+                  container
+                  key={`${dimensionName}-slider`}
+                  spacing={2}
+                >
+                  <Grid item xs={1}>
+                    <IconButton
+                      aria-label="delete-dimension"
+                      color="primary"
+                      component="label"
+                      onClick={() =>
+                        setValuesAndWeightsByDimensionName((old) =>
+                          Object.fromEntries(
+                            Object.entries(old).filter(
+                              ([name]) => name !== dimensionName
+                            )
+                          )
+                        )
+                      }
+                    >
+                      <Clear />
+                    </IconButton>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextField
+                      InputLabelProps={{ shrink: true }}
+                      id="outlined-number"
+                      label="weight"
+                      onChange={({ target }) => {
+                        setValuesAndWeightsByDimensionName((old) => ({
+                          ...old,
+                          [dimensionName]: {
+                            ...old[dimensionName],
+                            weight: Math.max(Number(target.value), 0),
+                          },
+                        }));
+                      }}
+                      type="number"
+                      value={
+                        valuesAndWeightsByDimensionName[dimensionName].weight
+                      }
+                    />
+                  </Grid>
                   <Grid item xs={9}>
-                    <Slider
-                      defaultValue={[2, 4, 6]}
-                      disabled={true}
-                      marks={Object.entries(STANDARD_LEVELS).map(
-                        ([label, value]) => ({ label, value })
-                      )}
-                      max={SLIDER_RANGE[1]}
-                      min={SLIDER_RANGE[0]}
+                    <SliderWithLabels
+                      displayValue={value.toString()}
+                      label={dimensionName}
+                      sliderMax={7}
+                      sliderMin={1}
+                      sliderOnChange={(_event, newValue) =>
+                        setValuesAndWeightsByDimensionName(
+                          (old) =>
+                            ({
+                              ...old,
+                              [dimensionName]: {
+                                ...old[dimensionName],
+                                value: newValue,
+                              },
+                            } as typeof valuesAndWeightsByDimensionName)
+                        )
+                      }
+                      sliderValue={value}
+                      step={1}
                     />
                   </Grid>
                 </Grid>
-              ) : null}
-
-              {Object.entries(valuesAndWeightsByDimensionName).map(
-                ([dimensionName, { value }]) => (
-                  <Grid
-                    alignItems="center"
-                    container
-                    key={`${dimensionName}-slider`}
-                    spacing={2}
-                  >
-                    <Grid item xs={1}>
-                      <IconButton
-                        aria-label="delete-dimension"
-                        color="primary"
-                        component="label"
-                        onClick={() =>
-                          setValuesAndWeightsByDimensionName((old) =>
-                            Object.fromEntries(
-                              Object.entries(old).filter(
-                                ([name]) => name !== dimensionName
-                              )
-                            )
-                          )
-                        }
-                      >
-                        <Clear />
-                      </IconButton>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <TextField
-                        InputLabelProps={{ shrink: true }}
-                        id="outlined-number"
-                        label="weight"
-                        onChange={({ target }) => {
-                          setValuesAndWeightsByDimensionName((old) => ({
-                            ...old,
-                            [dimensionName]: {
-                              ...old[dimensionName],
-                              weight: Math.max(Number(target.value), 0),
-                            },
-                          }));
-                        }}
-                        type="number"
-                        value={
-                          valuesAndWeightsByDimensionName[dimensionName].weight
-                        }
-                      />
-                    </Grid>
-                    <Grid item xs={9}>
-                      <SliderWithLabels
-                        displayValue={value.toString()}
-                        label={dimensionName}
-                        sliderMax={7}
-                        sliderMin={1}
-                        sliderOnChange={(_event, newValue) =>
-                          setValuesAndWeightsByDimensionName(
-                            (old) =>
-                              ({
-                                ...old,
-                                [dimensionName]: {
-                                  ...old[dimensionName],
-                                  value: newValue,
-                                },
-                              } as typeof valuesAndWeightsByDimensionName)
-                          )
-                        }
-                        sliderValue={value}
-                        step={1}
-                      />
-                    </Grid>
-                  </Grid>
-                )
-              )}
-            </FormControl>
+              )
+            )}
             <canvas className="max-h-screen" ref={radarChartRef} />
           </div>
         </Segment>
