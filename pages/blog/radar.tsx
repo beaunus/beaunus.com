@@ -21,6 +21,7 @@ const DIMENSION_NAMES = [
   "Knowledge Sharing",
   "Teamwork",
   "Facilitation",
+  "X-factor",
 ] as const;
 type DimensionName = (typeof DIMENSION_NAMES)[number];
 
@@ -191,7 +192,7 @@ const Radar: NextPage = () => {
                             ...old,
                             [dimensionName]: {
                               ...old[dimensionName as DimensionName],
-                              weight: Math.max(Number(target.value), 1),
+                              weight: Math.max(Number(target.value), 0),
                             },
                           }));
                         }}
