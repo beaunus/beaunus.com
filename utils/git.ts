@@ -135,3 +135,6 @@ export const parsePathString = (pathString: string): GitFileChangePath => {
       }
     : { afterChange: pathString };
 };
+
+export const splitGitLog = (gitLogString: string): string[] =>
+  `\n${gitLogString}`.split(/\ncommit /).slice(1);

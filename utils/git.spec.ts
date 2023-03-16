@@ -93,4 +93,50 @@ describe("git", () => {
       });
     });
   });
+
+  describe("splitGitLog", () => {
+    const gitLogString = `commit d7b1c30ec615bdd3097110d5014929e6541343b7
+Merge: e69522d72 931936a7d
+Author: FirstName LastName <first.last@domain.com>
+Date:   Thu Mar 16 17:20:32 2023 +0900
+
+    Merge pull request #1234 from company/feature/awesome-thing
+    
+    feature: add awesome thing
+
+commit e69522d72187ee0b6d30c58b0df4085597724ba6
+Merge: edf653999 c8a84b079
+Author: FirstName LastName <first.last@domain.com>
+Date:   Thu Mar 16 17:05:17 2023 +0900
+
+    Merge pull request #2345 from company/fix/broken-thing
+    
+    fix: make it work
+
+commit edf6539995864f8f13f4f5a059f9be017de21eed
+Merge: d857c154f 273d22589
+Author: First <first@domain.com>
+Date:   Thu Mar 16 16:30:54 2023 +0900
+
+    Merge pull request #3456 from company/refactor/pretty-thing
+    
+    refactor: make it pretty
+
+commit 273d2258974ba2c9e812e152c442ca20854da2fe
+Author: FirstLast <firstlast@domain.com>
+Date:   Thu Mar 16 16:18:12 2023 +0900
+
+    feat: Add good thing
+
+45	0	src/utils/sub-domain/file-1.ts
+2	0	src/utils/sub-domain/index.ts
+4	0	src/utils/sub-domain/nested-folder/constants.ts
+`;
+
+    it("should return an array with an element for each commit", () => {
+      const numCommits = gitLogString.match(/commit/g)?.length ?? 0;
+
+      expect(Git.splitGitLog(gitLogString)).toHaveLength(numCommits);
+    });
+  });
 });
