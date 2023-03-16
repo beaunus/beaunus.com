@@ -84,8 +84,8 @@ const Radar: NextPage = () => {
           datasets: [
             ...(shouldShowLevels
               ? Object.entries(STANDARD_LEVELS).map(([name, value]) => ({
-                  backgroundColor: "rgb(0, 0, 0, 0)",
                   data: Array.from(Object.keys(dimensions), () => value),
+                  fill: false,
                   label: name,
                 }))
               : []),
