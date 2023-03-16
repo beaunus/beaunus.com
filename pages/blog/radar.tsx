@@ -150,7 +150,6 @@ const Radar: NextPage = () => {
                 label="New Dimension"
                 onChange={({ target }) => setPendingDimensionName(target.value)}
                 value={pendingDimensionName}
-                // variant="outlined"
               />
               <Button
                 onClick={() => {
@@ -161,7 +160,6 @@ const Radar: NextPage = () => {
                     }));
                   setPendingDimensionName("");
                 }}
-                variant="outlined"
               >
                 Add New Dimension
               </Button>
