@@ -73,55 +73,61 @@ const Radar: NextPage = () => {
 
   const radarChartRef = React.useRef<HTMLCanvasElement>(null);
 
-  React.useEffect(() => {
-    const valuesAccordingToWeights = Object.values(dimensions).flatMap(
-      ({ value, weight }) => Array.from({ length: weight }, () => value)
-    );
-    const aggregate =
-      AGGREGATION_STRATEGY_FUNCTION_BY_NAME[aggregationStrategyName];
+  React.useEffect(
+    function createChart() {
+      const valuesAccordingToWeights = Object.values(dimensions).flatMap(
+        ({ value, weight }) => Array.from({ length: weight }, () => value)
+      );
+      const aggregate =
+        AGGREGATION_STRATEGY_FUNCTION_BY_NAME[aggregationStrategyName];
 
-    if (radarChartRef.current) {
-      const radarChart = new ChartJS(radarChartRef.current, {
-        data: {
-          datasets: [
-            ...(shouldShowLevels
-              ? Object.entries(STANDARD_LEVELS).map(([name, value]) => ({
-                  data: Array.from(Object.keys(dimensions), () => value),
-                  fill: false,
-                  label: name,
-                }))
-              : []),
-            {
-              borderColor: "rgb(255, 99, 132)",
-              data: Object.values(dimensions).map(({ value }) => value),
-              fill: false,
-              label: "Dimensions",
-            },
-            {
-              backgroundColor: "rgb(200, 255, 200, 1)",
-              borderColor: "rgb(200, 255, 200, 1)",
-              data: Array.from(Object.keys(dimensions), () =>
-                aggregate(valuesAccordingToWeights)
-              ),
-              label: aggregationStrategyName,
-            },
-          ],
-          labels: Object.keys(dimensions),
-        },
-        options: {
-          animation: false,
-          scales: {
-            r: { suggestedMax: SLIDER_RANGE[1], suggestedMin: SLIDER_RANGE[0] },
+      if (radarChartRef.current) {
+        const radarChart = new ChartJS(radarChartRef.current, {
+          data: {
+            datasets: [
+              ...(shouldShowLevels
+                ? Object.entries(STANDARD_LEVELS).map(([name, value]) => ({
+                    data: Array.from(Object.keys(dimensions), () => value),
+                    fill: false,
+                    label: name,
+                  }))
+                : []),
+              {
+                borderColor: "rgb(255, 99, 132)",
+                data: Object.values(dimensions).map(({ value }) => value),
+                fill: false,
+                label: "Dimensions",
+              },
+              {
+                backgroundColor: "rgb(200, 255, 200, 1)",
+                borderColor: "rgb(200, 255, 200, 1)",
+                data: Array.from(Object.keys(dimensions), () =>
+                  aggregate(valuesAccordingToWeights)
+                ),
+                label: aggregationStrategyName,
+              },
+            ],
+            labels: Object.keys(dimensions),
           },
-        },
-        type: "radar",
-      });
+          options: {
+            animation: false,
+            scales: {
+              r: {
+                suggestedMax: SLIDER_RANGE[1],
+                suggestedMin: SLIDER_RANGE[0],
+              },
+            },
+          },
+          type: "radar",
+        });
 
-      return () => {
-        radarChart.destroy();
-      };
-    }
-  }, [aggregationStrategyName, dimensions, shouldShowLevels]);
+        return () => {
+          radarChart.destroy();
+        };
+      }
+    },
+    [aggregationStrategyName, dimensions, shouldShowLevels]
+  );
 
   return (
     <>
