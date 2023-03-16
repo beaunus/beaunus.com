@@ -3,7 +3,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import ChartJS from "chart.js/auto";
+import dayjs, { Dayjs } from "dayjs";
 import _ from "lodash";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -44,6 +48,10 @@ const GitThing: NextPage = () => {
   const [scaleType, setScaleType] = React.useState<ScaleType>("linear");
   const [fileNameSliceIndex, setFileNameSliceIndex] = React.useState<number>(0);
   const [dateRange, setDateRange] = React.useState<[Date, Date]>();
+  const [fromDay, setFromDay] = React.useState<Dayjs | null>(
+    dayjs("2022-04-17")
+  );
+  const [toDay, setToDay] = React.useState<Dayjs | null>(dayjs("2022-04-17"));
 
   React.useEffect(() => {
     if (polarAreaChartRef.current) {
@@ -174,6 +182,17 @@ const GitThing: NextPage = () => {
               }
               sliderValue={fileNameSliceIndex}
             />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <div className="flex">
+                <DatePicker
+                  label="From date"
+                  onChange={setFromDay}
+                  value={fromDay}
+                />
+                <DatePicker label="To date" onChange={setToDay} value={toDay} />
+              </div>
+            </LocalizationProvider>
+
             {dateRange
               ? `This history goes from ${dateRange[0].toLocaleString()} to 
             ${dateRange[1].toLocaleString()}`
