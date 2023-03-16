@@ -21,9 +21,7 @@ interface GitFileChangePath {
 
 export type Stats = Required<
   Pick<GitFileChange, "numLinesAdded" | "numLinesDeleted">
-> & {
-  numCommits: number;
-};
+> & { numCommits: number };
 
 export const computeDateRange = (commits: GitCommit[]): [Date, Date] => [
   commits.reduce(
