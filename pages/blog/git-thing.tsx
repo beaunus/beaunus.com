@@ -5,6 +5,7 @@ import FormLabel from "@mui/material/FormLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import ChartJS from "chart.js/auto";
+import _ from "lodash";
 import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
@@ -36,33 +37,6 @@ const valueIterateeByCriteria: Record<Criteria, (stats: Stats) => number> = {
   numLinesDeleted: ({ numLinesDeleted }) => numLinesDeleted,
 };
 
-const compareFnByCriteria: Record<
-  Criteria,
-  (statsA: Stats, statsB: Stats) => number
-> = {
-  numCommits: (a, b) =>
-    a.numCommits > b.numCommits ? -1 : a.numCommits < b.numCommits ? 1 : 0,
-  numLinesAdded: (a, b) =>
-    a.numLinesAdded > b.numLinesAdded
-      ? -1
-      : a.numLinesAdded < b.numLinesAdded
-      ? 1
-      : 0,
-  numLinesChanged: (a, b) =>
-    a.numLinesAdded + a.numLinesDeleted > b.numLinesAdded + b.numLinesDeleted
-      ? -1
-      : a.numLinesAdded + a.numLinesDeleted <
-        b.numLinesAdded + b.numLinesDeleted
-      ? 1
-      : 0,
-  numLinesDeleted: (a, b) =>
-    a.numLinesDeleted > b.numLinesDeleted
-      ? -1
-      : a.numLinesDeleted < b.numLinesDeleted
-      ? 1
-      : 0,
-};
-
 const GitThing: NextPage = () => {
   const polarAreaChartRef = React.useRef<HTMLCanvasElement>(null);
   const [statsByFileName, setStatsByFileName] = React.useState<
@@ -76,10 +50,11 @@ const GitThing: NextPage = () => {
   React.useEffect(() => {
     if (polarAreaChartRef.current) {
       const statsByFileNameSorted = Object.fromEntries(
-        Object.entries(statsByFileName).sort(([, a], [, b]) =>
-          compareFnByCriteria[criteria](a, b)
-        )
+        _.sortBy(Object.entries(statsByFileName), ([, value]) =>
+          valueIterateeByCriteria[criteria](value)
+        ).reverse()
       );
+
       const polarAreaChart = new ChartJS(polarAreaChartRef.current, {
         data: {
           datasets: [
