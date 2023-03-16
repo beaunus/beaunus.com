@@ -89,8 +89,8 @@ const GitThing: NextPage = () => {
       <input
         accept=".txt"
         hidden
-        onChange={(e) => {
-          e.target.files?.[0].text().then((gitLogString) => {
+        onChange={({ target }) => {
+          target.files?.[0].text().then((gitLogString) => {
             const commits = splitGitLog(gitLogString).map(parseCommitString);
             setStatsByFileName(computeStatsByFileName(commits));
             setDateRange(computeDateRange(commits));
