@@ -93,6 +93,7 @@ const GitThing: NextPage = () => {
             const commits = splitGitLog(gitLogString).map(parseCommitString);
             setStatsByFileName(computeStatsByFileName(commits));
             setDateRange(computeDateRange(commits));
+            setFileNameSliceIndex(0);
           });
         }}
         type="file"
