@@ -1,5 +1,4 @@
 import Button from "@mui/material/Button";
-import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import Radio from "@mui/material/Radio";
@@ -114,69 +113,67 @@ const GitThing: NextPage = () => {
               Git thing
             </div>
             <UploadButton />
-            <FormControl>
-              <FormLabel id="criteria-label">Criteria</FormLabel>
-              <RadioGroup
-                aria-labelledby="criteria-label"
-                defaultValue="numCommits"
-                name="criteria-group"
-                onChange={(e) => setCriteria(e.target.value as Criteria)}
-                value={criteria}
-              >
-                <FormControlLabel
-                  control={<Radio />}
-                  label="Number of commits"
-                  value="numCommits"
-                />
-                <FormControlLabel
-                  control={<Radio />}
-                  label="Number of lines added"
-                  value="numLinesAdded"
-                />
-                <FormControlLabel
-                  control={<Radio />}
-                  label="Number of lines deleted"
-                  value="numLinesDeleted"
-                />
-                <FormControlLabel
-                  control={<Radio />}
-                  label="Number of lines changed"
-                  value="numLinesChanged"
-                />
-              </RadioGroup>
-              <FormLabel id="scale-label">Scale</FormLabel>
-              <RadioGroup
-                aria-labelledby="scale-label"
-                defaultValue="liner"
-                name="scale-group"
-                onChange={(e) => setScaleType(e.target.value as ScaleType)}
-                row
-                value={scaleType}
-              >
-                <FormControlLabel
-                  control={<Radio />}
-                  label="Linear"
-                  value="linear"
-                />
-                <FormControlLabel
-                  control={<Radio />}
-                  label="Logarithmic"
-                  value="logarithmic"
-                />
-              </RadioGroup>
-              <SliderWithLabels
-                displayValue={(
-                  Object.keys(statsByFileName).length + fileNameSliceIndex
-                ).toFixed(0)}
-                label="Number of files to show"
-                sliderMax={0}
-                sliderMin={-(Object.keys(statsByFileName).length - 1)}
-                sliderOnChange={(_event, newValue) =>
-                  setFileNameSliceIndex(newValue as number)
-                }
-                sliderValue={fileNameSliceIndex}
+            <FormLabel id="criteria-label">Criteria</FormLabel>
+            <RadioGroup
+              aria-labelledby="criteria-label"
+              defaultValue="numCommits"
+              name="criteria-group"
+              onChange={(e) => setCriteria(e.target.value as Criteria)}
+              value={criteria}
+            >
+              <FormControlLabel
+                control={<Radio />}
+                label="Number of commits"
+                value="numCommits"
               />
-            </FormControl>
+              <FormControlLabel
+                control={<Radio />}
+                label="Number of lines added"
+                value="numLinesAdded"
+              />
+              <FormControlLabel
+                control={<Radio />}
+                label="Number of lines deleted"
+                value="numLinesDeleted"
+              />
+              <FormControlLabel
+                control={<Radio />}
+                label="Number of lines changed"
+                value="numLinesChanged"
+              />
+            </RadioGroup>
+            <FormLabel id="scale-label">Scale</FormLabel>
+            <RadioGroup
+              aria-labelledby="scale-label"
+              defaultValue="liner"
+              name="scale-group"
+              onChange={(e) => setScaleType(e.target.value as ScaleType)}
+              row
+              value={scaleType}
+            >
+              <FormControlLabel
+                control={<Radio />}
+                label="Linear"
+                value="linear"
+              />
+              <FormControlLabel
+                control={<Radio />}
+                label="Logarithmic"
+                value="logarithmic"
+              />
+            </RadioGroup>
+            <SliderWithLabels
+              displayValue={(
+                Object.keys(statsByFileName).length + fileNameSliceIndex
+              ).toFixed(0)}
+              label="Number of files to show"
+              sliderMax={0}
+              sliderMin={-(Object.keys(statsByFileName).length - 1)}
+              sliderOnChange={(_event, newValue) =>
+                setFileNameSliceIndex(newValue as number)
+              }
+              sliderValue={fileNameSliceIndex}
+            />
             {dateRange
               ? `This history goes from ${dateRange[0].toLocaleString()} to 
             ${dateRange[1].toLocaleString()}`
