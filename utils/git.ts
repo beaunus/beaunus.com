@@ -41,7 +41,7 @@ export const computeStatsByFileName = (
 ): Record<string, Stats> => {
   const fileChanges = commits
     .slice()
-    .sort((a, b) => (a.date < b.date ? 11 : a.date > b.date ? -1 : 0))
+    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
     .flatMap(({ date, files }) => files.map((file) => ({ date, ...file })));
   const successorByPredecessor: Record<string, string> = Object.fromEntries(
     fileChanges
