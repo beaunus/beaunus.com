@@ -64,12 +64,12 @@ const StandardLevelSlider: React.FC = () => (
 );
 
 const Radar: NextPage = () => {
-  const [dimensions, setDimensions] = React.useState(DEFAULT_DIMENSIONS);
-  const [shouldShowLevels, setShouldShowLevels] = React.useState(true);
-  const [pendingDimensionName, setPendingDimensionName] =
-    React.useState<string>("");
   const [aggregationStrategyName, setAggregationStrategyName] =
     React.useState<string>("geometricMean");
+  const [dimensions, setDimensions] = React.useState(DEFAULT_DIMENSIONS);
+  const [pendingDimensionName, setPendingDimensionName] =
+    React.useState<string>("");
+  const [shouldShowLevels, setShouldShowLevels] = React.useState(true);
 
   const radarChartRef = React.useRef<HTMLCanvasElement>(null);
 
