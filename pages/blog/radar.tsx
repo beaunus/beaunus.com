@@ -78,9 +78,9 @@ const Radar: NextPage = () => {
       const valuesAccordingToWeights = Object.values(dimensions).flatMap(
         ({ value, weight }) => Array.from({ length: weight }, () => value)
       );
-      const aggregate =
-        AGGREGATION_STRATEGY_FUNCTION_BY_NAME[aggregationStrategyName];
-      const aggregatedValue = aggregate(valuesAccordingToWeights);
+      const aggregatedValue = AGGREGATION_STRATEGY_FUNCTION_BY_NAME[
+        aggregationStrategyName
+      ](valuesAccordingToWeights);
 
       if (radarChartRef.current) {
         const radarChart = new ChartJS(radarChartRef.current, {
