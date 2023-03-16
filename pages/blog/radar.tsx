@@ -58,6 +58,7 @@ const StandardLevelSlider: React.FC = () => (
         }))}
         max={SLIDER_RANGE[1]}
         min={SLIDER_RANGE[0]}
+        size="small"
       />
     </Grid>
   </Grid>
@@ -184,7 +185,7 @@ const Radar: NextPage = () => {
                 alignItems="center"
                 container
                 key={`${dimensionName}-slider`}
-                spacing={2}
+                spacing={1}
               >
                 <Grid item xs={1}>
                   <IconButton
@@ -225,6 +226,7 @@ const Radar: NextPage = () => {
                   <SliderWithLabels
                     displayValue={value.toString()}
                     label={dimensionName}
+                    size="small"
                     sliderMax={7}
                     sliderMin={1}
                     sliderOnChange={(_event, newValue) =>
