@@ -45,7 +45,13 @@ export const computeStatsByFileName = (
     .flatMap(({ date, files }) => files.map((file) => ({ date, ...file })));
   const successorByPredecessor: Record<string, string> = Object.fromEntries(
     fileChanges
-      .filter(({ path: { beforeChange } }) => beforeChange)
+      .filter(
+        ({ path: { beforeChange } }, index, array) =>
+          beforeChange &&
+          !array
+            .slice(0, index)
+            .find((fileChange) => fileChange.path.afterChange === beforeChange)
+      )
       .map(({ path: { afterChange, beforeChange } }) => [
         beforeChange,
         afterChange,
