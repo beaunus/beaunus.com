@@ -77,6 +77,8 @@ const Radar: NextPage = () => {
     const valuesAccordingToWeights = Object.values(dimensions).flatMap(
       ({ value, weight }) => Array.from({ length: weight }, () => value)
     );
+    const aggregate =
+      AGGREGATION_STRATEGY_FUNCTION_BY_NAME[aggregationStrategyName];
 
     if (radarChartRef.current) {
       const radarChart = new ChartJS(radarChartRef.current, {
@@ -99,9 +101,7 @@ const Radar: NextPage = () => {
               backgroundColor: "rgb(200, 255, 200, 1)",
               borderColor: "rgb(200, 255, 200, 1)",
               data: Array.from(Object.keys(dimensions), () =>
-                AGGREGATION_STRATEGY_FUNCTION_BY_NAME[aggregationStrategyName](
-                  valuesAccordingToWeights
-                )
+                aggregate(valuesAccordingToWeights)
               ),
               label: aggregationStrategyName,
             },
