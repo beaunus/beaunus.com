@@ -18,7 +18,7 @@ import { arithmeticMean, geometricMean } from "../../utils/mean";
 
 type AggregationStrategies = Record<string, (numbers: number[]) => number>;
 
-const AGGREGATION_STRATEGIES: AggregationStrategies = {
+const AGGREGATION_STRATEGY_FUNCTION_BY_NAME: AggregationStrategies = {
   arithmeticMean,
   geometricMean,
 };
@@ -99,7 +99,7 @@ const Radar: NextPage = () => {
               backgroundColor: "rgb(200, 255, 200, 1)",
               borderColor: "rgb(200, 255, 200, 1)",
               data: Array.from(Object.keys(dimensions), () =>
-                AGGREGATION_STRATEGIES[aggregationStrategyName](
+                AGGREGATION_STRATEGY_FUNCTION_BY_NAME[aggregationStrategyName](
                   valuesAccordingToWeights
                 )
               ),
@@ -246,14 +246,16 @@ const Radar: NextPage = () => {
               row
               value={aggregationStrategyName}
             >
-              {Object.keys(AGGREGATION_STRATEGIES).map((name) => (
-                <FormControlLabel
-                  control={<Radio />}
-                  key={name}
-                  label={name}
-                  value={name}
-                />
-              ))}
+              {Object.keys(AGGREGATION_STRATEGY_FUNCTION_BY_NAME).map(
+                (name) => (
+                  <FormControlLabel
+                    control={<Radio />}
+                    key={name}
+                    label={name}
+                    value={name}
+                  />
+                )
+              )}
             </RadioGroup>
             <canvas className="max-h-screen" ref={radarChartRef} />
           </div>
