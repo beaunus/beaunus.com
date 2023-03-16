@@ -16,6 +16,7 @@ import {
   computeStatsByFileName,
   GitCommit,
   parseCommitString,
+  splitGitLog,
   Stats,
 } from "../../utils/git";
 
@@ -115,10 +116,9 @@ const GitThing: NextPage = () => {
         accept=".txt"
         hidden
         onChange={async (e) => {
-          const commits: GitCommit[] = `\n${await e.target.files?.[0].text()}`
-            .split(/\ncommit /)
-            .slice(1)
-            .map(parseCommitString);
+          const commits: GitCommit[] = splitGitLog(
+            (await e.target.files?.[0].text()) ?? ""
+          ).map(parseCommitString);
           setStatsByFileName(computeStatsByFileName(commits));
           setDateRange(computeDateRange(commits));
         }}
