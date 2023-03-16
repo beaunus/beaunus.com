@@ -16,9 +16,12 @@ import { Segment } from "../../components/Segment";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
 import { arithmeticMean, geometricMean } from "../../utils/mean";
 
-type ColorName = `rgb(${number}, ${number}, ${number}, ${number})`;
+type AggregationStrategies = Record<string, (numbers: number[]) => number>;
 
-type AggregationStrategy = "arithmeticMean" | "geometricMean";
+const AGGREGATION_STRATEGIES: AggregationStrategies = {
+  arithmeticMean,
+  geometricMean,
+};
 
 const DEFAULT_DIMENSIONS: Record<string, { value: number; weight: number }> = {
   /* eslint-disable @typescript-eslint/naming-convention, sort-keys */
@@ -65,8 +68,8 @@ const Radar: NextPage = () => {
   const [shouldShowLevels, setShouldShowLevels] = React.useState(true);
   const [pendingDimensionName, setPendingDimensionName] =
     React.useState<string>("");
-  const [aggregationStrategy, setAggregationStrategy] =
-    React.useState<AggregationStrategy>("geometricMean");
+  const [aggregationStrategyName, setAggregationStrategyName] =
+    React.useState<string>("geometricMean");
 
   const radarChartRef = React.useRef<HTMLCanvasElement>(null);
 
@@ -74,21 +77,6 @@ const Radar: NextPage = () => {
     const valuesAccordingToWeights = Object.values(dimensions).flatMap(
       ({ value, weight }) => Array.from({ length: weight }, () => value)
     );
-    const aggregationStrategies: Record<
-      string,
-      { colorBackground: ColorName; colorForeground: ColorName; value: number }
-    > = {
-      arithmeticMean: {
-        colorBackground: "rgb(200, 200, 255, 0.2)",
-        colorForeground: "rgb(200, 200, 255, 1)",
-        value: arithmeticMean(valuesAccordingToWeights),
-      },
-      geometricMean: {
-        colorBackground: "rgb(200, 255, 200, 0.2)",
-        colorForeground: "rgb(200, 255, 200, 1)",
-        value: geometricMean(valuesAccordingToWeights),
-      },
-    };
 
     if (radarChartRef.current) {
       const radarChart = new ChartJS(radarChartRef.current, {
@@ -107,19 +95,21 @@ const Radar: NextPage = () => {
               data: Object.values(dimensions).map(({ value }) => value),
               label: "Dimensions",
             },
-            ...Object.entries(aggregationStrategies)
-              .filter(([name]) => name === aggregationStrategy)
-              .map(([name, { colorBackground, colorForeground, value }]) => ({
-                backgroundColor: colorBackground,
-                borderColor: colorForeground,
-                data: Array.from(Object.keys(dimensions), () => value),
-                fill: true,
-                label: name,
-                pointBackgroundColor: colorForeground,
-                pointBorderColor: "#fff",
-                pointHoverBackgroundColor: "#fff",
-                pointHoverBorderColor: colorForeground,
-              })),
+            {
+              backgroundColor: "rgb(200, 255, 200, 0.2)",
+              borderColor: "rgb(200, 255, 200, 1)",
+              data: Array.from(Object.keys(dimensions), () =>
+                AGGREGATION_STRATEGIES[aggregationStrategyName](
+                  valuesAccordingToWeights
+                )
+              ),
+              fill: true,
+              label: aggregationStrategyName,
+              pointBackgroundColor: "rgb(200, 255, 200, 1)",
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "#fff",
+              pointHoverBorderColor: "rgb(200, 255, 200, 1)",
+            },
           ],
           labels: Object.keys(dimensions),
         },
@@ -136,7 +126,7 @@ const Radar: NextPage = () => {
         radarChart.destroy();
       };
     }
-  }, [aggregationStrategy, dimensions, shouldShowLevels]);
+  }, [aggregationStrategyName, dimensions, shouldShowLevels]);
 
   return (
     <>
@@ -256,21 +246,19 @@ const Radar: NextPage = () => {
               aria-labelledby="aggregation-strategy"
               name="aggregation-strategy-group"
               onChange={(_event, newValue) => {
-                setAggregationStrategy(newValue as AggregationStrategy);
+                setAggregationStrategyName(newValue);
               }}
               row
-              value={aggregationStrategy}
+              value={aggregationStrategyName}
             >
-              <FormControlLabel
-                control={<Radio />}
-                label="Arithmetic Mean"
-                value="arithmeticMean"
-              />
-              <FormControlLabel
-                control={<Radio />}
-                label="Geometric Mean"
-                value="geometricMean"
-              />
+              {Object.keys(AGGREGATION_STRATEGIES).map((name) => (
+                <FormControlLabel
+                  control={<Radio />}
+                  key={name}
+                  label={name}
+                  value={name}
+                />
+              ))}
             </RadioGroup>
             <canvas className="max-h-screen" ref={radarChartRef} />
           </div>
