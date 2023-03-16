@@ -14,7 +14,6 @@ import { SliderWithLabels } from "../../components/SliderWithLabels";
 import {
   computeDateRange,
   computeStatsByFileName,
-  GitCommit,
   parseCommitString,
   splitGitLog,
   Stats,
