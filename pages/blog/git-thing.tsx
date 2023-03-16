@@ -70,7 +70,7 @@ const GitThing: NextPage = () => {
   >({});
   const [criteria, setCriteria] = React.useState<Criteria>("numCommits");
   const [scaleType, setScaleType] = React.useState<ScaleType>("linear");
-  const [limit, setLimit] = React.useState<number>(0);
+  const [fileNameSliceIndex, setFileNameSliceIndex] = React.useState<number>(0);
   const [dateRange, setDateRange] = React.useState<[Date, Date]>();
 
   React.useEffect(() => {
@@ -85,12 +85,12 @@ const GitThing: NextPage = () => {
           datasets: [
             {
               data: Object.values(statsByFileNameSorted)
-                .slice(...(limit ? [0, limit] : []))
+                .slice(...(fileNameSliceIndex ? [0, fileNameSliceIndex] : []))
                 .map(valueIterateeByCriteria[criteria]),
             },
           ],
           labels: Object.keys(statsByFileNameSorted).slice(
-            ...(limit ? [0, limit] : [])
+            ...(fileNameSliceIndex ? [0, fileNameSliceIndex] : [])
           ),
         },
         options: {
@@ -107,7 +107,7 @@ const GitThing: NextPage = () => {
         polarAreaChart.destroy();
       };
     }
-  }, [criteria, limit, scaleType, statsByFileName]);
+  }, [criteria, fileNameSliceIndex, scaleType, statsByFileName]);
 
   const UploadButton: React.FC = () => (
     <Button component="label" variant="contained">
@@ -190,14 +190,16 @@ const GitThing: NextPage = () => {
                 />
               </RadioGroup>
               <SliderWithLabels
-                displayValue={limit.toFixed(0)}
-                label="Limit"
-                sliderMax={Object.keys(statsByFileName).length}
-                sliderMin={0}
+                displayValue={(
+                  Object.keys(statsByFileName).length + fileNameSliceIndex
+                ).toFixed(0)}
+                label="Number of files to show"
+                sliderMax={0}
+                sliderMin={-(Object.keys(statsByFileName).length - 1)}
                 sliderOnChange={(_event, newValue) =>
-                  setLimit(newValue as number)
+                  setFileNameSliceIndex(newValue as number)
                 }
-                sliderValue={limit}
+                sliderValue={fileNameSliceIndex}
               />
             </FormControl>
             {dateRange
