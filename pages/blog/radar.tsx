@@ -96,19 +96,14 @@ const Radar: NextPage = () => {
               label: "Dimensions",
             },
             {
-              backgroundColor: "rgb(200, 255, 200, 0.2)",
+              backgroundColor: "rgb(200, 255, 200, 1)",
               borderColor: "rgb(200, 255, 200, 1)",
               data: Array.from(Object.keys(dimensions), () =>
                 AGGREGATION_STRATEGIES[aggregationStrategyName](
                   valuesAccordingToWeights
                 )
               ),
-              fill: true,
               label: aggregationStrategyName,
-              pointBackgroundColor: "rgb(200, 255, 200, 1)",
-              pointBorderColor: "#fff",
-              pointHoverBackgroundColor: "#fff",
-              pointHoverBorderColor: "rgb(200, 255, 200, 1)",
             },
           ],
           labels: Object.keys(dimensions),
