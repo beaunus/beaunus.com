@@ -89,12 +89,12 @@ const GitThing: NextPage = () => {
       <input
         accept=".txt"
         hidden
-        onChange={async (e) => {
-          const commits: GitCommit[] = splitGitLog(
-            (await e.target.files?.[0].text()) ?? ""
-          ).map(parseCommitString);
-          setStatsByFileName(computeStatsByFileName(commits));
-          setDateRange(computeDateRange(commits));
+        onChange={(e) => {
+          e.target.files?.[0].text().then((gitLogString) => {
+            const commits = splitGitLog(gitLogString).map(parseCommitString);
+            setStatsByFileName(computeStatsByFileName(commits));
+            setDateRange(computeDateRange(commits));
+          });
         }}
         type="file"
       />
