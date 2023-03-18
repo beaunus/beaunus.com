@@ -222,6 +222,8 @@ const Radar: NextPage = () => {
                   <SliderWithLabels
                     displayValue={value.toString()}
                     label={dimensionName}
+                    max={7}
+                    min={1}
                     onChange={(_event, newValue) =>
                       setDimensions((old) => ({
                         ...old,
@@ -232,8 +234,6 @@ const Radar: NextPage = () => {
                       }))
                     }
                     size="small"
-                    sliderMax={7}
-                    sliderMin={1}
                     sliderValue={value}
                     step={1}
                   />

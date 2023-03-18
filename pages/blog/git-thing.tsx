@@ -167,11 +167,11 @@ const GitThing: NextPage = () => {
                 Object.keys(statsByFileName).length + fileNameSliceIndex
               ).toFixed(0)}
               label="Number of files to show"
+              max={0}
+              min={-(Object.keys(statsByFileName).length - 1)}
               onChange={(_event, newValue) =>
                 setFileNameSliceIndex(newValue as number)
               }
-              sliderMax={0}
-              sliderMin={-(Object.keys(statsByFileName).length - 1)}
               sliderValue={fileNameSliceIndex}
             />
             {dateRange
