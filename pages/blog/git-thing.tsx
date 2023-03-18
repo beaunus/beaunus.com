@@ -74,18 +74,20 @@ const GitThing: NextPage = () => {
         ).reverse()
       );
 
+      const dataEntries = Object.entries(statsByFileNameSorted).slice(
+        ...(numFilesToShow ? [0, numFilesToShow] : [])
+      );
+
       const polarAreaChart = new ChartJS(polarAreaChartRef.current, {
         data: {
           datasets: [
             {
-              data: Object.values(statsByFileNameSorted)
-                .slice(...(numFilesToShow ? [0, numFilesToShow] : []))
-                .map(valueIterateeByCriteria[criteria]),
+              data: dataEntries.map(([, stats]) =>
+                valueIterateeByCriteria[criteria](stats)
+              ),
             },
           ],
-          labels: Object.keys(statsByFileNameSorted).slice(
-            ...(numFilesToShow ? [0, numFilesToShow] : [])
-          ),
+          labels: dataEntries.map(([filename]) => filename),
         },
         options: {
           indexAxis: "y",
