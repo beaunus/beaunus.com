@@ -234,8 +234,8 @@ const Radar: NextPage = () => {
                       }))
                     }
                     size="small"
-                    sliderValue={value}
                     step={1}
+                    value={value}
                   />
                 </Grid>
               </Grid>

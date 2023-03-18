@@ -199,7 +199,7 @@ const Poisson: NextPage = () => {
               onChange={(_event, newValue) =>
                 setProbabilityOfEvent((newValue as number) / 100)
               }
-              sliderValue={probabilityOfEvent * 100}
+              value={probabilityOfEvent * 100}
             />
             <SliderWithLabels
               displayValue={(10 ** numTrialsExponent).toLocaleString()}
@@ -209,7 +209,7 @@ const Poisson: NextPage = () => {
               onChange={(_event, newValue) =>
                 setNumTrialsExponent(newValue as number)
               }
-              sliderValue={numTrialsExponent}
+              value={numTrialsExponent}
             />
             <SliderWithLabels
               displayValue={(
@@ -221,7 +221,7 @@ const Poisson: NextPage = () => {
               onChange={(_event, newValue) =>
                 setWindowSizeExponent(newValue as number)
               }
-              sliderValue={Math.min(windowSizeExponent, numTrialsExponent)}
+              value={Math.min(windowSizeExponent, numTrialsExponent)}
             />
             <Grid container spacing={2} width="100%">
               <Grid item xs={6}>

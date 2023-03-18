@@ -172,7 +172,7 @@ const GitThing: NextPage = () => {
               onChange={(_event, newValue) =>
                 setFileNameSliceIndex(newValue as number)
               }
-              sliderValue={fileNameSliceIndex}
+              value={fileNameSliceIndex}
             />
             {dateRange
               ? `This history goes from ${dateRange[0].toLocaleString()} to 

@@ -9,7 +9,6 @@ export const SliderWithLabels: React.FC<
     displayValue: string;
     label: string;
     otherProps?: Partial<SliderProps>;
-    sliderValue: number;
   } & SliderProps
 > = ({
   caption,
@@ -18,7 +17,7 @@ export const SliderWithLabels: React.FC<
   max,
   min,
   onChange,
-  sliderValue,
+  value,
   ...otherProps
 }) => (
   <Grid alignItems="center" columnSpacing={2} container>
@@ -38,7 +37,7 @@ export const SliderWithLabels: React.FC<
         max={max}
         min={min}
         onChange={onChange}
-        value={sliderValue}
+        value={value}
         {...otherProps}
       />
     </Grid>
