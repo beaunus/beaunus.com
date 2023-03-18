@@ -6,8 +6,8 @@ import React from "react";
 export const SliderWithLabels: React.FC<
   {
     caption?: string;
-    displayValue: string;
-    label: string;
+    displayValue?: string;
+    label?: string;
     otherProps?: Partial<SliderProps>;
   } & SliderProps
 > = ({
@@ -21,17 +21,21 @@ export const SliderWithLabels: React.FC<
   ...otherProps
 }) => (
   <Grid alignItems="center" columnSpacing={2} container>
-    <Grid item xs>
-      <Typography variant="body2">{label}</Typography>
-    </Grid>
+    {label ? (
+      <Grid item xs>
+        <Typography variant="body2">{label}</Typography>
+      </Grid>
+    ) : null}
     {caption ? (
       <Grid item>
         <Typography variant="caption">{caption}</Typography>
       </Grid>
     ) : null}
-    <Grid item>
-      <Typography>{displayValue}</Typography>
-    </Grid>
+    {displayValue ? (
+      <Grid item>
+        <Typography>{displayValue}</Typography>
+      </Grid>
+    ) : null}
     <Grid item xs={12}>
       <Slider
         max={max}

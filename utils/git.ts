@@ -1,3 +1,5 @@
+import dayjs, { Dayjs } from "dayjs";
+
 import { NameChangeType } from "./factories";
 
 export interface GitCommit {
@@ -23,16 +25,20 @@ export type Stats = Required<
   Pick<GitFileChange, "numLinesAdded" | "numLinesDeleted">
 > & { numCommits: number };
 
-export const computeDateRange = (commits: GitCommit[]): [Date, Date] => [
-  commits.reduce(
-    (earliestDateSoFar, { date }) =>
-      date < earliestDateSoFar ? date : earliestDateSoFar,
-    commits[0].date
+export const computeDateRange = (commits: GitCommit[]): [Dayjs, Dayjs] => [
+  dayjs(
+    commits.reduce(
+      (earliestDateSoFar, { date }) =>
+        date < earliestDateSoFar ? date : earliestDateSoFar,
+      commits[0]?.date
+    )
   ),
-  commits.reduce(
-    (latestDateSoFar, { date }) =>
-      date > latestDateSoFar ? date : latestDateSoFar,
-    commits[0].date
+  dayjs(
+    commits.reduce(
+      (latestDateSoFar, { date }) =>
+        date > latestDateSoFar ? date : latestDateSoFar,
+      commits[0]?.date
+    )
   ),
 ];
 

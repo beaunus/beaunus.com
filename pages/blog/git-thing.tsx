@@ -3,7 +3,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import ChartJS from "chart.js/auto";
+import dayjs, { Dayjs } from "dayjs";
 import _ from "lodash";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -14,6 +18,7 @@ import { SliderWithLabels } from "../../components/SliderWithLabels";
 import {
   computeDateRange,
   computeStatsByFileName,
+  GitCommit,
   parseCommitString,
   splitGitLog,
   Stats,
@@ -40,10 +45,26 @@ const GitThing: NextPage = () => {
   const [statsByFileName, setStatsByFileName] = React.useState<
     Record<string, Stats>
   >({});
+  const [commits, setCommits] = React.useState<GitCommit[]>([]);
   const [criteria, setCriteria] = React.useState<Criteria>("numCommits");
   const [scaleType, setScaleType] = React.useState<ScaleType>("linear");
   const [numFilesToShow, setNumFilesToShow] = React.useState<number>(0);
-  const [dateRange, setDateRange] = React.useState<[Date, Date]>();
+  const [dateRangeOfHistory, setDateRangeOfHistory] =
+    React.useState<[Dayjs, Dayjs]>();
+  const [numFilesInSelectedDayRange, setNumFilesInSelectedDayRange] =
+    React.useState<number>(0);
+  const [numFilesTotal, setNumFilesTotal] = React.useState<number>(0);
+  const [fromDay, setFromDay] = React.useState<Dayjs>(dayjs());
+  const [toDay, setToDay] = React.useState<Dayjs>(dayjs());
+
+  React.useEffect(() => {
+    const [fromDate, toDate] = [fromDay, toDay].map((day) => day.toDate());
+    const newStatsByFileName = computeStatsByFileName(
+      commits.filter(({ date }) => date >= fromDate && date < toDate)
+    );
+    setNumFilesInSelectedDayRange(Object.keys(newStatsByFileName).length);
+    setStatsByFileName(newStatsByFileName);
+  }, [commits, fromDay, toDay]);
 
   React.useEffect(() => {
     if (polarAreaChartRef.current) {
@@ -90,11 +111,19 @@ const GitThing: NextPage = () => {
         hidden
         onChange={({ target }) => {
           target.files?.[0].text().then((gitLogString) => {
-            const commits = splitGitLog(gitLogString).map(parseCommitString);
-            const newStatsByFileName = computeStatsByFileName(commits);
-            setStatsByFileName(newStatsByFileName);
-            setDateRange(computeDateRange(commits));
-            setNumFilesToShow(Object.keys(newStatsByFileName).length - 1);
+            const commitsFromFile =
+              splitGitLog(gitLogString).map(parseCommitString);
+            const dateRangeOfCommits = computeDateRange(commitsFromFile);
+            const newNumFilesTotal = Object.keys(
+              computeStatsByFileName(commitsFromFile)
+            ).length;
+
+            setCommits(commitsFromFile);
+            setDateRangeOfHistory(dateRangeOfCommits);
+            setFromDay(dateRangeOfCommits[0]);
+            setNumFilesToShow(newNumFilesTotal);
+            setNumFilesTotal(newNumFilesTotal);
+            setToDay(dateRangeOfCommits[1]);
           });
         }}
         type="file"
@@ -167,16 +196,58 @@ const GitThing: NextPage = () => {
               disabled={!numFilesToShow}
               displayValue={numFilesToShow.toFixed(0) ?? ""}
               label="Number of files to show"
-              max={Object.keys(statsByFileName).length - 1}
+              max={numFilesTotal}
               min={1}
               onChange={(_event, newValue) =>
-                setNumFilesToShow(newValue as number)
+                setNumFilesToShow(
+                  Math.min(numFilesInSelectedDayRange, newValue as number)
+                )
               }
               value={numFilesToShow}
             />
-            {dateRange
-              ? `This history goes from ${dateRange[0].toLocaleString()} to 
-            ${dateRange[1].toLocaleString()}`
+            <SliderWithLabels
+              disabled={!dateRangeOfHistory}
+              max={dateRangeOfHistory?.[1].add(1, "day").valueOf()}
+              min={dateRangeOfHistory?.[0].valueOf()}
+              onChange={(_event, newValue) => {
+                const [newFromDayTimestamp, newToDayTimestamp] =
+                  newValue as number[];
+                setFromDay(dayjs(newFromDayTimestamp));
+                setToDay(dayjs(newToDayTimestamp));
+              }}
+              value={
+                fromDay && toDay
+                  ? [fromDay.valueOf(), toDay.valueOf()]
+                  : undefined
+              }
+              valueLabelDisplay="auto"
+              valueLabelFormat={(timestamp) =>
+                dayjs(timestamp).format("YYYY-MM-DD")
+              }
+            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <div className="flex">
+                <DatePicker
+                  disabled={!dateRangeOfHistory}
+                  label="From date"
+                  onChange={(newValue) => {
+                    if (newValue) setFromDay(newValue);
+                  }}
+                  value={fromDay}
+                />
+                <DatePicker
+                  disabled={!dateRangeOfHistory}
+                  label="To date"
+                  onChange={(newValue) => {
+                    if (newValue) setToDay(newValue);
+                  }}
+                  value={toDay}
+                />
+              </div>
+            </LocalizationProvider>
+            {dateRangeOfHistory
+              ? `This history goes from ${dateRangeOfHistory[0].toLocaleString()} to 
+            ${dateRangeOfHistory[1].toLocaleString()}`
               : null}
             <canvas className="max-h-screen" ref={polarAreaChartRef} />
           </div>
