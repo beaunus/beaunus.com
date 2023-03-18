@@ -91,7 +91,7 @@ const GitThing: NextPage = () => {
           indexAxis: "y",
           maintainAspectRatio: false,
           plugins: { legend: { display: false } },
-          scales: { myScale: { axis: "x", type: scaleType } },
+          scales: { myScale: { axis: "x", position: "top", type: scaleType } },
         },
 
         type: "bar",
