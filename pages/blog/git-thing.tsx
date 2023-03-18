@@ -42,7 +42,7 @@ const GitThing: NextPage = () => {
   >({});
   const [criteria, setCriteria] = React.useState<Criteria>("numCommits");
   const [scaleType, setScaleType] = React.useState<ScaleType>("linear");
-  const [fileNameSliceIndex, setFileNameSliceIndex] = React.useState<number>(0);
+  const [numFilesToShow, setNumFilesToShow] = React.useState<number>(0);
   const [dateRange, setDateRange] = React.useState<[Date, Date]>();
 
   React.useEffect(() => {
@@ -58,12 +58,12 @@ const GitThing: NextPage = () => {
           datasets: [
             {
               data: Object.values(statsByFileNameSorted)
-                .slice(...(fileNameSliceIndex ? [0, fileNameSliceIndex] : []))
+                .slice(...(numFilesToShow ? [0, numFilesToShow] : []))
                 .map(valueIterateeByCriteria[criteria]),
             },
           ],
           labels: Object.keys(statsByFileNameSorted).slice(
-            ...(fileNameSliceIndex ? [0, fileNameSliceIndex] : [])
+            ...(numFilesToShow ? [0, numFilesToShow] : [])
           ),
         },
         options: {
@@ -80,7 +80,7 @@ const GitThing: NextPage = () => {
         polarAreaChart.destroy();
       };
     }
-  }, [criteria, fileNameSliceIndex, scaleType, statsByFileName]);
+  }, [criteria, numFilesToShow, scaleType, statsByFileName]);
 
   const UploadButton: React.FC = () => (
     <Button component="label" variant="contained">
@@ -91,9 +91,10 @@ const GitThing: NextPage = () => {
         onChange={({ target }) => {
           target.files?.[0].text().then((gitLogString) => {
             const commits = splitGitLog(gitLogString).map(parseCommitString);
-            setStatsByFileName(computeStatsByFileName(commits));
+            const newStatsByFileName = computeStatsByFileName(commits);
+            setStatsByFileName(newStatsByFileName);
             setDateRange(computeDateRange(commits));
-            setFileNameSliceIndex(0);
+            setNumFilesToShow(Object.keys(newStatsByFileName).length - 1);
           });
         }}
         type="file"
@@ -163,16 +164,15 @@ const GitThing: NextPage = () => {
               />
             </RadioGroup>
             <SliderWithLabels
-              displayValue={(
-                Object.keys(statsByFileName).length + fileNameSliceIndex
-              ).toFixed(0)}
+              disabled={!numFilesToShow}
+              displayValue={numFilesToShow.toFixed(0) ?? ""}
               label="Number of files to show"
-              max={0}
-              min={-(Object.keys(statsByFileName).length - 1)}
+              max={Object.keys(statsByFileName).length - 1}
+              min={1}
               onChange={(_event, newValue) =>
-                setFileNameSliceIndex(newValue as number)
+                setNumFilesToShow(newValue as number)
               }
-              value={fileNameSliceIndex}
+              value={numFilesToShow}
             />
             {dateRange
               ? `This history goes from ${dateRange[0].toLocaleString()} to 
