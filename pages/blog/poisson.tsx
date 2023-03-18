@@ -194,21 +194,21 @@ const Poisson: NextPage = () => {
             <SliderWithLabels
               displayValue={probabilityOfEvent.toFixed(2)}
               label="Probability of event"
-              sliderMax={100}
-              sliderMin={0}
-              sliderOnChange={(_event, newValue) =>
+              onChange={(_event, newValue) =>
                 setProbabilityOfEvent((newValue as number) / 100)
               }
+              sliderMax={100}
+              sliderMin={0}
               sliderValue={probabilityOfEvent * 100}
             />
             <SliderWithLabels
               displayValue={(10 ** numTrialsExponent).toLocaleString()}
               label="Number of trials"
-              sliderMax={6}
-              sliderMin={0}
-              sliderOnChange={(_event, newValue) =>
+              onChange={(_event, newValue) =>
                 setNumTrialsExponent(newValue as number)
               }
+              sliderMax={6}
+              sliderMin={0}
               sliderValue={numTrialsExponent}
             />
             <SliderWithLabels
@@ -216,11 +216,11 @@ const Poisson: NextPage = () => {
                 10 ** Math.min(windowSizeExponent, numTrialsExponent)
               ).toLocaleString()}
               label="Number of experiments between snapshots"
-              sliderMax={numTrialsExponent}
-              sliderMin={0}
-              sliderOnChange={(_event, newValue) =>
+              onChange={(_event, newValue) =>
                 setWindowSizeExponent(newValue as number)
               }
+              sliderMax={numTrialsExponent}
+              sliderMin={0}
               sliderValue={Math.min(windowSizeExponent, numTrialsExponent)}
             />
             <Grid container spacing={2} width="100%">

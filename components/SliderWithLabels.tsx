@@ -11,16 +11,15 @@ export const SliderWithLabels: React.FC<
     otherProps?: Partial<SliderProps>;
     sliderMax: number;
     sliderMin: number;
-    sliderOnChange: SliderProps["onChange"];
     sliderValue: number;
-  } & Partial<SliderProps>
+  } & SliderProps
 > = ({
   caption,
   displayValue,
   label,
   sliderMax,
   sliderMin,
-  sliderOnChange,
+  onChange,
   sliderValue,
   ...otherProps
 }) => (
@@ -40,7 +39,7 @@ export const SliderWithLabels: React.FC<
       <Slider
         max={sliderMax}
         min={sliderMin}
-        onChange={sliderOnChange}
+        onChange={onChange}
         value={sliderValue}
         {...otherProps}
       />
