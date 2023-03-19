@@ -161,26 +161,14 @@ const GitThing: NextPage = () => {
               onChange={(e) => setCriteria(e.target.value as Criteria)}
               value={criteria}
             >
-              <FormControlLabel
-                control={<Radio />}
-                label="Number of commits"
-                value="numCommits"
-              />
-              <FormControlLabel
-                control={<Radio />}
-                label="Number of lines added"
-                value="numLinesAdded"
-              />
-              <FormControlLabel
-                control={<Radio />}
-                label="Number of lines deleted"
-                value="numLinesDeleted"
-              />
-              <FormControlLabel
-                control={<Radio />}
-                label="Number of lines changed"
-                value="numLinesChanged"
-              />
+              {Object.keys(valueIterateeByCriteria).map((name) => (
+                <FormControlLabel
+                  control={<Radio />}
+                  key={name}
+                  label={name}
+                  value={name}
+                />
+              ))}
             </RadioGroup>
             <FormLabel id="scale-label">Scale</FormLabel>
             <RadioGroup
