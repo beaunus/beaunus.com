@@ -161,14 +161,16 @@ const GitThing: NextPage = () => {
               onChange={(e) => setCriteria(e.target.value as Criteria)}
               value={criteria}
             >
-              {Object.keys(valueIterateeByCriteria).map((name) => (
-                <FormControlLabel
-                  control={<Radio />}
-                  key={name}
-                  label={name}
-                  value={name}
-                />
-              ))}
+              <div className="flex">
+                {Object.keys(valueIterateeByCriteria).map((name) => (
+                  <FormControlLabel
+                    control={<Radio />}
+                    key={name}
+                    label={name}
+                    value={name}
+                  />
+                ))}
+              </div>
             </RadioGroup>
             <FormLabel id="scale-label">Scale</FormLabel>
             <RadioGroup
