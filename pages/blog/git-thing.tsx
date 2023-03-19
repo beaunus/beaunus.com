@@ -97,6 +97,7 @@ const GitThing: NextPage = () => {
           labels: dataEntries.map(([filename]) => filename),
         },
         options: {
+          animation: false,
           indexAxis: "y",
           maintainAspectRatio: false,
           plugins: { legend: { display: false } },
