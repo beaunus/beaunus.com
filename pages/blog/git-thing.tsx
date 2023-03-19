@@ -35,6 +35,8 @@ const valueIterateeByCriteria: Record<string, (stats: Stats) => number> = {
   numLinesChanged: ({ numLinesAdded, numLinesDeleted }) =>
     numLinesAdded + numLinesDeleted,
   numLinesDeleted: ({ numLinesDeleted }) => numLinesDeleted,
+  numLinesDiff: ({ numLinesAdded, numLinesDeleted }) =>
+    numLinesAdded - numLinesDeleted,
 };
 type Criteria = keyof typeof valueIterateeByCriteria;
 
@@ -161,7 +163,7 @@ const GitThing: NextPage = () => {
               onChange={(e) => setCriteria(e.target.value as Criteria)}
               value={criteria}
             >
-              <div className="flex">
+              <div className="flex flex-wrap">
                 {Object.keys(valueIterateeByCriteria).map((name) => (
                   <FormControlLabel
                     control={<Radio />}
