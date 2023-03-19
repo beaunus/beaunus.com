@@ -1,5 +1,6 @@
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import Radio from "@mui/material/Radio";
@@ -255,6 +256,22 @@ const GitThing: NextPage = () => {
                 type="number"
                 value={0}
               />
+              <ButtonGroup
+                aria-label="snap button group"
+                className="grow"
+                fullWidth
+              >
+                {[7, 28].map((numDaysToSnapTo) => (
+                  <Button
+                    key={`${numDaysToSnapTo}-snap`}
+                    onClick={() =>
+                      setFromDay(toDay.subtract(numDaysToSnapTo, "days"))
+                    }
+                  >
+                    {numDaysToSnapTo} days
+                  </Button>
+                ))}
+              </ButtonGroup>
             </div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <div className="flex gap-1">
