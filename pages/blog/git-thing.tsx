@@ -64,15 +64,14 @@ const GitThing: NextPage = () => {
   React.useEffect(() => {
     if (polarAreaChartRef.current) {
       const valueIteratee = valueIterateeByCriteria[criteria];
-      const statsByFileNameSorted = Object.fromEntries(
-        _.sortBy(Object.entries(statsByFileName), ([, value]) =>
-          valueIteratee(value)
-        ).reverse()
-      );
 
-      const dataEntries = Object.entries(statsByFileNameSorted).slice(
-        ...(numFilesToShow ? [0, numFilesToShow] : [])
-      );
+      const dataEntries = Object.entries(
+        Object.fromEntries(
+          _.sortBy(Object.entries(statsByFileName), ([, value]) =>
+            valueIteratee(value)
+          ).reverse()
+        )
+      ).slice(...(numFilesToShow ? [0, numFilesToShow] : []));
 
       const polarAreaChart = new ChartJS(polarAreaChartRef.current, {
         data: {
