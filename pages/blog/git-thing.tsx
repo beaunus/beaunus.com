@@ -317,7 +317,7 @@ const GitThing: NextPage = () => {
               onChange={({ target }) => setFileNameGlob(target.value)}
               value={fileNameGlob}
             />
-            <canvas className="max-h-screen" ref={polarAreaChartRef} />
+            <canvas className="max-h-[50vh]" ref={polarAreaChartRef} />
           </div>
         </Segment>
       </div>
