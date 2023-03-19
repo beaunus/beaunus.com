@@ -63,9 +63,10 @@ const GitThing: NextPage = () => {
 
   React.useEffect(() => {
     if (polarAreaChartRef.current) {
+      const valueIteratee = valueIterateeByCriteria[criteria];
       const statsByFileNameSorted = Object.fromEntries(
         _.sortBy(Object.entries(statsByFileName), ([, value]) =>
-          valueIterateeByCriteria[criteria](value)
+          valueIteratee(value)
         ).reverse()
       );
 
@@ -76,11 +77,7 @@ const GitThing: NextPage = () => {
       const polarAreaChart = new ChartJS(polarAreaChartRef.current, {
         data: {
           datasets: [
-            {
-              data: dataEntries.map(([, stats]) =>
-                valueIterateeByCriteria[criteria](stats)
-              ),
-            },
+            { data: dataEntries.map(([, stats]) => valueIteratee(stats)) },
           ],
           labels: dataEntries.map(([filename]) => filename),
         },
