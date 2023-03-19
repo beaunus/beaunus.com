@@ -24,21 +24,16 @@ import {
   Stats,
 } from "../../utils/git";
 
-type Criteria =
-  | "numCommits"
-  | "numLinesAdded"
-  | "numLinesDeleted"
-  | "numLinesChanged";
-
 type ScaleType = "linear" | "logarithmic";
 
-const valueIterateeByCriteria: Record<Criteria, (stats: Stats) => number> = {
+const valueIterateeByCriteria: Record<string, (stats: Stats) => number> = {
   numCommits: ({ numCommits }) => numCommits,
   numLinesAdded: ({ numLinesAdded }) => numLinesAdded,
   numLinesChanged: ({ numLinesAdded, numLinesDeleted }) =>
     numLinesAdded + numLinesDeleted,
   numLinesDeleted: ({ numLinesDeleted }) => numLinesDeleted,
 };
+type Criteria = keyof typeof valueIterateeByCriteria;
 
 const GitThing: NextPage = () => {
   const polarAreaChartRef = React.useRef<HTMLCanvasElement>(null);
