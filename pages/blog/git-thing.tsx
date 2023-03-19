@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
@@ -43,9 +44,11 @@ const GitThing: NextPage = () => {
   const [commits, setCommits] = React.useState<GitCommit[]>([]);
   const [criteria, setCriteria] = React.useState<Criteria>("numCommits");
   const [scaleType, setScaleType] = React.useState<ScaleType>("linear");
+  const [jumpSize, setJumpSize] = React.useState(1);
   const [numFilesToShow, setNumFilesToShow] = React.useState<number>(0);
-  const [dateRangeOfHistory, setDateRangeOfHistory] =
-    React.useState<[Dayjs, Dayjs]>();
+  const [dateRangeOfHistory, setDateRangeOfHistory] = React.useState<
+    [Dayjs, Dayjs]
+  >([dayjs(), dayjs()]);
   const [numFilesInSelectedDayRange, setNumFilesInSelectedDayRange] =
     React.useState<number>(0);
   const [numFilesTotal, setNumFilesTotal] = React.useState<number>(0);
@@ -219,6 +222,40 @@ const GitThing: NextPage = () => {
                 dayjs(timestamp).format("YYYY-MM-DD")
               }
             />
+            <div className="flex gap-1">
+              <TextField
+                InputLabelProps={{ shrink: true }}
+                className="grow"
+                label="Num days to increment"
+                onChange={({ target }) => {
+                  setJumpSize(Math.max(Number(target.value), 1));
+                }}
+                type="number"
+                value={jumpSize}
+              />
+              <TextField
+                InputLabelProps={{ shrink: true }}
+                className="grow"
+                label="Increment / Decrement"
+                onChange={({ target }) => {
+                  const shouldIncrement = Number(target.value) > 0;
+                  const isThereSpaceToIncrement =
+                    toDay <= dateRangeOfHistory[1].subtract(jumpSize, "days");
+                  const isThereSpaceToDecrement =
+                    fromDay >= dateRangeOfHistory[0].add(jumpSize, "days");
+
+                  if (shouldIncrement && isThereSpaceToIncrement) {
+                    setFromDay((old) => old.add(jumpSize, "day"));
+                    setToDay((old) => old.add(jumpSize, "day"));
+                  } else if (!shouldIncrement && isThereSpaceToDecrement) {
+                    setFromDay((old) => old.subtract(jumpSize, "day"));
+                    setToDay((old) => old.subtract(jumpSize, "day"));
+                  }
+                }}
+                type="number"
+                value={0}
+              />
+            </div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <div className="flex">
                 <DatePicker
