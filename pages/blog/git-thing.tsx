@@ -11,6 +11,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import ChartJS from "chart.js/auto";
 import dayjs, { Dayjs } from "dayjs";
 import _ from "lodash";
+import multimatch from "multimatch";
 import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
@@ -55,6 +56,7 @@ const GitThing: NextPage = () => {
   const [numFilesTotal, setNumFilesTotal] = React.useState<number>(0);
   const [fromDay, setFromDay] = React.useState<Dayjs>(dayjs());
   const [toDay, setToDay] = React.useState<Dayjs>(dayjs());
+  const [fileNameGlob, setFileNameGlob] = React.useState("");
 
   React.useEffect(() => {
     const [fromDate, toDate] = [fromDay, toDay].map((day) => day.toDate());
@@ -69,10 +71,19 @@ const GitThing: NextPage = () => {
     if (polarAreaChartRef.current) {
       const valueIteratee = valueIterateeByCriteria[criteria];
 
+      const filenamesToInclude = multimatch(
+        Object.keys(statsByFileName),
+        fileNameGlob.split(" ")
+      );
+
       const dataEntries = Object.entries(
         Object.fromEntries(
           _.sortBy(
-            Object.entries(statsByFileName),
+            Object.entries(statsByFileName).filter(
+              ([filename]) =>
+                !filenamesToInclude.length ||
+                filenamesToInclude.includes(filename)
+            ),
             ([, value]) => -valueIteratee(value)
           )
         )
@@ -99,7 +110,7 @@ const GitThing: NextPage = () => {
         polarAreaChart.destroy();
       };
     }
-  }, [criteria, numFilesToShow, scaleType, statsByFileName]);
+  }, [criteria, fileNameGlob, numFilesToShow, scaleType, statsByFileName]);
 
   const UploadButton: React.FC = () => (
     <Button component="label" variant="contained">
@@ -299,6 +310,12 @@ const GitThing: NextPage = () => {
               ? `This history goes from ${dateRangeOfHistory[0].toLocaleString()} to 
             ${dateRangeOfHistory[1].toLocaleString()}`
               : null}
+            <TextField
+              InputLabelProps={{ shrink: true }}
+              label="File name glob"
+              onChange={({ target }) => setFileNameGlob(target.value)}
+              value={fileNameGlob}
+            />
             <canvas className="max-h-screen" ref={polarAreaChartRef} />
           </div>
         </Segment>
