@@ -71,7 +71,7 @@ const GitThing: NextPage = () => {
             valueIteratee(value)
           ).reverse()
         )
-      ).slice(...(numFilesToShow ? [0, numFilesToShow] : []));
+      ).slice(0, numFilesToShow);
 
       const polarAreaChart = new ChartJS(polarAreaChartRef.current, {
         data: {
