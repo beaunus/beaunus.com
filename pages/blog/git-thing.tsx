@@ -257,8 +257,9 @@ const GitThing: NextPage = () => {
               />
             </div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <div className="flex">
+              <div className="flex gap-1">
                 <DatePicker
+                  className="grow"
                   disabled={!dateRangeOfHistory}
                   label="From date"
                   onChange={(newValue) => {
@@ -267,6 +268,7 @@ const GitThing: NextPage = () => {
                   value={fromDay}
                 />
                 <DatePicker
+                  className="grow"
                   disabled={!dateRangeOfHistory}
                   label="To date"
                   onChange={(newValue) => {
