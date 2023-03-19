@@ -67,9 +67,10 @@ const GitThing: NextPage = () => {
 
       const dataEntries = Object.entries(
         Object.fromEntries(
-          _.sortBy(Object.entries(statsByFileName), ([, value]) =>
-            valueIteratee(value)
-          ).reverse()
+          _.sortBy(
+            Object.entries(statsByFileName),
+            ([, value]) => -valueIteratee(value)
+          )
         )
       ).slice(0, numFilesToShow);
 
