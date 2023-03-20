@@ -105,7 +105,6 @@ const GitThing: NextPage = () => {
           plugins: { legend: { display: false } },
           scales: { myScale: { axis: "x", position: "top", type: scaleType } },
         },
-
         type: "bar",
       });
 
