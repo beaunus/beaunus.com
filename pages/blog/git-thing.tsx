@@ -52,12 +52,12 @@ const GitThing: NextPage = () => {
   const [numFilesToShow, setNumFilesToShow] = React.useState<number>(0);
   const [dateRangeOfHistory, setDateRangeOfHistory] = React.useState<
     [Dayjs, Dayjs]
-  >([dayjs(), dayjs()]);
+  >([dayjs(0), dayjs(0)]);
   const [numFilesInSelectedDayRange, setNumFilesInSelectedDayRange] =
     React.useState<number>(0);
   const [numFilesTotal, setNumFilesTotal] = React.useState<number>(0);
-  const [fromDay, setFromDay] = React.useState<Dayjs>(dayjs());
-  const [toDay, setToDay] = React.useState<Dayjs>(dayjs());
+  const [fromDay, setFromDay] = React.useState<Dayjs>(dayjs(0));
+  const [toDay, setToDay] = React.useState<Dayjs>(dayjs(0));
   const [fileNameGlob, setFileNameGlob] = React.useState("");
 
   React.useEffect(() => {
