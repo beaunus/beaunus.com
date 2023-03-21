@@ -199,19 +199,32 @@ const GitThing: NextPage = () => {
                 value="logarithmic"
               />
             </RadioGroup>
-            <SliderWithLabels
-              disabled={!numFilesToShow}
-              displayValue={numFilesToShow.toFixed(0) ?? ""}
-              label="Number of files to show"
-              max={numFilesTotal}
-              min={1}
-              onChange={(_event, newValue) =>
-                setNumFilesToShow(
-                  Math.min(numFilesInSelectedDayRange, newValue as number)
-                )
-              }
-              value={numFilesToShow}
-            />
+            <div className="flex gap-4">
+              <SliderWithLabels
+                className="grow"
+                disabled={!numFilesToShow}
+                displayValue={numFilesToShow.toFixed(0) ?? ""}
+                label="Number of files to show"
+                max={numFilesTotal}
+                min={1}
+                onChange={(_event, newValue) =>
+                  setNumFilesToShow(
+                    Math.min(numFilesInSelectedDayRange, newValue as number)
+                  )
+                }
+                value={numFilesToShow}
+              />
+              <ButtonGroup aria-label="num files button group">
+                {[10, 50, 100].map((numFiles) => (
+                  <Button
+                    key={`${numFiles}-num-files-button`}
+                    onClick={() => setNumFilesToShow(numFiles)}
+                  >
+                    {numFiles}
+                  </Button>
+                ))}
+              </ButtonGroup>
+            </div>
             <SliderWithLabels
               disabled={!dateRangeOfHistory}
               max={dateRangeOfHistory?.[1].add(1, "day").valueOf()}
