@@ -169,7 +169,7 @@ const GitThing: NextPage = () => {
   ]);
 
   const UploadButton: FC = () => (
-    <Button component="label" variant="contained">
+    <Button component="label" size="small" variant="contained">
       Upload
       <input
         accept=".txt"
