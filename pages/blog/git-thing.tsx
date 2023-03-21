@@ -23,9 +23,9 @@ import _ from "lodash";
 import multimatch from "multimatch";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import { FC, useEffect, useRef, useState } from "react";
 
+import { HighlightedLink } from "../../components/HighlightedLink";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
 import {
   computeDateRange,
@@ -515,11 +515,11 @@ const GitThing: NextPage = () => {
                         }}
                       >
                         <TableCell component="th" scope="row">
-                          <Link
+                          <HighlightedLink
                             href={`https://github.com/${baseGithubRepository}/commit/${commit.commitHash}`}
                           >
                             <code>{commit.commitHash.slice(0, 7)}</code>
-                          </Link>
+                          </HighlightedLink>
                         </TableCell>
                         <TableCell className="whitespace-nowrap">
                           {dayjs(commit.date).format("YYYY-MM-DD")}
@@ -534,9 +534,9 @@ const GitThing: NextPage = () => {
                                 attributes: { href, ...props },
                                 content,
                               }) => (
-                                <Link href={href} {...props}>
+                                <HighlightedLink href={href} {...props}>
                                   {content}
-                                </Link>
+                                </HighlightedLink>
                               ),
                             }}
                           >
