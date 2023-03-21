@@ -57,7 +57,7 @@ const GitThing: NextPage = () => {
   const [statsByFileName, setStatsByFileName] = useState<Record<string, Stats>>(
     {}
   );
-  const [commits, setCommits] = useState<GitCommit[]>([]);
+  const [allCommits, setAllCommits] = useState<GitCommit[]>([]);
   const [authorsToInclude, setAuthorsToInclude] = useState<
     GitCommit["author"][]
   >([]);
@@ -113,7 +113,7 @@ const GitThing: NextPage = () => {
 
   useEffect(() => {
     const newStatsByFileName = computeStatsByFileName(
-      commits.filter(
+      allCommits.filter(
         ({ author, date }) =>
           (!authorsToInclude.length || authorsToInclude.includes(author)) &&
           isDateWithinSelectedRange(date)
@@ -121,7 +121,7 @@ const GitThing: NextPage = () => {
     );
     setNumFilesInSelectedDayRange(Object.keys(newStatsByFileName).length);
     setStatsByFileName(newStatsByFileName);
-  }, [authorsToInclude, commits, fromDay, toDay]);
+  }, [authorsToInclude, allCommits, fromDay, toDay]);
 
   useEffect(() => {
     if (polarAreaChartRef.current) {
@@ -227,7 +227,7 @@ const GitThing: NextPage = () => {
               setBaseGithubRepository(
                 target.files[0].name.split(".")[0].replaceAll(":", "/")
               );
-            setCommits(commitsFromFile);
+            setAllCommits(commitsFromFile);
             setDateRangeOfHistory(dateRangeOfCommits);
             setFromDay(dateRangeOfCommits[0]);
             setNumFilesToShow(newNumFilesTotal);
@@ -238,6 +238,96 @@ const GitThing: NextPage = () => {
         type="file"
       />
     </Button>
+  );
+
+  const CommitTable: FC<{ commits: GitCommit[] }> = ({ commits }) => (
+    <TableContainer>
+      <Table aria-label="commit table" size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>commitHash</TableCell>
+            <TableCell>date</TableCell>
+            <TableCell>author</TableCell>
+            <TableCell>+</TableCell>
+            <TableCell>-</TableCell>
+            <TableCell>-/+</TableCell>
+            <TableCell>abs(-/+)</TableCell>
+            <TableCell>message</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {commits
+            .filter(
+              ({ author, date }) =>
+                isDateWithinSelectedRange(date) &&
+                (!authorsToInclude.length || authorsToInclude.includes(author))
+            )
+            .map((commit) => (
+              <TableRow
+                key={commit.commitHash}
+                sx={{
+                  // eslint-disable-next-line @typescript-eslint/naming-convention
+                  "&:last-child td, &:last-child th": { border: 0 },
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  <HighlightedLink
+                    href={`https://github.com/${baseGithubRepository}/commit/${commit.commitHash}`}
+                  >
+                    <code>{commit.commitHash.slice(0, 7)}</code>
+                  </HighlightedLink>
+                </TableCell>
+                <TableCell className="whitespace-nowrap">
+                  {dayjs(commit.date).format("YYYY-MM-DD")}
+                </TableCell>
+                <TableCell className="whitespace-nowrap">
+                  {commit.author.split(" <")[0]}
+                </TableCell>
+                <TableCell>
+                  {commit.files.reduce(
+                    (sum, { numLinesAdded }) => sum + (numLinesAdded ?? 0),
+                    0
+                  )}
+                </TableCell>
+                <TableCell>
+                  {commit.files.reduce(
+                    (sum, { numLinesDeleted }) => sum + (numLinesDeleted ?? 0),
+                    0
+                  )}
+                </TableCell>
+                <TableCell>
+                  {commit.files.reduce(
+                    (sum, { numLinesAdded, numLinesDeleted }) =>
+                      sum + (numLinesAdded ?? 0) - (numLinesDeleted ?? 0),
+                    0
+                  )}
+                </TableCell>
+                <TableCell>
+                  {commit.files.reduce(
+                    (sum, { numLinesAdded, numLinesDeleted }) =>
+                      sum + (numLinesAdded ?? 0) + (numLinesDeleted ?? 0),
+                    0
+                  )}
+                </TableCell>
+                <TableCell className="whitespace-pre-line">
+                  <Linkify
+                    options={{
+                      render: ({ attributes: { href, ...props }, content }) => (
+                        <HighlightedLink href={href} {...props}>
+                          {content}
+                        </HighlightedLink>
+                      ),
+                    }}
+                  >
+                    <strong>{commit.message.split("\n")[0]}</strong>
+                    {commit.message.split("\n").slice(1).join("\n")}
+                  </Linkify>
+                </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 
   return (
@@ -322,7 +412,7 @@ const GitThing: NextPage = () => {
           id="authors"
           multiple
           onChange={(_event, newAuthors) => setAuthorsToInclude(newAuthors)}
-          options={_.uniq(commits.map(({ author }) => author)).sort()}
+          options={_.uniq(allCommits.map(({ author }) => author)).sort()}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -503,104 +593,7 @@ const GitThing: NextPage = () => {
         {focusedDataEntry ? (
           <div>
             <Typography variant="h5">{focusedDataEntry[0]}</Typography>
-            <TableContainer>
-              <Table aria-label="commit table" size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>commitHash</TableCell>
-                    <TableCell>date</TableCell>
-                    <TableCell>author</TableCell>
-                    <TableCell>+</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>-/+</TableCell>
-                    <TableCell>abs(-/+)</TableCell>
-                    <TableCell>message</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {focusedDataEntry[1].commits
-                    .filter(
-                      ({ author, date }) =>
-                        isDateWithinSelectedRange(date) &&
-                        (!authorsToInclude.length ||
-                          authorsToInclude.includes(author))
-                    )
-                    .map((commit) => (
-                      <TableRow
-                        key={commit.commitHash}
-                        sx={{
-                          // eslint-disable-next-line @typescript-eslint/naming-convention
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          <HighlightedLink
-                            href={`https://github.com/${baseGithubRepository}/commit/${commit.commitHash}`}
-                          >
-                            <code>{commit.commitHash.slice(0, 7)}</code>
-                          </HighlightedLink>
-                        </TableCell>
-                        <TableCell className="whitespace-nowrap">
-                          {dayjs(commit.date).format("YYYY-MM-DD")}
-                        </TableCell>
-                        <TableCell className="whitespace-nowrap">
-                          {commit.author.split(" <")[0]}
-                        </TableCell>
-                        <TableCell>
-                          {commit.files.reduce(
-                            (sum, { numLinesAdded }) =>
-                              sum + (numLinesAdded ?? 0),
-                            0
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {" "}
-                          {commit.files.reduce(
-                            (sum, { numLinesDeleted }) =>
-                              sum + (numLinesDeleted ?? 0),
-                            0
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {commit.files.reduce(
-                            (sum, { numLinesAdded, numLinesDeleted }) =>
-                              sum +
-                              (numLinesAdded ?? 0) -
-                              (numLinesDeleted ?? 0),
-                            0
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {commit.files.reduce(
-                            (sum, { numLinesAdded, numLinesDeleted }) =>
-                              sum +
-                              (numLinesAdded ?? 0) +
-                              (numLinesDeleted ?? 0),
-                            0
-                          )}
-                        </TableCell>
-                        <TableCell className="whitespace-pre-line">
-                          <Linkify
-                            options={{
-                              render: ({
-                                attributes: { href, ...props },
-                                content,
-                              }) => (
-                                <HighlightedLink href={href} {...props}>
-                                  {content}
-                                </HighlightedLink>
-                              ),
-                            }}
-                          >
-                            <strong>{commit.message.split("\n")[0]}</strong>
-                            {commit.message.split("\n").slice(1).join("\n")}
-                          </Linkify>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <CommitTable commits={focusedDataEntry[1].commits} />
           </div>
         ) : null}
       </div>
