@@ -306,42 +306,35 @@ const GitThing: NextPage = () => {
           max={dateRangeOfHistory?.[1].add(1, "day").valueOf()}
           min={dateRangeOfHistory?.[0].valueOf()}
           onChange={(_event, newValue) => {
-            const [newFromDayTimestamp, newToDayTimestamp] = (
-              newValue as number[]
-            ).map(Number);
+            const newValues = (newValue as number[]).map(Number);
             const oldInterval = toDay.diff(fromDay);
             if (isIntervalLocked) {
-              const isLeftSliderMovingLeft =
-                newFromDayTimestamp < fromDay.valueOf();
-              const isLeftSliderMovingRight =
-                newFromDayTimestamp > fromDay.valueOf();
+              const isLeftSliderMovingLeft = newValues[0] < fromDay.valueOf();
+              const isLeftSliderMovingRight = newValues[0] > fromDay.valueOf();
               const isThereSpaceToMoveRight =
-                newFromDayTimestamp + oldInterval <
-                dateRangeOfHistory[1].valueOf();
+                newValues[0] + oldInterval < dateRangeOfHistory[1].valueOf();
 
-              const isRightSliderMovingRight =
-                newToDayTimestamp > toDay.valueOf();
-              const isRightSliderMovingLeft =
-                newToDayTimestamp < toDay.valueOf();
+              const isRightSliderMovingRight = newValues[1] > toDay.valueOf();
+              const isRightSliderMovingLeft = newValues[1] < toDay.valueOf();
               const isThereSpaceToMoveLeft =
-                newToDayTimestamp - oldInterval >=
-                dateRangeOfHistory[0].valueOf();
+                newValues[1] - oldInterval >= dateRangeOfHistory[0].valueOf();
+
               if (
                 isLeftSliderMovingLeft ||
                 (isLeftSliderMovingRight && isThereSpaceToMoveRight)
               ) {
-                setFromDay(dayjs(newFromDayTimestamp));
-                setToDay(dayjs(newFromDayTimestamp + oldInterval));
+                setFromDay(dayjs(newValues[0]));
+                setToDay(dayjs(newValues[0] + oldInterval));
               } else if (
                 isRightSliderMovingRight ||
                 (isRightSliderMovingLeft && isThereSpaceToMoveLeft)
               ) {
-                setFromDay(dayjs(newToDayTimestamp - oldInterval));
-                setToDay(dayjs(newToDayTimestamp));
+                setFromDay(dayjs(newValues[1] - oldInterval));
+                setToDay(dayjs(newValues[1]));
               }
             } else {
-              setFromDay(dayjs(newFromDayTimestamp));
-              setToDay(dayjs(newToDayTimestamp));
+              setFromDay(dayjs(newValues[0]));
+              setToDay(dayjs(newValues[1]));
             }
           }}
           step={NUM_MS_IN_ONE_DAY}
