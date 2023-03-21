@@ -1,3 +1,5 @@
+import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
+import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { TextField, Typography } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
@@ -316,44 +318,45 @@ const GitThing: NextPage = () => {
             dayjs(timestamp).format("YYYY-MM-DD")
           }
         />
-        <div className="flex gap-1">
+        <div className="flex gap-1 justify-between">
           <TextField
             InputLabelProps={{ shrink: true }}
-            className="grow"
-            label="Num days to increment"
+            label="Num days to jump"
             onChange={({ target }) => {
               setJumpSize(Math.max(Number(target.value), 1));
             }}
             type="number"
             value={jumpSize}
           />
-          <TextField
-            InputLabelProps={{ shrink: true }}
-            className="grow"
-            label="Increment / Decrement"
-            onChange={({ target }) => {
-              const shouldIncrement = Number(target.value) > 0;
-              const isThereSpaceToIncrement =
-                toDay <= dateRangeOfHistory[1].subtract(jumpSize, "days");
-              const isThereSpaceToDecrement =
-                fromDay >= dateRangeOfHistory[0].add(jumpSize, "days");
+          <ButtonGroup aria-label="jump button group">
+            <Button
+              onClick={() => {
+                const isThereSpaceToDecrement =
+                  fromDay >= dateRangeOfHistory[0].add(jumpSize, "days");
 
-              if (shouldIncrement && isThereSpaceToIncrement) {
-                setFromDay((old) => old.add(jumpSize, "day"));
-                setToDay((old) => old.add(jumpSize, "day"));
-              } else if (!shouldIncrement && isThereSpaceToDecrement) {
-                setFromDay((old) => old.subtract(jumpSize, "day"));
-                setToDay((old) => old.subtract(jumpSize, "day"));
-              }
-            }}
-            type="number"
-            value={0}
-          />
-          <ButtonGroup
-            aria-label="snap button group"
-            className="grow"
-            fullWidth
-          >
+                if (isThereSpaceToDecrement) {
+                  setFromDay((old) => old.subtract(jumpSize, "day"));
+                  setToDay((old) => old.subtract(jumpSize, "day"));
+                }
+              }}
+            >
+              <KeyboardDoubleArrowLeftIcon />
+            </Button>
+            <Button
+              onClick={() => {
+                const isThereSpaceToIncrement =
+                  toDay <= dateRangeOfHistory[1].subtract(jumpSize, "days");
+
+                if (isThereSpaceToIncrement) {
+                  setFromDay((old) => old.add(jumpSize, "day"));
+                  setToDay((old) => old.add(jumpSize, "day"));
+                }
+              }}
+            >
+              <KeyboardDoubleArrowRightIcon />
+            </Button>
+          </ButtonGroup>
+          <ButtonGroup aria-label="snap button group">
             {[7, 28, 28 * 6].map((numDaysToSnapTo) => (
               <Button
                 key={`${numDaysToSnapTo}-snap`}
