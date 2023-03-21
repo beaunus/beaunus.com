@@ -60,7 +60,7 @@ const GitThing: NextPage = () => {
   const [numFilesTotal, setNumFilesTotal] = useState<number>(0);
   const [fromDay, setFromDay] = useState<Dayjs>(dayjs(0));
   const [toDay, setToDay] = useState<Dayjs>(dayjs(0));
-  const [fileNameRegExp, setFileNameRegExp] = useState(new RegExp(""));
+  const [fileNameRegExpSource, setFileNameRegExpSource] = useState("");
   const [fileNameRegExpSourcePending, setFileNameRegExpSourcePending] =
     useState("");
   const [
@@ -81,21 +81,23 @@ const GitThing: NextPage = () => {
     if (polarAreaChartRef.current) {
       const valueIteratee = valueIterateeByCriteria[criteria];
 
-      const filenamesToInclude = Object.keys(statsByFileName).filter(
-        (fileName) => fileNameRegExp.test(fileName)
-      );
+      let regExp = new RegExp("");
+      try {
+        regExp = new RegExp(fileNameRegExpSource);
+      } catch {
+        noop();
+      }
 
       const dataEntries = Object.entries(
         Object.fromEntries(
           _.sortBy(
             Object.entries(statsByFileName).filter(
-              ([filename]) =>
-                !fileNameRegExp || filenamesToInclude.includes(filename)
+              ([fileName]) => !fileNameRegExpSource || regExp.test(fileName)
             ),
             ([, value]) => -valueIteratee(value)
-          )
+          ).slice(0, numFilesToShow)
         )
-      ).slice(0, numFilesToShow);
+      );
 
       const polarAreaChart = new ChartJS(polarAreaChartRef.current, {
         data: {
@@ -118,7 +120,13 @@ const GitThing: NextPage = () => {
         polarAreaChart.destroy();
       };
     }
-  }, [criteria, fileNameRegExp, numFilesToShow, scaleType, statsByFileName]);
+  }, [
+    criteria,
+    fileNameRegExpSource,
+    numFilesToShow,
+    scaleType,
+    statsByFileName,
+  ]);
 
   const UploadButton: FC = () => (
     <Button component="label" variant="contained">
@@ -330,6 +338,7 @@ const GitThing: NextPage = () => {
               : null}
             <TextField
               InputLabelProps={{ shrink: true }}
+              className="grow"
               label="File Name RegExp"
               onChange={({ target }) => {
                 setFileNameRegExpSourcePending(target.value);
@@ -339,11 +348,7 @@ const GitThing: NextPage = () => {
                     Date.now() - mostRecentFileNameRegExpEditTimestamp >=
                     FILE_NAME_REG_EXP_DELAY_IN_MS
                   )
-                    try {
-                      setFileNameRegExp(new RegExp(target.value));
-                    } catch {
-                      noop();
-                    }
+                    setFileNameRegExpSource(target.value);
                 }, FILE_NAME_REG_EXP_DELAY_IN_MS);
               }}
               value={fileNameRegExpSourcePending}
