@@ -10,8 +10,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import ChartJS from "chart.js/auto";
 import dayjs, { Dayjs } from "dayjs";
-import _ from "lodash";
-import multimatch from "multimatch";
+import _, { noop } from "lodash";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { FC, useEffect, useRef, useState } from "react";
@@ -26,6 +25,8 @@ import {
   splitGitLog,
   Stats,
 } from "../../utils/git";
+
+const FILE_NAME_REG_EXP_DELAY_IN_MS = 1000;
 
 type ScaleType = "linear" | "logarithmic";
 
@@ -59,11 +60,12 @@ const GitThing: NextPage = () => {
   const [numFilesTotal, setNumFilesTotal] = useState<number>(0);
   const [fromDay, setFromDay] = useState<Dayjs>(dayjs(0));
   const [toDay, setToDay] = useState<Dayjs>(dayjs(0));
-  const [fileNameGlob, setFileNameGlob] = useState("");
-  const [fileNameGlobPending, setFileNameGlobPending] = useState("");
+  const [fileNameRegExp, setFileNameRegExp] = useState(new RegExp(""));
+  const [fileNameRegExpSourcePending, setFileNameRegExpSourcePending] =
+    useState("");
   const [
-    mostRecentFileNameGlobEditTimestamp,
-    setMostRecentFileNameGlobEditTimestamp,
+    mostRecentFileNameRegExpEditTimestamp,
+    setMostRecentFileNameRegExpEditTimestamp,
   ] = useState(0);
 
   useEffect(() => {
@@ -79,9 +81,8 @@ const GitThing: NextPage = () => {
     if (polarAreaChartRef.current) {
       const valueIteratee = valueIterateeByCriteria[criteria];
 
-      const filenamesToInclude = multimatch(
-        Object.keys(statsByFileName),
-        fileNameGlob.split(" ")
+      const filenamesToInclude = Object.keys(statsByFileName).filter(
+        (fileName) => fileNameRegExp.test(fileName)
       );
 
       const dataEntries = Object.entries(
@@ -89,7 +90,7 @@ const GitThing: NextPage = () => {
           _.sortBy(
             Object.entries(statsByFileName).filter(
               ([filename]) =>
-                !fileNameGlob || filenamesToInclude.includes(filename)
+                !fileNameRegExp || filenamesToInclude.includes(filename)
             ),
             ([, value]) => -valueIteratee(value)
           )
@@ -117,7 +118,7 @@ const GitThing: NextPage = () => {
         polarAreaChart.destroy();
       };
     }
-  }, [criteria, fileNameGlob, numFilesToShow, scaleType, statsByFileName]);
+  }, [criteria, fileNameRegExp, numFilesToShow, scaleType, statsByFileName]);
 
   const UploadButton: FC = () => (
     <Button component="label" variant="contained">
@@ -309,16 +310,23 @@ const GitThing: NextPage = () => {
               : null}
             <TextField
               InputLabelProps={{ shrink: true }}
-              label="File name glob"
+              label="File Name RegExp"
               onChange={({ target }) => {
-                setFileNameGlobPending(target.value);
-                setMostRecentFileNameGlobEditTimestamp(Date.now());
+                setFileNameRegExpSourcePending(target.value);
+                setMostRecentFileNameRegExpEditTimestamp(Date.now());
                 setTimeout(() => {
-                  if (Date.now() - mostRecentFileNameGlobEditTimestamp >= 1000)
-                    setFileNameGlob(target.value);
-                }, 1000);
+                  if (
+                    Date.now() - mostRecentFileNameRegExpEditTimestamp >=
+                    FILE_NAME_REG_EXP_DELAY_IN_MS
+                  )
+                    try {
+                      setFileNameRegExp(new RegExp(target.value));
+                    } catch {
+                      noop();
+                    }
+                }, FILE_NAME_REG_EXP_DELAY_IN_MS);
               }}
-              value={fileNameGlobPending}
+              value={fileNameRegExpSourcePending}
             />
             <canvas className="max-h-[50vh]" ref={polarAreaChartRef} />
           </div>
