@@ -59,6 +59,11 @@ const GitThing: NextPage = () => {
   const [fromDay, setFromDay] = React.useState<Dayjs>(dayjs(0));
   const [toDay, setToDay] = React.useState<Dayjs>(dayjs(0));
   const [fileNameGlob, setFileNameGlob] = React.useState("");
+  const [fileNameGlobPending, setFileNameGlobPending] = React.useState("");
+  const [
+    mostRecentFileNameGlobEditTimestamp,
+    setMostRecentFileNameGlobEditTimestamp,
+  ] = React.useState(0);
 
   React.useEffect(() => {
     const [fromDate, toDate] = [fromDay, toDay].map((day) => day.toDate());
@@ -83,8 +88,7 @@ const GitThing: NextPage = () => {
           _.sortBy(
             Object.entries(statsByFileName).filter(
               ([filename]) =>
-                !filenamesToInclude.length ||
-                filenamesToInclude.includes(filename)
+                !fileNameGlob || filenamesToInclude.includes(filename)
             ),
             ([, value]) => -valueIteratee(value)
           )
@@ -305,8 +309,15 @@ const GitThing: NextPage = () => {
             <TextField
               InputLabelProps={{ shrink: true }}
               label="File name glob"
-              onChange={({ target }) => setFileNameGlob(target.value)}
-              value={fileNameGlob}
+              onChange={({ target }) => {
+                setFileNameGlobPending(target.value);
+                setMostRecentFileNameGlobEditTimestamp(Date.now());
+                setTimeout(() => {
+                  if (Date.now() - mostRecentFileNameGlobEditTimestamp >= 1000)
+                    setFileNameGlob(target.value);
+                }, 1000);
+              }}
+              value={fileNameGlobPending}
             />
             <canvas className="max-h-[50vh]" ref={polarAreaChartRef} />
           </div>
