@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -159,6 +159,13 @@ const GitThing: NextPage = () => {
             <div className="text-2xl font-semibold text-center text-cyan-700">
               Git thing
             </div>
+            <Typography>
+              Use a command like this to generate the Git log file.
+            </Typography>
+            <code>
+              git -C{" {path to git repository} "}log --numstat{" > "}
+              {" {path to file that you want to create}"}
+            </code>
             <UploadButton />
             <FormLabel id="criteria-label">Criteria</FormLabel>
             <RadioGroup
