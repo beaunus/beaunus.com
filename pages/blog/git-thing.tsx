@@ -47,7 +47,8 @@ const FILE_NAME_GLOB_EXCLUDE_DEFAULT = [
   "yarn.lock",
 ].join(" ");
 
-type ScaleType = "linear" | "logarithmic";
+const SCALE_TYPES = ["linear", "linear (abs)", "logarithmic"] as const;
+type ScaleType = (typeof SCALE_TYPES)[number];
 
 const NUM_MS_IN_ONE_DAY = 1000 * 60 * 60 * 24;
 
@@ -144,7 +145,10 @@ const GitThing: NextPage = () => {
                   fileNamesToInclude.includes(fileName)) &&
                 (!fileNameGlobExclude || !fileNamesToExclude.includes(fileName))
             ),
-            ([, value]) => -valueIteratee(value)
+            ([, value]) =>
+              -(scaleType === "linear (abs)"
+                ? Math.abs(valueIteratee(value))
+                : valueIteratee(value))
           ).slice(0, numFilesToShow)
         )
       );
@@ -167,7 +171,16 @@ const GitThing: NextPage = () => {
             }
           },
           plugins: { legend: { display: false } },
-          scales: { myScale: { axis: "x", position: "top", type: scaleType } },
+          scales: {
+            myScale: {
+              axis: "x",
+              position: "top",
+              type:
+                scaleType === "linear" || scaleType === "linear (abs)"
+                  ? "linear"
+                  : "logarithmic",
+            },
+          },
         },
         type: "bar",
       });
@@ -292,16 +305,14 @@ const GitThing: NextPage = () => {
               row
               value={scaleType}
             >
-              <FormControlLabel
-                control={<Radio />}
-                label="Linear"
-                value="linear"
-              />
-              <FormControlLabel
-                control={<Radio />}
-                label="Logarithmic"
-                value="logarithmic"
-              />
+              {SCALE_TYPES.map((scaleTypeLabel) => (
+                <FormControlLabel
+                  control={<Radio />}
+                  key={scaleTypeLabel}
+                  label={scaleTypeLabel}
+                  value={scaleTypeLabel}
+                />
+              ))}
             </RadioGroup>
           </Grid>
         </Grid>
