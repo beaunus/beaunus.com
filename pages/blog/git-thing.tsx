@@ -251,7 +251,7 @@ const GitThing: NextPage = () => {
                 value={numFilesToShow}
               />
               <ButtonGroup aria-label="num files button group">
-                {[10, 50, 100].map((numFiles) => (
+                {[10, 25, 50, 100].map((numFiles) => (
                   <Button
                     key={`${numFiles}-num-files-button`}
                     onClick={() => setNumFilesToShow(numFiles)}
