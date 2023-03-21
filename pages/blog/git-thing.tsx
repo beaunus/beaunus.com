@@ -283,7 +283,7 @@ const GitThing: NextPage = () => {
                 className="grow"
                 fullWidth
               >
-                {[7, 28].map((numDaysToSnapTo) => (
+                {[7, 28, 28 * 6].map((numDaysToSnapTo) => (
                   <Button
                     key={`${numDaysToSnapTo}-snap`}
                     onClick={() =>
