@@ -282,7 +282,12 @@ const GitThing: NextPage = () => {
           onChange={(_event, newAuthors) => setAuthorsToInclude(newAuthors)}
           options={_.uniq(commits.map(({ author }) => author)).sort()}
           renderInput={(params) => (
-            <TextField {...params} label="Authors" placeholder="Authors" />
+            <TextField
+              {...params}
+              label="Authors"
+              placeholder="Authors"
+              size="small"
+            />
           )}
         />
 
@@ -306,6 +311,7 @@ const GitThing: NextPage = () => {
               <Button
                 key={`${numFiles}-num-files-button`}
                 onClick={() => setNumFilesToShow(numFiles)}
+                size="small"
               >
                 {numFiles}
               </Button>
@@ -365,6 +371,7 @@ const GitThing: NextPage = () => {
             onChange={({ target }) => {
               setJumpSize(Math.max(Number(target.value), 1));
             }}
+            size="small"
             type="number"
             value={jumpSize}
           />
@@ -431,6 +438,7 @@ const GitThing: NextPage = () => {
                   setFileNameGlobInclude(target.value);
               }, FILE_NAME_GLOB_DELAY_IN_MS);
             }}
+            size="small"
             value={fileNameGlobIncludePending}
           />
           <TextField
@@ -448,6 +456,7 @@ const GitThing: NextPage = () => {
                   setFileNameGlobExclude(target.value);
               }, FILE_NAME_GLOB_DELAY_IN_MS);
             }}
+            size="small"
             value={fileNameGlobExcludePending}
           />
         </div>
