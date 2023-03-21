@@ -11,7 +11,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import ChartJS from "chart.js/auto";
 import dayjs, { Dayjs } from "dayjs";
-import _, { noop } from "lodash";
+import _ from "lodash";
+import multimatch from "multimatch";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { FC, useEffect, useRef, useState } from "react";
@@ -27,7 +28,16 @@ import {
   Stats,
 } from "../../utils/git";
 
-const FILE_NAME_REG_EXP_DELAY_IN_MS = 1000;
+const FILE_NAME_GLOB_DELAY_IN_MS = 1000;
+const FILE_NAME_GLOB_EXCLUDE_DEFAULT = [
+  "**/*json*",
+  "**/*pdf*",
+  "**/*sdk*",
+  "**/*svg*",
+  "**/*svg*/*",
+  "package.json",
+  "yarn.lock",
+].join(" ");
 
 type ScaleType = "linear" | "logarithmic";
 
@@ -64,12 +74,22 @@ const GitThing: NextPage = () => {
   const [numFilesTotal, setNumFilesTotal] = useState<number>(0);
   const [fromDay, setFromDay] = useState<Dayjs>(dayjs(0));
   const [toDay, setToDay] = useState<Dayjs>(dayjs(0));
-  const [fileNameRegExpSource, setFileNameRegExpSource] = useState("");
-  const [fileNameRegExpSourcePending, setFileNameRegExpSourcePending] =
+  const [fileNameGlobExclude, setFileNameGlobExclude] = useState(
+    FILE_NAME_GLOB_EXCLUDE_DEFAULT
+  );
+  const [fileNameGlobExcludePending, setFileNameGlobExcludePending] = useState(
+    FILE_NAME_GLOB_EXCLUDE_DEFAULT
+  );
+  const [
+    mostRecentFileNameGlobExcludeEditTimestamp,
+    setMostRecentFileNameGlobExcludeEditTimestamp,
+  ] = useState(0);
+  const [fileNameGlobInclude, setFileNameGlobInclude] = useState("");
+  const [fileNameGlobIncludePending, setFileNameGlobIncludePending] =
     useState("");
   const [
-    mostRecentFileNameRegExpEditTimestamp,
-    setMostRecentFileNameRegExpEditTimestamp,
+    mostRecentFileNameGlobIncludeEditTimestamp,
+    setMostRecentFileNameGlobIncludeEditTimestamp,
   ] = useState(0);
 
   useEffect(() => {
@@ -90,18 +110,23 @@ const GitThing: NextPage = () => {
     if (polarAreaChartRef.current) {
       const valueIteratee = valueIterateeByCriteria[criteria];
 
-      let regExp = new RegExp("");
-      try {
-        regExp = new RegExp(fileNameRegExpSource);
-      } catch {
-        noop();
-      }
+      const fileNamesToInclude = multimatch(
+        Object.keys(statsByFileName),
+        fileNameGlobInclude.split(" ")
+      );
+      const fileNamesToExclude = multimatch(
+        Object.keys(statsByFileName),
+        fileNameGlobExclude.split(" ")
+      );
 
       const dataEntries = Object.entries(
         Object.fromEntries(
           _.sortBy(
             Object.entries(statsByFileName).filter(
-              ([fileName]) => !fileNameRegExpSource || regExp.test(fileName)
+              ([fileName]) =>
+                (!fileNameGlobInclude ||
+                  fileNamesToInclude.includes(fileName)) &&
+                (!fileNameGlobExclude || !fileNamesToExclude.includes(fileName))
             ),
             ([, value]) => -valueIteratee(value)
           ).slice(0, numFilesToShow)
@@ -131,7 +156,8 @@ const GitThing: NextPage = () => {
     }
   }, [
     criteria,
-    fileNameRegExpSource,
+    fileNameGlobExclude,
+    fileNameGlobInclude,
     numFilesToShow,
     scaleType,
     statsByFileName,
@@ -357,23 +383,42 @@ const GitThing: NextPage = () => {
               ? `This history goes from ${dateRangeOfHistory[0].toLocaleString()} to 
             ${dateRangeOfHistory[1].toLocaleString()}`
               : null}
-            <TextField
-              InputLabelProps={{ shrink: true }}
-              className="grow"
-              label="File Name RegExp"
-              onChange={({ target }) => {
-                setFileNameRegExpSourcePending(target.value);
-                setMostRecentFileNameRegExpEditTimestamp(Date.now());
-                setTimeout(() => {
-                  if (
-                    Date.now() - mostRecentFileNameRegExpEditTimestamp >=
-                    FILE_NAME_REG_EXP_DELAY_IN_MS
-                  )
-                    setFileNameRegExpSource(target.value);
-                }, FILE_NAME_REG_EXP_DELAY_IN_MS);
-              }}
-              value={fileNameRegExpSourcePending}
-            />
+            <div className="flex gap-2">
+              <TextField
+                InputLabelProps={{ shrink: true }}
+                className="grow"
+                label="File Name Glob (Include)"
+                onChange={({ target }) => {
+                  setFileNameGlobIncludePending(target.value);
+                  setMostRecentFileNameGlobIncludeEditTimestamp(Date.now());
+                  setTimeout(() => {
+                    if (
+                      Date.now() - mostRecentFileNameGlobIncludeEditTimestamp >=
+                      FILE_NAME_GLOB_DELAY_IN_MS
+                    )
+                      setFileNameGlobInclude(target.value);
+                  }, FILE_NAME_GLOB_DELAY_IN_MS);
+                }}
+                value={fileNameGlobIncludePending}
+              />
+              <TextField
+                InputLabelProps={{ shrink: true }}
+                className="grow"
+                label="File Name Glob (Exclude)"
+                onChange={({ target }) => {
+                  setFileNameGlobExcludePending(target.value);
+                  setMostRecentFileNameGlobExcludeEditTimestamp(Date.now());
+                  setTimeout(() => {
+                    if (
+                      Date.now() - mostRecentFileNameGlobExcludeEditTimestamp >=
+                      FILE_NAME_GLOB_DELAY_IN_MS
+                    )
+                      setFileNameGlobExclude(target.value);
+                  }, FILE_NAME_GLOB_DELAY_IN_MS);
+                }}
+                value={fileNameGlobExcludePending}
+              />
+            </div>
             <canvas className="max-h-[50vh]" ref={polarAreaChartRef} />
           </div>
         </Segment>
