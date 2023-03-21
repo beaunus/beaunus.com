@@ -409,7 +409,7 @@ const GitThing: NextPage = () => {
             ))}
           </ButtonGroup>
           <FormControlLabel
-            control={<Switch defaultChecked />}
+            control={<Switch />}
             label="Lock interval"
             onChange={(_event, newValue) => setIsIntervalLocked(newValue)}
             value={isIntervalLocked}
