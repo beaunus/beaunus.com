@@ -297,6 +297,7 @@ const GitThing: NextPage = () => {
             ))}
           </ButtonGroup>
         </div>
+        <FormLabel id="date-slider-label">Date Range</FormLabel>
         <SliderWithLabels
           disabled={!dateRangeOfHistory}
           max={dateRangeOfHistory?.[1].add(1, "day").valueOf()}
@@ -387,10 +388,6 @@ const GitThing: NextPage = () => {
             />
           </div>
         </LocalizationProvider>
-        {dateRangeOfHistory
-          ? `This history goes from ${dateRangeOfHistory[0].toLocaleString()} to 
-            ${dateRangeOfHistory[1].toLocaleString()}`
-          : null}
         <div className="flex gap-2">
           <TextField
             InputLabelProps={{ shrink: true }}
