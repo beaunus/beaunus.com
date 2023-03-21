@@ -510,6 +510,10 @@ const GitThing: NextPage = () => {
                     <TableCell>commitHash</TableCell>
                     <TableCell>date</TableCell>
                     <TableCell>author</TableCell>
+                    <TableCell>+</TableCell>
+                    <TableCell>-</TableCell>
+                    <TableCell>-/+</TableCell>
+                    <TableCell>abs(-/+)</TableCell>
                     <TableCell>message</TableCell>
                   </TableRow>
                 </TableHead>
@@ -541,6 +545,39 @@ const GitThing: NextPage = () => {
                         </TableCell>
                         <TableCell className="whitespace-nowrap">
                           {commit.author.split(" <")[0]}
+                        </TableCell>
+                        <TableCell>
+                          {commit.files.reduce(
+                            (sum, { numLinesAdded }) =>
+                              sum + (numLinesAdded ?? 0),
+                            0
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {" "}
+                          {commit.files.reduce(
+                            (sum, { numLinesDeleted }) =>
+                              sum + (numLinesDeleted ?? 0),
+                            0
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {commit.files.reduce(
+                            (sum, { numLinesAdded, numLinesDeleted }) =>
+                              sum +
+                              (numLinesAdded ?? 0) -
+                              (numLinesDeleted ?? 0),
+                            0
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {commit.files.reduce(
+                            (sum, { numLinesAdded, numLinesDeleted }) =>
+                              sum +
+                              (numLinesAdded ?? 0) +
+                              (numLinesDeleted ?? 0),
+                            0
+                          )}
                         </TableCell>
                         <TableCell className="whitespace-pre-line">
                           <Linkify
