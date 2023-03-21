@@ -41,17 +41,6 @@ const FILE_NAME_GLOB_EXCLUDE_DEFAULT = [
 
 type ScaleType = "linear" | "logarithmic";
 
-const valueIterateeByCriteria: Record<string, (stats: Stats) => number> = {
-  numCommits: ({ numCommits }) => numCommits,
-  numLinesAdded: ({ numLinesAdded }) => numLinesAdded,
-  numLinesChanged: ({ numLinesAdded, numLinesDeleted }) =>
-    numLinesAdded + numLinesDeleted,
-  numLinesDeleted: ({ numLinesDeleted }) => numLinesDeleted,
-  numLinesDiff: ({ numLinesAdded, numLinesDeleted }) =>
-    numLinesAdded - numLinesDeleted,
-};
-type Criteria = keyof typeof valueIterateeByCriteria;
-
 const GitThing: NextPage = () => {
   const polarAreaChartRef = useRef<HTMLCanvasElement>(null);
   const [statsByFileName, setStatsByFileName] = useState<Record<string, Stats>>(
@@ -91,6 +80,22 @@ const GitThing: NextPage = () => {
     mostRecentFileNameGlobIncludeEditTimestamp,
     setMostRecentFileNameGlobIncludeEditTimestamp,
   ] = useState(0);
+
+  const valueIterateeByCriteria: Record<string, (stats: Stats) => number> = {
+    numCommits: ({ numCommits }) => numCommits,
+    numDaysActive: ({ daysActive }) =>
+      Array.from(daysActive).filter(
+        (date) =>
+          new Date(date) >= fromDay.toDate() && new Date(date) < toDay.toDate()
+      ).length,
+    numLinesAdded: ({ numLinesAdded }) => numLinesAdded,
+    numLinesChanged: ({ numLinesAdded, numLinesDeleted }) =>
+      numLinesAdded + numLinesDeleted,
+    numLinesDeleted: ({ numLinesDeleted }) => numLinesDeleted,
+    numLinesDiff: ({ numLinesAdded, numLinesDeleted }) =>
+      numLinesAdded - numLinesDeleted,
+  };
+  type Criteria = keyof typeof valueIterateeByCriteria;
 
   useEffect(() => {
     const [fromDate, toDate] = [fromDay, toDay].map((day) => day.toDate());
