@@ -19,6 +19,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import ChartJS from "chart.js/auto";
+import encHex from "crypto-js/enc-hex";
+import sha256 from "crypto-js/sha256";
 import dayjs, { Dayjs } from "dayjs";
 import Linkify from "linkify-react";
 import _ from "lodash";
@@ -158,7 +160,13 @@ const GitThing: NextPage = () => {
       const polarAreaChart = new ChartJS(polarAreaChartRef.current, {
         data: {
           datasets: [
-            { data: dataEntries.map(([, stats]) => valueIteratee(stats)) },
+            {
+              backgroundColor: dataEntries.map(
+                ([fileName]) =>
+                  `#${sha256(fileName).toString(encHex).slice(0, 6)}`
+              ),
+              data: dataEntries.map(([, stats]) => valueIteratee(stats)),
+            },
           ],
           labels: dataEntries.map(([filename]) => filename),
         },
