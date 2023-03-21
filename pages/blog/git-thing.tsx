@@ -326,15 +326,12 @@ const GitThing: NextPage = () => {
           <SliderWithLabels
             className="grow"
             disabled={!numFilesToShow}
-            displayValue={numFilesToShow.toFixed(0) ?? ""}
+            displayValue={`Showing ${numFilesToShow} (of ${numFilesInSelectedDayRange})`}
             label="Number of files to show"
             max={numFilesTotal}
             min={1}
-            onChange={(_event, newValue) =>
-              setNumFilesToShow(
-                Math.min(numFilesInSelectedDayRange, Number(newValue))
-              )
-            }
+            onChange={(_event, newValue) => setNumFilesToShow(Number(newValue))}
+            step={1}
             value={numFilesToShow}
           />
           <ButtonGroup aria-label="num files button group">
