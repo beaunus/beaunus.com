@@ -23,7 +23,7 @@ interface GitFileChangePath {
 
 export type Stats = Required<
   Pick<GitFileChange, "numLinesAdded" | "numLinesDeleted">
-> & { commits: GitCommit[]; daysActive: Set<string>; numCommits: number };
+> & { commits: GitCommit[] };
 
 export const computeDateRange = (commits: GitCommit[]): [Dayjs, Dayjs] => [
   dayjs(
@@ -69,27 +69,17 @@ export const computeStatsByFileName = (
   return fileChanges.reduce<
     Record<
       string,
-      {
-        commits: GitCommit[];
-        daysActive: Set<string>;
-        numCommits: number;
-        numLinesAdded: number;
-        numLinesDeleted: number;
-      }
+      { commits: GitCommit[]; numLinesAdded: number; numLinesDeleted: number }
     >
   >((statsByPath, fileChange) => {
     let path = fileChange.path.afterChange;
     while (successorByPredecessor[path]) {
       path = successorByPredecessor[path];
     }
-    const daysActive = statsByPath[path]?.daysActive ?? new Set<string>();
-    daysActive.add(dayjs(fileChange.date).format("YYYY-MM-DD"));
 
     return Object.assign(statsByPath, {
       [path]: {
         commits: (statsByPath[path]?.commits ?? []).concat(fileChange.commit),
-        daysActive,
-        numCommits: (statsByPath[path]?.numCommits ?? 0) + 1,
         numLinesAdded:
           (statsByPath[path]?.numLinesAdded ?? 0) +
           (fileChange?.numLinesAdded ?? 0),
