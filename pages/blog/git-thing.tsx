@@ -1,4 +1,5 @@
 import { TextField, Typography } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -47,6 +48,9 @@ const GitThing: NextPage = () => {
     {}
   );
   const [commits, setCommits] = useState<GitCommit[]>([]);
+  const [authorsToInclude, setAuthorsToInclude] = useState<
+    GitCommit["author"][]
+  >([]);
   const [criteria, setCriteria] = useState<Criteria>("numCommits");
   const [scaleType, setScaleType] = useState<ScaleType>("linear");
   const [jumpSize, setJumpSize] = useState(1);
@@ -71,11 +75,16 @@ const GitThing: NextPage = () => {
   useEffect(() => {
     const [fromDate, toDate] = [fromDay, toDay].map((day) => day.toDate());
     const newStatsByFileName = computeStatsByFileName(
-      commits.filter(({ date }) => date >= fromDate && date < toDate)
+      commits.filter(
+        ({ author, date }) =>
+          (!authorsToInclude.length || authorsToInclude.includes(author)) &&
+          date >= fromDate &&
+          date < toDate
+      )
     );
     setNumFilesInSelectedDayRange(Object.keys(newStatsByFileName).length);
     setStatsByFileName(newStatsByFileName);
-  }, [commits, fromDay, toDay]);
+  }, [authorsToInclude, commits, fromDay, toDay]);
 
   useEffect(() => {
     if (polarAreaChartRef.current) {
@@ -214,6 +223,18 @@ const GitThing: NextPage = () => {
                 value="logarithmic"
               />
             </RadioGroup>
+            <Autocomplete
+              defaultValue={[]}
+              filterSelectedOptions
+              id="authors"
+              multiple
+              onChange={(_event, newAuthors) => setAuthorsToInclude(newAuthors)}
+              options={_.uniq(commits.map(({ author }) => author)).sort()}
+              renderInput={(params) => (
+                <TextField {...params} label="Authors" placeholder="Authors" />
+              )}
+            />
+
             <div className="flex gap-4">
               <SliderWithLabels
                 className="grow"
