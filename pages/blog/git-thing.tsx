@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
+import Grid from "@mui/material/Grid";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -213,41 +214,51 @@ const GitThing: NextPage = () => {
           {" {path to file that you want to create}"}
         </code>
         <UploadButton />
-        <FormLabel id="criteria-label">Criteria</FormLabel>
-        <RadioGroup
-          aria-labelledby="criteria-label"
-          defaultValue="numCommits"
-          name="criteria-group"
-          onChange={(e) => setCriteria(e.target.value as Criteria)}
-          value={criteria}
-        >
-          <div className="flex flex-wrap">
-            {Object.keys(valueIterateeByCriteria).map((name) => (
+        <Grid container spacing={2}>
+          <Grid item xs={9}>
+            <FormLabel id="criteria-label">Criteria</FormLabel>
+            <RadioGroup
+              aria-labelledby="criteria-label"
+              defaultValue="numCommits"
+              name="criteria-group"
+              onChange={(e) => setCriteria(e.target.value as Criteria)}
+              value={criteria}
+            >
+              <div className="flex flex-wrap">
+                {Object.keys(valueIterateeByCriteria).map((name) => (
+                  <FormControlLabel
+                    control={<Radio />}
+                    key={name}
+                    label={name}
+                    value={name}
+                  />
+                ))}
+              </div>
+            </RadioGroup>
+          </Grid>
+          <Grid item xs={3}>
+            <FormLabel id="scale-label">Scale</FormLabel>
+            <RadioGroup
+              aria-labelledby="scale-label"
+              defaultValue="liner"
+              name="scale-group"
+              onChange={(e) => setScaleType(e.target.value as ScaleType)}
+              row
+              value={scaleType}
+            >
               <FormControlLabel
                 control={<Radio />}
-                key={name}
-                label={name}
-                value={name}
+                label="Linear"
+                value="linear"
               />
-            ))}
-          </div>
-        </RadioGroup>
-        <FormLabel id="scale-label">Scale</FormLabel>
-        <RadioGroup
-          aria-labelledby="scale-label"
-          defaultValue="liner"
-          name="scale-group"
-          onChange={(e) => setScaleType(e.target.value as ScaleType)}
-          row
-          value={scaleType}
-        >
-          <FormControlLabel control={<Radio />} label="Linear" value="linear" />
-          <FormControlLabel
-            control={<Radio />}
-            label="Logarithmic"
-            value="logarithmic"
-          />
-        </RadioGroup>
+              <FormControlLabel
+                control={<Radio />}
+                label="Logarithmic"
+                value="logarithmic"
+              />
+            </RadioGroup>
+          </Grid>
+        </Grid>
         <Autocomplete
           defaultValue={[]}
           filterSelectedOptions
