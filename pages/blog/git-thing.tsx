@@ -480,7 +480,8 @@ const GitThing: NextPage = () => {
                       ({ author, date }) =>
                         date >= fromDay.toDate() &&
                         date < toDay.toDate() &&
-                        (!authorsToInclude || authorsToInclude.includes(author))
+                        (!authorsToInclude.length ||
+                          authorsToInclude.includes(author))
                     )
                     .map((commit) => (
                       <TableRow
