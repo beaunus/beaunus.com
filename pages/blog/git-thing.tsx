@@ -111,13 +111,11 @@ const GitThing: NextPage = () => {
   type Criteria = keyof typeof valueIterateeByCriteria;
 
   useEffect(() => {
-    const [fromDate, toDate] = [fromDay, toDay].map((day) => day.toDate());
     const newStatsByFileName = computeStatsByFileName(
       commits.filter(
         ({ author, date }) =>
           (!authorsToInclude.length || authorsToInclude.includes(author)) &&
-          date >= fromDate &&
-          date < toDate
+          isDateWithinSelectedRange(date)
       )
     );
     setNumFilesInSelectedDayRange(Object.keys(newStatsByFileName).length);
@@ -186,6 +184,16 @@ const GitThing: NextPage = () => {
     scaleType,
     statsByFileName,
   ]);
+
+  const isDateWithinSelectedRange = (date: Date | Dayjs | string | number) => {
+    const dateValue =
+      date instanceof Date || date instanceof Dayjs
+        ? date.valueOf()
+        : typeof date === "string"
+        ? new Date(date).valueOf()
+        : date;
+    return dateValue >= fromDay.valueOf() && dateValue < toDay.valueOf();
+  };
 
   const UploadButton: FC = () => (
     <Button component="label" fullWidth size="small" variant="contained">
@@ -501,8 +509,7 @@ const GitThing: NextPage = () => {
                   {focusedDataEntry[1].commits
                     .filter(
                       ({ author, date }) =>
-                        date >= fromDay.toDate() &&
-                        date < toDay.toDate() &&
+                        isDateWithinSelectedRange(date) &&
                         (!authorsToInclude.length ||
                           authorsToInclude.includes(author))
                     )
