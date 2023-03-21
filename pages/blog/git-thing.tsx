@@ -144,6 +144,7 @@ const GitThing: NextPage = () => {
           animation: false,
           indexAxis: "y",
           maintainAspectRatio: false,
+          normalized: true,
           plugins: { legend: { display: false } },
           scales: { myScale: { axis: "x", position: "top", type: scaleType } },
         },
