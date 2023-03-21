@@ -9,6 +9,7 @@ import FormLabel from "@mui/material/FormLabel";
 import Grid from "@mui/material/Grid";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
+import Switch from "@mui/material/Switch";
 import ChartJS from "chart.js/auto";
 import dayjs, { Dayjs } from "dayjs";
 import _ from "lodash";
@@ -81,6 +82,7 @@ const GitThing: NextPage = () => {
     mostRecentFileNameGlobIncludeEditTimestamp,
     setMostRecentFileNameGlobIncludeEditTimestamp,
   ] = useState(0);
+  const [isIntervalLocked, setIsIntervalLocked] = useState(false);
 
   const valueIterateeByCriteria: Record<string, (stats: Stats) => number> = {
     numCommits: ({ numCommits }) => numCommits,
@@ -307,8 +309,40 @@ const GitThing: NextPage = () => {
             const [newFromDayTimestamp, newToDayTimestamp] = (
               newValue as number[]
             ).map(Number);
-            setFromDay(dayjs(newFromDayTimestamp));
-            setToDay(dayjs(newToDayTimestamp));
+            const oldInterval = toDay.diff(fromDay);
+            if (isIntervalLocked) {
+              const isLeftSliderMovingLeft =
+                newFromDayTimestamp < fromDay.valueOf();
+              const isLeftSliderMovingRight =
+                newFromDayTimestamp > fromDay.valueOf();
+              const isThereSpaceToMoveRight =
+                newFromDayTimestamp + oldInterval <
+                dateRangeOfHistory[1].valueOf();
+
+              const isRightSliderMovingRight =
+                newToDayTimestamp > toDay.valueOf();
+              const isRightSliderMovingLeft =
+                newToDayTimestamp < toDay.valueOf();
+              const isThereSpaceToMoveLeft =
+                newToDayTimestamp - oldInterval >=
+                dateRangeOfHistory[0].valueOf();
+              if (
+                isLeftSliderMovingLeft ||
+                (isLeftSliderMovingRight && isThereSpaceToMoveRight)
+              ) {
+                setFromDay(dayjs(newFromDayTimestamp));
+                setToDay(dayjs(newFromDayTimestamp + oldInterval));
+              } else if (
+                isRightSliderMovingRight ||
+                (isRightSliderMovingLeft && isThereSpaceToMoveLeft)
+              ) {
+                setFromDay(dayjs(newToDayTimestamp - oldInterval));
+                setToDay(dayjs(newToDayTimestamp));
+              }
+            } else {
+              setFromDay(dayjs(newFromDayTimestamp));
+              setToDay(dayjs(newToDayTimestamp));
+            }
           }}
           step={NUM_MS_IN_ONE_DAY}
           value={
@@ -369,6 +403,12 @@ const GitThing: NextPage = () => {
               </Button>
             ))}
           </ButtonGroup>
+          <FormControlLabel
+            control={<Switch defaultChecked />}
+            label="Lock interval"
+            onChange={(_event, newValue) => setIsIntervalLocked(newValue)}
+            value={isIntervalLocked}
+          />
         </div>
         <div className="flex gap-2">
           <TextField
