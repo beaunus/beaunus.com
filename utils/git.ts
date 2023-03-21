@@ -23,7 +23,7 @@ interface GitFileChangePath {
 
 export type Stats = Required<
   Pick<GitFileChange, "numLinesAdded" | "numLinesDeleted">
-> & { daysActive: Set<string>; numCommits: number };
+> & { commits: GitCommit[]; daysActive: Set<string>; numCommits: number };
 
 export const computeDateRange = (commits: GitCommit[]): [Dayjs, Dayjs] => [
   dayjs(
@@ -48,7 +48,9 @@ export const computeStatsByFileName = (
   const fileChanges = commits
     .slice()
     .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
-    .flatMap(({ date, files }) => files.map((file) => ({ date, ...file })));
+    .flatMap((commit) =>
+      commit.files.map((file) => ({ commit, date: commit.date, ...file }))
+    );
   const successorByPredecessor: Record<string, string> = Object.fromEntries(
     fileChanges
       .filter(
@@ -68,6 +70,7 @@ export const computeStatsByFileName = (
     Record<
       string,
       {
+        commits: GitCommit[];
         daysActive: Set<string>;
         numCommits: number;
         numLinesAdded: number;
@@ -81,8 +84,10 @@ export const computeStatsByFileName = (
     }
     const daysActive = statsByPath[path]?.daysActive ?? new Set<string>();
     daysActive.add(dayjs(fileChange.date).format("YYYY-MM-DD"));
+
     return Object.assign(statsByPath, {
       [path]: {
+        commits: (statsByPath[path]?.commits ?? []).concat(fileChange.commit),
         daysActive,
         numCommits: (statsByPath[path]?.numCommits ?? 0) + 1,
         numLinesAdded:

@@ -10,6 +10,12 @@ import Grid from "@mui/material/Grid";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import Switch from "@mui/material/Switch";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 import ChartJS from "chart.js/auto";
 import dayjs, { Dayjs } from "dayjs";
 import _ from "lodash";
@@ -83,6 +89,7 @@ const GitThing: NextPage = () => {
     setMostRecentFileNameGlobIncludeEditTimestamp,
   ] = useState(0);
   const [isIntervalLocked, setIsIntervalLocked] = useState(false);
+  const [focusedDataEntry, setFocusedDataEntry] = useState<[string, Stats]>();
 
   const valueIterateeByCriteria: Record<string, (stats: Stats) => number> = {
     numCommits: ({ numCommits }) => numCommits,
@@ -153,6 +160,11 @@ const GitThing: NextPage = () => {
           indexAxis: "y",
           maintainAspectRatio: false,
           normalized: true,
+          onClick: (_event, elements) => {
+            if (elements?.[0]?.index !== undefined) {
+              setFocusedDataEntry(dataEntries[elements?.[0].index]);
+            }
+          },
           plugins: { legend: { display: false } },
           scales: { myScale: { axis: "x", position: "top", type: scaleType } },
         },
@@ -440,6 +452,55 @@ const GitThing: NextPage = () => {
           />
         </div>
         <canvas className="max-h-[50vh]" ref={polarAreaChartRef} />
+        {focusedDataEntry ? (
+          <div>
+            <Typography variant="h5">{focusedDataEntry[0]}</Typography>
+            <TableContainer>
+              <Table aria-label="commit table" size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>commitHash</TableCell>
+                    <TableCell>date</TableCell>
+                    <TableCell>author</TableCell>
+                    <TableCell>message</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {focusedDataEntry[1].commits
+                    .filter(
+                      ({ author, date }) =>
+                        date >= fromDay.toDate() &&
+                        date < toDay.toDate() &&
+                        (!authorsToInclude || authorsToInclude.includes(author))
+                    )
+                    .map((commit) => (
+                      <TableRow
+                        key={commit.commitHash}
+                        sx={{
+                          // eslint-disable-next-line @typescript-eslint/naming-convention
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          <code>{commit.commitHash.slice(0, 7)}</code>
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap">
+                          {dayjs(commit.date).format("YYYY-MM-DD")}
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap">
+                          {commit.author.split(" <")[0]}
+                        </TableCell>
+                        <TableCell className="whitespace-pre-line">
+                          <strong>{commit.message.split("\n")[0]}</strong>
+                          {commit.message.split("\n").slice(1).join("\n")}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+        ) : null}
       </div>
     </>
   );
