@@ -432,7 +432,7 @@ const GitThing: NextPage = () => {
             </Button>
           </ButtonGroup>
           <ButtonGroup aria-label="snap button group">
-            {[7, 28, 28 * 6].map((numDaysToSnapTo) => (
+            {[7, 14, 28, 28 * 6].map((numDaysToSnapTo) => (
               <Button
                 key={`${numDaysToSnapTo}-snap`}
                 onClick={() =>
