@@ -18,6 +18,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import ChartJS from "chart.js/auto";
 import dayjs, { Dayjs } from "dayjs";
+import Linkify from "linkify-react";
 import _ from "lodash";
 import multimatch from "multimatch";
 import type { NextPage } from "next";
@@ -527,8 +528,21 @@ const GitThing: NextPage = () => {
                           {commit.author.split(" <")[0]}
                         </TableCell>
                         <TableCell className="whitespace-pre-line">
-                          <strong>{commit.message.split("\n")[0]}</strong>
-                          {commit.message.split("\n").slice(1).join("\n")}
+                          <Linkify
+                            options={{
+                              render: ({
+                                attributes: { href, ...props },
+                                content,
+                              }) => (
+                                <Link href={href} {...props}>
+                                  {content}
+                                </Link>
+                              ),
+                            }}
+                          >
+                            <strong>{commit.message.split("\n")[0]}</strong>
+                            {commit.message.split("\n").slice(1).join("\n")}
+                          </Linkify>
                         </TableCell>
                       </TableRow>
                     ))}
