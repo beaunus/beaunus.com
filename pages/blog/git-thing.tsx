@@ -43,6 +43,8 @@ const FILE_NAME_GLOB_EXCLUDE_DEFAULT = [
 
 type ScaleType = "linear" | "logarithmic";
 
+const NUM_MS_IN_ONE_DAY = 1000 * 60 * 60 * 24;
+
 const GitThing: NextPage = () => {
   const polarAreaChartRef = useRef<HTMLCanvasElement>(null);
   const [statsByFileName, setStatsByFileName] = useState<Record<string, Stats>>(
@@ -204,7 +206,7 @@ const GitThing: NextPage = () => {
       <Head>
         <title>Git thing | Beaunus</title>
       </Head>
-      <div className="flex flex-col gap-5 px-10 w-full">
+      <div className="flex flex-col gap-5 px-14 w-full">
         <div className="text-2xl font-semibold text-center text-cyan-700">
           Git thing
         </div>
@@ -311,10 +313,11 @@ const GitThing: NextPage = () => {
             setFromDay(dayjs(newFromDayTimestamp));
             setToDay(dayjs(newToDayTimestamp));
           }}
+          step={NUM_MS_IN_ONE_DAY}
           value={
             fromDay && toDay ? [fromDay.valueOf(), toDay.valueOf()] : undefined
           }
-          valueLabelDisplay="auto"
+          valueLabelDisplay="on"
           valueLabelFormat={(timestamp) =>
             dayjs(timestamp).format("YYYY-MM-DD")
           }
