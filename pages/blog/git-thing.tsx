@@ -241,7 +241,7 @@ const GitThing: NextPage = () => {
         </Typography>
         <code>
           git -C{" {path to git repository} "}log --numstat{" > "}
-          {" {path to file that you want to create}"}
+          {" {path to outfile [prefix with organization/repo]}"}
         </code>
         <Grid alignItems="center" container spacing={2}>
           <Grid item xs={3}>
