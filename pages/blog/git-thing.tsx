@@ -42,6 +42,8 @@ import {
 
 const FILE_NAME_GLOB_DELAY_IN_MS = 1000;
 const FILE_NAME_GLOB_EXCLUDE_DEFAULT = [
+  "**/*.jpg",
+  "**/*.png",
   "**/*json*",
   "**/*pdf*",
   "**/*sdk*",
