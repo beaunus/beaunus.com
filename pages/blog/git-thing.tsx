@@ -1,3 +1,5 @@
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { TextField, Typography } from "@mui/material";
@@ -240,29 +242,107 @@ const GitThing: NextPage = () => {
     </Button>
   );
 
-  const CommitTable: FC<{ commits: GitCommit[] }> = ({ commits }) => (
-    <TableContainer>
-      <Table aria-label="commit table" size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>commitHash</TableCell>
-            <TableCell>date</TableCell>
-            <TableCell>author</TableCell>
-            <TableCell>+</TableCell>
-            <TableCell>-</TableCell>
-            <TableCell>-/+</TableCell>
-            <TableCell>abs(-/+)</TableCell>
-            <TableCell>message</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {commits
-            .filter(
-              ({ author, date }) =>
-                isDateWithinSelectedRange(date) &&
-                (!authorsToInclude.length || authorsToInclude.includes(author))
-            )
-            .map((commit) => (
+  const CommitTable: FC<{ commits: GitCommit[]; relevantFilePath: string }> = ({
+    commits,
+    relevantFilePath,
+  }) => {
+    const HEADINGS = [
+      "commitHash",
+      "date",
+      "author",
+      "+",
+      "-",
+      "-/+",
+      "abs(-/+)",
+      "message",
+    ] as const;
+
+    const [sortStrategy, setSortStrategy] = useState<{
+      criteria: (typeof HEADINGS)[number];
+      direction: "asc" | "desc";
+    }>({ criteria: "date", direction: "asc" });
+
+    const sortedCommits = _.sortBy(
+      commits
+        .filter(
+          ({ author, date }) =>
+            isDateWithinSelectedRange(date) &&
+            (!authorsToInclude.length || authorsToInclude.includes(author))
+        )
+        .map((commit) => {
+          const relevantFile = commit.files.find(
+            ({ path }) => path.afterChange === relevantFilePath
+          );
+          return {
+            ...commit,
+            numLinesAddedForRelevantFile: relevantFile?.numLinesAdded ?? 0,
+            numLinesChangedForRelevantFile:
+              (relevantFile?.numLinesAdded ?? 0) -
+              (relevantFile?.numLinesDeleted ?? 0),
+            numLinesDeletedForRelevantFile: relevantFile?.numLinesDeleted ?? 0,
+            numLinesDiffForRelevantFile:
+              (relevantFile?.numLinesAdded ?? 0) +
+              (relevantFile?.numLinesDeleted ?? 0),
+          };
+        }),
+      sortStrategy.criteria === "+"
+        ? "numLinesAddedForRelevantFile"
+        : sortStrategy.criteria === "-"
+        ? "numLinesDeletedForRelevantFile"
+        : sortStrategy.criteria === "-/+"
+        ? "numLinesChangesForRelevantFile"
+        : sortStrategy.criteria === "abs(-/+)"
+        ? "numLinesDiffForRelevantFile"
+        : sortStrategy.criteria
+    );
+
+    return (
+      <TableContainer>
+        <Table aria-label="commit table" size="small">
+          <TableHead>
+            <TableRow className="whitespace-nowrap">
+              {HEADINGS.map((heading) => (
+                <TableCell
+                  key={heading}
+                  onClick={() => {
+                    setSortStrategy((old) => ({
+                      criteria: heading,
+                      direction:
+                        old.criteria === heading
+                          ? old.direction === "asc"
+                            ? "desc"
+                            : "asc"
+                          : "asc",
+                    }));
+                  }}
+                >
+                  {heading}
+                  {sortStrategy.direction === "asc" ? (
+                    <ArrowDropUpIcon
+                      color={
+                        sortStrategy.criteria === heading
+                          ? "inherit"
+                          : "disabled"
+                      }
+                    />
+                  ) : (
+                    <ArrowDropDownIcon
+                      color={
+                        sortStrategy.criteria === heading
+                          ? "inherit"
+                          : "disabled"
+                      }
+                    />
+                  )}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {(sortStrategy.direction === "asc"
+              ? sortedCommits
+              : sortedCommits.reverse()
+            ).map((commit) => (
               <TableRow
                 key={commit.commitHash}
                 sx={{
@@ -283,32 +363,10 @@ const GitThing: NextPage = () => {
                 <TableCell className="whitespace-nowrap">
                   {commit.author.split(" <")[0]}
                 </TableCell>
-                <TableCell>
-                  {commit.files.reduce(
-                    (sum, { numLinesAdded }) => sum + (numLinesAdded ?? 0),
-                    0
-                  )}
-                </TableCell>
-                <TableCell>
-                  {commit.files.reduce(
-                    (sum, { numLinesDeleted }) => sum + (numLinesDeleted ?? 0),
-                    0
-                  )}
-                </TableCell>
-                <TableCell>
-                  {commit.files.reduce(
-                    (sum, { numLinesAdded, numLinesDeleted }) =>
-                      sum + (numLinesAdded ?? 0) - (numLinesDeleted ?? 0),
-                    0
-                  )}
-                </TableCell>
-                <TableCell>
-                  {commit.files.reduce(
-                    (sum, { numLinesAdded, numLinesDeleted }) =>
-                      sum + (numLinesAdded ?? 0) + (numLinesDeleted ?? 0),
-                    0
-                  )}
-                </TableCell>
+                <TableCell>{commit.numLinesAddedForRelevantFile}</TableCell>
+                <TableCell>{commit.numLinesDeletedForRelevantFile}</TableCell>
+                <TableCell>{commit.numLinesChangedForRelevantFile}</TableCell>
+                <TableCell>{commit.numLinesDiffForRelevantFile}</TableCell>
                 <TableCell className="whitespace-pre-line">
                   <Linkify
                     options={{
@@ -325,10 +383,11 @@ const GitThing: NextPage = () => {
                 </TableCell>
               </TableRow>
             ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
+          </TableBody>
+        </Table>
+      </TableContainer>
+    );
+  };
 
   return (
     <>
@@ -593,7 +652,10 @@ const GitThing: NextPage = () => {
         {focusedDataEntry ? (
           <div>
             <Typography variant="h5">{focusedDataEntry[0]}</Typography>
-            <CommitTable commits={focusedDataEntry[1].commits} />
+            <CommitTable
+              commits={focusedDataEntry[1].commits}
+              relevantFilePath={focusedDataEntry[0]}
+            />
           </div>
         ) : null}
       </div>
