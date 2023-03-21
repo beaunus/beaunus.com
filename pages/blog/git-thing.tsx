@@ -283,7 +283,7 @@ const GitThing: NextPage = () => {
             min={1}
             onChange={(_event, newValue) =>
               setNumFilesToShow(
-                Math.min(numFilesInSelectedDayRange, newValue as number)
+                Math.min(numFilesInSelectedDayRange, Number(newValue))
               )
             }
             value={numFilesToShow}
@@ -305,8 +305,9 @@ const GitThing: NextPage = () => {
           max={dateRangeOfHistory?.[1].add(1, "day").valueOf()}
           min={dateRangeOfHistory?.[0].valueOf()}
           onChange={(_event, newValue) => {
-            const [newFromDayTimestamp, newToDayTimestamp] =
-              newValue as number[];
+            const [newFromDayTimestamp, newToDayTimestamp] = (
+              newValue as number[]
+            ).map(Number);
             setFromDay(dayjs(newFromDayTimestamp));
             setToDay(dayjs(newToDayTimestamp));
           }}
