@@ -22,6 +22,7 @@ import _ from "lodash";
 import multimatch from "multimatch";
 import type { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { FC, useEffect, useRef, useState } from "react";
 
 import { SliderWithLabels } from "../../components/SliderWithLabels";
@@ -90,6 +91,7 @@ const GitThing: NextPage = () => {
   ] = useState(0);
   const [isIntervalLocked, setIsIntervalLocked] = useState(false);
   const [focusedDataEntry, setFocusedDataEntry] = useState<[string, Stats]>();
+  const [baseGithubRepository, setBaseGithubRepository] = useState("");
 
   const valueIterateeByCriteria: Record<string, (stats: Stats) => number> = {
     numCommits: ({ numCommits }) => numCommits,
@@ -185,7 +187,7 @@ const GitThing: NextPage = () => {
   ]);
 
   const UploadButton: FC = () => (
-    <Button component="label" size="small" variant="contained">
+    <Button component="label" fullWidth size="small" variant="contained">
       Upload
       <input
         accept=".txt"
@@ -199,6 +201,10 @@ const GitThing: NextPage = () => {
               computeStatsByFileName(commitsFromFile)
             ).length;
 
+            if (target.files?.[0].name)
+              setBaseGithubRepository(
+                target.files[0].name.split(".")[0].replaceAll(":", "/")
+              );
             setCommits(commitsFromFile);
             setDateRangeOfHistory(dateRangeOfCommits);
             setFromDay(dateRangeOfCommits[0]);
@@ -228,7 +234,23 @@ const GitThing: NextPage = () => {
           git -C{" {path to git repository} "}log --numstat{" > "}
           {" {path to file that you want to create}"}
         </code>
-        <UploadButton />
+        <Grid alignItems="center" container spacing={2}>
+          <Grid item xs={3}>
+            <UploadButton />
+          </Grid>
+          <Grid item xs={9}>
+            <TextField
+              InputLabelProps={{ shrink: true }}
+              fullWidth
+              label="Base Github repository"
+              onChange={({ target }) => {
+                setBaseGithubRepository(target.value);
+              }}
+              size="small"
+              value={baseGithubRepository}
+            />
+          </Grid>
+        </Grid>
         <Grid container spacing={2}>
           <Grid item xs={9}>
             <FormLabel id="criteria-label">Criteria</FormLabel>
@@ -492,7 +514,11 @@ const GitThing: NextPage = () => {
                         }}
                       >
                         <TableCell component="th" scope="row">
-                          <code>{commit.commitHash.slice(0, 7)}</code>
+                          <Link
+                            href={`https://github.com/${baseGithubRepository}/commit/${commit.commitHash}`}
+                          >
+                            <code>{commit.commitHash.slice(0, 7)}</code>
+                          </Link>
                         </TableCell>
                         <TableCell className="whitespace-nowrap">
                           {dayjs(commit.date).format("YYYY-MM-DD")}
