@@ -14,7 +14,7 @@ import _ from "lodash";
 import multimatch from "multimatch";
 import type { NextPage } from "next";
 import Head from "next/head";
-import React from "react";
+import { FC, useEffect, useRef, useState } from "react";
 
 import { Segment } from "../../components/Segment";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
@@ -41,31 +41,32 @@ const valueIterateeByCriteria: Record<string, (stats: Stats) => number> = {
 type Criteria = keyof typeof valueIterateeByCriteria;
 
 const GitThing: NextPage = () => {
-  const polarAreaChartRef = React.useRef<HTMLCanvasElement>(null);
-  const [statsByFileName, setStatsByFileName] = React.useState<
-    Record<string, Stats>
-  >({});
-  const [commits, setCommits] = React.useState<GitCommit[]>([]);
-  const [criteria, setCriteria] = React.useState<Criteria>("numCommits");
-  const [scaleType, setScaleType] = React.useState<ScaleType>("linear");
-  const [jumpSize, setJumpSize] = React.useState(1);
-  const [numFilesToShow, setNumFilesToShow] = React.useState<number>(0);
-  const [dateRangeOfHistory, setDateRangeOfHistory] = React.useState<
-    [Dayjs, Dayjs]
-  >([dayjs(0), dayjs(0)]);
+  const polarAreaChartRef = useRef<HTMLCanvasElement>(null);
+  const [statsByFileName, setStatsByFileName] = useState<Record<string, Stats>>(
+    {}
+  );
+  const [commits, setCommits] = useState<GitCommit[]>([]);
+  const [criteria, setCriteria] = useState<Criteria>("numCommits");
+  const [scaleType, setScaleType] = useState<ScaleType>("linear");
+  const [jumpSize, setJumpSize] = useState(1);
+  const [numFilesToShow, setNumFilesToShow] = useState<number>(0);
+  const [dateRangeOfHistory, setDateRangeOfHistory] = useState<[Dayjs, Dayjs]>([
+    dayjs(0),
+    dayjs(0),
+  ]);
   const [numFilesInSelectedDayRange, setNumFilesInSelectedDayRange] =
-    React.useState<number>(0);
-  const [numFilesTotal, setNumFilesTotal] = React.useState<number>(0);
-  const [fromDay, setFromDay] = React.useState<Dayjs>(dayjs(0));
-  const [toDay, setToDay] = React.useState<Dayjs>(dayjs(0));
-  const [fileNameGlob, setFileNameGlob] = React.useState("");
-  const [fileNameGlobPending, setFileNameGlobPending] = React.useState("");
+    useState<number>(0);
+  const [numFilesTotal, setNumFilesTotal] = useState<number>(0);
+  const [fromDay, setFromDay] = useState<Dayjs>(dayjs(0));
+  const [toDay, setToDay] = useState<Dayjs>(dayjs(0));
+  const [fileNameGlob, setFileNameGlob] = useState("");
+  const [fileNameGlobPending, setFileNameGlobPending] = useState("");
   const [
     mostRecentFileNameGlobEditTimestamp,
     setMostRecentFileNameGlobEditTimestamp,
-  ] = React.useState(0);
+  ] = useState(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const [fromDate, toDate] = [fromDay, toDay].map((day) => day.toDate());
     const newStatsByFileName = computeStatsByFileName(
       commits.filter(({ date }) => date >= fromDate && date < toDate)
@@ -74,7 +75,7 @@ const GitThing: NextPage = () => {
     setStatsByFileName(newStatsByFileName);
   }, [commits, fromDay, toDay]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (polarAreaChartRef.current) {
       const valueIteratee = valueIterateeByCriteria[criteria];
 
@@ -118,7 +119,7 @@ const GitThing: NextPage = () => {
     }
   }, [criteria, fileNameGlob, numFilesToShow, scaleType, statsByFileName]);
 
-  const UploadButton: React.FC = () => (
+  const UploadButton: FC = () => (
     <Button component="label" variant="contained">
       Upload
       <input

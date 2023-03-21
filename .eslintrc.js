@@ -7,6 +7,7 @@ module.exports = {
     "plugin:tailwindcss/recommended",
     "plugin:@next/next/recommended",
   ],
+  rules: { ...beaunusStyleConfig.rules, "react/react-in-jsx-scope": "off" },
   settings: {
     ...beaunusStyleConfig.settings,
     tailwindcss: {
