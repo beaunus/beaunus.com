@@ -314,7 +314,7 @@ const GitThing: NextPage = () => {
           value={
             fromDay && toDay ? [fromDay.valueOf(), toDay.valueOf()] : undefined
           }
-          valueLabelDisplay="on"
+          valueLabelDisplay="auto"
           valueLabelFormat={(timestamp) =>
             dayjs(timestamp).format("YYYY-MM-DD")
           }
