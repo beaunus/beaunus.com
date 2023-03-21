@@ -9,9 +9,6 @@ import FormLabel from "@mui/material/FormLabel";
 import Grid from "@mui/material/Grid";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import ChartJS from "chart.js/auto";
 import dayjs, { Dayjs } from "dayjs";
 import _ from "lodash";
@@ -373,28 +370,6 @@ const GitThing: NextPage = () => {
             ))}
           </ButtonGroup>
         </div>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <div className="flex gap-1">
-            <DatePicker
-              className="grow"
-              disabled={!dateRangeOfHistory}
-              label="From date"
-              onChange={(newValue) => {
-                if (newValue) setFromDay(newValue);
-              }}
-              value={fromDay}
-            />
-            <DatePicker
-              className="grow"
-              disabled={!dateRangeOfHistory}
-              label="To date"
-              onChange={(newValue) => {
-                if (newValue) setToDay(newValue);
-              }}
-              value={toDay}
-            />
-          </div>
-        </LocalizationProvider>
         <div className="flex gap-2">
           <TextField
             InputLabelProps={{ shrink: true }}
