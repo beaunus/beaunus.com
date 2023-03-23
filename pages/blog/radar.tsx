@@ -1,10 +1,7 @@
 import { Clear } from "@mui/icons-material";
 import { Button, FormControlLabel, Switch } from "@mui/material";
-import FormLabel from "@mui/material/FormLabel";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
 import Slider from "@mui/material/Slider";
 import TextField from "@mui/material/TextField";
 import ChartJS from "chart.js/auto";
@@ -15,13 +12,6 @@ import * as React from "react";
 import { Segment } from "../../components/Segment";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
 import { arithmeticMean, geometricMean } from "../../utils/mean";
-
-type AggregationStrategies = Record<string, (numbers: number[]) => number>;
-
-const AGGREGATION_STRATEGY_FUNCTION_BY_NAME: AggregationStrategies = {
-  arithmeticMean,
-  geometricMean,
-};
 
 const DEFAULT_DIMENSIONS: Record<string, { value: number; weight: number }> = {
   /* eslint-disable @typescript-eslint/naming-convention, sort-keys */
@@ -65,8 +55,6 @@ const StandardLevelSlider: React.FC = () => (
 );
 
 const Radar: NextPage = () => {
-  const [aggregationStrategyName, setAggregationStrategyName] =
-    React.useState<string>("geometricMean");
   const [dimensions, setDimensions] = React.useState(DEFAULT_DIMENSIONS);
   const [pendingDimensionName, setPendingDimensionName] =
     React.useState<string>("");
@@ -79,9 +67,6 @@ const Radar: NextPage = () => {
       const valuesAccordingToWeights = Object.values(dimensions).flatMap(
         ({ value, weight }) => Array.from({ length: weight }, () => value)
       );
-      const aggregatedValue = AGGREGATION_STRATEGY_FUNCTION_BY_NAME[
-        aggregationStrategyName
-      ](valuesAccordingToWeights);
 
       if (radarChartRef.current) {
         const radarChart = new ChartJS(radarChartRef.current, {
@@ -92,22 +77,33 @@ const Radar: NextPage = () => {
                     data: Array.from(Object.keys(dimensions), () => value),
                     fill: false,
                     label: name,
+                    pointRadius: 0,
                   }))
                 : []),
               {
+                backgroundColor: "rgb(255, 99, 132)",
                 borderColor: "rgb(255, 99, 132)",
                 data: Object.values(dimensions).map(({ value }) => value),
                 fill: false,
                 label: "Dimensions",
               },
               {
+                backgroundColor: "rgb(255, 255, 255, 1)",
+                borderColor: "rgb(255, 255, 255, 1)",
+                data: Array.from(Object.keys(dimensions), () =>
+                  geometricMean(valuesAccordingToWeights)
+                ),
+                label: "geometricMean",
+                pointRadius: 0,
+              },
+              {
                 backgroundColor: "rgb(200, 255, 200, 1)",
                 borderColor: "rgb(200, 255, 200, 1)",
-                data: Array.from(
-                  Object.keys(dimensions),
-                  () => aggregatedValue
+                data: Array.from(Object.keys(dimensions), () =>
+                  arithmeticMean(valuesAccordingToWeights)
                 ),
-                label: aggregationStrategyName,
+                label: "aritmeticMean",
+                pointRadius: 0,
               },
             ],
             labels: Object.keys(dimensions),
@@ -129,7 +125,7 @@ const Radar: NextPage = () => {
         };
       }
     },
-    [aggregationStrategyName, dimensions, shouldShowLevels]
+    [dimensions, shouldShowLevels]
   );
 
   return (
@@ -242,29 +238,6 @@ const Radar: NextPage = () => {
                 </Grid>
               </Grid>
             ))}
-            <FormLabel id="aggregation-strategy">
-              Aggregation Strategy
-            </FormLabel>
-            <RadioGroup
-              aria-labelledby="aggregation-strategy"
-              name="aggregation-strategy-group"
-              onChange={(_event, newValue) => {
-                setAggregationStrategyName(newValue);
-              }}
-              row
-              value={aggregationStrategyName}
-            >
-              {Object.keys(AGGREGATION_STRATEGY_FUNCTION_BY_NAME).map(
-                (name) => (
-                  <FormControlLabel
-                    control={<Radio />}
-                    key={name}
-                    label={name}
-                    value={name}
-                  />
-                )
-              )}
-            </RadioGroup>
             <canvas className="max-h-screen" ref={radarChartRef} />
           </div>
         </Segment>
