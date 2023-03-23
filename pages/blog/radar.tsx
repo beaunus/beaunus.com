@@ -197,6 +197,7 @@ const Radar: NextPage = () => {
                         )
                       )
                     }
+                    size="small"
                   >
                     <Clear />
                   </IconButton>
@@ -214,6 +215,7 @@ const Radar: NextPage = () => {
                         },
                       }));
                     }}
+                    size="small"
                     type="number"
                     value={dimensions[dimensionName].weight}
                   />
