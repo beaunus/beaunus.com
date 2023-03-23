@@ -97,6 +97,7 @@ const Radar: NextPage = () => {
                 ),
                 label: "geometricMean",
                 pointRadius: 0,
+                showLine: false,
               },
               {
                 backgroundColor: "rgb(200, 255, 200, 1)",
