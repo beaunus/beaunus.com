@@ -221,7 +221,6 @@ const Radar: NextPage = () => {
                 </Grid>
                 <Grid item xs={9}>
                   <SliderWithLabels
-                    displayValue={value.toString()}
                     label={dimensionName}
                     max={7}
                     min={1}
