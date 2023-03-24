@@ -58,7 +58,6 @@ const Radar: NextPage = () => {
   const [dimensions, setDimensions] = React.useState(DEFAULT_DIMENSIONS);
   const [pendingDimensionName, setPendingDimensionName] =
     React.useState<string>("");
-  const [shouldShowLevels, setShouldShowLevels] = React.useState(true);
 
   const radarChartRef = React.useRef<HTMLCanvasElement>(null);
 
@@ -72,14 +71,12 @@ const Radar: NextPage = () => {
         const radarChart = new ChartJS(radarChartRef.current, {
           data: {
             datasets: [
-              ...(shouldShowLevels
-                ? Object.entries(STANDARD_LEVELS).map(([name, value]) => ({
-                    data: Array.from(Object.keys(dimensions), () => value),
-                    fill: false,
-                    label: name,
-                    pointRadius: 0,
-                  }))
-                : []),
+              ...Object.entries(STANDARD_LEVELS).map(([name, value]) => ({
+                data: Array.from(Object.keys(dimensions), () => value),
+                fill: false,
+                label: name,
+                pointRadius: 0,
+              })),
               {
                 backgroundColor: "rgb(255, 99, 132)",
                 borderColor: "rgb(255, 99, 132)",
@@ -132,7 +129,7 @@ const Radar: NextPage = () => {
         };
       }
     },
-    [dimensions, shouldShowLevels]
+    [dimensions]
   );
 
   return (
@@ -167,18 +164,7 @@ const Radar: NextPage = () => {
                 Add New Dimension
               </Button>
             </div>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={shouldShowLevels}
-                  onChange={({ target }) => {
-                    setShouldShowLevels(target.checked);
-                  }}
-                />
-              }
-              label="Should show levels"
-            />
-            {shouldShowLevels ? <StandardLevelSlider /> : null}
+            <StandardLevelSlider />
             {Object.entries(dimensions).map(([dimensionName, { value }]) => (
               <Grid
                 alignItems="center"
