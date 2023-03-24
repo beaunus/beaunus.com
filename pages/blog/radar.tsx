@@ -71,11 +71,6 @@ const Radar: NextPage = () => {
         const radarChart = new ChartJS(radarChartRef.current, {
           data: {
             datasets: [
-              ...Object.values(STANDARD_LEVELS).map((value) => ({
-                data: Array.from(Object.keys(dimensions), () => value),
-                fill: false,
-                pointRadius: 0,
-              })),
               {
                 backgroundColor: "rgb(255, 99, 132)",
                 borderColor: "rgb(255, 99, 132)",
@@ -84,21 +79,40 @@ const Radar: NextPage = () => {
                 pointBorderWidth: ({ dataIndex }) =>
                   2 * Object.values(dimensions)[dataIndex].weight,
               },
+              ...Object.values(STANDARD_LEVELS).map((value) => ({
+                data: Array.from(Object.keys(dimensions), () => value + 1),
+                fill: false,
+                pointRadius: 0,
+              })),
               {
-                backgroundColor: "rgb(255, 255, 255, 1)",
-                borderColor: "rgb(255, 255, 255, 1)",
+                borderColor: "rgb(255, 255, 200, .8)",
+                borderWidth:
+                  20 +
+                  100 *
+                    (arithmeticMean(valuesAccordingToWeights) -
+                      geometricMean(valuesAccordingToWeights)),
                 data: Array.from(Object.keys(dimensions), () =>
                   geometricMean(valuesAccordingToWeights)
                 ),
+                fill: false,
                 pointRadius: 0,
-                showLine: false,
+              },
+              {
+                backgroundColor: "rgb(255, 200, 200, 1)",
+                borderColor: "rgb(255, 200, 200, 1)",
+                data: Array.from(Object.keys(dimensions), () => 3),
+                pointRadius: 0,
               },
               {
                 backgroundColor: "rgb(200, 255, 200, 1)",
                 borderColor: "rgb(200, 255, 200, 1)",
-                data: Array.from(Object.keys(dimensions), () =>
-                  arithmeticMean(valuesAccordingToWeights)
-                ),
+                data: Array.from(Object.keys(dimensions), () => 5),
+                pointRadius: 0,
+              },
+              {
+                backgroundColor: "rgb(200, 200, 255, 1)",
+                borderColor: "rgb(200, 200, 255, 1)",
+                data: Array.from(Object.keys(dimensions), () => 7),
                 pointRadius: 0,
               },
             ],
