@@ -67,6 +67,13 @@ const Radar: NextPage = () => {
         ({ value, weight }) => Array.from({ length: weight }, () => value)
       );
 
+      const x = geometricMean(valuesAccordingToWeights);
+      const borderColors = [
+        85.7998 * Math.sin(x) + 48.9514 * Math.cos(x) + 144.353,
+        -193.352 * Math.sin(x) + 110.707 * Math.cos(x) + 280.885,
+        -104.098 * Math.sin(x) - 73.2507 * Math.cos(x) + 189.173,
+      ].map((x) => x);
+
       if (radarChartRef.current) {
         const radarChart = new ChartJS(radarChartRef.current, {
           data: {
@@ -85,7 +92,7 @@ const Radar: NextPage = () => {
                 pointRadius: 0,
               })),
               {
-                borderColor: "rgb(255, 255, 200, .8)",
+                borderColor: `rgb(${borderColors.join(", ")}, .8)`,
                 borderWidth:
                   20 +
                   100 *
