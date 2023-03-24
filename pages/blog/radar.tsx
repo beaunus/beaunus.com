@@ -113,6 +113,7 @@ const Radar: NextPage = () => {
           },
           options: {
             animation: false,
+            plugins: { legend: { display: false } },
             scales: {
               r: {
                 suggestedMax: SLIDER_RANGE[1],
