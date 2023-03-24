@@ -71,10 +71,9 @@ const Radar: NextPage = () => {
         const radarChart = new ChartJS(radarChartRef.current, {
           data: {
             datasets: [
-              ...Object.entries(STANDARD_LEVELS).map(([name, value]) => ({
+              ...Object.values(STANDARD_LEVELS).map((value) => ({
                 data: Array.from(Object.keys(dimensions), () => value),
                 fill: false,
-                label: name,
                 pointRadius: 0,
               })),
               {
@@ -82,7 +81,6 @@ const Radar: NextPage = () => {
                 borderColor: "rgb(255, 99, 132)",
                 data: Object.values(dimensions).map(({ value }) => value),
                 fill: false,
-                label: "Dimensions",
                 pointBorderWidth: ({ dataIndex }) =>
                   2 * Object.values(dimensions)[dataIndex].weight,
               },
@@ -92,7 +90,6 @@ const Radar: NextPage = () => {
                 data: Array.from(Object.keys(dimensions), () =>
                   geometricMean(valuesAccordingToWeights)
                 ),
-                label: "geometricMean",
                 pointRadius: 0,
                 showLine: false,
               },
@@ -102,7 +99,6 @@ const Radar: NextPage = () => {
                 data: Array.from(Object.keys(dimensions), () =>
                   arithmeticMean(valuesAccordingToWeights)
                 ),
-                label: "aritmeticMean",
                 pointRadius: 0,
               },
             ],
