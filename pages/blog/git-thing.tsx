@@ -444,7 +444,7 @@ const GitThing: NextPage = () => {
               <div className="flex flex-wrap">
                 {Object.keys(valueIterateeByCriteria).map((name) => (
                   <FormControlLabel
-                    control={<Radio />}
+                    control={<Radio size="small" />}
                     key={name}
                     label={name}
                     value={name}
@@ -465,7 +465,7 @@ const GitThing: NextPage = () => {
             >
               {SCALE_TYPES.map((scaleTypeLabel) => (
                 <FormControlLabel
-                  control={<Radio />}
+                  control={<Radio size="small" />}
                   key={scaleTypeLabel}
                   label={scaleTypeLabel}
                   value={scaleTypeLabel}
@@ -489,6 +489,7 @@ const GitThing: NextPage = () => {
               size="small"
             />
           )}
+          size="small"
         />
 
         <div className="flex gap-4">
@@ -500,6 +501,7 @@ const GitThing: NextPage = () => {
             max={numFilesTotal}
             min={1}
             onChange={(_event, newValue) => setNumFilesToShow(Number(newValue))}
+            size="small"
             step={1}
             value={numFilesToShow}
           />
@@ -552,6 +554,7 @@ const GitThing: NextPage = () => {
               setToDay(dayjs(newValues[1]));
             }
           }}
+          size="small"
           step={NUM_MS_IN_ONE_DAY}
           value={
             fromDay && toDay ? [fromDay.valueOf(), toDay.valueOf()] : undefined
@@ -583,6 +586,7 @@ const GitThing: NextPage = () => {
                   setToDay((old) => old.subtract(jumpSize, "day"));
                 }
               }}
+              size="small"
             >
               <KeyboardDoubleArrowLeftIcon />
             </Button>
@@ -596,6 +600,7 @@ const GitThing: NextPage = () => {
                   setToDay((old) => old.add(jumpSize, "day"));
                 }
               }}
+              size="small"
             >
               <KeyboardDoubleArrowRightIcon />
             </Button>
@@ -607,6 +612,7 @@ const GitThing: NextPage = () => {
                 onClick={() =>
                   setFromDay(toDay.subtract(numDaysToSnapTo, "days"))
                 }
+                size="small"
               >
                 {numDaysToSnapTo} days
               </Button>
