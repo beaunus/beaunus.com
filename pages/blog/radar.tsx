@@ -1,5 +1,5 @@
 import { Clear } from "@mui/icons-material";
-import { Button, FormControlLabel, Switch } from "@mui/material";
+import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Slider from "@mui/material/Slider";
