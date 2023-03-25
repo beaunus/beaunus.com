@@ -35,6 +35,8 @@ const STANDARD_LEVELS: Record<string, number> = {
 
 const SLIDER_RANGE: [number, number] = [1, 7];
 
+const OVERLAY_LOOSENESS = 1.1;
+
 const StandardLevelSlider: React.FC = () => (
   <Grid container spacing={2}>
     <Grid item xs={3} />
@@ -67,12 +69,16 @@ const Radar: NextPage = () => {
         ({ value, weight }) => Array.from({ length: weight }, () => value)
       );
 
-      const x = geometricMean(valuesAccordingToWeights);
-      const borderColors = [
-        85.7998 * Math.sin(x / 2) + 48.9514 * Math.cos(x / 2) + 144.353,
-        -193.352 * Math.sin(x / 2) + 110.707 * Math.cos(x / 2) + 280.885,
-        -104.098 * Math.sin(x / 2) - 73.2507 * Math.cos(x / 2) + 189.173,
-      ].map((x) => x - 59);
+      const overlayRange = [
+        Math.max(
+          geometricMean(valuesAccordingToWeights) / OVERLAY_LOOSENESS,
+          SLIDER_RANGE[0]
+        ),
+        Math.min(
+          arithmeticMean(valuesAccordingToWeights) * OVERLAY_LOOSENESS,
+          SLIDER_RANGE[1] + 1
+        ),
+      ];
 
       if (radarChartRef.current) {
         const radarChart = new ChartJS(radarChartRef.current, {
@@ -92,33 +98,53 @@ const Radar: NextPage = () => {
                 pointRadius: 0,
               })),
               {
-                borderColor: `rgb(${borderColors.join(", ")}, 1)`,
-                borderWidth:
-                  20 +
-                  100 *
-                    (arithmeticMean(valuesAccordingToWeights) -
-                      geometricMean(valuesAccordingToWeights)),
+                backgroundColor: "rgb(0, 255, 255, 1)",
+                borderColor: "rgb(0, 255, 255, 0)",
                 data: Array.from(Object.keys(dimensions), () =>
-                  geometricMean(valuesAccordingToWeights)
+                  Math.min(overlayRange[0], 3)
                 ),
-                fill: false,
                 pointRadius: 0,
               },
               {
-                backgroundColor: "rgb(243, 178, 62, 1)",
-                borderColor: "rgb(243, 178, 62, 0)",
+                backgroundColor: "rgb(128, 255, 128, 1)",
+                borderColor: "rgb(128, 255, 128, 0)",
+                data: Array.from(Object.keys(dimensions), () =>
+                  Math.min(overlayRange[0], 5)
+                ),
+                pointRadius: 0,
+              },
+              {
+                backgroundColor: "rgb(255, 255, 0, 1)",
+                borderColor: "rgb(255, 255, 0, 0)",
+                data: Array.from(Object.keys(dimensions), () =>
+                  Math.min(overlayRange[0], 7)
+                ),
+                pointRadius: 0,
+              },
+              {
+                backgroundColor: `rgb(255, 0, 255, 0.3)`,
+                borderColor: `rgb(100, 0, 0, 0)`,
+                data: Array.from(
+                  Object.keys(dimensions),
+                  () => overlayRange[1]
+                ),
+                pointRadius: 0,
+              },
+              {
+                backgroundColor: "rgb(0, 255, 255, 1)",
+                borderColor: "rgb(0, 255, 255, 0)",
                 data: Array.from(Object.keys(dimensions), () => 3),
                 pointRadius: 0,
               },
               {
-                backgroundColor: "rgb(202, 59, 125, 1)",
-                borderColor: "rgb(202, 59, 125, 0)",
+                backgroundColor: "rgb(128, 255, 128, 1)",
+                borderColor: "rgb(128, 255, 128, 0)",
                 data: Array.from(Object.keys(dimensions), () => 5),
                 pointRadius: 0,
               },
               {
-                backgroundColor: "rgb(108, 144, 247, 1)",
-                borderColor: "rgb(108, 144, 247, 0)",
+                backgroundColor: "rgb(255, 255, 0, 1)",
+                borderColor: "rgb(255, 255, 0, 0)",
                 data: Array.from(Object.keys(dimensions), () => 7),
                 pointRadius: 0,
               },
@@ -132,7 +158,7 @@ const Radar: NextPage = () => {
               r: {
                 angleLines: { display: false },
                 grid: { display: false, drawTicks: false },
-                suggestedMax: SLIDER_RANGE[1],
+                suggestedMax: SLIDER_RANGE[1] + 1,
                 suggestedMin: SLIDER_RANGE[0],
                 ticks: { display: false },
               },
