@@ -68,11 +68,14 @@ const Radar: NextPage = () => {
       );
 
       const x = geometricMean(valuesAccordingToWeights);
-      const borderColors = [
-        85.7998 * Math.sin(x / 2) + 48.9514 * Math.cos(x / 2) + 144.353,
-        -193.352 * Math.sin(x / 2) + 110.707 * Math.cos(x / 2) + 280.885,
-        -104.098 * Math.sin(x / 2) - 73.2507 * Math.cos(x / 2) + 189.173,
-      ].map((x) => x - 59);
+      const borderColors = [255 * (x / 2), 255, -255 * (x / 2) + 255].map(
+        (x) => x
+      );
+
+      const rangyThing = [
+        Math.max(geometricMean(valuesAccordingToWeights) / 1.1, 0),
+        Math.min(arithmeticMean(valuesAccordingToWeights) * 1.1, 7),
+      ];
 
       if (radarChartRef.current) {
         const radarChart = new ChartJS(radarChartRef.current, {
@@ -92,33 +95,50 @@ const Radar: NextPage = () => {
                 pointRadius: 0,
               })),
               {
-                borderColor: `rgb(${borderColors.join(", ")}, 1)`,
-                borderWidth:
-                  20 +
-                  100 *
-                    (arithmeticMean(valuesAccordingToWeights) -
-                      geometricMean(valuesAccordingToWeights)),
+                backgroundColor: "rgb(0, 255, 255, 1)",
+                borderColor: "rgb(0, 255, 255, 0)",
                 data: Array.from(Object.keys(dimensions), () =>
-                  geometricMean(valuesAccordingToWeights)
+                  Math.min(rangyThing[0], 3)
                 ),
-                fill: false,
                 pointRadius: 0,
               },
               {
-                backgroundColor: "rgb(243, 178, 62, 1)",
-                borderColor: "rgb(243, 178, 62, 0)",
+                backgroundColor: "rgb(128, 255, 128, 1)",
+                borderColor: "rgb(128, 255, 128, 0)",
+                data: Array.from(Object.keys(dimensions), () =>
+                  Math.min(rangyThing[0], 5)
+                ),
+                pointRadius: 0,
+              },
+              {
+                backgroundColor: "rgb(255, 255, 0, 1)",
+                borderColor: "rgb(255, 255, 0, 0)",
+                data: Array.from(Object.keys(dimensions), () =>
+                  Math.min(rangyThing[0], 7)
+                ),
+                pointRadius: 0,
+              },
+              {
+                backgroundColor: `rgb(${borderColors.join(", ")}, 1)`,
+                borderColor: `rgb(${borderColors.join(", ")}, 1)`,
+                data: Array.from(Object.keys(dimensions), () => rangyThing[1]),
+                pointRadius: 0,
+              },
+              {
+                backgroundColor: "rgb(0, 255, 255, 1)",
+                borderColor: "rgb(0, 255, 255, 0)",
                 data: Array.from(Object.keys(dimensions), () => 3),
                 pointRadius: 0,
               },
               {
-                backgroundColor: "rgb(202, 59, 125, 1)",
-                borderColor: "rgb(202, 59, 125, 0)",
+                backgroundColor: "rgb(128, 255, 128, 1)",
+                borderColor: "rgb(128, 255, 128, 0)",
                 data: Array.from(Object.keys(dimensions), () => 5),
                 pointRadius: 0,
               },
               {
-                backgroundColor: "rgb(108, 144, 247, 1)",
-                borderColor: "rgb(108, 144, 247, 0)",
+                backgroundColor: "rgb(255, 255, 0, 1)",
+                borderColor: "rgb(255, 255, 0, 0)",
                 data: Array.from(Object.keys(dimensions), () => 7),
                 pointRadius: 0,
               },
