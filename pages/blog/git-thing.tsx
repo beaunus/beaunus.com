@@ -103,25 +103,35 @@ const GitThing: NextPage = () => {
   const [focusedDataEntry, setFocusedDataEntry] = useState<[string, Stats]>();
   const [baseGithubRepository, setBaseGithubRepository] = useState("");
 
-  const valueIterateeByCriteria: Record<string, (stats: Stats) => number> = {
-    numAuthorDaysActive: ({ commits }) =>
-      new Set(
+  const valueIterateeByCriteria: Record<
+    string,
+    (stats: Stats) => { value: number }
+  > = {
+    numAuthorDaysActive: ({ commits }) => ({
+      value: new Set(
         commits.map(
           ({ author, date }) => `${dayjs(date).format("YYYY-MM-DD")}-${author}`
         )
       ).size,
-    numAuthorsTouching: ({ commits }) =>
-      new Set(commits.map(({ author }) => author)).size,
-    numCommits: ({ commits }) => commits.length,
-    numDaysActive: ({ commits }) =>
-      new Set(commits.map(({ date }) => dayjs(date).format("YYYY-MM-DD"))).size,
-    numLinesAdded: ({ numLinesAdded }) => numLinesAdded,
-    numLinesChanged: ({ numLinesAdded, numLinesDeleted }) =>
-      numLinesAdded + numLinesDeleted,
-    numLinesDeleted: ({ numLinesDeleted }) => numLinesDeleted,
-    numLinesDiff: ({ numLinesAdded, numLinesDeleted }) =>
-      numLinesAdded - numLinesDeleted,
-    one: () => 1,
+    }),
+    numAuthorsTouching: ({ commits }) => ({
+      value: new Set(commits.map(({ author }) => author)).size,
+    }),
+    numCommits: ({ commits }) => ({ value: commits.length }),
+    numDaysActive: ({ commits }) => ({
+      value: new Set(
+        commits.map(({ date }) => dayjs(date).format("YYYY-MM-DD"))
+      ).size,
+    }),
+    numLinesAdded: ({ numLinesAdded }) => ({ value: numLinesAdded }),
+    numLinesChanged: ({ numLinesAdded, numLinesDeleted }) => ({
+      value: numLinesAdded + numLinesDeleted,
+    }),
+    numLinesDeleted: ({ numLinesDeleted }) => ({ value: numLinesDeleted }),
+    numLinesDiff: ({ numLinesAdded, numLinesDeleted }) => ({
+      value: numLinesAdded - numLinesDeleted,
+    }),
+    one: () => ({ value: 1 }),
   };
   type Criteria = keyof typeof valueIterateeByCriteria;
 
@@ -164,11 +174,11 @@ const GitThing: NextPage = () => {
             ([, value]) =>
               -(scaleType === "linear (abs)"
                 ? Math.abs(
-                    valueIterateeNumerator(value) /
-                      valueIterateeDenominator(value)
+                    valueIterateeNumerator(value).value /
+                      valueIterateeDenominator(value).value
                   )
-                : valueIterateeNumerator(value) /
-                  valueIterateeDenominator(value))
+                : valueIterateeNumerator(value).value /
+                  valueIterateeDenominator(value).value)
           ).slice(0, numFilesToShow)
         )
       );
@@ -183,8 +193,8 @@ const GitThing: NextPage = () => {
               ),
               data: dataEntries.map(
                 ([, stats]) =>
-                  valueIterateeNumerator(stats) /
-                  valueIterateeDenominator(stats)
+                  valueIterateeNumerator(stats).value /
+                  valueIterateeDenominator(stats).value
               ),
             },
           ],
@@ -576,7 +586,10 @@ const GitThing: NextPage = () => {
                       <TableRow key={`criteria-value-${criteria}`}>
                         <TableCell>{criteria}</TableCell>
                         <TableCell>
-                          {valueIteratee(statsByFileName[focusedDataEntry[0]])}
+                          {
+                            valueIteratee(statsByFileName[focusedDataEntry[0]])
+                              .value
+                          }
                         </TableCell>
                       </TableRow>
                     ))}
