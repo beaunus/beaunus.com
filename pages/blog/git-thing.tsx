@@ -403,29 +403,29 @@ const GitThing: NextPage = () => {
           min={historyStart.valueOf()}
           onChange={(_event, newValue) => {
             const [leftValue, rightValue] = (newValue as number[]).map(Number);
-            const oldInterval = toDay.diff(fromDay);
+            const interval = toDay.diff(fromDay);
             if (isIntervalLocked) {
               const isLeftSliderMovingLeft = leftValue < fromDay.valueOf();
               const isLeftSliderMovingRight = leftValue > fromDay.valueOf();
               const isThereSpaceToMoveRight =
-                leftValue + oldInterval < historyEnd.valueOf();
+                leftValue + interval < historyEnd.valueOf();
 
               const isRightSliderMovingRight = rightValue > toDay.valueOf();
               const isRightSliderMovingLeft = rightValue < toDay.valueOf();
               const isThereSpaceToMoveLeft =
-                rightValue - oldInterval >= historyStart.valueOf();
+                rightValue - interval >= historyStart.valueOf();
 
               if (
                 isLeftSliderMovingLeft ||
                 (isLeftSliderMovingRight && isThereSpaceToMoveRight)
               ) {
                 setFromDay(dayjs(leftValue));
-                setToDay(dayjs(leftValue + oldInterval));
+                setToDay(dayjs(leftValue + interval));
               } else if (
                 isRightSliderMovingRight ||
                 (isRightSliderMovingLeft && isThereSpaceToMoveLeft)
               ) {
-                setFromDay(dayjs(rightValue - oldInterval));
+                setFromDay(dayjs(rightValue - interval));
                 setToDay(dayjs(rightValue));
               }
             } else {
