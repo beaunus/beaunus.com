@@ -65,10 +65,9 @@ const GitThing: NextPage = () => {
   const [scaleType, setScaleType] = useState<ScaleType>("linear");
   const [jumpSize, setJumpSize] = useState(1);
   const [numFilesToShow, setNumFilesToShow] = useState<number>(0);
-  const [dateRangeOfHistory, setDateRangeOfHistory] = useState<[Dayjs, Dayjs]>([
-    dayjs(0),
-    dayjs(0),
-  ]);
+  const [[historyStart, historyEnd], setHistoryRange] = useState<
+    [Dayjs, Dayjs]
+  >([dayjs(0), dayjs(0)]);
   const [numFilesInSelectedDayRange, setNumFilesInSelectedDayRange] =
     useState<number>(0);
   const [numFilesTotal, setNumFilesTotal] = useState<number>(0);
@@ -245,7 +244,7 @@ const GitThing: NextPage = () => {
                 target.files[0].name.split(".")[0].replaceAll(":", "/")
               );
             setAllCommits(commitsFromFile);
-            setDateRangeOfHistory(dateRangeOfCommits);
+            setHistoryRange(dateRangeOfCommits);
             setFromDay(dateRangeOfCommits[0]);
             setNumFilesToShow(newNumFilesTotal);
             setNumFilesTotal(newNumFilesTotal);
@@ -399,9 +398,9 @@ const GitThing: NextPage = () => {
         </div>
         <FormLabel id="date-slider-label">Date Range</FormLabel>
         <SliderWithLabels
-          disabled={!dateRangeOfHistory}
-          max={dateRangeOfHistory?.[1].add(1, "day").valueOf()}
-          min={dateRangeOfHistory?.[0].valueOf()}
+          disabled={!historyStart}
+          max={historyEnd.add(1, "day").valueOf()}
+          min={historyStart.valueOf()}
           onChange={(_event, newValue) => {
             const [leftValue, rightValue] = (newValue as number[]).map(Number);
             const oldInterval = toDay.diff(fromDay);
@@ -409,12 +408,12 @@ const GitThing: NextPage = () => {
               const isLeftSliderMovingLeft = leftValue < fromDay.valueOf();
               const isLeftSliderMovingRight = leftValue > fromDay.valueOf();
               const isThereSpaceToMoveRight =
-                leftValue + oldInterval < dateRangeOfHistory[1].valueOf();
+                leftValue + oldInterval < historyEnd.valueOf();
 
               const isRightSliderMovingRight = rightValue > toDay.valueOf();
               const isRightSliderMovingLeft = rightValue < toDay.valueOf();
               const isThereSpaceToMoveLeft =
-                rightValue - oldInterval >= dateRangeOfHistory[0].valueOf();
+                rightValue - oldInterval >= historyStart.valueOf();
 
               if (
                 isLeftSliderMovingLeft ||
@@ -458,10 +457,10 @@ const GitThing: NextPage = () => {
           <ButtonGroup aria-label="jump button group">
             <Button
               onClick={() => {
-                const isThereSpaceToDecrement =
-                  fromDay >= dateRangeOfHistory[0].add(jumpSize, "days");
+                const isSpaceToDecrement =
+                  fromDay >= historyStart.add(jumpSize, "days");
 
-                if (isThereSpaceToDecrement) {
+                if (isSpaceToDecrement) {
                   setFromDay((old) => old.subtract(jumpSize, "day"));
                   setToDay((old) => old.subtract(jumpSize, "day"));
                 }
@@ -472,10 +471,10 @@ const GitThing: NextPage = () => {
             </Button>
             <Button
               onClick={() => {
-                const isThereSpaceToIncrement =
-                  toDay <= dateRangeOfHistory[1].subtract(jumpSize, "days");
+                const isSpaceToIncrement =
+                  toDay <= historyEnd.subtract(jumpSize, "days");
 
-                if (isThereSpaceToIncrement) {
+                if (isSpaceToIncrement) {
                   setFromDay((old) => old.add(jumpSize, "day"));
                   setToDay((old) => old.add(jumpSize, "day"));
                 }
