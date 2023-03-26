@@ -171,14 +171,14 @@ const GitThing: NextPage = () => {
                   fileNamesToInclude.includes(fileName)) &&
                 (!fileNameGlobExclude || !fileNamesToExclude.includes(fileName))
             ),
-            ([, value]) =>
+            ([, stats]) =>
               -(scaleType === "linear (abs)"
                 ? Math.abs(
-                    valueIterateeNumerator(value).value /
-                      valueIterateeDenominator(value).value
+                    valueIterateeNumerator(stats).value /
+                      valueIterateeDenominator(stats).value
                   )
-                : valueIterateeNumerator(value).value /
-                  valueIterateeDenominator(value).value)
+                : valueIterateeNumerator(stats).value /
+                  valueIterateeDenominator(stats).value)
           ).slice(0, numFilesToShow)
         )
       );
