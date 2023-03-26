@@ -23,7 +23,6 @@ import ChartJS from "chart.js/auto";
 import encHex from "crypto-js/enc-hex";
 import sha256 from "crypto-js/sha256";
 import dayjs, { Dayjs } from "dayjs";
-import Linkify from "linkify-react";
 import _ from "lodash";
 import multimatch from "multimatch";
 import type { NextPage } from "next";
@@ -31,7 +30,6 @@ import Head from "next/head";
 import { FC, useEffect, useRef, useState } from "react";
 
 import { CommitTable } from "../../components/git-thing/CommitTable";
-import { HighlightedLink } from "../../components/HighlightedLink";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
 import {
   computeDateRange,
