@@ -67,7 +67,10 @@ const GitThing: NextPage = () => {
   const [authorsToInclude, setAuthorsToInclude] = useState<
     GitCommit["author"][]
   >([]);
-  const [criteria, setCriteria] = useState<Criteria>("numCommits");
+  const [criteriaNumerator, setCriteriaNumerator] =
+    useState<Criteria>("numCommits");
+  const [criteriaDenominator, setCriteriaDenominator] =
+    useState<Criteria>("one");
   const [scaleType, setScaleType] = useState<ScaleType>("linear");
   const [jumpSize, setJumpSize] = useState(1);
   const [numFilesToShow, setNumFilesToShow] = useState<number>(0);
@@ -113,6 +116,7 @@ const GitThing: NextPage = () => {
     numLinesDeleted: ({ numLinesDeleted }) => numLinesDeleted,
     numLinesDiff: ({ numLinesAdded, numLinesDeleted }) =>
       numLinesAdded - numLinesDeleted,
+    one: () => 1,
   };
   type Criteria = keyof typeof valueIterateeByCriteria;
 
@@ -130,7 +134,9 @@ const GitThing: NextPage = () => {
 
   useEffect(() => {
     if (polarAreaChartRef.current) {
-      const valueIteratee = valueIterateeByCriteria[criteria];
+      const valueIterateeNumerator = valueIterateeByCriteria[criteriaNumerator];
+      const valueIterateeDenominator =
+        valueIterateeByCriteria[criteriaDenominator];
 
       const fileNamesToInclude = multimatch(
         Object.keys(statsByFileName),
@@ -152,8 +158,12 @@ const GitThing: NextPage = () => {
             ),
             ([, value]) =>
               -(scaleType === "linear (abs)"
-                ? Math.abs(valueIteratee(value))
-                : valueIteratee(value))
+                ? Math.abs(
+                    valueIterateeNumerator(value) /
+                      valueIterateeDenominator(value)
+                  )
+                : valueIterateeNumerator(value) /
+                  valueIterateeDenominator(value))
           ).slice(0, numFilesToShow)
         )
       );
@@ -166,7 +176,11 @@ const GitThing: NextPage = () => {
                 ([fileName]) =>
                   `#${sha256(fileName).toString(encHex).slice(0, 6)}`
               ),
-              data: dataEntries.map(([, stats]) => valueIteratee(stats)),
+              data: dataEntries.map(
+                ([, stats]) =>
+                  valueIterateeNumerator(stats) /
+                  valueIterateeDenominator(stats)
+              ),
             },
           ],
           labels: dataEntries.map(([filename]) => filename),
@@ -201,7 +215,8 @@ const GitThing: NextPage = () => {
       };
     }
   }, [
-    criteria,
+    criteriaDenominator,
+    criteriaNumerator,
     fileNameGlobExclude,
     fileNameGlobInclude,
     numFilesToShow,
@@ -432,14 +447,14 @@ const GitThing: NextPage = () => {
           </Grid>
         </Grid>
         <Grid container spacing={2}>
-          <Grid item xs={9}>
-            <FormLabel id="criteria-label">Criteria</FormLabel>
+          <Grid item xs={6}>
+            <FormLabel id="criteria-label">Criteria (numerator)</FormLabel>
             <RadioGroup
               aria-labelledby="criteria-label"
               defaultValue="numCommits"
               name="criteria-group"
-              onChange={(e) => setCriteria(e.target.value as Criteria)}
-              value={criteria}
+              onChange={(e) => setCriteriaNumerator(e.target.value as Criteria)}
+              value={criteriaNumerator}
             >
               <div className="flex flex-wrap">
                 {Object.keys(valueIterateeByCriteria).map((name) => (
@@ -453,27 +468,48 @@ const GitThing: NextPage = () => {
               </div>
             </RadioGroup>
           </Grid>
-          <Grid item xs={3}>
-            <FormLabel id="scale-label">Scale</FormLabel>
+          <Grid item xs={6}>
+            <FormLabel id="criteria-label">Criteria (denominator)</FormLabel>
             <RadioGroup
-              aria-labelledby="scale-label"
-              defaultValue="liner"
-              name="scale-group"
-              onChange={(e) => setScaleType(e.target.value as ScaleType)}
-              row
-              value={scaleType}
+              aria-labelledby="criteria-label"
+              defaultValue="numCommits"
+              name="criteria-group"
+              onChange={(e) =>
+                setCriteriaDenominator(e.target.value as Criteria)
+              }
+              value={criteriaDenominator}
             >
-              {SCALE_TYPES.map((scaleTypeLabel) => (
-                <FormControlLabel
-                  control={<Radio size="small" />}
-                  key={scaleTypeLabel}
-                  label={scaleTypeLabel}
-                  value={scaleTypeLabel}
-                />
-              ))}
+              <div className="flex flex-wrap">
+                {Object.keys(valueIterateeByCriteria).map((name) => (
+                  <FormControlLabel
+                    control={<Radio size="small" />}
+                    key={name}
+                    label={name}
+                    value={name}
+                  />
+                ))}
+              </div>
             </RadioGroup>
           </Grid>
         </Grid>
+        <FormLabel id="scale-label">Scale</FormLabel>
+        <RadioGroup
+          aria-labelledby="scale-label"
+          defaultValue="liner"
+          name="scale-group"
+          onChange={(e) => setScaleType(e.target.value as ScaleType)}
+          row
+          value={scaleType}
+        >
+          {SCALE_TYPES.map((scaleTypeLabel) => (
+            <FormControlLabel
+              control={<Radio size="small" />}
+              key={scaleTypeLabel}
+              label={scaleTypeLabel}
+              value={scaleTypeLabel}
+            />
+          ))}
+        </RadioGroup>
         <Autocomplete
           defaultValue={[]}
           filterSelectedOptions
