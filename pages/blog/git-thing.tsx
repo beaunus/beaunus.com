@@ -289,9 +289,8 @@ const GitThing: NextPage = () => {
     const sortedCommits = _.sortBy(
       commits
         .filter(
-          ({ author, date }) =>
-            isDateWithinSelectedRange(date) &&
-            (!authorsToInclude.length || authorsToInclude.includes(author))
+          ({ author }) =>
+            !authorsToInclude.length || authorsToInclude.includes(author)
         )
         .map((commit) => {
           const relevantFile = commit.files.find(
