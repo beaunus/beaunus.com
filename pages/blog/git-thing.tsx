@@ -287,27 +287,22 @@ const GitThing: NextPage = () => {
     }>({ criteria: "date", direction: "asc" });
 
     const sortedCommits = _.sortBy(
-      commits
-        .filter(
-          ({ author }) =>
-            !authorsToInclude.length || authorsToInclude.includes(author)
-        )
-        .map((commit) => {
-          const relevantFile = commit.files.find(
-            ({ path }) => path.afterChange === relevantFilePath
-          );
-          return {
-            ...commit,
-            numLinesAddedForRelevantFile: relevantFile?.numLinesAdded ?? 0,
-            numLinesChangedForRelevantFile:
-              (relevantFile?.numLinesAdded ?? 0) -
-              (relevantFile?.numLinesDeleted ?? 0),
-            numLinesDeletedForRelevantFile: relevantFile?.numLinesDeleted ?? 0,
-            numLinesDiffForRelevantFile:
-              (relevantFile?.numLinesAdded ?? 0) +
-              (relevantFile?.numLinesDeleted ?? 0),
-          };
-        }),
+      commits.map((commit) => {
+        const relevantFile = commit.files.find(
+          ({ path }) => path.afterChange === relevantFilePath
+        );
+        return {
+          ...commit,
+          numLinesAddedForRelevantFile: relevantFile?.numLinesAdded ?? 0,
+          numLinesChangedForRelevantFile:
+            (relevantFile?.numLinesAdded ?? 0) -
+            (relevantFile?.numLinesDeleted ?? 0),
+          numLinesDeletedForRelevantFile: relevantFile?.numLinesDeleted ?? 0,
+          numLinesDiffForRelevantFile:
+            (relevantFile?.numLinesAdded ?? 0) +
+            (relevantFile?.numLinesDeleted ?? 0),
+        };
+      }),
       sortStrategy.criteria === "+"
         ? "numLinesAddedForRelevantFile"
         : sortStrategy.criteria === "-"
@@ -703,7 +698,10 @@ const GitThing: NextPage = () => {
           <>
             <Typography variant="h5">{focusedDataEntry[0]}</Typography>
             <CommitTable
-              commits={focusedDataEntry[1].commits}
+              commits={focusedDataEntry[1].commits.filter(
+                ({ author }) =>
+                  !authorsToInclude.length || authorsToInclude.includes(author)
+              )}
               relevantFilePath={focusedDataEntry[0]}
             />
           </>
