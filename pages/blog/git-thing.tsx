@@ -1,6 +1,15 @@
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
-import { TextField, Typography } from "@mui/material";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -14,6 +23,7 @@ import ChartJS from "chart.js/auto";
 import encHex from "crypto-js/enc-hex";
 import sha256 from "crypto-js/sha256";
 import dayjs, { Dayjs } from "dayjs";
+import Linkify from "linkify-react";
 import _ from "lodash";
 import multimatch from "multimatch";
 import type { NextPage } from "next";
@@ -21,6 +31,7 @@ import Head from "next/head";
 import { FC, useEffect, useRef, useState } from "react";
 
 import { CommitTable } from "../../components/git-thing/CommitTable";
+import { HighlightedLink } from "../../components/HighlightedLink";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
 import {
   computeDateRange,
@@ -546,6 +557,28 @@ const GitThing: NextPage = () => {
         {focusedDataEntry ? (
           <>
             <Typography variant="h5">{focusedDataEntry[0]}</Typography>
+            <TableContainer>
+              <Table aria-label="criteria table" size="small">
+                <TableHead>
+                  <TableRow className="whitespace-nowrap">
+                    <TableCell component="th">Criteria</TableCell>
+                    <TableCell component="th">Value</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {Object.entries(valueIterateeByCriteria)
+                    .filter(([criteria]) => criteria !== "one")
+                    .map(([criteria, valueIteratee]) => (
+                      <TableRow key={`criteria-value-${criteria}`}>
+                        <TableCell>{criteria}</TableCell>
+                        <TableCell>
+                          {valueIteratee(statsByFileName[focusedDataEntry[0]])}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
             <CommitTable
               baseGithubRepository={baseGithubRepository}
               commits={focusedDataEntry[1].commits.filter(
