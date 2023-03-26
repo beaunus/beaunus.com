@@ -104,6 +104,12 @@ const GitThing: NextPage = () => {
   const [baseGithubRepository, setBaseGithubRepository] = useState("");
 
   const valueIterateeByCriteria: Record<string, (stats: Stats) => number> = {
+    numAuthorDaysActive: ({ commits }) =>
+      new Set(
+        commits.map(
+          ({ author, date }) => `${dayjs(date).format("YYYY-MM-DD")}-${author}`
+        )
+      ).size,
     numAuthorsTouching: ({ commits }) =>
       new Set(commits.map(({ author }) => author)).size,
     numCommits: ({ commits }) => commits.length,
