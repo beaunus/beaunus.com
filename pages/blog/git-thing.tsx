@@ -701,13 +701,13 @@ const GitThing: NextPage = () => {
         </div>
         <canvas className="max-h-[50vh]" ref={polarAreaChartRef} />
         {focusedDataEntry ? (
-          <div>
+          <>
             <Typography variant="h5">{focusedDataEntry[0]}</Typography>
             <CommitTable
               commits={focusedDataEntry[1].commits}
               relevantFilePath={focusedDataEntry[0]}
             />
-          </div>
+          </>
         ) : null}
       </div>
     </>
