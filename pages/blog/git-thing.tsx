@@ -403,35 +403,35 @@ const GitThing: NextPage = () => {
           max={dateRangeOfHistory?.[1].add(1, "day").valueOf()}
           min={dateRangeOfHistory?.[0].valueOf()}
           onChange={(_event, newValue) => {
-            const newValues = (newValue as number[]).map(Number);
+            const [leftValue, rightValue] = (newValue as number[]).map(Number);
             const oldInterval = toDay.diff(fromDay);
             if (isIntervalLocked) {
-              const isLeftSliderMovingLeft = newValues[0] < fromDay.valueOf();
-              const isLeftSliderMovingRight = newValues[0] > fromDay.valueOf();
+              const isLeftSliderMovingLeft = leftValue < fromDay.valueOf();
+              const isLeftSliderMovingRight = leftValue > fromDay.valueOf();
               const isThereSpaceToMoveRight =
-                newValues[0] + oldInterval < dateRangeOfHistory[1].valueOf();
+                leftValue + oldInterval < dateRangeOfHistory[1].valueOf();
 
-              const isRightSliderMovingRight = newValues[1] > toDay.valueOf();
-              const isRightSliderMovingLeft = newValues[1] < toDay.valueOf();
+              const isRightSliderMovingRight = rightValue > toDay.valueOf();
+              const isRightSliderMovingLeft = rightValue < toDay.valueOf();
               const isThereSpaceToMoveLeft =
-                newValues[1] - oldInterval >= dateRangeOfHistory[0].valueOf();
+                rightValue - oldInterval >= dateRangeOfHistory[0].valueOf();
 
               if (
                 isLeftSliderMovingLeft ||
                 (isLeftSliderMovingRight && isThereSpaceToMoveRight)
               ) {
-                setFromDay(dayjs(newValues[0]));
-                setToDay(dayjs(newValues[0] + oldInterval));
+                setFromDay(dayjs(leftValue));
+                setToDay(dayjs(leftValue + oldInterval));
               } else if (
                 isRightSliderMovingRight ||
                 (isRightSliderMovingLeft && isThereSpaceToMoveLeft)
               ) {
-                setFromDay(dayjs(newValues[1] - oldInterval));
-                setToDay(dayjs(newValues[1]));
+                setFromDay(dayjs(rightValue - oldInterval));
+                setToDay(dayjs(rightValue));
               }
             } else {
-              setFromDay(dayjs(newValues[0]));
-              setToDay(dayjs(newValues[1]));
+              setFromDay(dayjs(leftValue));
+              setToDay(dayjs(rightValue));
             }
           }}
           size="small"
