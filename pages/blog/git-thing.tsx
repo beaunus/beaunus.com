@@ -59,7 +59,7 @@ type ScaleType = (typeof SCALE_TYPES)[number];
 const NUM_MS_IN_ONE_DAY = 1000 * 60 * 60 * 24;
 
 const GitThing: NextPage = () => {
-  const polarAreaChartRef = useRef<HTMLCanvasElement>(null);
+  const barChartRef = useRef<HTMLCanvasElement>(null);
   const [statsByFileName, setStatsByFileName] = useState<Record<string, Stats>>(
     {}
   );
@@ -148,7 +148,7 @@ const GitThing: NextPage = () => {
   }, [authorsToInclude, allCommits, fromDay, toDay]);
 
   useEffect(() => {
-    if (polarAreaChartRef.current) {
+    if (barChartRef.current) {
       const valueIterateeNumerator = valueIterateeByCriteria[criteriaNumerator];
       const valueIterateeDenominator =
         valueIterateeByCriteria[criteriaDenominator];
@@ -183,7 +183,7 @@ const GitThing: NextPage = () => {
         )
       );
 
-      const polarAreaChart = new ChartJS(polarAreaChartRef.current, {
+      const barChart = new ChartJS(barChartRef.current, {
         data: {
           datasets: [
             {
@@ -226,7 +226,7 @@ const GitThing: NextPage = () => {
       });
 
       return () => {
-        polarAreaChart.destroy();
+        barChart.destroy();
       };
     }
   }, [
@@ -567,7 +567,7 @@ const GitThing: NextPage = () => {
             value={fileNameGlobExcludePending}
           />
         </div>
-        <canvas className="max-h-[50vh]" ref={polarAreaChartRef} />
+        <canvas className="max-h-[50vh]" ref={barChartRef} />
         {focusedDataEntry ? (
           <>
             <Typography variant="h5">{focusedDataEntry[0]}</Typography>
