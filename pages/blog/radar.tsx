@@ -27,10 +27,10 @@ const DEFAULT_DIMENSIONS: Record<string, { value: number; weight: number }> = {
   /* eslint-enable @typescript-eslint/naming-convention, sort-keys */
 };
 
-const STANDARD_LEVELS: Record<string, number> = {
-  junior: 2,
-  mid: 4,
-  senior: 6,
+const STANDARD_LEVELS: Record<string, { value: number }> = {
+  junior: { value: 2 },
+  mid: { value: 4 },
+  senior: { value: 6 },
 };
 
 const SLIDER_RANGE: [number, number] = [1, 7];
@@ -42,9 +42,9 @@ const StandardLevelSlider: React.FC = () => (
     <Grid item xs={3} />
     <Grid item xs={9}>
       <Slider
-        defaultValue={Object.values(STANDARD_LEVELS)}
+        defaultValue={Object.values(STANDARD_LEVELS).map(({ value }) => value)}
         disabled={true}
-        marks={Object.entries(STANDARD_LEVELS).map(([label, value]) => ({
+        marks={Object.entries(STANDARD_LEVELS).map(([label, { value }]) => ({
           label,
           value,
         }))}
