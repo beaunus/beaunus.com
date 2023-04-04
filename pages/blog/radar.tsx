@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Slider from "@mui/material/Slider";
 import TextField from "@mui/material/TextField";
-import ChartJS from "chart.js/auto";
+import ChartJS, { Color } from "chart.js/auto";
 import type { NextPage } from "next";
 import Head from "next/head";
 import * as React from "react";
@@ -27,10 +27,10 @@ const DEFAULT_DIMENSIONS: Record<string, { value: number; weight: number }> = {
   /* eslint-enable @typescript-eslint/naming-convention, sort-keys */
 };
 
-const STANDARD_LEVELS: Record<string, { value: number }> = {
-  junior: { value: 2 },
-  mid: { value: 4 },
-  senior: { value: 6 },
+const STANDARD_LEVELS: Record<string, { color: Color; value: number }> = {
+  junior: { color: "hsl(86, 60%, 80%)", value: 2 },
+  mid: { color: "hsl(136, 80%, 60%)", value: 4 },
+  senior: { color: "hsl(186, 100%, 40%)", value: 6 },
 };
 
 const SLIDER_RANGE: [number, number] = [1, 7];
@@ -85,15 +85,15 @@ const Radar: NextPage = () => {
           data: {
             datasets: [
               {
-                backgroundColor: "rgb(255, 99, 132)",
-                borderColor: "rgb(255, 99, 132)",
+                backgroundColor: "#6018C8",
+                borderColor: "#6018C8",
                 data: Object.values(dimensions).map(({ value }) => value),
                 fill: false,
                 pointBorderWidth: ({ dataIndex }) =>
                   2 * Object.values(dimensions)[dataIndex].weight,
               },
               {
-                backgroundColor: "rgb(0, 255, 255, 1)",
+                backgroundColor: STANDARD_LEVELS.junior.color,
                 borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () =>
                   Math.min(overlayRange[0], 3)
@@ -101,7 +101,7 @@ const Radar: NextPage = () => {
                 pointRadius: 0,
               },
               {
-                backgroundColor: "rgb(128, 255, 128, 1)",
+                backgroundColor: STANDARD_LEVELS.mid.color,
                 borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () =>
                   Math.min(overlayRange[0], 5)
@@ -109,7 +109,7 @@ const Radar: NextPage = () => {
                 pointRadius: 0,
               },
               {
-                backgroundColor: "rgb(255, 255, 0, 1)",
+                backgroundColor: STANDARD_LEVELS.senior.color,
                 borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () =>
                   Math.min(overlayRange[0], 7)
@@ -117,7 +117,7 @@ const Radar: NextPage = () => {
                 pointRadius: 0,
               },
               {
-                backgroundColor: `rgb(255, 0, 255, 0.3)`,
+                backgroundColor: "rgb(255, 255, 255, 0.5)",
                 borderWidth: 0,
                 data: Array.from(
                   Object.keys(dimensions),
@@ -126,19 +126,19 @@ const Radar: NextPage = () => {
                 pointRadius: 0,
               },
               {
-                backgroundColor: "rgb(0, 255, 255, 1)",
+                backgroundColor: STANDARD_LEVELS.junior.color,
                 borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () => 3),
                 pointRadius: 0,
               },
               {
-                backgroundColor: "rgb(128, 255, 128, 1)",
+                backgroundColor: STANDARD_LEVELS.mid.color,
                 borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () => 5),
                 pointRadius: 0,
               },
               {
-                backgroundColor: "rgb(255, 255, 0, 1)",
+                backgroundColor: STANDARD_LEVELS.senior.color,
                 borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () => 7),
                 pointRadius: 0,
