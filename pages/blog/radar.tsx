@@ -18,15 +18,26 @@ import { arithmeticMean, geometricMean } from "../../utils/mean";
 type Dimensions = Record<string, { value: number; weight: number }>;
 const DEFAULT_DIMENSIONS: Dimensions = Object.fromEntries(
   [
-    "Technical Skills",
-    "Decision Making",
+    "Scope of Impact",
     "Mentoring",
-    "Driving Alignment",
-    "Process Thinking",
+    "Incident Response",
+    "Code Review",
+    "Code Conventions",
+    "Code Quality",
+    "Process thinking",
     "Knowledge Sharing",
     "Teamwork",
+    "Prioritization / Dependencies",
+    "Feedback",
+    "Product Thinking",
     "Facilitation",
-    "X-factor",
+    "Handling disagreement",
+    "Work breakdown",
+    "Pull Request Quality",
+    "Reliability, delivery accountability",
+    "Debugging",
+    "Badges",
+    "Testing",
   ].map((name) => [name, { value: 4, weight: 1 }])
 );
 
