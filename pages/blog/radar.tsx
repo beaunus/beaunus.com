@@ -8,6 +8,7 @@ import ChartJS, { Color } from "chart.js/auto";
 import type { NextPage } from "next";
 import Head from "next/head";
 import * as React from "react";
+import { useEffect, useState } from "react";
 
 import { Segment } from "../../components/Segment";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
@@ -57,13 +58,12 @@ const StandardLevelSlider: React.FC = () => (
 );
 
 const Radar: NextPage = () => {
-  const [dimensions, setDimensions] = React.useState(DEFAULT_DIMENSIONS);
-  const [pendingDimensionName, setPendingDimensionName] =
-    React.useState<string>("");
+  const [dimensions, setDimensions] = useState(DEFAULT_DIMENSIONS);
+  const [pendingDimensionName, setPendingDimensionName] = useState<string>("");
 
   const radarChartRef = React.useRef<HTMLCanvasElement>(null);
 
-  React.useEffect(
+  useEffect(
     function createChart() {
       const valuesAccordingToWeights = Object.values(dimensions).flatMap(
         ({ value, weight }) => Array.from({ length: weight }, () => value)
