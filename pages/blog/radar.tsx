@@ -92,11 +92,6 @@ const Radar: NextPage = () => {
                 pointBorderWidth: ({ dataIndex }) =>
                   2 * Object.values(dimensions)[dataIndex].weight,
               },
-              ...Object.values(STANDARD_LEVELS).map((value) => ({
-                data: Array.from(Object.keys(dimensions), () => value + 1),
-                fill: false,
-                pointRadius: 0,
-              })),
               {
                 backgroundColor: "rgb(0, 255, 255, 1)",
                 borderColor: "rgb(0, 255, 255, 0)",
