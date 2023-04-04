@@ -94,7 +94,7 @@ const Radar: NextPage = () => {
               },
               {
                 backgroundColor: "rgb(0, 255, 255, 1)",
-                borderColor: "rgb(0, 255, 255, 0)",
+                borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () =>
                   Math.min(overlayRange[0], 3)
                 ),
@@ -102,7 +102,7 @@ const Radar: NextPage = () => {
               },
               {
                 backgroundColor: "rgb(128, 255, 128, 1)",
-                borderColor: "rgb(128, 255, 128, 0)",
+                borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () =>
                   Math.min(overlayRange[0], 5)
                 ),
@@ -110,7 +110,7 @@ const Radar: NextPage = () => {
               },
               {
                 backgroundColor: "rgb(255, 255, 0, 1)",
-                borderColor: "rgb(255, 255, 0, 0)",
+                borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () =>
                   Math.min(overlayRange[0], 7)
                 ),
@@ -118,7 +118,7 @@ const Radar: NextPage = () => {
               },
               {
                 backgroundColor: `rgb(255, 0, 255, 0.3)`,
-                borderColor: `rgb(100, 0, 0, 0)`,
+                borderWidth: 0,
                 data: Array.from(
                   Object.keys(dimensions),
                   () => overlayRange[1]
@@ -127,19 +127,19 @@ const Radar: NextPage = () => {
               },
               {
                 backgroundColor: "rgb(0, 255, 255, 1)",
-                borderColor: "rgb(0, 255, 255, 0)",
+                borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () => 3),
                 pointRadius: 0,
               },
               {
                 backgroundColor: "rgb(128, 255, 128, 1)",
-                borderColor: "rgb(128, 255, 128, 0)",
+                borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () => 5),
                 pointRadius: 0,
               },
               {
                 backgroundColor: "rgb(255, 255, 0, 1)",
-                borderColor: "rgb(255, 255, 0, 0)",
+                borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () => 7),
                 pointRadius: 0,
               },
