@@ -81,6 +81,8 @@ const Radar: NextPage = () => {
       ];
 
       if (radarChartRef.current) {
+        const tension =
+          (4 / 3) * Math.tan(Math.PI / (2 * Object.keys(dimensions).length));
         const radarChart = new ChartJS(radarChartRef.current, {
           data: {
             datasets: [
@@ -91,6 +93,7 @@ const Radar: NextPage = () => {
                 fill: false,
                 pointBorderWidth: ({ dataIndex }) =>
                   2 * Object.values(dimensions)[dataIndex].weight,
+                tension,
               },
               {
                 backgroundColor: STANDARD_LEVELS.junior.color,
@@ -99,6 +102,7 @@ const Radar: NextPage = () => {
                   Math.min(overlayRange[0], 3)
                 ),
                 pointRadius: 0,
+                tension,
               },
               {
                 backgroundColor: STANDARD_LEVELS.mid.color,
@@ -107,6 +111,7 @@ const Radar: NextPage = () => {
                   Math.min(overlayRange[0], 5)
                 ),
                 pointRadius: 0,
+                tension,
               },
               {
                 backgroundColor: STANDARD_LEVELS.senior.color,
@@ -115,6 +120,7 @@ const Radar: NextPage = () => {
                   Math.min(overlayRange[0], 7)
                 ),
                 pointRadius: 0,
+                tension,
               },
               {
                 backgroundColor: "rgb(255, 255, 255, 0.5)",
@@ -124,24 +130,28 @@ const Radar: NextPage = () => {
                   () => overlayRange[1]
                 ),
                 pointRadius: 0,
+                tension,
               },
               {
                 backgroundColor: STANDARD_LEVELS.junior.color,
                 borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () => 3),
                 pointRadius: 0,
+                tension,
               },
               {
                 backgroundColor: STANDARD_LEVELS.mid.color,
                 borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () => 5),
                 pointRadius: 0,
+                tension,
               },
               {
                 backgroundColor: STANDARD_LEVELS.senior.color,
                 borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () => 7),
                 pointRadius: 0,
+                tension,
               },
             ],
             labels: Object.keys(dimensions),
