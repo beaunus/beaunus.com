@@ -27,7 +27,7 @@ import _ from "lodash";
 import multimatch from "multimatch";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, ReactNode, useEffect, useRef, useState } from "react";
 
 import { CommitTable } from "../../components/git-thing/CommitTable";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
@@ -105,15 +105,27 @@ const GitThing: NextPage = () => {
 
   const valueIterateeByCriteria: Record<
     string,
-    (stats: Stats) => { value: number }
+    (stats: Stats) => {
+      details?: ReactNode;
+      value: number;
+    }
   > = {
-    numAuthorDaysActive: ({ commits }) => ({
-      value: new Set(
-        commits.map(
-          ({ author, date }) => `${dayjs(date).format("YYYY-MM-DD")}-${author}`
+    numAuthorDaysActive: ({ commits }) => {
+      const authorDays = Array.from(
+        new Set(
+          commits.map(({ author, date }) =>
+            JSON.stringify([dayjs(date).format("YYYY-MM-DD"), author])
+          )
         )
-      ).size,
-    }),
+      );
+      const authorsByDayString = _.mapValues(
+        _.groupBy(authorDays, (authorDay) => JSON.parse(authorDay)[0])
+      );
+      return {
+        details: JSON.stringify(authorsByDayString),
+        value: authorDays.length,
+      };
+    },
     numAuthorsTouching: ({ commits }) => ({
       value: new Set(commits.map(({ author }) => author)).size,
     }),
@@ -577,22 +589,24 @@ const GitThing: NextPage = () => {
                   <TableRow className="whitespace-nowrap">
                     <TableCell component="th">Criteria</TableCell>
                     <TableCell component="th">Value</TableCell>
+                    <TableCell component="th">Details</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {Object.entries(valueIterateeByCriteria)
                     .filter(([criteria]) => criteria !== "one")
-                    .map(([criteria, valueIteratee]) => (
-                      <TableRow key={`criteria-value-${criteria}`}>
-                        <TableCell>{criteria}</TableCell>
-                        <TableCell>
-                          {
-                            valueIteratee(statsByFileName[focusedDataEntry[0]])
-                              .value
-                          }
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    .map(([criteria, valueIteratee]) => {
+                      const { value, details } = valueIteratee(
+                        statsByFileName[focusedDataEntry[0]]
+                      );
+                      return (
+                        <TableRow key={`criteria-value-${criteria}`}>
+                          <TableCell>{criteria}</TableCell>
+                          <TableCell>{value}</TableCell>
+                          <TableCell>{details}</TableCell>
+                        </TableRow>
+                      );
+                    })}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -612,3 +626,456 @@ const GitThing: NextPage = () => {
 };
 
 export default GitThing;
+const thign = {
+  "2023-03-16": ['["2023-03-16","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2023-03-15": [
+    '["2023-03-15","Polly Lechte <polly.sutcliffe@octoenergy.com>"]',
+    '["2023-03-15","Earl Floden <earl.mark.27@gmail.com>"]',
+  ],
+  "2023-03-14": [
+    '["2023-03-14","MarySed <marysedarous011@gmail.com>"]',
+    '["2023-03-14","Earl Floden <earl.mark.27@gmail.com>"]',
+    '["2023-03-14","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2023-03-13": ['["2023-03-13","Beau Dobbin <beau@beaunus.com>"]'],
+  "2023-03-10": ['["2023-03-10","Beau Dobbin <beau@beaunus.com>"]'],
+  "2023-03-09": ['["2023-03-09","Beau Dobbin <beau@beaunus.com>"]'],
+  "2023-03-08": [
+    '["2023-03-08","Beau Dobbin <beau@beaunus.com>"]',
+    '["2023-03-08","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2023-03-07": ['["2023-03-07","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2023-03-02": [
+    '["2023-03-02","Polly Lechte <polly.sutcliffe@octoenergy.com>"]',
+  ],
+  "2023-02-21": ['["2023-02-21","Beau Dobbin <beau@beaunus.com>"]'],
+  "2023-02-16": ['["2023-02-16","MarySed <marysedarous011@gmail.com>"]'],
+  "2023-02-13": ['["2023-02-13","Beau Dobbin <beau@beaunus.com>"]'],
+  "2023-02-09": ['["2023-02-09","Joluma <joel.mafuta@octoenergy.com>"]'],
+  "2023-02-07": ['["2023-02-07","MarySed <marysedarous011@gmail.com>"]'],
+  "2023-02-06": ['["2023-02-06","Joluma <joel.mafuta@octoenergy.com>"]'],
+  "2023-02-03": ['["2023-02-03","Beau Dobbin <beau@beaunus.com>"]'],
+  "2023-02-02": [
+    '["2023-02-02","Joluma <joel.mafuta@octoenergy.com>"]',
+    '["2023-02-02","akinaohira <akina.ohira@octoenergy.com>"]',
+  ],
+  "2023-01-27": ['["2023-01-27","akinaohira <akina.ohira@octoenergy.com>"]'],
+  "2023-01-26": ['["2023-01-26","MarySed <marysedarous011@gmail.com>"]'],
+  "2023-01-25": [
+    '["2023-01-25","Beau Dobbin <beau@beaunus.com>"]',
+    '["2023-01-25","Akina Ohira <56147732+akinaohira@users.noreply.github.com>"]',
+  ],
+  "2023-01-24": ['["2023-01-24","Joluma <joel.mafuta@octoenergy.com>"]'],
+  "2023-01-20": ['["2023-01-20","akinaohira <akina.ohira@octoenergy.com>"]'],
+  "2023-01-19": ['["2023-01-19","akinaohira <akina.ohira@octoenergy.com>"]'],
+  "2023-01-17": [
+    '["2023-01-17","Akina Ohira <56147732+akinaohira@users.noreply.github.com>"]',
+    '["2023-01-17","Earl Floden <earl.mark.27@gmail.com>"]',
+    '["2023-01-17","MarySed <marysedarous011@gmail.com>"]',
+  ],
+  "2023-01-16": [
+    '["2023-01-16","Earl Floden <earl.mark.27@gmail.com>"]',
+    '["2023-01-16","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2023-01-06": ['["2023-01-06","Joluma <joel.mafuta@octoenergy.com>"]'],
+  "2023-01-05": ['["2023-01-05","MarySed <marysedarous011@gmail.com>"]'],
+  "2022-12-27": ['["2022-12-27","Beau Dobbin <beau@beaunus.com>"]'],
+  "2022-12-21": ['["2022-12-21","Joluma <joel.mafuta@octoenergy.com>"]'],
+  "2022-12-19": [
+    '["2022-12-19","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-12-19","akinaohira <akina.ohira@octoenergy.com>"]',
+  ],
+  "2022-12-16": ['["2022-12-16","Joluma <joel.mafuta@octoenergy.com>"]'],
+  "2022-12-12": ['["2022-12-12","Beau Dobbin <beau@beaunus.com>"]'],
+  "2022-12-08": ['["2022-12-08","MarySed <marysedarous011@gmail.com>"]'],
+  "2022-12-07": [
+    '["2022-12-07","Akina Ohira <56147732+akinaohira@users.noreply.github.com>"]',
+  ],
+  "2022-12-06": ['["2022-12-06","akinaohira <akina.ohira@octoenergy.com>"]'],
+  "2022-11-17": ['["2022-11-17","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-11-16": ['["2022-11-16","Beau Dobbin <beau@beaunus.com>"]'],
+  "2022-11-15": ['["2022-11-15","Beau Dobbin <beau@beaunus.com>"]'],
+  "2022-11-10": ['["2022-11-10","Beau Dobbin <beau@beaunus.com>"]'],
+  "2022-11-09": [
+    '["2022-11-09","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-11-09","Earl Floden <earl.mark.27@gmail.com>"]',
+    '["2022-11-09","Polly Lechte <polly.sutcliffe@octoenergy.com>"]',
+  ],
+  "2022-11-02": ['["2022-11-02","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-10-28": ['["2022-10-28","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-10-27": ['["2022-10-27","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-10-20": ['["2022-10-20","Joluma <joel.mafuta@octoenergy.com>"]'],
+  "2022-10-19": ['["2022-10-19","Joluma <joel.mafuta@octoenergy.com>"]'],
+  "2022-10-18": ['["2022-10-18","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-10-12": ['["2022-10-12","MarySed <marysedarous011@gmail.com>"]'],
+  "2022-10-07": ['["2022-10-07","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-10-05": ['["2022-10-05","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-10-03": ['["2022-10-03","Beau Dobbin <beau@beaunus.com>"]'],
+  "2022-09-30": [
+    '["2022-09-30","Polly Sutcliffe <polly.sutcliffe@octoenergy.com>"]',
+  ],
+  "2022-09-29": [
+    '["2022-09-29","Polly Sutcliffe <polly.sutcliffe@octoenergy.com>"]',
+    '["2022-09-29","Earl Floden <earl.mark.27@gmail.com>"]',
+  ],
+  "2022-09-27": [
+    '["2022-09-27","akinaohira <akina.ohira@octoenergy.com>"]',
+    '["2022-09-27","Joluma <j.mafuta@gmail.com>"]',
+  ],
+  "2022-09-26": [
+    '["2022-09-26","Polly Sutcliffe <polly.sutcliffe@octoenergy.com>"]',
+  ],
+  "2022-09-20": ['["2022-09-20","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-09-15": ['["2022-09-15","Joluma <j.mafuta@gmail.com>"]'],
+  "2022-09-14": ['["2022-09-14","Joluma <j.mafuta@gmail.com>"]'],
+  "2022-09-12": ['["2022-09-12","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-09-09": ['["2022-09-09","Joluma <j.mafuta@gmail.com>"]'],
+  "2022-09-08": ['["2022-09-08","Joluma <j.mafuta@gmail.com>"]'],
+  "2022-09-05": ['["2022-09-05","Beau Dobbin <beau@beaunus.com>"]'],
+  "2022-08-26": ['["2022-08-26","MarySed <marysedarous011@gmail.com>"]'],
+  "2022-08-24": ['["2022-08-24","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-08-23": [
+    '["2022-08-23","akinaohira <akina.ohira@octoenergy.com>"]',
+    '["2022-08-23","Beau Dobbin <beau@beaunus.com>"]',
+  ],
+  "2022-08-22": ['["2022-08-22","Beau Dobbin <beau@beaunus.com>"]'],
+  "2022-08-18": ['["2022-08-18","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-08-17": ['["2022-08-17","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-08-16": [
+    '["2022-08-16","Earl Floden <earl.mark.27@gmail.com>"]',
+    '["2022-08-16","Beau Dobbin <beau@beaunus.com>"]',
+  ],
+  "2022-08-15": [
+    '["2022-08-15","Earl Floden <earl.mark.27@gmail.com>"]',
+    '["2022-08-15","akinaohira <akina.ohira@octoenergy.com>"]',
+  ],
+  "2022-08-12": ['["2022-08-12","Joluma <j.mafuta@gmail.com>"]'],
+  "2022-08-10": ['["2022-08-10","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-08-09": ['["2022-08-09","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-08-08": [
+    '["2022-08-08","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-08-08","Earl Floden <earl.mark.27@gmail.com>"]',
+    '["2022-08-08","akinaohira <akina.ohira@octoenergy.com>"]',
+  ],
+  "2022-08-05": [
+    '["2022-08-05","akinaohira <akina.ohira@octoenergy.com>"]',
+    '["2022-08-05","Joluma <j.mafuta@gmail.com>"]',
+  ],
+  "2022-08-04": [
+    '["2022-08-04","Joluma <j.mafuta@gmail.com>"]',
+    '["2022-08-04","akinaohira <akina.ohira@octoenergy.com>"]',
+    '["2022-08-04","Earl Floden <earl.mark.27@gmail.com>"]',
+    '["2022-08-04","Beau Dobbin <beau@beaunus.com>"]',
+  ],
+  "2022-08-03": [
+    '["2022-08-03","MarySed <marysedarous011@gmail.com>"]',
+    '["2022-08-03","Earl Floden <earl.mark.27@gmail.com>"]',
+    '["2022-08-03","Beau Dobbin <beau@beaunus.com>"]',
+  ],
+  "2022-08-02": ['["2022-08-02","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-08-01": [
+    '["2022-08-01","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-08-01","MarySed <marysedarous011@gmail.com>"]',
+    '["2022-08-01","Joluma <j.mafuta@gmail.com>"]',
+  ],
+  "2022-07-29": [
+    '["2022-07-29","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-07-29","Joluma <j.mafuta@gmail.com>"]',
+  ],
+  "2022-07-28": [
+    '["2022-07-28","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-07-28","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-07-28","Earl Floden <earl.mark.27@gmail.com>"]',
+    '["2022-07-28","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-07-27": [
+    '["2022-07-27","akinaohira <akina.ohira@octoenergy.com>"]',
+    '["2022-07-27","Earl Floden <earl.mark.27@gmail.com>"]',
+    '["2022-07-27","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-07-27","Joluma <j.mafuta@gmail.com>"]',
+  ],
+  "2022-07-26": [
+    '["2022-07-26","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-07-26","Joluma <j.mafuta@gmail.com>"]',
+  ],
+  "2022-07-25": [
+    '["2022-07-25","Joluma <j.mafuta@gmail.com>"]',
+    '["2022-07-25","Earl Floden <earl.mark.27@gmail.com>"]',
+    '["2022-07-25","akinaohira <akina.ohira@octoenergy.com>"]',
+    '["2022-07-25","sidiousvic <sidiousvic@gmail.com>"]',
+  ],
+  "2022-07-22": ['["2022-07-22","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-07-21": ['["2022-07-21","Joluma <j.mafuta@gmail.com>"]'],
+  "2022-07-20": ['["2022-07-20","Beau Dobbin <beau@beaunus.com>"]'],
+  "2022-07-19": [
+    '["2022-07-19","akinaohira <akina.ohira@octoenergy.com>"]',
+    '["2022-07-19","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-07-19","Beau Dobbin <beau@beaunus.com>"]',
+  ],
+  "2022-07-15": [
+    '["2022-07-15","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-07-15","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-07-15","akinaohira <akina.ohira@octoenergy.com>"]',
+    '["2022-07-15","Earl Floden <earl.mark.27@gmail.com>"]',
+  ],
+  "2022-07-14": [
+    '["2022-07-14","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-07-14","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-07-14","akinaohira <akina.ohira@octoenergy.com>"]',
+  ],
+  "2022-07-13": [
+    '["2022-07-13","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-07-13","MarySed <marysedarous011@gmail.com>"]',
+    '["2022-07-13","akinaohira <akina.ohira@octoenergy.com>"]',
+  ],
+  "2022-07-12": [
+    '["2022-07-12","akinaohira <akina.ohira@octoenergy.com>"]',
+    '["2022-07-12","Earl Floden <earl.mark.27@gmail.com>"]',
+  ],
+  "2022-07-11": [
+    '["2022-07-11","akinaohira <akina.ohira@octoenergy.com>"]',
+    '["2022-07-11","MarySed <marysedarous011@gmail.com>"]',
+  ],
+  "2022-07-08": [
+    '["2022-07-08","akinaohira <akina.ohira@octoenergy.com>"]',
+    '["2022-07-08","Earl Floden <earl.mark.27@gmail.com>"]',
+  ],
+  "2022-07-07": [
+    '["2022-07-07","akinaohira <akina.ohira@octoenergy.com>"]',
+    '["2022-07-07","MarySed <marysedarous011@gmail.com>"]',
+  ],
+  "2022-07-06": [
+    '["2022-07-06","akinaohira <akina.ohira@octoenergy.com>"]',
+    '["2022-07-06","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-07-06","Joluma <j.mafuta@gmail.com>"]',
+    '["2022-07-06","Beau Dobbin <beau@beaunus.com>"]',
+  ],
+  "2022-07-05": [
+    '["2022-07-05","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-07-05","Earl Floden <earl.mark.27@gmail.com>"]',
+  ],
+  "2022-07-04": ['["2022-07-04","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-07-01": [
+    '["2022-07-01","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-06-30": ['["2022-06-30","Beau Dobbin <beau@beaunus.com>"]'],
+  "2022-06-29": ['["2022-06-29","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-06-28": ['["2022-06-28","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-06-27": ['["2022-06-27","Earl Floden <earl.mark.27@gmail.com>"]'],
+  "2022-06-24": [
+    '["2022-06-24","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-06-24","akinaohira <akina.ohira@octoenergy.com>"]',
+    '["2022-06-24","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-06-22": ['["2022-06-22","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-06-21": ['["2022-06-21","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-06-20": [
+    '["2022-06-20","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-06-20","Beau Dobbin <beau@beaunus.com>"]',
+  ],
+  "2022-06-17": [
+    '["2022-06-17","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-06-17","akinaohira <akina.ohira@octoenergy.com>"]',
+  ],
+  "2022-06-16": ['["2022-06-16","akinaohira <akina.ohira@octoenergy.com>"]'],
+  "2022-06-13": [
+    '["2022-06-13","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-06-13","sidiousvic <sidiousvic@gmail.com>"]',
+  ],
+  "2022-06-10": [
+    '["2022-06-10","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-06-10","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-06-09": [
+    '["2022-06-09","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-06-09","sidiousvic <sidiousvic@gmail.com>"]',
+  ],
+  "2022-06-08": [
+    '["2022-06-08","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-06-08","akinaohira <akina.ohira@octoenergy.com>"]',
+  ],
+  "2022-06-07": ['["2022-06-07","akinaohira <akina.ohira@octoenergy.com>"]'],
+  "2022-06-03": [
+    '["2022-06-03","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-06-03","akinaohira <akina.ohira@octoenergy.com>"]',
+  ],
+  "2022-06-02": ['["2022-06-02","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-06-01": ['["2022-06-01","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-05-31": ['["2022-05-31","Beau Dobbin <beau@beaunus.com>"]'],
+  "2022-05-30": [
+    '["2022-05-30","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-05-30","Beau Dobbin <beau@beaunus.com>"]',
+  ],
+  "2022-05-26": ['["2022-05-26","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-05-25": [
+    '["2022-05-25","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-05-25","sidiousvic <sidiousvic@gmail.com>"]',
+  ],
+  "2022-05-24": ['["2022-05-24","akinaohira <akina.ohira@octoenergy.com>"]'],
+  "2022-05-23": ['["2022-05-23","akinaohira <akina.ohira@octoenergy.com>"]'],
+  "2022-05-20": ['["2022-05-20","akinaohira <akina.ohira@octoenergy.com>"]'],
+  "2022-05-19": [
+    '["2022-05-19","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-05-18": [
+    '["2022-05-18","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-05-17": [
+    '["2022-05-17","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-05-17","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-05-16": [
+    '["2022-05-16","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-05-16","akinaohira <akina.ohira@octoenergy.com>"]',
+    '["2022-05-16","Earl Floden <earl.mark.27@gmail.com>"]',
+  ],
+  "2022-05-12": ['["2022-05-12","MarySed <marysedarous011@gmail.com>"]'],
+  "2022-05-11": ['["2022-05-11","akinaohira <akina.ohira@octoenergy.com>"]'],
+  "2022-05-10": [
+    '["2022-05-10","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-05-10","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-05-10","akinaohira <akina.ohira@octoenergy.com>"]',
+    '["2022-05-10","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-05-09": ['["2022-05-09","akinaohira <akina.ohira@octoenergy.com>"]'],
+  "2022-05-06": ['["2022-05-06","akinaohira <akina.ohira@octoenergy.com>"]'],
+  "2022-05-04": [
+    '["2022-05-04","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-05-04","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-05-03": ['["2022-05-03","Beau Dobbin <beau@beaunus.com>"]'],
+  "2022-05-02": [
+    '["2022-05-02","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-05-02","Beau Dobbin <beau@beaunus.com>"]',
+  ],
+  "2022-04-29": ['["2022-04-29","Beau Dobbin <beau@beaunus.com>"]'],
+  "2022-04-27": ['["2022-04-27","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-04-26": ['["2022-04-26","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-04-25": [
+    '["2022-04-25","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-04-25","sidiousvic <sidiousvic@gmail.com>"]',
+  ],
+  "2022-04-21": ['["2022-04-21","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-04-20": [
+    '["2022-04-20","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-04-20","sidiousvic <sidiousvic@gmail.com>"]',
+  ],
+  "2022-04-19": ['["2022-04-19","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-04-15": [
+    '["2022-04-15","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-04-14": [
+    '["2022-04-14","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-04-14","Beau Dobbin <beau@beaunus.com>"]',
+  ],
+  "2022-04-13": [
+    '["2022-04-13","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-04-13","Beau Dobbin <beau@beaunus.com>"]',
+  ],
+  "2022-04-12": ['["2022-04-12","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-04-08": [
+    '["2022-04-08","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-04-08","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-04-07": [
+    '["2022-04-07","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-04-07","Earl Floden <earl.mark.27@gmail.com>"]',
+    '["2022-04-07","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-04-07","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-04-06": [
+    '["2022-04-06","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-04-06","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-04-06","Earl Floden <earl.mark.27@gmail.com>"]',
+  ],
+  "2022-04-05": [
+    '["2022-04-05","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-04-05","sidiousvic <sidiousvic@gmail.com>"]',
+  ],
+  "2022-04-04": [
+    '["2022-04-04","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-04-04","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-04-04","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-04-04","Earl Floden <earl.mark.27@gmail.com>"]',
+  ],
+  "2022-04-01": ['["2022-04-01","Beau Dobbin <beau@beaunus.com>"]'],
+  "2022-03-31": [
+    '["2022-03-31","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-03-31","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-03-30": [
+    '["2022-03-30","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-03-30","Earl Floden <earl.mark.27@gmail.com>"]',
+  ],
+  "2022-03-29": [
+    '["2022-03-29","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-03-29","Earl Floden <earl.mark.27@gmail.com>"]',
+  ],
+  "2022-03-28": [
+    '["2022-03-28","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-03-28","Earl Floden <earl.mark.27@gmail.com>"]',
+    '["2022-03-28","Beau Dobbin <beau@beaunus.com>"]',
+  ],
+  "2022-03-25": [
+    '["2022-03-25","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-03-25","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-03-25","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-03-24": [
+    '["2022-03-24","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-03-24","Beau Dobbin <beau@beaunus.com>"]',
+  ],
+  "2022-03-23": [
+    '["2022-03-23","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-03-23","Earl Floden <earl.mark.27@gmail.com>"]',
+    '["2022-03-23","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-03-23","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-03-22": ['["2022-03-22","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-03-18": [
+    '["2022-03-18","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-03-18","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-03-18","Earl Floden <earl.mark.27@gmail.com>"]',
+  ],
+  "2022-03-17": [
+    '["2022-03-17","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-03-17","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-03-17","Beau Dobbin <beau@beaunus.com>"]',
+  ],
+  "2022-03-16": [
+    '["2022-03-16","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-03-16","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-03-16","Beau Dobbin <beau@beaunus.com>"]',
+    '["2022-03-16","Earl Floden <earl.mark.27@gmail.com>"]',
+  ],
+  "2022-03-15": [
+    '["2022-03-15","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-03-15","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-03-15","Beau Dobbin <beau@beaunus.com>"]',
+  ],
+  "2022-03-14": [
+    '["2022-03-14","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+    '["2022-03-14","sidiousvic <sidiousvic@gmail.com>"]',
+  ],
+  "2022-03-11": [
+    '["2022-03-11","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-03-11","Victor René Molina Rodríguez <sidiousvic@gmail.com>"]',
+    '["2022-03-11","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-03-10": [
+    '["2022-03-10","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-03-10","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-03-09": ['["2022-03-09","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-03-08": [
+    '["2022-03-08","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-03-08","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-03-07": [
+    '["2022-03-07","sidiousvic <sidiousvic@gmail.com>"]',
+    '["2022-03-07","Nao <45124890+NowNewNao@users.noreply.github.com>"]',
+  ],
+  "2022-03-06": ['["2022-03-06","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-03-04": ['["2022-03-04","sidiousvic <sidiousvic@gmail.com>"]'],
+  "2022-03-03": ['["2022-03-03","sidiousvic <sidiousvic@gmail.com>"]'],
+};
