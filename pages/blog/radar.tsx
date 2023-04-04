@@ -16,19 +16,19 @@ import { SliderWithLabels } from "../../components/SliderWithLabels";
 import { arithmeticMean, geometricMean } from "../../utils/mean";
 
 type Dimensions = Record<string, { value: number; weight: number }>;
-const DEFAULT_DIMENSIONS: Dimensions = {
-  /* eslint-disable @typescript-eslint/naming-convention, sort-keys */
-  "Technical Skills": { value: 4, weight: 1 },
-  "Decision Making": { value: 4, weight: 1 },
-  Mentoring: { value: 4, weight: 1 },
-  "Driving Alignment": { value: 4, weight: 1 },
-  "Process Thinking": { value: 4, weight: 1 },
-  "Knowledge Sharing": { value: 4, weight: 1 },
-  Teamwork: { value: 4, weight: 1 },
-  Facilitation: { value: 4, weight: 1 },
-  "X-factor": { value: 4, weight: 1 },
-  /* eslint-enable @typescript-eslint/naming-convention, sort-keys */
-};
+const DEFAULT_DIMENSIONS: Dimensions = Object.fromEntries(
+  [
+    "Technical Skills",
+    "Decision Making",
+    "Mentoring",
+    "Driving Alignment",
+    "Process Thinking",
+    "Knowledge Sharing",
+    "Teamwork",
+    "Facilitation",
+    "X-factor",
+  ].map((name) => [name, { value: 4, weight: 1 }])
+);
 
 const STANDARD_LEVELS: Record<string, { color: Color; value: number }> = {
   junior: { color: "hsl(86, 60%, 80%)", value: 2 },
