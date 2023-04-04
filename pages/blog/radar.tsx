@@ -71,11 +71,11 @@ const Radar: NextPage = () => {
 
       const overlayRange = [
         Math.max(
-          geometricMean(valuesAccordingToWeights) / OVERLAY_LOOSENESS,
+          geometricMean(valuesAccordingToWeights) ?? 0 / OVERLAY_LOOSENESS,
           SLIDER_RANGE[0]
         ),
         Math.min(
-          arithmeticMean(valuesAccordingToWeights) * OVERLAY_LOOSENESS,
+          arithmeticMean(valuesAccordingToWeights) ?? 0 * OVERLAY_LOOSENESS,
           SLIDER_RANGE[1] + 1
         ),
       ];

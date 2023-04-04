@@ -12,6 +12,10 @@ describe("mean", () => {
 
       expect(arithmeticMean(numbers)).toBe(sum / numbers.length);
     });
+
+    it("should return undefined given an empty array", () => {
+      expect(arithmeticMean([])).toBeUndefined();
+    });
   });
 
   describe("geometricMean", () => {
@@ -22,6 +26,10 @@ describe("mean", () => {
       const product = numbers.reduce((acc, cur) => acc * cur, 1);
 
       expect(geometricMean(numbers)).toBe(product ** (1 / numbers.length));
+    });
+
+    it("should return undefined given an empty array", () => {
+      expect(geometricMean([])).toBeUndefined();
     });
   });
 });
