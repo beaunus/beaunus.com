@@ -7,6 +7,7 @@ import TextField from "@mui/material/TextField";
 import ChartJS, { Color } from "chart.js/auto";
 import type { NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import * as React from "react";
 import { useEffect, useState } from "react";
 
@@ -14,7 +15,8 @@ import { Segment } from "../../components/Segment";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
 import { arithmeticMean, geometricMean } from "../../utils/mean";
 
-const DEFAULT_DIMENSIONS: Record<string, { value: number; weight: number }> = {
+type Dimensions = Record<string, { value: number; weight: number }>;
+const DEFAULT_DIMENSIONS: Dimensions = {
   /* eslint-disable @typescript-eslint/naming-convention, sort-keys */
   "Technical Skills": { value: 4, weight: 1 },
   "Decision Making": { value: 4, weight: 1 },
@@ -57,11 +59,44 @@ const StandardLevelSlider: React.FC = () => (
   </Grid>
 );
 
+export const isBrowser = (): boolean => typeof window !== "undefined";
+
 const Radar: NextPage = () => {
-  const [dimensions, setDimensions] = useState(DEFAULT_DIMENSIONS);
+  const [dimensions, setDimensions] = useState<Dimensions>({});
   const [pendingDimensionName, setPendingDimensionName] = useState<string>("");
 
   const radarChartRef = React.useRef<HTMLCanvasElement>(null);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push({
+      query: Object.fromEntries(
+        Object.entries(dimensions).map(([name, { value, weight }]) => [
+          name,
+          `${weight},${value}`,
+        ])
+      ),
+    });
+  }, [dimensions, router.isReady]);
+
+  useEffect(() => {
+    const dimensionsFromUrl = Object.fromEntries(
+      Array.from(new URLSearchParams(window.location.search).entries()).map(
+        ([name, weightAndValueString]) => {
+          const [weight, value] = (weightAndValueString as string)
+            .split(",")
+            .map(Number);
+          return [name, { value, weight }];
+        }
+      )
+    );
+    setDimensions(
+      Object.keys(dimensionsFromUrl).length
+        ? dimensionsFromUrl
+        : DEFAULT_DIMENSIONS
+    );
+  }, []);
 
   useEffect(
     function createChart() {
