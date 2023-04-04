@@ -70,14 +70,18 @@ const Radar: NextPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    router.push({
-      query: Object.fromEntries(
-        Object.entries(dimensions).map(([name, { value, weight }]) => [
-          name,
-          `${weight},${value}`,
-        ])
-      ),
-    });
+    router.push(
+      {
+        query: Object.fromEntries(
+          Object.entries(dimensions).map(([name, { value, weight }]) => [
+            name,
+            `${weight},${value}`,
+          ])
+        ),
+      },
+      undefined,
+      { scroll: false }
+    );
   }, [dimensions, router.isReady]);
 
   useEffect(() => {
