@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 
 import { Segment } from "../../components/Segment";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
-import { arithmeticMean, geometricMean } from "../../utils/mean";
+import { geometricMean } from "../../utils/mean";
 
 type Dimensions = Record<string, { value: number; weight: number }>;
 const DEFAULT_DIMENSIONS: Dimensions = Object.fromEntries(
@@ -119,16 +119,8 @@ const Radar: NextPage = () => {
         ({ value, weight }) => Array.from({ length: weight }, () => value)
       );
 
-      const overlayRange = [
-        Math.max(
-          geometricMean(valuesAccordingToWeights) ?? 0 / OVERLAY_LOOSENESS,
-          SLIDER_RANGE[0]
-        ),
-        Math.min(
-          arithmeticMean(valuesAccordingToWeights) ?? 0 * OVERLAY_LOOSENESS,
-          SLIDER_RANGE[1] + 1
-        ),
-      ];
+      const mean = geometricMean(valuesAccordingToWeights) ?? 0;
+      const overlayRange = [mean - 1, mean + 1];
 
       if (radarChartRef.current) {
         const tension =
