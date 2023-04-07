@@ -143,7 +143,7 @@ const Radar: NextPage = () => {
                 backgroundColor: STANDARD_LEVELS.junior.color,
                 borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () =>
-                  Math.min(overlayRange[0], 3)
+                  Math.min(overlayRange[0], STANDARD_LEVELS.junior.value + 1)
                 ),
                 pointRadius: 0,
                 tension,
@@ -152,7 +152,7 @@ const Radar: NextPage = () => {
                 backgroundColor: STANDARD_LEVELS.mid.color,
                 borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () =>
-                  Math.min(overlayRange[0], 5)
+                  Math.min(overlayRange[0], STANDARD_LEVELS.mid.value + 1)
                 ),
                 pointRadius: 0,
                 tension,
@@ -161,7 +161,7 @@ const Radar: NextPage = () => {
                 backgroundColor: STANDARD_LEVELS.senior.color,
                 borderWidth: 0,
                 data: Array.from(Object.keys(dimensions), () =>
-                  Math.min(overlayRange[0], 7)
+                  Math.min(overlayRange[0], STANDARD_LEVELS.senior.value + 1)
                 ),
                 pointRadius: 0,
                 tension,
@@ -179,21 +179,30 @@ const Radar: NextPage = () => {
               {
                 backgroundColor: STANDARD_LEVELS.junior.color,
                 borderWidth: 0,
-                data: Array.from(Object.keys(dimensions), () => 3),
+                data: Array.from(
+                  Object.keys(dimensions),
+                  () => STANDARD_LEVELS.junior.value + 1
+                ),
                 pointRadius: 0,
                 tension,
               },
               {
                 backgroundColor: STANDARD_LEVELS.mid.color,
                 borderWidth: 0,
-                data: Array.from(Object.keys(dimensions), () => 5),
+                data: Array.from(
+                  Object.keys(dimensions),
+                  () => STANDARD_LEVELS.mid.value + 1
+                ),
                 pointRadius: 0,
                 tension,
               },
               {
                 backgroundColor: STANDARD_LEVELS.senior.color,
                 borderWidth: 0,
-                data: Array.from(Object.keys(dimensions), () => 7),
+                data: Array.from(
+                  Object.keys(dimensions),
+                  () => STANDARD_LEVELS.senior.value + 1
+                ),
                 pointRadius: 0,
                 tension,
               },
