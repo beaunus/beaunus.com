@@ -144,7 +144,7 @@ const Radar: NextPage = () => {
               {
                 backgroundColor: STANDARD_LEVELS.junior.color,
                 borderWidth: 0,
-                data: Array.from(Object.keys(dimensions), () =>
+                data: Array(Object.keys(dimensions).length).fill(
                   Math.min(overlayRange[0], STANDARD_LEVELS.junior.value + 1)
                 ),
                 pointRadius: 0,
@@ -153,7 +153,7 @@ const Radar: NextPage = () => {
               {
                 backgroundColor: STANDARD_LEVELS.mid.color,
                 borderWidth: 0,
-                data: Array.from(Object.keys(dimensions), () =>
+                data: Array(Object.keys(dimensions).length).fill(
                   Math.min(overlayRange[0], STANDARD_LEVELS.mid.value + 1)
                 ),
                 pointRadius: 0,
@@ -162,7 +162,7 @@ const Radar: NextPage = () => {
               {
                 backgroundColor: STANDARD_LEVELS.senior.color,
                 borderWidth: 0,
-                data: Array.from(Object.keys(dimensions), () =>
+                data: Array(Object.keys(dimensions).length).fill(
                   Math.min(overlayRange[0], STANDARD_LEVELS.senior.value + 1)
                 ),
                 pointRadius: 0,
@@ -171,9 +171,8 @@ const Radar: NextPage = () => {
               {
                 backgroundColor: overlayColor,
                 borderWidth: 0,
-                data: Array.from(
-                  Object.keys(dimensions),
-                  () => overlayRange[1]
+                data: Array(Object.keys(dimensions).length).fill(
+                  overlayRange[1]
                 ),
                 pointRadius: 0,
                 tension,
@@ -181,9 +180,8 @@ const Radar: NextPage = () => {
               {
                 backgroundColor: STANDARD_LEVELS.junior.color,
                 borderWidth: 0,
-                data: Array.from(
-                  Object.keys(dimensions),
-                  () => STANDARD_LEVELS.junior.value + 1
+                data: Array(Object.keys(dimensions).length).fill(
+                  STANDARD_LEVELS.junior.value + 1
                 ),
                 pointRadius: 0,
                 tension,
@@ -191,9 +189,8 @@ const Radar: NextPage = () => {
               {
                 backgroundColor: STANDARD_LEVELS.mid.color,
                 borderWidth: 0,
-                data: Array.from(
-                  Object.keys(dimensions),
-                  () => STANDARD_LEVELS.mid.value + 1
+                data: Array(Object.keys(dimensions).length).fill(
+                  STANDARD_LEVELS.mid.value + 1
                 ),
                 pointRadius: 0,
                 tension,
@@ -201,9 +198,8 @@ const Radar: NextPage = () => {
               {
                 backgroundColor: STANDARD_LEVELS.senior.color,
                 borderWidth: 0,
-                data: Array.from(
-                  Object.keys(dimensions),
-                  () => STANDARD_LEVELS.senior.value + 1
+                data: Array(Object.keys(dimensions).length).fill(
+                  STANDARD_LEVELS.senior.value + 1
                 ),
                 pointRadius: 0,
                 tension,
