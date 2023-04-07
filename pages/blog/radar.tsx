@@ -142,29 +142,11 @@ const Radar: NextPage = () => {
                 tension,
               },
               {
-                backgroundColor: STANDARD_LEVELS.junior.color,
                 borderWidth: 0,
                 data: Array(Object.keys(dimensions).length).fill(
-                  Math.min(overlayRange[0], STANDARD_LEVELS.junior.value + 1)
+                  overlayRange[0]
                 ),
-                pointRadius: 0,
-                tension,
-              },
-              {
-                backgroundColor: STANDARD_LEVELS.mid.color,
-                borderWidth: 0,
-                data: Array(Object.keys(dimensions).length).fill(
-                  Math.min(overlayRange[0], STANDARD_LEVELS.mid.value + 1)
-                ),
-                pointRadius: 0,
-                tension,
-              },
-              {
-                backgroundColor: STANDARD_LEVELS.senior.color,
-                borderWidth: 0,
-                data: Array(Object.keys(dimensions).length).fill(
-                  Math.min(overlayRange[0], STANDARD_LEVELS.senior.value + 1)
-                ),
+                fill: false,
                 pointRadius: 0,
                 tension,
               },
@@ -174,6 +156,7 @@ const Radar: NextPage = () => {
                 data: Array(Object.keys(dimensions).length).fill(
                   overlayRange[1]
                 ),
+                fill: "-1",
                 pointRadius: 0,
                 tension,
               },
