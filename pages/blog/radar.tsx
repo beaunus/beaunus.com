@@ -49,6 +49,9 @@ const STANDARD_LEVELS: Record<string, { color: Color; value: number }> = {
   senior: { color: "hsl(186, 100%, 40%)", value: 6 },
 };
 
+const dimensionColor = "red";
+const overlayColor = "rgba(0, 0, 0, 0.5)";
+
 const SLIDER_RANGE: [number, number] = [1, 7];
 
 const StandardLevelSlider: React.FC = () => (
@@ -76,6 +79,7 @@ const Radar: NextPage = () => {
   const [dimensions, setDimensions] = useState<Dimensions>({});
   const [pendingDimensionName, setPendingDimensionName] = useState<string>("");
 
+  const barChartRef = React.useRef<HTMLCanvasElement>(null);
   const radarChartRef = React.useRef<HTMLCanvasElement>(null);
 
   const router = useRouter();
@@ -122,15 +126,15 @@ const Radar: NextPage = () => {
       const mean = geometricMean(valuesAccordingToWeights) ?? 0;
       const overlayRange = [mean - 1, mean + 1];
 
-      if (radarChartRef.current) {
+      if (radarChartRef.current && barChartRef.current) {
         const tension =
           (4 / 3) * Math.tan(Math.PI / (2 * Object.keys(dimensions).length));
         const radarChart = new ChartJS(radarChartRef.current, {
           data: {
             datasets: [
               {
-                backgroundColor: "#6018C8",
-                borderColor: "#6018C8",
+                backgroundColor: dimensionColor,
+                borderColor: dimensionColor,
                 data: Object.values(dimensions).map(({ value }) => value),
                 fill: false,
                 pointBorderWidth: ({ dataIndex }) =>
@@ -165,7 +169,7 @@ const Radar: NextPage = () => {
                 tension,
               },
               {
-                backgroundColor: "rgb(255, 255, 255, 0.5)",
+                backgroundColor: overlayColor,
                 borderWidth: 0,
                 data: Array.from(
                   Object.keys(dimensions),
@@ -223,7 +227,81 @@ const Radar: NextPage = () => {
           type: "radar",
         });
 
+        const barChart = new ChartJS(barChartRef.current, {
+          data: {
+            datasets: [
+              {
+                backgroundColor: dimensionColor,
+                borderColor: dimensionColor,
+                data: Object.values(dimensions).map(({ value }) => value),
+                type: "line",
+              },
+              {
+                data: Array(Object.keys(dimensions).length).fill(
+                  overlayRange[0]
+                ),
+                pointStyle: false,
+                type: "line",
+              },
+              {
+                backgroundColor: overlayColor,
+                data: Array(Object.keys(dimensions).length).fill(
+                  overlayRange[1]
+                ),
+                fill: 1,
+                pointStyle: false,
+                type: "line",
+              },
+              {
+                backgroundColor: STANDARD_LEVELS.junior.color,
+                borderColor: STANDARD_LEVELS.junior.color,
+                data: Array(Object.keys(dimensions).length).fill(
+                  STANDARD_LEVELS.junior.value + 1
+                ),
+                fill: true,
+                pointStyle: false,
+                type: "line",
+              },
+              {
+                backgroundColor: STANDARD_LEVELS.mid.color,
+                borderColor: STANDARD_LEVELS.mid.color,
+                data: Array(Object.keys(dimensions).length).fill(
+                  STANDARD_LEVELS.mid.value + 1
+                ),
+                fill: "-1",
+                pointStyle: false,
+                type: "line",
+              },
+              {
+                backgroundColor: STANDARD_LEVELS.senior.color,
+                borderColor: STANDARD_LEVELS.senior.color,
+                data: Array(Object.keys(dimensions).length).fill(
+                  STANDARD_LEVELS.senior.value + 1
+                ),
+                fill: "-1",
+                pointStyle: false,
+                type: "line",
+              },
+            ],
+            labels: Object.keys(dimensions),
+          },
+
+          options: {
+            animation: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: {
+                max: STANDARD_LEVELS.senior.value + 1,
+                min: STANDARD_LEVELS.junior.value - 1,
+                ticks: { display: false },
+              },
+            },
+          },
+          type: "bar",
+        });
+
         return () => {
+          barChart.destroy();
           radarChart.destroy();
         };
       }
@@ -329,6 +407,7 @@ const Radar: NextPage = () => {
                 </Grid>
               </Grid>
             ))}
+            <canvas className="max-h-screen" ref={barChartRef} />
             <canvas className="max-h-screen" ref={radarChartRef} />
           </div>
         </Segment>
