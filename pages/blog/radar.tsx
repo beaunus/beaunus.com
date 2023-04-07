@@ -51,8 +51,6 @@ const STANDARD_LEVELS: Record<string, { color: Color; value: number }> = {
 
 const SLIDER_RANGE: [number, number] = [1, 7];
 
-const OVERLAY_LOOSENESS = 1.1;
-
 const StandardLevelSlider: React.FC = () => (
   <Grid container spacing={2}>
     <Grid item xs={3} />
