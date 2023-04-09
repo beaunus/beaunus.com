@@ -58,6 +58,37 @@ type ScaleType = (typeof SCALE_TYPES)[number];
 
 const NUM_MS_IN_ONE_DAY = 1000 * 60 * 60 * 24;
 
+const valueIterateeByCriteria: Record<
+  string,
+  (stats: Stats) => { value: number }
+> = {
+  numAuthorDaysActive: ({ commits }) => ({
+    value: new Set(
+      commits.map(
+        ({ author, date }) => `${dayjs(date).format("YYYY-MM-DD")}-${author}`
+      )
+    ).size,
+  }),
+  numAuthorsTouching: ({ commits }) => ({
+    value: new Set(commits.map(({ author }) => author)).size,
+  }),
+  numCommits: ({ commits }) => ({ value: commits.length }),
+  numDaysActive: ({ commits }) => ({
+    value: new Set(commits.map(({ date }) => dayjs(date).format("YYYY-MM-DD")))
+      .size,
+  }),
+  numLinesAdded: ({ numLinesAdded }) => ({ value: numLinesAdded }),
+  numLinesChanged: ({ numLinesAdded, numLinesDeleted }) => ({
+    value: numLinesAdded + numLinesDeleted,
+  }),
+  numLinesDeleted: ({ numLinesDeleted }) => ({ value: numLinesDeleted }),
+  numLinesDiff: ({ numLinesAdded, numLinesDeleted }) => ({
+    value: numLinesAdded - numLinesDeleted,
+  }),
+  one: () => ({ value: 1 }),
+};
+type Criteria = keyof typeof valueIterateeByCriteria;
+
 const GitThing: NextPage = () => {
   const barChartRef = useRef<HTMLCanvasElement>(null);
   const [statsByFileName, setStatsByFileName] = useState<Record<string, Stats>>(
@@ -102,38 +133,6 @@ const GitThing: NextPage = () => {
   const [isIntervalLocked, setIsIntervalLocked] = useState(false);
   const [focusedDataEntry, setFocusedDataEntry] = useState<[string, Stats]>();
   const [baseGithubRepository, setBaseGithubRepository] = useState("");
-
-  const valueIterateeByCriteria: Record<
-    string,
-    (stats: Stats) => { value: number }
-  > = {
-    numAuthorDaysActive: ({ commits }) => ({
-      value: new Set(
-        commits.map(
-          ({ author, date }) => `${dayjs(date).format("YYYY-MM-DD")}-${author}`
-        )
-      ).size,
-    }),
-    numAuthorsTouching: ({ commits }) => ({
-      value: new Set(commits.map(({ author }) => author)).size,
-    }),
-    numCommits: ({ commits }) => ({ value: commits.length }),
-    numDaysActive: ({ commits }) => ({
-      value: new Set(
-        commits.map(({ date }) => dayjs(date).format("YYYY-MM-DD"))
-      ).size,
-    }),
-    numLinesAdded: ({ numLinesAdded }) => ({ value: numLinesAdded }),
-    numLinesChanged: ({ numLinesAdded, numLinesDeleted }) => ({
-      value: numLinesAdded + numLinesDeleted,
-    }),
-    numLinesDeleted: ({ numLinesDeleted }) => ({ value: numLinesDeleted }),
-    numLinesDiff: ({ numLinesAdded, numLinesDeleted }) => ({
-      value: numLinesAdded - numLinesDeleted,
-    }),
-    one: () => ({ value: 1 }),
-  };
-  type Criteria = keyof typeof valueIterateeByCriteria;
 
   useEffect(() => {
     const newStatsByFileName = computeStatsByFileName(
