@@ -27,7 +27,7 @@ import _ from "lodash";
 import multimatch from "multimatch";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, ReactNode, useEffect, useRef, useState } from "react";
 
 import { CommitTable } from "../../components/git-thing/CommitTable";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
@@ -60,15 +60,42 @@ const NUM_MS_IN_ONE_DAY = 1000 * 60 * 60 * 24;
 
 const valueIterateeByCriteria: Record<
   string,
-  (stats: Stats) => { value: number }
+  (stats: Stats) => {
+    details?: ReactNode;
+    value: number;
+  }
 > = {
-  numAuthorDaysActive: ({ commits }) => ({
-    value: new Set(
-      commits.map(
-        ({ author, date }) => `${dayjs(date).format("YYYY-MM-DD")}-${author}`
-      )
-    ).size,
-  }),
+  numAuthorDaysActive: ({ commits }) => {
+    const dayAuthorTuples: [string, string][] = _.uniqBy(
+      commits.map(({ author, date }) => [
+        dayjs(date).format("YYYY-MM-DD"),
+        author,
+      ]),
+      JSON.stringify
+    );
+    const dayStringsByAuthor = _.mapValues(
+      _.groupBy(dayAuthorTuples, ([, author]) => author),
+      (tuples) => tuples.map(([dayString]) => dayString)
+    );
+    return {
+      details: _.sortBy(
+        Object.entries(dayStringsByAuthor),
+        ([, dayStrings]) => -dayStrings.length
+      ).map(([author, dayStrings]) => (
+        <details key={author}>
+          <summary>
+            {author} - {dayStrings.length}
+          </summary>
+          <ul>
+            {dayStrings.map((dayString) => (
+              <li key={`${author}-${dayString}`}>{dayString}</li>
+            ))}
+          </ul>
+        </details>
+      )),
+      value: dayAuthorTuples.length,
+    };
+  },
   numAuthorsTouching: ({ commits }) => ({
     value: new Set(commits.map(({ author }) => author)).size,
   }),
@@ -576,22 +603,31 @@ const GitThing: NextPage = () => {
                   <TableRow className="whitespace-nowrap">
                     <TableCell component="th">Criteria</TableCell>
                     <TableCell component="th">Value</TableCell>
+                    <TableCell component="th">Details</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {Object.entries(valueIterateeByCriteria)
                     .filter(([criteria]) => criteria !== "one")
-                    .map(([criteria, valueIteratee]) => (
-                      <TableRow key={`criteria-value-${criteria}`}>
-                        <TableCell>{criteria}</TableCell>
-                        <TableCell>
-                          {
-                            valueIteratee(statsByFileName[focusedDataEntry[0]])
-                              .value
-                          }
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    .map(([criteria, valueIteratee]) => {
+                      const { value, details } = valueIteratee(
+                        statsByFileName[focusedDataEntry[0]]
+                      );
+                      return (
+                        <TableRow key={`criteria-value-${criteria}`}>
+                          <TableCell>{criteria}</TableCell>
+                          <TableCell>{value}</TableCell>
+                          <TableCell>
+                            {details ? (
+                              <details>
+                                <summary>details</summary>
+                                {details}
+                              </details>
+                            ) : null}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                 </TableBody>
               </Table>
             </TableContainer>
