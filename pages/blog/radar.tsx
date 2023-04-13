@@ -1,5 +1,5 @@
 import { Clear } from "@mui/icons-material";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Slider from "@mui/material/Slider";
@@ -10,7 +10,9 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import * as React from "react";
 import { useEffect, useState } from "react";
+import { sampleStandardDeviation } from "simple-statistics";
 
+import { HighlightedLink } from "../../components/HighlightedLink";
 import { Segment } from "../../components/Segment";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
 import { geometricMean } from "../../utils/mean";
@@ -120,7 +122,14 @@ const Radar: NextPage = () => {
       );
 
       const mean = geometricMean(valuesAccordingToWeights) ?? 0;
-      const overlayRange = [mean - 1, mean + 1];
+      const theStandardDeviation =
+        valuesAccordingToWeights.length > 1
+          ? sampleStandardDeviation(valuesAccordingToWeights)
+          : 0;
+      const overlayRange = [
+        mean - theStandardDeviation,
+        mean + theStandardDeviation,
+      ];
 
       if (radarChartRef.current && barChartRef.current) {
         const tension =
@@ -382,6 +391,20 @@ const Radar: NextPage = () => {
                 </Grid>
               </Grid>
             ))}
+            <Typography>
+              The shaded area shows{" "}
+              <code>
+                the{" "}
+                <HighlightedLink href="https://en.wikipedia.org/wiki/Geometric_mean">
+                  geometric mean
+                </HighlightedLink>{" "}
+                +/- one{" "}
+                <HighlightedLink href="https://en.wikipedia.org/wiki/Standard_deviation">
+                  standard deviation
+                </HighlightedLink>
+              </code>
+              .
+            </Typography>
             <canvas className="max-h-screen" ref={barChartRef} />
             <canvas className="max-h-screen" ref={radarChartRef} />
           </div>
