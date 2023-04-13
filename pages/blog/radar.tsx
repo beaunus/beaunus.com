@@ -127,8 +127,8 @@ const Radar: NextPage = () => {
           ? sampleStandardDeviation(valuesAccordingToWeights)
           : 0;
       const overlayRange = [
-        mean - theStandardDeviation,
-        mean + theStandardDeviation,
+        mean - Math.max(0.5, theStandardDeviation),
+        mean + Math.max(0.5, theStandardDeviation),
       ];
 
       if (radarChartRef.current && barChartRef.current) {
