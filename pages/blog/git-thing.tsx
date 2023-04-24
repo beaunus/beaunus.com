@@ -605,7 +605,9 @@ const GitThing: NextPage = () => {
                       <TableRow className="whitespace-nowrap">
                         <TableCell component="th">Criteria</TableCell>
                         <TableCell component="th">Value</TableCell>
-                        <TableCell component="th">Details</TableCell>
+                        <TableCell component="th" width="100%">
+                          Details
+                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
