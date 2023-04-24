@@ -636,9 +636,10 @@ const GitThing: NextPage = () => {
                 <CommitTable
                   baseGithubRepository={baseGithubRepository}
                   commits={focusedDataEntry[1].commits.filter(
-                    ({ author }) =>
-                      !authorsToInclude.length ||
-                      authorsToInclude.includes(author)
+                    ({ author, date }) =>
+                      isDateWithinSelectedRange(date) &&
+                      (!authorsToInclude.length ||
+                        authorsToInclude.includes(author))
                   )}
                   relevantFilePath={focusedDataEntry[0]}
                 />
