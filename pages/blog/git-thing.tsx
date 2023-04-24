@@ -20,8 +20,6 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import Switch from "@mui/material/Switch";
 import ChartJS from "chart.js/auto";
-import encHex from "crypto-js/enc-hex";
-import sha256 from "crypto-js/sha256";
 import dayjs, { Dayjs } from "dayjs";
 import _ from "lodash";
 import multimatch from "multimatch";
@@ -31,6 +29,7 @@ import { FC, ReactNode, useEffect, useRef, useState } from "react";
 
 import { CommitTable } from "../../components/git-thing/CommitTable";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
+import { stringToHex } from "../../utils";
 import {
   computeDateRange,
   computeStatsByFileName,
@@ -213,9 +212,8 @@ const GitThing: NextPage = () => {
         data: {
           datasets: [
             {
-              backgroundColor: dataEntries.map(
-                ([fileName]) =>
-                  `#${sha256(fileName).toString(encHex).slice(0, 6)}`
+              backgroundColor: dataEntries.map(([fileName]) =>
+                stringToHex(fileName)
               ),
               data: dataEntries.map(
                 ([, stats]) =>
