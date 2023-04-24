@@ -597,48 +597,55 @@ const GitThing: NextPage = () => {
         {focusedDataEntry ? (
           <>
             <Typography variant="h5">{focusedDataEntry[0]}</Typography>
-            <TableContainer>
-              <Table aria-label="criteria table" size="small">
-                <TableHead>
-                  <TableRow className="whitespace-nowrap">
-                    <TableCell component="th">Criteria</TableCell>
-                    <TableCell component="th">Value</TableCell>
-                    <TableCell component="th">Details</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {Object.entries(valueIterateeByCriteria)
-                    .filter(([criteria]) => criteria !== "one")
-                    .map(([criteria, valueIteratee]) => {
-                      const { value, details } = valueIteratee(
-                        statsByFileName[focusedDataEntry[0]]
-                      );
-                      return (
-                        <TableRow key={`criteria-value-${criteria}`}>
-                          <TableCell>{criteria}</TableCell>
-                          <TableCell>{value}</TableCell>
-                          <TableCell>
-                            {details ? (
-                              <details>
-                                <summary>details</summary>
-                                {details}
-                              </details>
-                            ) : null}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <CommitTable
-              baseGithubRepository={baseGithubRepository}
-              commits={focusedDataEntry[1].commits.filter(
-                ({ author }) =>
-                  !authorsToInclude.length || authorsToInclude.includes(author)
-              )}
-              relevantFilePath={focusedDataEntry[0]}
-            />
+            {statsByFileName[focusedDataEntry[0]] ? (
+              <>
+                <TableContainer>
+                  <Table aria-label="criteria table" size="small">
+                    <TableHead>
+                      <TableRow className="whitespace-nowrap">
+                        <TableCell component="th">Criteria</TableCell>
+                        <TableCell component="th">Value</TableCell>
+                        <TableCell component="th">Details</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {Object.entries(valueIterateeByCriteria)
+                        .filter(([criteria]) => criteria !== "one")
+                        .map(([criteria, valueIteratee]) => {
+                          const { value, details } = valueIteratee(
+                            statsByFileName[focusedDataEntry[0]]
+                          );
+                          return (
+                            <TableRow key={`criteria-value-${criteria}`}>
+                              <TableCell>{criteria}</TableCell>
+                              <TableCell>{value}</TableCell>
+                              <TableCell>
+                                {details ? (
+                                  <details>
+                                    <summary>details</summary>
+                                    {details}
+                                  </details>
+                                ) : null}
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                <CommitTable
+                  baseGithubRepository={baseGithubRepository}
+                  commits={focusedDataEntry[1].commits.filter(
+                    ({ author }) =>
+                      !authorsToInclude.length ||
+                      authorsToInclude.includes(author)
+                  )}
+                  relevantFilePath={focusedDataEntry[0]}
+                />
+              </>
+            ) : (
+              "The selected file did not exist at this point in the history"
+            )}
           </>
         ) : null}
       </div>
