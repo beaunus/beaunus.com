@@ -621,14 +621,7 @@ const GitThing: NextPage = () => {
                             <TableRow key={`criteria-value-${criteria}`}>
                               <TableCell>{criteria}</TableCell>
                               <TableCell>{value}</TableCell>
-                              <TableCell>
-                                {details ? (
-                                  <details>
-                                    <summary>details</summary>
-                                    {details}
-                                  </details>
-                                ) : null}
-                              </TableCell>
+                              <TableCell>{details}</TableCell>
                             </TableRow>
                           );
                         })}
