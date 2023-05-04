@@ -25,6 +25,7 @@ import _ from "lodash";
 import multimatch from "multimatch";
 import type { NextPage } from "next";
 import Head from "next/head";
+import { Octokit } from "octokit";
 import { FC, ReactNode, useEffect, useRef, useState } from "react";
 
 import { CommitTable } from "../../components/git-thing/CommitTable";
@@ -262,6 +263,28 @@ const GitThing: NextPage = () => {
     scaleType,
     statsByFileName,
   ]);
+
+  useEffect(() => {
+    async function thing() {
+      const octokit = new Octokit({
+        auth: "Look",
+      });
+
+      const result = await octokit.paginate("GET /search/issues", {
+        // owner: "octoenergy",
+        // repo: "tg-oe-consumer-site",
+        q: "reviewed-by:beaunus",
+        // per_page: 100,
+        state: "all",
+        headers: {
+          accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      });
+      console.log({ result });
+    }
+    thing();
+  }, []);
 
   const isDateWithinSelectedRange = (date: Date | Dayjs | string | number) => {
     const dateValue =
