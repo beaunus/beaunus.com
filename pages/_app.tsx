@@ -40,7 +40,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         className={`${nunito.className} flex flex-col justify-between h-screen`}
       >
         <Header />
-        <Component {...pageProps} />
+        <div className="grow">
+          <Component {...pageProps} />
+        </div>
         <Footer />
       </main>
     </>
