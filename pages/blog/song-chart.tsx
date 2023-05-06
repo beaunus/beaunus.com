@@ -255,7 +255,7 @@ const SongChart: NextPage = () => {
               r: {
                 angleLines: { display: true },
                 grid: { display: false, drawTicks: false },
-                startAngle: meanIndexInCircleOfFifths * 360,
+                startAngle: 180 + (meanIndexInCircleOfFifths / 12) * 360,
                 ticks: { display: false },
               },
             },
