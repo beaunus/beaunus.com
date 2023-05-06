@@ -1,15 +1,19 @@
 import { ReorderOutlined } from "@mui/icons-material";
-import { Chip, Stack } from "@mui/material";
+import { Chip, FormControlLabel, Stack } from "@mui/material";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
 import ChartJS from "chart.js/auto";
 import _ from "lodash";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const NOTE_NAMES = [
   "C",
@@ -45,6 +49,10 @@ type Section = {
   chords: { chord: Chord; durationInBeats: number }[];
   name: string;
 };
+
+const NORMALIZATION_VALUES = ["none", "sum", "max"] as const;
+
+type NormalizationValue = (typeof NORMALIZATION_VALUES)[number];
 
 const sections: Section[] = [
   {
@@ -143,6 +151,8 @@ const sections: Section[] = [
 const SongChart: NextPage = () => {
   const radarChartRef = useRef<HTMLCanvasElement>(null);
 
+  const [normalization, setNormalization] = useState<NormalizationValue>("max");
+
   const noteNameCountsBySection = Object.fromEntries(
     Object.entries(_.groupBy(sections, "name")).map(
       ([sectionName, instances]) => [
@@ -191,39 +201,48 @@ const SongChart: NextPage = () => {
     )
   );
 
-  useEffect(function createChart() {
-    if (radarChartRef.current) {
-      const radarChart = new ChartJS(radarChartRef.current, {
-        data: {
-          datasets: Object.entries(noteNameCountsBySection).map(
-            ([sectionName, noteNameCountsForSection]) => ({
-              data: CIRCLE_OF_FIFTHS.map(
-                (noteName) => noteNameCountsForSection[noteName] ?? 0
-              ),
-              fill: true,
-              label: sectionName,
-            })
-          ),
-          labels: CIRCLE_OF_FIFTHS,
-        },
-        options: {
-          scales: {
-            r: {
-              angleLines: { display: true },
-              grid: { display: false, drawTicks: false },
-              startAngle: meanIndexInCircleOfFifths * 360,
-              ticks: { display: false },
+  useEffect(
+    function createChart() {
+      if (radarChartRef.current) {
+        const radarChart = new ChartJS(radarChartRef.current, {
+          data: {
+            datasets: Object.entries(noteNameCountsBySection).map(
+              ([sectionName, noteNameCountsForSection]) => ({
+                data: CIRCLE_OF_FIFTHS.map(
+                  (noteName) =>
+                    (noteNameCountsForSection[noteName] ?? 0) /
+                    (normalization === "max"
+                      ? Math.max(...Object.values(noteNameCountsForSection))
+                      : normalization === "sum"
+                      ? _.sum(Object.values(noteNameCountsForSection))
+                      : 1)
+                ),
+                fill: true,
+                label: sectionName,
+              })
+            ),
+            labels: CIRCLE_OF_FIFTHS,
+          },
+          options: {
+            scales: {
+              r: {
+                angleLines: { display: true },
+                grid: { display: false, drawTicks: false },
+                startAngle: meanIndexInCircleOfFifths * 360,
+                ticks: { display: false },
+              },
             },
           },
-        },
-        type: "radar",
-      });
+          type: "radar",
+        });
 
-      return () => {
-        radarChart.destroy();
-      };
-    }
-  }, []);
+        return () => {
+          radarChart.destroy();
+        };
+      }
+    },
+    [normalization]
+  );
 
   return (
     <>
@@ -271,7 +290,33 @@ const SongChart: NextPage = () => {
             ))}
           </List>
           <div className="w-1/3">
-            <canvas ref={radarChartRef} />
+            <Stack>
+              <FormControl>
+                <FormLabel id="normalization-radio-buttons-group-label">
+                  Normalization
+                </FormLabel>
+                <RadioGroup
+                  aria-labelledby="normalization-radio-buttons-group-label"
+                  defaultValue={normalization}
+                  name="normalization-radio-buttons-group"
+                  onChange={(_event, newValue) =>
+                    setNormalization(newValue as NormalizationValue)
+                  }
+                  row
+                  value={normalization}
+                >
+                  {NORMALIZATION_VALUES.map((normalizationValue) => (
+                    <FormControlLabel
+                      control={<Radio />}
+                      key={normalizationValue}
+                      label={normalizationValue}
+                      value={normalizationValue}
+                    />
+                  ))}
+                </RadioGroup>
+              </FormControl>
+              <canvas ref={radarChartRef} />
+            </Stack>
           </div>
         </Stack>
       </div>
