@@ -204,7 +204,7 @@ const SongChart: NextPage = () => {
               label: sectionName,
             })
           ),
-          labels: CIRCLE_OF_FIFTHS as unknown as string[],
+          labels: CIRCLE_OF_FIFTHS,
         },
         options: {
           scales: {
