@@ -148,6 +148,28 @@ const sections: Section[] = [
     ],
     name: "Chorus",
   },
+  {
+    chords: [
+      { chord: { name: "A", quality: "minorSeventh" }, durationInBeats: 8 },
+      { chord: { name: "G", quality: "major" }, durationInBeats: 8 },
+      { chord: { name: "G", quality: "major" }, durationInBeats: 4 },
+    ],
+    name: "Bridge",
+  },
+  {
+    chords: [
+      { chord: { name: "E", quality: "minor" }, durationInBeats: 4 },
+      { chord: { name: "B", quality: "minor" }, durationInBeats: 4 },
+      { chord: { name: "C", quality: "major" }, durationInBeats: 4 },
+      { chord: { name: "D", quality: "major" }, durationInBeats: 1.5 },
+      { chord: { name: "G", quality: "major" }, durationInBeats: 2.5 },
+      { chord: { name: "C", quality: "major" }, durationInBeats: 4 },
+      { chord: { name: "B", quality: "minor" }, durationInBeats: 4 },
+      { chord: { name: "A", quality: "minor" }, durationInBeats: 4 },
+      { chord: { name: "B", quality: "major" }, durationInBeats: 4 },
+    ],
+    name: "Chorus",
+  },
 ];
 
 const SongChart: NextPage = () => {
@@ -199,7 +221,7 @@ const SongChart: NextPage = () => {
   );
   const meanIndexInCircleOfFifths = _.mean(
     Object.entries(noteNameCounts).flatMap(([noteName, count]) =>
-      Array(count).fill(CIRCLE_OF_FIFTHS.indexOf(noteName as NoteName))
+      Array(1000 * count).fill(CIRCLE_OF_FIFTHS.indexOf(noteName as NoteName))
     )
   );
 
