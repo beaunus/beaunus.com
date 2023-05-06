@@ -221,7 +221,9 @@ const SongChart: NextPage = () => {
   );
   const meanIndexInCircleOfFifths = _.mean(
     Object.entries(noteNameCounts).flatMap(([noteName, count]) =>
-      Array(1000 * count).fill(CIRCLE_OF_FIFTHS.indexOf(noteName as NoteName))
+      Array(Math.round(count)).fill(
+        CIRCLE_OF_FIFTHS.indexOf(noteName as NoteName)
+      )
     )
   );
 
