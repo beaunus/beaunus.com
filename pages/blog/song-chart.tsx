@@ -30,6 +30,20 @@ const NOTE_NAMES = [
   "B",
 ] as const;
 type NoteName = (typeof NOTE_NAMES)[number];
+const FUNCTION_BY_INTERVAL = [
+  "i",
+  "♭ii",
+  "ii",
+  "♭iii",
+  "iii",
+  "iv",
+  "♭v",
+  "v",
+  "♭vi",
+  "vi",
+  "♭vii",
+  "vii",
+];
 
 const CIRCLE_OF_FIFTHS = NOTE_NAMES.map(
   (_noteName, index) => NOTE_NAMES[(index * 7) % NOTE_NAMES.length]
@@ -238,6 +252,9 @@ const SongChart: NextPage = () => {
       )
     )
   );
+  const tonicIndex = NOTE_NAMES.indexOf(
+    CIRCLE_OF_FIFTHS[(Math.round(meanIndexInCircleOfFifths) + 10) % 12]
+  );
 
   useEffect(
     function createChart() {
@@ -319,22 +336,49 @@ const SongChart: NextPage = () => {
                       marginTop={1}
                       rowGap={1}
                     >
-                      {section.chords.map((chord, chordIndex) => (
-                        <Chip
-                          key={`${section}-${sectionIndex}-${chord}-${chordIndex}`}
-                          label={`${chord.chord.name}${
-                            CHORD_QUALITY[chord.chord.quality].label
-                          }`}
-                          sx={{
-                            backgroundColor: `hsl(${
-                              hueByNoteName[chord.chord.name]
-                            }, 100%, 50%, 0.3)`,
-                            width: `${
-                              100 * (chord.durationInBeats / NUM_BEATS_PER_ROW)
-                            }%`,
-                          }}
-                        />
-                      ))}
+                      {section.chords.map((chord, chordIndex) => {
+                        const chordFunction =
+                          FUNCTION_BY_INTERVAL[
+                            (NOTE_NAMES.indexOf(chord.chord.name) -
+                              tonicIndex +
+                              12) %
+                              12
+                          ];
+                        const isMajor =
+                          CHORD_QUALITY[chord.chord.quality].spelling?.[1] ===
+                          4;
+                        return (
+                          <Chip
+                            key={`${section}-${sectionIndex}-${chord}-${chordIndex}`}
+                            label={
+                              <>
+                                {isMajor
+                                  ? chordFunction.toUpperCase()
+                                  : chordFunction}
+                                <sup>
+                                  {CHORD_QUALITY[
+                                    chord.chord.quality
+                                  ].label.replaceAll(/[a-z]/g, "")}
+                                </sup>
+                                <br />
+                                {chord.chord.name}
+                                {CHORD_QUALITY[chord.chord.quality].label}
+                              </>
+                            }
+                            sx={{
+                              backgroundColor: `hsl(${
+                                hueByNoteName[chord.chord.name]
+                              }, 100%, 50%, 0.3)`,
+                              height: "auto",
+                              textAlign: "center",
+                              width: `${
+                                100 *
+                                (chord.durationInBeats / NUM_BEATS_PER_ROW)
+                              }%`,
+                            }}
+                          />
+                        );
+                      })}
                     </Stack>
                   </Stack>
                 </ListItemButton>
