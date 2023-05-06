@@ -249,12 +249,12 @@ const SongChart: NextPage = () => {
       <Head>
         <title>Song Chart | Beaunus</title>
       </Head>
-      <div className="flex flex-col gap-5 px-14 w-full">
+      <div className="flex flex-col gap-5 w-full">
         <div className="text-2xl font-semibold text-center text-cyan-700">
           Song Chart
         </div>
-        <Stack direction="row">
-          <List className="w-full">
+        <Stack direction={{ xl: "row", md: "column" }}>
+          <List className="w-full max-w-5xl">
             {sections.map((section, sectionIndex) => (
               <ListItem key={`${section.name}-${sectionIndex}`}>
                 <ListItemButton alignItems="flex-start">
@@ -289,35 +289,33 @@ const SongChart: NextPage = () => {
               </ListItem>
             ))}
           </List>
-          <div className="w-1/3">
-            <Stack>
-              <FormControl>
-                <FormLabel id="normalization-radio-buttons-group-label">
-                  Normalization
-                </FormLabel>
-                <RadioGroup
-                  aria-labelledby="normalization-radio-buttons-group-label"
-                  defaultValue={normalization}
-                  name="normalization-radio-buttons-group"
-                  onChange={(_event, newValue) =>
-                    setNormalization(newValue as NormalizationValue)
-                  }
-                  row
-                  value={normalization}
-                >
-                  {NORMALIZATION_VALUES.map((normalizationValue) => (
-                    <FormControlLabel
-                      control={<Radio />}
-                      key={normalizationValue}
-                      label={normalizationValue}
-                      value={normalizationValue}
-                    />
-                  ))}
-                </RadioGroup>
-              </FormControl>
-              <canvas ref={radarChartRef} />
-            </Stack>
-          </div>
+          <Stack className="shrink w-full xl:w-1/2">
+            <FormControl className="px-14">
+              <FormLabel id="normalization-radio-buttons-group-label">
+                Normalization
+              </FormLabel>
+              <RadioGroup
+                aria-labelledby="normalization-radio-buttons-group-label"
+                defaultValue={normalization}
+                name="normalization-radio-buttons-group"
+                onChange={(_event, newValue) =>
+                  setNormalization(newValue as NormalizationValue)
+                }
+                row
+                value={normalization}
+              >
+                {NORMALIZATION_VALUES.map((normalizationValue) => (
+                  <FormControlLabel
+                    control={<Radio />}
+                    key={normalizationValue}
+                    label={normalizationValue}
+                    value={normalizationValue}
+                  />
+                ))}
+              </RadioGroup>
+            </FormControl>
+            <canvas ref={radarChartRef} />
+          </Stack>
         </Stack>
       </div>
     </>

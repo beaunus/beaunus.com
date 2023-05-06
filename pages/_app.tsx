@@ -1,10 +1,10 @@
-import "../styles/globals.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Nunito } from "@next/font/google";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
-import React from "react";
+import "../styles/globals.css";
 
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { Footer } from "../components/Footer";
@@ -36,15 +36,24 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <meta content="width=device-width,initial-scale=1" name="viewport" />
       </Head>
-      <main
-        className={`${nunito.className} flex flex-col justify-between h-screen`}
+      <ThemeProvider
+        theme={createTheme({
+          breakpoints: {
+            // eslint-disable-next-line sort-keys
+            values: { xs: 0, sm: 640, md: 768, lg: 1024, xl: 1280 },
+          },
+        })}
       >
-        <Header />
-        <div className="grow">
-          <Component {...pageProps} />
-        </div>
-        <Footer />
-      </main>
+        <main
+          className={`${nunito.className} flex flex-col justify-between h-screen`}
+        >
+          <Header />
+          <div className="grow">
+            <Component {...pageProps} />
+          </div>
+          <Footer />
+        </main>
+      </ThemeProvider>
     </>
   );
 }
