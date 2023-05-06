@@ -328,7 +328,7 @@ const SongChart: NextPage = () => {
                           sx={{
                             backgroundColor: `hsl(${
                               hueByNoteName[chord.chord.name]
-                            }, 100%, 50%, 0.5)`,
+                            }, 100%, 50%, 0.3)`,
                             width: `${
                               100 * (chord.durationInBeats / NUM_BEATS_PER_ROW)
                             }%`,
