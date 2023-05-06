@@ -28,7 +28,6 @@ export const Header: React.FC = () => (
       priority={true}
       quality={100}
       src={Logos.BeaunusPixels}
-      width={119.25}
     />
   </header>
 );
