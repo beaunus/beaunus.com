@@ -153,11 +153,8 @@ const SongChart: NextPage = () => {
             (noteNameCounts, { chord, durationInBeats }) => {
               const indexOfRoot = NOTE_NAMES.indexOf(chord.name);
               const notesInChord = CHORD_QUALITY[chord.quality].spelling.map(
-                (numHalfSteps) => {
-                  const indexOfNote =
-                    (indexOfRoot + numHalfSteps) % NOTE_NAMES.length;
-                  return NOTE_NAMES[indexOfNote];
-                }
+                (numHalfSteps) =>
+                  NOTE_NAMES[(indexOfRoot + numHalfSteps) % NOTE_NAMES.length]
               );
               return Object.assign(
                 noteNameCounts,
