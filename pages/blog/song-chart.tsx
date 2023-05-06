@@ -245,33 +245,30 @@ const SongChart: NextPage = () => {
                   <ListItemIcon>
                     <ReorderOutlined />
                   </ListItemIcon>
-                  <ListItemText
-                    primary={section.name}
-                    secondary={
-                      <Stack
-                        direction="row"
-                        flexWrap="wrap"
-                        marginTop={1}
-                        rowGap={1}
-                      >
-                        {section.chords.map((chord, chordIndex) => (
-                          <Chip
-                            key={`${section}-${sectionIndex}-${chord}-${chordIndex}`}
-                            label={`${chord.chord.name}${
-                              CHORD_QUALITY[chord.chord.quality].label
-                            }`}
-                            sx={{
-                              backgroundColor: "#fec",
-                              width: `${
-                                100 *
-                                (chord.durationInBeats / NUM_BEATS_PER_ROW)
-                              }%`,
-                            }}
-                          />
-                        ))}
-                      </Stack>
-                    }
-                  />
+                  <Stack marginTop={0.5} width="100%">
+                    <ListItemText primary={section.name} />
+                    <Stack
+                      direction="row"
+                      flexWrap="wrap"
+                      marginTop={1}
+                      rowGap={1}
+                    >
+                      {section.chords.map((chord, chordIndex) => (
+                        <Chip
+                          key={`${section}-${sectionIndex}-${chord}-${chordIndex}`}
+                          label={`${chord.chord.name}${
+                            CHORD_QUALITY[chord.chord.quality].label
+                          }`}
+                          sx={{
+                            backgroundColor: "#fec",
+                            width: `${
+                              100 * (chord.durationInBeats / NUM_BEATS_PER_ROW)
+                            }%`,
+                          }}
+                        />
+                      ))}
+                    </Stack>
+                  </Stack>
                 </ListItemButton>
               </ListItem>
             ))}
