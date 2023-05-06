@@ -207,11 +207,11 @@ const SongChart: NextPage = () => {
   );
 
   const noteNameCounts = Object.values(noteNameCountsBySection).reduce(
-    (acc, cur) =>
+    (acc, noteNameCountsForSection) =>
       Object.assign(
         acc,
         Object.fromEntries(
-          Object.entries(cur).map(([noteName, count]) => [
+          Object.entries(noteNameCountsForSection).map(([noteName, count]) => [
             noteName,
             (acc[noteName as NoteName] ?? 0) + count,
           ])
