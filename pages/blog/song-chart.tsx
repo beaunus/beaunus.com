@@ -35,6 +35,13 @@ const CIRCLE_OF_FIFTHS = NOTE_NAMES.map(
   (_noteName, index) => NOTE_NAMES[(index * 7) % NOTE_NAMES.length]
 );
 
+const hueByNoteName = Object.fromEntries(
+  CIRCLE_OF_FIFTHS.map((noteName, index) => [
+    noteName,
+    (index / CIRCLE_OF_FIFTHS.length) * 360,
+  ])
+);
+
 const CHORD_QUALITY = {
   major: { label: "", spelling: [0, 4, 7] },
   minor: { label: "m", spelling: [0, 3, 7] },
@@ -260,6 +267,11 @@ const SongChart: NextPage = () => {
               r: {
                 angleLines: { display: true },
                 grid: { display: false, drawTicks: false },
+                pointLabels: {
+                  color: ({ label }) =>
+                    `hsl(${hueByNoteName[label]}, 100%, 30%, 1)`,
+                  font: { size: 20 },
+                },
                 startAngle: 180 + (meanIndexInCircleOfFifths / 12) * 360,
                 ticks: { display: false },
               },
@@ -314,7 +326,9 @@ const SongChart: NextPage = () => {
                             CHORD_QUALITY[chord.chord.quality].label
                           }`}
                           sx={{
-                            backgroundColor: "#fec",
+                            backgroundColor: `hsl(${
+                              hueByNoteName[chord.chord.name]
+                            }, 100%, 50%, 0.5)`,
                             width: `${
                               100 * (chord.durationInBeats / NUM_BEATS_PER_ROW)
                             }%`,
