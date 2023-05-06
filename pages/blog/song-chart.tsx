@@ -15,6 +15,8 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
 
+import { stringToHsl } from "../../utils";
+
 const NOTE_NAMES = [
   "C",
   "C♯/D♭",
@@ -208,6 +210,7 @@ const SongChart: NextPage = () => {
           data: {
             datasets: Object.entries(noteNameCountsBySection).map(
               ([sectionName, noteNameCountsForSection]) => ({
+                backgroundColor: stringToHsl(sectionName),
                 data: CIRCLE_OF_FIFTHS.map(
                   (noteName) =>
                     (noteNameCountsForSection[noteName] ?? 0) /
@@ -262,7 +265,10 @@ const SongChart: NextPage = () => {
                     <ReorderOutlined />
                   </ListItemIcon>
                   <Stack marginTop={0.5} width="100%">
-                    <ListItemText primary={section.name} />
+                    <ListItemText
+                      primary={section.name}
+                      style={{ backgroundColor: stringToHsl(section.name) }}
+                    />
                     <Stack
                       direction="row"
                       flexWrap="wrap"
