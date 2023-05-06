@@ -15,8 +15,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
 
-import { stringToHsl } from "../../utils";
-
 const NOTE_NAMES = [
   "C",
   "C♯/D♭",
@@ -172,6 +170,13 @@ const sections: Section[] = [
   },
 ];
 
+const colorBySectionName = Object.fromEntries(
+  _.uniqBy(sections, "name").map(({ name }, index, sectionsNames) => [
+    name,
+    `hsl(${(index / sectionsNames.length) * 360}, 100%, 50%, 0.5)`,
+  ])
+);
+
 const SongChart: NextPage = () => {
   const radarChartRef = useRef<HTMLCanvasElement>(null);
 
@@ -234,7 +239,7 @@ const SongChart: NextPage = () => {
           data: {
             datasets: Object.entries(noteNameCountsBySection).map(
               ([sectionName, noteNameCountsForSection]) => ({
-                backgroundColor: stringToHsl(sectionName),
+                backgroundColor: colorBySectionName[sectionName],
                 data: CIRCLE_OF_FIFTHS.map(
                   (noteName) =>
                     (noteNameCountsForSection[noteName] ?? 0) /
@@ -292,7 +297,9 @@ const SongChart: NextPage = () => {
                     <ListItemText
                       className="px-2"
                       primary={section.name}
-                      style={{ backgroundColor: stringToHsl(section.name) }}
+                      style={{
+                        backgroundColor: colorBySectionName[section.name],
+                      }}
                     />
                     <Stack
                       direction="row"
