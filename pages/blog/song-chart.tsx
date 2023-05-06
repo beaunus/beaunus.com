@@ -266,6 +266,7 @@ const SongChart: NextPage = () => {
                   </ListItemIcon>
                   <Stack marginTop={0.5} width="100%">
                     <ListItemText
+                      className="px-2"
                       primary={section.name}
                       style={{ backgroundColor: stringToHsl(section.name) }}
                     />
