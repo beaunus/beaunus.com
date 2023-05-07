@@ -45,14 +45,14 @@ const FUNCTION_BY_INTERVAL = [
   "vii",
 ];
 
-const CIRCLE_OF_FIFTHS = NOTE_NAMES.map(
+const circleOfFifths = NOTE_NAMES.map(
   (_noteName, index) => NOTE_NAMES[(index * 7) % NOTE_NAMES.length]
 );
 
 const hueByNoteName = Object.fromEntries(
-  CIRCLE_OF_FIFTHS.map((noteName, index) => [
+  circleOfFifths.map((noteName, index) => [
     noteName,
-    (index / CIRCLE_OF_FIFTHS.length) * 360,
+    (index / circleOfFifths.length) * 360,
   ])
 );
 
@@ -264,12 +264,12 @@ const SongChart: NextPage = () => {
   const meanIndexInCircleOfFifths = _.mean(
     Object.entries(noteNameCounts).flatMap(([noteName, count]) =>
       Array(Math.round(count)).fill(
-        CIRCLE_OF_FIFTHS.indexOf(noteName as NoteName)
+        circleOfFifths.indexOf(noteName as NoteName)
       )
     )
   );
   const tonicIndex = NOTE_NAMES.indexOf(
-    CIRCLE_OF_FIFTHS[(Math.round(meanIndexInCircleOfFifths) + 10) % 12]
+    circleOfFifths[(Math.round(meanIndexInCircleOfFifths) + 10) % 12]
   );
 
   useEffect(
@@ -280,7 +280,7 @@ const SongChart: NextPage = () => {
             datasets: Object.entries(noteNameCountsBySection).map(
               ([sectionName, noteNameCountsForSection]) => ({
                 backgroundColor: colorBySectionName[sectionName],
-                data: CIRCLE_OF_FIFTHS.map(
+                data: circleOfFifths.map(
                   (noteName) =>
                     (noteNameCountsForSection[noteName] ?? 0) /
                     (normalization === "max"
@@ -293,7 +293,7 @@ const SongChart: NextPage = () => {
                 label: sectionName,
               })
             ),
-            labels: CIRCLE_OF_FIFTHS,
+            labels: circleOfFifths,
           },
           options: {
             scales: {
