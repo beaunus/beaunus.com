@@ -29,7 +29,6 @@ const NOTE_NAMES = [
   "A♯/B♭",
   "B",
 ] as const;
-type NoteName = (typeof NOTE_NAMES)[number];
 const FUNCTION_BY_INTERVAL = [
   "i",
   "♭ii",
@@ -44,23 +43,6 @@ const FUNCTION_BY_INTERVAL = [
   "♭vii",
   "vii",
 ];
-
-const circleOfFifths = NOTE_NAMES.map(
-  (_noteName, index) => NOTE_NAMES[(index * 7) % NOTE_NAMES.length]
-);
-
-const hueByNoteName = Object.fromEntries(
-  circleOfFifths.map((noteName, index) => [
-    noteName,
-    (index / circleOfFifths.length) * 360,
-  ])
-);
-
-type ChordQuality = {
-  decorate: (label: string) => ReactNode;
-  spelling: number[];
-};
-
 const CHORD_QUALITY_BY_NAME: Record<string, ChordQuality> = {
   major: { decorate: (label) => label.toUpperCase(), spelling: [0, 4, 7] },
   minor: { decorate: (label) => label.toLowerCase(), spelling: [0, 3, 7] },
@@ -74,9 +56,15 @@ const CHORD_QUALITY_BY_NAME: Record<string, ChordQuality> = {
     spelling: [0, 3, 7, 10],
   },
 };
-
+const NORMALIZATION_VALUES = ["none", "sum", "max"] as const;
 const NUM_BEATS_PER_ROW = 16;
 
+type NormalizationValue = (typeof NORMALIZATION_VALUES)[number];
+type NoteName = (typeof NOTE_NAMES)[number];
+type ChordQuality = {
+  decorate: (label: string) => ReactNode;
+  spelling: number[];
+};
 type Section = {
   chords: {
     chord: { qualityName: keyof typeof CHORD_QUALITY_BY_NAME; root: NoteName };
@@ -85,9 +73,15 @@ type Section = {
   name: string;
 };
 
-const NORMALIZATION_VALUES = ["none", "sum", "max"] as const;
-
-type NormalizationValue = (typeof NORMALIZATION_VALUES)[number];
+const circleOfFifths = NOTE_NAMES.map(
+  (_noteName, index) => NOTE_NAMES[(index * 7) % NOTE_NAMES.length]
+);
+const hueByNoteName = Object.fromEntries(
+  circleOfFifths.map((noteName, index) => [
+    noteName,
+    (index / circleOfFifths.length) * 360,
+  ])
+);
 
 const sections: Section[] = [
   {
