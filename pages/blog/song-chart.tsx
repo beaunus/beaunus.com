@@ -13,7 +13,7 @@ import ChartJS from "chart.js/auto";
 import _ from "lodash";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { FC, ReactNode, useEffect, useRef, useState } from "react";
 
 const NOTE_NAMES = [
   "C",
@@ -207,6 +207,29 @@ const colorBySectionName = Object.fromEntries(
   ])
 );
 
+const ChordChip: FC<{
+  chordFunction: string;
+  durationInBeats: number;
+  qualityName: string;
+  root: NoteName;
+}> = ({ chordFunction, durationInBeats, qualityName, root }) => (
+  <Chip
+    label={
+      <>
+        {CHORD_QUALITY_BY_NAME[qualityName].decorate(chordFunction)}
+        <br />
+        {CHORD_QUALITY_BY_NAME[qualityName].decorate(root)}
+      </>
+    }
+    sx={{
+      backgroundColor: `hsl(${hueByNoteName[root]}, 100%, 50%, 0.3)`,
+      height: "auto",
+      textAlign: "center",
+      width: `${100 * (durationInBeats / NUM_BEATS_PER_ROW)}%`,
+    }}
+  />
+);
+
 const SongChart: NextPage = () => {
   const radarChartRef = useRef<HTMLCanvasElement>(null);
 
@@ -347,40 +370,22 @@ const SongChart: NextPage = () => {
                       marginTop={1}
                       rowGap={1}
                     >
-                      {section.chords.map(
-                        (
-                          { durationInBeats, qualityName, root },
-                          chordIndex
-                        ) => (
-                          <Chip
-                            key={`${section}-${sectionIndex}-${root}-${chordIndex}`}
-                            label={
-                              <>
-                                {CHORD_QUALITY_BY_NAME[qualityName].decorate(
-                                  FUNCTION_BY_INTERVAL[
-                                    (NOTE_NAMES.indexOf(root) -
-                                      tonicIndex +
-                                      12) %
-                                      12
-                                  ]
-                                )}
-                                <br />
-                                {CHORD_QUALITY_BY_NAME[qualityName].decorate(
-                                  root
-                                )}
-                              </>
-                            }
-                            sx={{
-                              backgroundColor: `hsl(${hueByNoteName[root]}, 100%, 50%, 0.3)`,
-                              height: "auto",
-                              textAlign: "center",
-                              width: `${
-                                100 * (durationInBeats / NUM_BEATS_PER_ROW)
-                              }%`,
-                            }}
-                          />
-                        )
-                      )}
+                      {section.chords.map((chord, chordIndex) => (
+                        <ChordChip
+                          chordFunction={
+                            FUNCTION_BY_INTERVAL[
+                              (NOTE_NAMES.indexOf(chord.root) -
+                                tonicIndex +
+                                12) %
+                                12
+                            ]
+                          }
+                          durationInBeats={chord.durationInBeats}
+                          key={`${section}-${sectionIndex}-${chord.root}-${chordIndex}`}
+                          qualityName={chord.qualityName}
+                          root={chord.root}
+                        />
+                      ))}
                     </Stack>
                   </Stack>
                 </ListItemButton>
