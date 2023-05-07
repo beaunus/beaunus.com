@@ -266,7 +266,7 @@ const SongChart: NextPage = () => {
     )
   );
 
-  const noteNameCounts = Object.values(noteNameCountsBySection).reduce(
+  const noteNameCountsTotal = Object.values(noteNameCountsBySection).reduce(
     (acc, noteNameCountsForSection) =>
       Object.assign(
         acc,
@@ -280,7 +280,7 @@ const SongChart: NextPage = () => {
     {}
   );
   const meanIndexInCircleOfFifths = _.mean(
-    Object.entries(noteNameCounts).flatMap(([noteName, count]) =>
+    Object.entries(noteNameCountsTotal).flatMap(([noteName, count]) =>
       Array(Math.round(count)).fill(
         circleOfFifths.indexOf(noteName as NoteName)
       )
