@@ -250,13 +250,13 @@ const SongChart: NextPage = () => {
         instances
           .flatMap((instance) => instance.chords)
           .reduce<Partial<Record<NoteName, number>>>(
-            (noteNameCounts, { durationInBeats, qualityName, root }) =>
+            (noteNameCounts, chord) =>
               Object.assign(
                 noteNameCounts,
                 Object.fromEntries(
-                  notesInChord({ qualityName, root }).map((noteName) => [
+                  notesInChord(chord).map((noteName) => [
                     noteName,
-                    (noteNameCounts[noteName] ?? 0) + durationInBeats,
+                    (noteNameCounts[noteName] ?? 0) + chord.durationInBeats,
                   ])
                 )
               ),
