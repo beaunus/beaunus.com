@@ -1,11 +1,8 @@
-import { ReorderOutlined } from "@mui/icons-material";
 import { Chip, FormControlLabel, Stack } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -352,50 +349,43 @@ const SongChart: NextPage = () => {
           <List className="w-full max-w-5xl">
             {sections.map((section, sectionIndex) => (
               <ListItem key={`${section.name}-${sectionIndex}`}>
-                <ListItemButton alignItems="flex-start">
-                  <ListItemIcon>
-                    <ReorderOutlined />
-                  </ListItemIcon>
-                  <Stack marginTop={0.5} width="100%">
-                    <ListItemText
-                      className="px-2"
-                      primary={section.name}
-                      style={{
-                        backgroundColor: colorBySectionName[section.name],
-                      }}
-                    />
-                    <Stack
-                      direction="row"
-                      flexWrap="wrap"
-                      marginTop={1}
-                      rowGap={1}
-                    >
-                      {section.chords.map((chord, chordIndex) => (
-                        <ChordChip
-                          chordFunction={
-                            FUNCTION_BY_INTERVAL[
-                              (NOTE_NAMES.indexOf(chord.root) -
-                                tonicIndex +
-                                12) %
-                                12
-                            ]
-                          }
-                          durationInBeats={chord.durationInBeats}
-                          isOutOfKey={notesInChord(chord).some(
-                            (noteName) =>
-                              Math.abs(
-                                Math.round(meanIndexInCircleOfFifths) -
-                                  ((circleOfFifths.indexOf(noteName) + 12) % 12)
-                              ) > 3
-                          )}
-                          key={`${section}-${sectionIndex}-${chord.root}-${chordIndex}`}
-                          qualityName={chord.qualityName}
-                          root={chord.root}
-                        />
-                      ))}
-                    </Stack>
+                <Stack marginTop={0.5} width="100%">
+                  <ListItemText
+                    className="px-2"
+                    primary={section.name}
+                    style={{
+                      backgroundColor: colorBySectionName[section.name],
+                    }}
+                  />
+                  <Stack
+                    direction="row"
+                    flexWrap="wrap"
+                    marginTop={1}
+                    rowGap={1}
+                  >
+                    {section.chords.map((chord, chordIndex) => (
+                      <ChordChip
+                        chordFunction={
+                          FUNCTION_BY_INTERVAL[
+                            (NOTE_NAMES.indexOf(chord.root) - tonicIndex + 12) %
+                              12
+                          ]
+                        }
+                        durationInBeats={chord.durationInBeats}
+                        isOutOfKey={notesInChord(chord).some(
+                          (noteName) =>
+                            Math.abs(
+                              Math.round(meanIndexInCircleOfFifths) -
+                                ((circleOfFifths.indexOf(noteName) + 12) % 12)
+                            ) > 3
+                        )}
+                        key={`${section}-${sectionIndex}-${chord.root}-${chordIndex}`}
+                        qualityName={chord.qualityName}
+                        root={chord.root}
+                      />
+                    ))}
                   </Stack>
-                </ListItemButton>
+                </Stack>
               </ListItem>
             ))}
           </List>
