@@ -65,12 +65,12 @@ type ChordQuality = {
   decorate: (label: string) => ReactNode;
   spelling: number[];
 };
+type Chord = {
+  qualityName: keyof typeof CHORD_QUALITY_BY_NAME;
+  root: NoteName;
+};
 type Section = {
-  chords: {
-    durationInBeats: number;
-    qualityName: keyof typeof CHORD_QUALITY_BY_NAME;
-    root: NoteName;
-  }[];
+  chords: (Chord & { durationInBeats: number })[];
   name: string;
 };
 
@@ -232,7 +232,7 @@ const ChordChip: FC<{
   />
 );
 
-const notesInChord = (root: NoteName, qualityName: string) => {
+const notesInChord = ({ qualityName, root }: Chord) => {
   const indexOfRoot = NOTE_NAMES.indexOf(root);
   return CHORD_QUALITY_BY_NAME[qualityName].spelling.map(
     (numHalfSteps) =>
@@ -256,7 +256,7 @@ const SongChart: NextPage = () => {
               Object.assign(
                 noteNameCounts,
                 Object.fromEntries(
-                  notesInChord(root, qualityName).map((noteName) => [
+                  notesInChord({ qualityName, root }).map((noteName) => [
                     noteName,
                     (noteNameCounts[noteName] ?? 0) + durationInBeats,
                   ])
@@ -383,10 +383,7 @@ const SongChart: NextPage = () => {
                             ]
                           }
                           durationInBeats={chord.durationInBeats}
-                          isOutOfKey={notesInChord(
-                            chord.root,
-                            chord.qualityName
-                          ).some(
+                          isOutOfKey={notesInChord(chord).some(
                             (noteName) =>
                               Math.abs(
                                 Math.round(meanIndexInCircleOfFifths) -
