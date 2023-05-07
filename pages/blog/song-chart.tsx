@@ -232,13 +232,11 @@ const ChordChip: FC<{
   />
 );
 
-const notesInChord = ({ qualityName, root }: Chord) => {
-  const indexOfRoot = NOTE_NAMES.indexOf(root);
-  return CHORD_QUALITY_BY_NAME[qualityName].spelling.map(
+const notesInChord = ({ qualityName, root }: Chord) =>
+  CHORD_QUALITY_BY_NAME[qualityName].spelling.map(
     (numHalfSteps) =>
-      NOTE_NAMES[(indexOfRoot + numHalfSteps) % NOTE_NAMES.length]
+      NOTE_NAMES[(NOTE_NAMES.indexOf(root) + numHalfSteps) % NOTE_NAMES.length]
   );
-};
 
 const SongChart: NextPage = () => {
   const radarChartRef = useRef<HTMLCanvasElement>(null);
