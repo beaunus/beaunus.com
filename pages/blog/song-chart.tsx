@@ -210,9 +210,10 @@ const colorBySectionName = Object.fromEntries(
 const ChordChip: FC<{
   chordFunction: string;
   durationInBeats: number;
+  isOutOfKey?: boolean;
   qualityName: string;
   root: NoteName;
-}> = ({ chordFunction, durationInBeats, qualityName, root }) => (
+}> = ({ chordFunction, durationInBeats, isOutOfKey, qualityName, root }) => (
   <Chip
     label={
       <>
@@ -226,9 +227,18 @@ const ChordChip: FC<{
       height: "auto",
       textAlign: "center",
       width: `${100 * (durationInBeats / NUM_BEATS_PER_ROW)}%`,
+      ...(isOutOfKey ? { border: "solid red 2px" } : {}),
     }}
   />
 );
+
+const notesInChord = (root: NoteName, qualityName: string) => {
+  const indexOfRoot = NOTE_NAMES.indexOf(root);
+  return CHORD_QUALITY_BY_NAME[qualityName].spelling.map(
+    (numHalfSteps) =>
+      NOTE_NAMES[(indexOfRoot + numHalfSteps) % NOTE_NAMES.length]
+  );
+};
 
 const SongChart: NextPage = () => {
   const radarChartRef = useRef<HTMLCanvasElement>(null);
@@ -242,24 +252,16 @@ const SongChart: NextPage = () => {
         instances
           .flatMap((instance) => instance.chords)
           .reduce<Partial<Record<NoteName, number>>>(
-            (noteNameCounts, { durationInBeats, qualityName, root }) => {
-              const indexOfRoot = NOTE_NAMES.indexOf(root);
-              const notesInChord = CHORD_QUALITY_BY_NAME[
-                qualityName
-              ].spelling.map(
-                (numHalfSteps) =>
-                  NOTE_NAMES[(indexOfRoot + numHalfSteps) % NOTE_NAMES.length]
-              );
-              return Object.assign(
+            (noteNameCounts, { durationInBeats, qualityName, root }) =>
+              Object.assign(
                 noteNameCounts,
                 Object.fromEntries(
-                  notesInChord.map((noteName) => [
+                  notesInChord(root, qualityName).map((noteName) => [
                     noteName,
                     (noteNameCounts[noteName] ?? 0) + durationInBeats,
                   ])
                 )
-              );
-            },
+              ),
             {}
           ),
       ]
@@ -381,6 +383,16 @@ const SongChart: NextPage = () => {
                             ]
                           }
                           durationInBeats={chord.durationInBeats}
+                          isOutOfKey={notesInChord(
+                            chord.root,
+                            chord.qualityName
+                          ).some(
+                            (noteName) =>
+                              Math.abs(
+                                Math.round(meanIndexInCircleOfFifths) -
+                                  ((circleOfFifths.indexOf(noteName) + 12) % 12)
+                              ) > 3
+                          )}
                           key={`${section}-${sectionIndex}-${chord.root}-${chordIndex}`}
                           qualityName={chord.qualityName}
                           root={chord.root}
