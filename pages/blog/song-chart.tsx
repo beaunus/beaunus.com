@@ -348,7 +348,7 @@ const SongChart: NextPage = () => {
         <div className="text-2xl font-semibold text-center text-cyan-700">
           Song Chart
         </div>
-        <Stack direction={{ xl: "row", md: "column" }}>
+        <Stack direction={{ md: "column", xl: "row" }}>
           <List className="w-full max-w-5xl">
             {sections.map((section, sectionIndex) => (
               <ListItem key={`${section.name}-${sectionIndex}`}>
