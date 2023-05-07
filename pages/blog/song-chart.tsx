@@ -13,7 +13,7 @@ import ChartJS from "chart.js/auto";
 import _ from "lodash";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 const NOTE_NAMES = [
   "C",
@@ -56,12 +56,23 @@ const hueByNoteName = Object.fromEntries(
   ])
 );
 
-type ChordQuality = { label: string; spelling: number[] };
+type ChordQuality = {
+  decorate: (label: string) => ReactNode;
+  spelling: number[];
+};
 
 const CHORD_QUALITY_BY_NAME: Record<string, ChordQuality> = {
-  major: { label: "", spelling: [0, 4, 7] },
-  minor: { label: "m", spelling: [0, 3, 7] },
-  minorSeventh: { label: "m7", spelling: [0, 3, 7, 10] },
+  major: { decorate: (label) => label.toUpperCase(), spelling: [0, 4, 7] },
+  minor: { decorate: (label) => label.toLowerCase(), spelling: [0, 3, 7] },
+  minorSeventh: {
+    decorate: (label) => (
+      <>
+        {label.toLowerCase()}
+        <sup>7</sup>
+      </>
+    ),
+    spelling: [0, 3, 7, 10],
+  },
 };
 
 const NUM_BEATS_PER_ROW = 16;
@@ -341,52 +352,39 @@ const SongChart: NextPage = () => {
                       marginTop={1}
                       rowGap={1}
                     >
-                      {section.chords.map((chord, chordIndex) => {
-                        const chordFunction =
-                          FUNCTION_BY_INTERVAL[
-                            (NOTE_NAMES.indexOf(chord.chord.root) -
-                              tonicIndex +
-                              12) %
-                              12
-                          ];
-                        const isMajor =
-                          CHORD_QUALITY_BY_NAME[chord.chord.qualityName]
-                            .spelling?.[1] === 4;
-                        return (
-                          <Chip
-                            key={`${section}-${sectionIndex}-${chord}-${chordIndex}`}
-                            label={
-                              <>
-                                {isMajor
-                                  ? chordFunction.toUpperCase()
-                                  : chordFunction}
-                                <sup>
-                                  {CHORD_QUALITY_BY_NAME[
-                                    chord.chord.qualityName
-                                  ].label.replaceAll(/[a-z]/g, "")}
-                                </sup>
-                                <br />
-                                {chord.chord.root}
-                                {
-                                  CHORD_QUALITY_BY_NAME[chord.chord.qualityName]
-                                    .label
-                                }
-                              </>
-                            }
-                            sx={{
-                              backgroundColor: `hsl(${
-                                hueByNoteName[chord.chord.root]
-                              }, 100%, 50%, 0.3)`,
-                              height: "auto",
-                              textAlign: "center",
-                              width: `${
-                                100 *
-                                (chord.durationInBeats / NUM_BEATS_PER_ROW)
-                              }%`,
-                            }}
-                          />
-                        );
-                      })}
+                      {section.chords.map((chord, chordIndex) => (
+                        <Chip
+                          key={`${section}-${sectionIndex}-${chord}-${chordIndex}`}
+                          label={
+                            <>
+                              {CHORD_QUALITY_BY_NAME[
+                                chord.chord.qualityName
+                              ].decorate(
+                                FUNCTION_BY_INTERVAL[
+                                  (NOTE_NAMES.indexOf(chord.chord.root) -
+                                    tonicIndex +
+                                    12) %
+                                    12
+                                ]
+                              )}
+                              <br />
+                              {CHORD_QUALITY_BY_NAME[
+                                chord.chord.qualityName
+                              ].decorate(chord.chord.root)}
+                            </>
+                          }
+                          sx={{
+                            backgroundColor: `hsl(${
+                              hueByNoteName[chord.chord.root]
+                            }, 100%, 50%, 0.3)`,
+                            height: "auto",
+                            textAlign: "center",
+                            width: `${
+                              100 * (chord.durationInBeats / NUM_BEATS_PER_ROW)
+                            }%`,
+                          }}
+                        />
+                      ))}
                     </Stack>
                   </Stack>
                 </ListItemButton>
