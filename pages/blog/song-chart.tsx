@@ -1,4 +1,6 @@
 import { Chip, FormControlLabel, Stack } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import List from "@mui/material/List";
@@ -10,7 +12,7 @@ import ChartJS from "chart.js/auto";
 import _ from "lodash";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { FC, ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 const NOTE_NAMES = [
   "C",
@@ -81,154 +83,6 @@ const hueByNoteName = Object.fromEntries(
   ])
 );
 
-const sections: Section[] = [
-  {
-    chords: [
-      { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
-      { durationInBeats: 8, qualityName: "major", root: "G" },
-    ],
-    name: "Intro",
-  },
-  {
-    chords: [
-      { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
-      { durationInBeats: 8, qualityName: "major", root: "G" },
-      { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
-      { durationInBeats: 8, qualityName: "major", root: "G" },
-      { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
-      { durationInBeats: 8, qualityName: "major", root: "G" },
-      { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
-      { durationInBeats: 8, qualityName: "major", root: "G" },
-    ],
-    name: "Verse",
-  },
-  {
-    chords: [
-      { durationInBeats: 1.5, qualityName: "major", root: "C" },
-      { durationInBeats: 1.5, qualityName: "minor", root: "B" },
-      { durationInBeats: 5, qualityName: "minor", root: "A" },
-      { durationInBeats: 1.5, qualityName: "major", root: "C" },
-      { durationInBeats: 1.5, qualityName: "minor", root: "B" },
-      { durationInBeats: 5, qualityName: "minor", root: "A" },
-      { durationInBeats: 1.5, qualityName: "major", root: "C" },
-      { durationInBeats: 1.5, qualityName: "minor", root: "B" },
-      { durationInBeats: 5, qualityName: "minor", root: "A" },
-      { durationInBeats: 8, qualityName: "major", root: "B" },
-    ],
-    name: "PreChorus",
-  },
-  {
-    chords: [
-      { durationInBeats: 4, qualityName: "minor", root: "E" },
-      { durationInBeats: 4, qualityName: "minor", root: "B" },
-      { durationInBeats: 4, qualityName: "major", root: "C" },
-      { durationInBeats: 1.5, qualityName: "major", root: "D" },
-      { durationInBeats: 2.5, qualityName: "major", root: "G" },
-      { durationInBeats: 4, qualityName: "major", root: "C" },
-      { durationInBeats: 4, qualityName: "minor", root: "B" },
-      { durationInBeats: 4, qualityName: "minor", root: "A" },
-      { durationInBeats: 4, qualityName: "major", root: "B" },
-    ],
-    name: "Chorus",
-  },
-  {
-    chords: [
-      { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
-      { durationInBeats: 8, qualityName: "major", root: "G" },
-      { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
-      { durationInBeats: 8, qualityName: "major", root: "G" },
-      { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
-      { durationInBeats: 8, qualityName: "major", root: "G" },
-      { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
-      { durationInBeats: 8, qualityName: "major", root: "G" },
-    ],
-    name: "Verse",
-  },
-  {
-    chords: [
-      { durationInBeats: 1.5, qualityName: "major", root: "C" },
-      { durationInBeats: 1.5, qualityName: "minor", root: "B" },
-      { durationInBeats: 5, qualityName: "minor", root: "A" },
-      { durationInBeats: 1.5, qualityName: "major", root: "C" },
-      { durationInBeats: 1.5, qualityName: "minor", root: "B" },
-      { durationInBeats: 5, qualityName: "minor", root: "A" },
-      { durationInBeats: 1.5, qualityName: "major", root: "C" },
-      { durationInBeats: 1.5, qualityName: "minor", root: "B" },
-      { durationInBeats: 5, qualityName: "minor", root: "A" },
-      { durationInBeats: 8, qualityName: "major", root: "B" },
-    ],
-    name: "PreChorus",
-  },
-  {
-    chords: [
-      { durationInBeats: 4, qualityName: "minor", root: "E" },
-      { durationInBeats: 4, qualityName: "minor", root: "B" },
-      { durationInBeats: 4, qualityName: "major", root: "C" },
-      { durationInBeats: 1.5, qualityName: "major", root: "D" },
-      { durationInBeats: 2.5, qualityName: "major", root: "G" },
-      { durationInBeats: 4, qualityName: "major", root: "C" },
-      { durationInBeats: 4, qualityName: "minor", root: "B" },
-      { durationInBeats: 4, qualityName: "minor", root: "A" },
-      { durationInBeats: 4, qualityName: "major", root: "B" },
-    ],
-    name: "Chorus",
-  },
-  {
-    chords: [
-      { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
-      { durationInBeats: 8, qualityName: "major", root: "G" },
-      { durationInBeats: 4, qualityName: "major", root: "G" },
-    ],
-    name: "Bridge",
-  },
-  {
-    chords: [
-      { durationInBeats: 4, qualityName: "minor", root: "E" },
-      { durationInBeats: 4, qualityName: "minor", root: "B" },
-      { durationInBeats: 4, qualityName: "major", root: "C" },
-      { durationInBeats: 1.5, qualityName: "major", root: "D" },
-      { durationInBeats: 2.5, qualityName: "major", root: "G" },
-      { durationInBeats: 4, qualityName: "major", root: "C" },
-      { durationInBeats: 4, qualityName: "minor", root: "B" },
-      { durationInBeats: 4, qualityName: "minor", root: "A" },
-      { durationInBeats: 4, qualityName: "major", root: "B" },
-    ],
-    name: "Chorus",
-  },
-];
-
-const colorBySectionName = Object.fromEntries(
-  _.uniqBy(sections, "name").map(({ name }, index, sectionsNames) => [
-    name,
-    `hsl(${(index / sectionsNames.length) * 360}, 100%, 50%, 0.5)`,
-  ])
-);
-
-const ChordChip: FC<{
-  chordFunction: string;
-  durationInBeats: number;
-  isOutOfKey?: boolean;
-  qualityName: string;
-  root: NoteName;
-}> = ({ chordFunction, durationInBeats, isOutOfKey, qualityName, root }) => (
-  <Chip
-    label={
-      <>
-        {CHORD_QUALITY_BY_NAME[qualityName].decorate(chordFunction)}
-        <br />
-        {CHORD_QUALITY_BY_NAME[qualityName].decorate(root)}
-      </>
-    }
-    sx={{
-      backgroundColor: `hsl(${hueByNoteName[root]}, 100%, 50%, 0.3)`,
-      height: "auto",
-      textAlign: "center",
-      width: `${100 * (durationInBeats / NUM_BEATS_PER_ROW)}%`,
-      ...(isOutOfKey ? { border: "solid red 2px" } : {}),
-    }}
-  />
-);
-
 const notesInChord = ({ qualityName, root }: Chord) =>
   CHORD_QUALITY_BY_NAME[qualityName].spelling.map(
     (numHalfSteps) =>
@@ -239,6 +93,128 @@ const SongChart: NextPage = () => {
   const radarChartRef = useRef<HTMLCanvasElement>(null);
 
   const [normalization, setNormalization] = useState<NormalizationValue>("max");
+  const [sections, setSections] = useState<Section[]>([
+    {
+      chords: [
+        { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
+        { durationInBeats: 8, qualityName: "major", root: "G" },
+      ],
+      name: "Intro",
+    },
+    {
+      chords: [
+        { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
+        { durationInBeats: 8, qualityName: "major", root: "G" },
+        { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
+        { durationInBeats: 8, qualityName: "major", root: "G" },
+        { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
+        { durationInBeats: 8, qualityName: "major", root: "G" },
+        { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
+        { durationInBeats: 8, qualityName: "major", root: "G" },
+      ],
+      name: "Verse",
+    },
+    {
+      chords: [
+        { durationInBeats: 1.5, qualityName: "major", root: "C" },
+        { durationInBeats: 1.5, qualityName: "minor", root: "B" },
+        { durationInBeats: 5, qualityName: "minor", root: "A" },
+        { durationInBeats: 1.5, qualityName: "major", root: "C" },
+        { durationInBeats: 1.5, qualityName: "minor", root: "B" },
+        { durationInBeats: 5, qualityName: "minor", root: "A" },
+        { durationInBeats: 1.5, qualityName: "major", root: "C" },
+        { durationInBeats: 1.5, qualityName: "minor", root: "B" },
+        { durationInBeats: 5, qualityName: "minor", root: "A" },
+        { durationInBeats: 8, qualityName: "major", root: "B" },
+      ],
+      name: "PreChorus",
+    },
+    {
+      chords: [
+        { durationInBeats: 4, qualityName: "minor", root: "E" },
+        { durationInBeats: 4, qualityName: "minor", root: "B" },
+        { durationInBeats: 4, qualityName: "major", root: "C" },
+        { durationInBeats: 1.5, qualityName: "major", root: "D" },
+        { durationInBeats: 2.5, qualityName: "major", root: "G" },
+        { durationInBeats: 4, qualityName: "major", root: "C" },
+        { durationInBeats: 4, qualityName: "minor", root: "B" },
+        { durationInBeats: 4, qualityName: "minor", root: "A" },
+        { durationInBeats: 4, qualityName: "major", root: "B" },
+      ],
+      name: "Chorus",
+    },
+    {
+      chords: [
+        { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
+        { durationInBeats: 8, qualityName: "major", root: "G" },
+        { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
+        { durationInBeats: 8, qualityName: "major", root: "G" },
+        { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
+        { durationInBeats: 8, qualityName: "major", root: "G" },
+        { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
+        { durationInBeats: 8, qualityName: "major", root: "G" },
+      ],
+      name: "Verse",
+    },
+    {
+      chords: [
+        { durationInBeats: 1.5, qualityName: "major", root: "C" },
+        { durationInBeats: 1.5, qualityName: "minor", root: "B" },
+        { durationInBeats: 5, qualityName: "minor", root: "A" },
+        { durationInBeats: 1.5, qualityName: "major", root: "C" },
+        { durationInBeats: 1.5, qualityName: "minor", root: "B" },
+        { durationInBeats: 5, qualityName: "minor", root: "A" },
+        { durationInBeats: 1.5, qualityName: "major", root: "C" },
+        { durationInBeats: 1.5, qualityName: "minor", root: "B" },
+        { durationInBeats: 5, qualityName: "minor", root: "A" },
+        { durationInBeats: 8, qualityName: "major", root: "B" },
+      ],
+      name: "PreChorus",
+    },
+    {
+      chords: [
+        { durationInBeats: 4, qualityName: "minor", root: "E" },
+        { durationInBeats: 4, qualityName: "minor", root: "B" },
+        { durationInBeats: 4, qualityName: "major", root: "C" },
+        { durationInBeats: 1.5, qualityName: "major", root: "D" },
+        { durationInBeats: 2.5, qualityName: "major", root: "G" },
+        { durationInBeats: 4, qualityName: "major", root: "C" },
+        { durationInBeats: 4, qualityName: "minor", root: "B" },
+        { durationInBeats: 4, qualityName: "minor", root: "A" },
+        { durationInBeats: 4, qualityName: "major", root: "B" },
+      ],
+      name: "Chorus",
+    },
+    {
+      chords: [
+        { durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
+        { durationInBeats: 8, qualityName: "major", root: "G" },
+        { durationInBeats: 4, qualityName: "major", root: "G" },
+      ],
+      name: "Bridge",
+    },
+    {
+      chords: [
+        { durationInBeats: 4, qualityName: "minor", root: "E" },
+        { durationInBeats: 4, qualityName: "minor", root: "B" },
+        { durationInBeats: 4, qualityName: "major", root: "C" },
+        { durationInBeats: 1.5, qualityName: "major", root: "D" },
+        { durationInBeats: 2.5, qualityName: "major", root: "G" },
+        { durationInBeats: 4, qualityName: "major", root: "C" },
+        { durationInBeats: 4, qualityName: "minor", root: "B" },
+        { durationInBeats: 4, qualityName: "minor", root: "A" },
+        { durationInBeats: 4, qualityName: "major", root: "B" },
+      ],
+      name: "Chorus",
+    },
+  ]);
+
+  const colorBySectionName = Object.fromEntries(
+    _.uniqBy(sections, "name").map(({ name }, index, sectionsNames) => [
+      name,
+      `hsl(${(index / sectionsNames.length) * 360}, 100%, 50%, 0.5)`,
+    ])
+  );
 
   const noteNameCountsBySection = Object.fromEntries(
     Object.entries(_.groupBy(sections, "name")).map(
@@ -364,24 +340,66 @@ const SongChart: NextPage = () => {
                     rowGap={1}
                   >
                     {section.chords.map((chord, chordIndex) => (
-                      <ChordChip
-                        chordFunction={
-                          FUNCTION_BY_INTERVAL[
-                            (NOTE_NAMES.indexOf(chord.root) - tonicIndex + 12) %
-                              12
-                          ]
-                        }
-                        durationInBeats={chord.durationInBeats}
-                        isOutOfKey={notesInChord(chord).some(
-                          (noteName) =>
-                            Math.abs(
-                              Math.round(meanIndexInCircleOfFifths) -
-                                ((circleOfFifths.indexOf(noteName) + 12) % 12)
-                            ) > 3
-                        )}
+                      <Chip
                         key={`${section}-${sectionIndex}-${chord.root}-${chordIndex}`}
-                        qualityName={chord.qualityName}
-                        root={chord.root}
+                        label={
+                          <>
+                            {CHORD_QUALITY_BY_NAME[chord.qualityName].decorate(
+                              FUNCTION_BY_INTERVAL[
+                                (NOTE_NAMES.indexOf(chord.root) -
+                                  tonicIndex +
+                                  12) %
+                                  12
+                              ]
+                            )}
+                            <br />
+                            {CHORD_QUALITY_BY_NAME[chord.qualityName].decorate(
+                              chord.root
+                            )}
+                          </>
+                        }
+                        onClick={() => {
+                          console.log({ chordIndex, sectionIndex });
+                          setSections((old) =>
+                            old
+                              .slice(0, sectionIndex)
+                              .concat([
+                                {
+                                  ...old[sectionIndex],
+                                  chords: old[sectionIndex].chords
+                                    .slice(0, chordIndex)
+                                    .concat([
+                                      old[sectionIndex].chords[chordIndex],
+                                    ])
+                                    .concat(
+                                      old[sectionIndex].chords.slice(
+                                        chordIndex + 1
+                                      )
+                                    ),
+                                },
+                              ])
+                              .concat(old.slice(sectionIndex + 1))
+                          );
+                        }}
+                        sx={{
+                          backgroundColor: `hsl(${
+                            hueByNoteName[chord.root]
+                          }, 100%, 50%, 0.3)`,
+                          height: "auto",
+                          textAlign: "center",
+                          width: `${
+                            100 * (chord.durationInBeats / NUM_BEATS_PER_ROW)
+                          }%`,
+                          ...(notesInChord(chord).some(
+                            (noteName) =>
+                              Math.abs(
+                                Math.round(meanIndexInCircleOfFifths) -
+                                  ((circleOfFifths.indexOf(noteName) + 12) % 12)
+                              ) > 3
+                          )
+                            ? { border: "solid red 2px" }
+                            : {}),
+                        }}
                       />
                     ))}
                   </Stack>
@@ -418,6 +436,10 @@ const SongChart: NextPage = () => {
           </Stack>
         </Stack>
       </div>
+      <Dialog onClose={console.log} open={true}>
+        <DialogTitle>Set backup account</DialogTitle>
+        Hello
+      </Dialog>
     </>
   );
 };
