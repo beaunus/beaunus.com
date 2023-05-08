@@ -1,4 +1,5 @@
-import { Chip, FormControlLabel, Stack } from "@mui/material";
+import { MoreVert } from "@mui/icons-material";
+import { FormControlLabel, Stack } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import List from "@mui/material/List";
@@ -211,22 +212,29 @@ const ChordChip: FC<{
   qualityName: string;
   root: NoteName;
 }> = ({ chordFunction, durationInBeats, isOutOfKey, qualityName, root }) => (
-  <Chip
-    label={
-      <>
-        {CHORD_QUALITY_BY_NAME[qualityName].decorate(chordFunction)}
-        <br />
-        {CHORD_QUALITY_BY_NAME[qualityName].decorate(root)}
-      </>
-    }
-    sx={{
+  <div
+    style={{
       backgroundColor: `hsl(${hueByNoteName[root]}, 100%, 50%, 0.3)`,
       height: "auto",
       textAlign: "center",
       width: `${100 * (durationInBeats / NUM_BEATS_PER_ROW)}%`,
       ...(isOutOfKey ? { border: "solid red 2px" } : {}),
     }}
-  />
+  >
+    <Stack
+      alignItems="center"
+      className="px-1"
+      direction="row"
+      justifyContent="space-between"
+    >
+      <MoreVert htmlColor="#ccc" />
+      <Stack direction="column">
+        <div>{CHORD_QUALITY_BY_NAME[qualityName].decorate(chordFunction)}</div>
+        <div>{CHORD_QUALITY_BY_NAME[qualityName].decorate(root)}</div>
+      </Stack>
+      <MoreVert htmlColor="#ccc" />
+    </Stack>
+  </div>
 );
 
 const notesInChord = ({ qualityName, root }: Chord) =>
