@@ -38,7 +38,6 @@
     "@babel/core": "^7.21.0",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-typescript": "^7.21.0",
-    "@beaunus123/style-config": "^1.1.7",
     "@faker-js/faker": "^7.6.0",
     "@next/eslint-plugin-next": "^13.1.1",
     "@types/crypto-js": "^4.1.1",

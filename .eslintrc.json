@@ -1,0 +1,107 @@
+{
+  "env": { "es6": true, "jest": true, "node": true },
+  "extends": [
+    "plugin:tailwindcss/recommended",
+    "plugin:@next/next/recommended",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript",
+    "plugin:jest/all",
+    "plugin:prettier/recommended",
+    "plugin:react/recommended",
+    "plugin:typescript-sort-keys/recommended"
+  ],
+  "ignorePatterns": ["**/dist/*"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": { "jsx": true },
+    "ecmaVersion": 2020,
+    "project": "./tsconfig.json"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "import",
+    "jest",
+    "react",
+    "sort-exports",
+    "typescript-sort-keys"
+  ],
+  "root": true,
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      { "format": ["camelCase"], "selector": "default" },
+      { "format": ["camelCase", "PascalCase"], "selector": "function" },
+      {
+        "format": ["camelCase", "PascalCase", "UPPER_CASE"],
+        "selector": "variable"
+      },
+      {
+        "format": ["camelCase"],
+        "leadingUnderscore": "allow",
+        "selector": "parameter"
+      },
+      {
+        "format": ["camelCase"],
+        "leadingUnderscore": "require",
+        "modifiers": ["private"],
+        "selector": "memberLike"
+      },
+      { "format": ["PascalCase"], "selector": "typeLike" },
+      {
+        "format": ["PascalCase"],
+        "prefix": ["is", "should", "has", "can", "did", "will"],
+        "selector": "variable",
+        "types": ["boolean"]
+      }
+    ],
+    "@typescript-eslint/no-shadow": "warn",
+    "@typescript-eslint/no-use-before-define": "off",
+    "camelcase": "off",
+    "import/order": [
+      "error",
+      {
+        "alphabetize": { "caseInsensitive": true, "order": "asc" },
+        "groups": ["builtin", "external", "parent", "sibling", "index"],
+        "newlines-between": "always"
+      }
+    ],
+    "jest/lowercase-name": "off",
+    "jest/prefer-expect-assertions": "off",
+    "no-else-return": "error",
+    "no-lonely-if": "error",
+    "no-negated-condition": "error",
+    "no-param-reassign": ["error", { "props": true }],
+    "no-return-await": "error",
+    "no-shadow": "off",
+    "no-throw-literal": "error",
+    "no-unneeded-ternary": "error",
+    "object-shorthand": "error",
+    "prefer-const": "error",
+    "prefer-template": "error",
+    "react/jsx-sort-props": "error",
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+    "require-atomic-updates": "error",
+    "require-await": "error",
+    "sort-exports/sort-exports": ["error", { "sortDir": "asc" }],
+    "sort-keys": "warn",
+    "yoda": "error"
+  },
+  "settings": {
+    "import/parsers": { "@typescript-eslint/parser": [".ts", ".tsx"] },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"],
+        "moduleDirectory": ["node_modules", "src/"]
+      },
+      "typescript": { "alwaysTryTypes": true, "project": "**/tsconfig.json" }
+    },
+    "jsdoc": { "mode": "typescript" },
+    "react": { "version": "detect" },
+    "tailwindcss": { "cssFiles": ["styles/**/*.css"] }
+  }
+}
