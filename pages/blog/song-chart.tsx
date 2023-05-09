@@ -205,32 +205,6 @@ const colorBySectionName = Object.fromEntries(
 	])
 );
 
-const ChordChip: FC<{
-	chordFunction: string;
-	durationInBeats: number;
-	isOutOfKey?: boolean;
-	qualityName: string;
-	root: NoteName;
-}> = ({ chordFunction, durationInBeats, isOutOfKey, qualityName, root }) => (
-	<div style={{ width: `${100 * (durationInBeats / NUM_BEATS_PER_ROW)}%` }}>
-		<Stack
-			alignItems="center"
-			className="px-1 mx-1"
-			direction="row"
-			justifyContent="center"
-			style={{
-				backgroundColor: `hsl(${hueByNoteName[root]}, 100%, 50%, 0.3)`,
-				...(isOutOfKey ? { border: "solid red 2px" } : {}),
-			}}
-		>
-			<Stack alignItems="center" direction="column">
-				<div>{CHORD_QUALITY_BY_NAME[qualityName].decorate(chordFunction)}</div>
-				<div>{CHORD_QUALITY_BY_NAME[qualityName].decorate(root)}</div>
-			</Stack>
-		</Stack>
-	</div>
-);
-
 const notesInChord = ({ qualityName, root }: Chord) =>
 	CHORD_QUALITY_BY_NAME[qualityName].spelling.map(
 		(numHalfSteps) =>
@@ -366,25 +340,56 @@ const SongChart: NextPage = () => {
 										rowGap={1}
 									>
 										{section.chords.map((chord, chordIndex) => (
-											<ChordChip
-												chordFunction={
-													FUNCTION_BY_INTERVAL[
-														(NOTE_NAMES.indexOf(chord.root) - tonicIndex + 12) %
-															12
-													]
-												}
-												durationInBeats={chord.durationInBeats}
-												isOutOfKey={notesInChord(chord).some(
-													(noteName) =>
-														Math.abs(
-															Math.round(meanIndexInCircleOfFifths) -
-																((circleOfFifths.indexOf(noteName) + 12) % 12)
-														) > 3
-												)}
+											<div
 												key={`${section}-${sectionIndex}-${chord.root}-${chordIndex}`}
-												qualityName={chord.qualityName}
-												root={chord.root}
-											/>
+												style={{
+													width: `${
+														100 * (chord.durationInBeats / NUM_BEATS_PER_ROW)
+													}%`,
+												}}
+											>
+												<Stack
+													alignItems="center"
+													className="px-1 mx-1"
+													direction="row"
+													justifyContent="center"
+													style={{
+														backgroundColor: `hsl(${
+															hueByNoteName[chord.root]
+														}, 100%, 50%, 0.3)`,
+														...(notesInChord(chord).some(
+															(noteName) =>
+																Math.abs(
+																	Math.round(meanIndexInCircleOfFifths) -
+																		((circleOfFifths.indexOf(noteName) + 12) %
+																			12)
+																) > 3
+														)
+															? { border: "solid red 2px" }
+															: {}),
+													}}
+												>
+													<Stack alignItems="center" direction="column">
+														<div>
+															{CHORD_QUALITY_BY_NAME[
+																chord.qualityName
+															].decorate(
+																FUNCTION_BY_INTERVAL[
+																	(NOTE_NAMES.indexOf(chord.root) -
+																		tonicIndex +
+																		12) %
+																		12
+																]
+															)}
+														</div>
+														<div>
+															{CHORD_QUALITY_BY_NAME[
+																chord.qualityName
+															].decorate(chord.root)}
+														</div>
+													</Stack>
+												</Stack>
+											</div>
 										))}
 									</Stack>
 								</Stack>
