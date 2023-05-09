@@ -17,29 +17,27 @@ import { Segment } from "../../components/Segment";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
 import { geometricMean } from "../../utils/mean";
 
-type Dimensions = Record<string, { value: number; weight: number }>;
-const DEFAULT_DIMENSIONS: Dimensions = Object.fromEntries(
-  [
-    "Code Review",
-    "Facilitation",
-    "Feedback",
-    "Knowledge Sharing",
-    "Relationship Building",
-    "Teamwork",
-    "Reliability / Prioritization",
-    "Scope of Impact",
-    "Work breakdown",
-    "Mentoring",
-    "Process thinking",
-    "Code Conventions",
-    "Code Quality",
-    "Debugging",
-    "Incident Response",
-    "Monitoring",
-    "Pull Request Quality",
-    "Testing",
-  ].map((name) => [name, { value: 4, weight: 1 }])
-);
+type Dimension = [string, { value: number; weight: number }];
+const DEFAULT_DIMENSIONS: Dimension[] = [
+  "Code Review",
+  "Facilitation",
+  "Feedback",
+  "Knowledge Sharing",
+  "Relationship Building",
+  "Teamwork",
+  "Reliability / Prioritization",
+  "Scope of Impact",
+  "Work breakdown",
+  "Mentoring",
+  "Process thinking",
+  "Code Conventions",
+  "Code Quality",
+  "Debugging",
+  "Incident Response",
+  "Monitoring",
+  "Pull Request Quality",
+  "Testing",
+].map((name) => [name, { value: 4, weight: 1 }]);
 
 const STANDARD_LEVELS: Record<string, { color: Color; value: number }> = {
   junior: { color: "hsl(86, 60%, 80%)", value: 2 },
@@ -74,7 +72,7 @@ const StandardLevelSlider: React.FC = () => (
 export const isBrowser = (): boolean => typeof window !== "undefined";
 
 const Radar: NextPage = () => {
-  const [dimensions, setDimensions] = useState<Dimensions>({});
+  const [dimensions, setDimensions] = useState<Dimension[]>([]);
   const [pendingDimensionName, setPendingDimensionName] = useState<string>("");
 
   const barChartRef = React.useRef<HTMLCanvasElement>(null);
@@ -86,7 +84,7 @@ const Radar: NextPage = () => {
     router.push(
       {
         query: Object.fromEntries(
-          Object.entries(dimensions).map(([name, { value, weight }]) => [
+          dimensions.map(([name, { value, weight }]) => [
             name,
             `${weight},${value}`,
           ])
@@ -98,16 +96,14 @@ const Radar: NextPage = () => {
   }, [dimensions, router.isReady]);
 
   useEffect(() => {
-    const dimensionsFromUrl = Object.fromEntries(
-      Array.from(new URLSearchParams(window.location.search).entries()).map(
-        ([name, weightAndValueString]) => {
-          const [weight, value] = (weightAndValueString as string)
-            .split(",")
-            .map(Number);
-          return [name, { value, weight }];
-        }
-      )
-    );
+    const dimensionsFromUrl = Array.from(
+      new URLSearchParams(window.location.search).entries()
+    ).map(([name, weightAndValueString]) => {
+      const [weight, value] = (weightAndValueString as string)
+        .split(",")
+        .map(Number);
+      return [name, { value, weight }] as Dimension;
+    });
     setDimensions(
       Object.keys(dimensionsFromUrl).length
         ? dimensionsFromUrl
@@ -117,8 +113,8 @@ const Radar: NextPage = () => {
 
   useEffect(
     function createChart() {
-      const valuesAccordingToWeights = Object.values(dimensions).flatMap(
-        ({ value, weight }) => Array.from({ length: weight }, () => value)
+      const valuesAccordingToWeights = dimensions.flatMap(
+        ([, { value, weight }]) => Array.from({ length: weight }, () => value)
       );
 
       const mean = geometricMean(valuesAccordingToWeights) ?? 0;
@@ -140,10 +136,10 @@ const Radar: NextPage = () => {
               {
                 backgroundColor: dimensionColor,
                 borderColor: dimensionColor,
-                data: Object.values(dimensions).map(({ value }) => value),
+                data: dimensions.map(([, { value }]) => value),
                 fill: false,
                 pointBorderWidth: ({ dataIndex }) =>
-                  2 * Object.values(dimensions)[dataIndex].weight,
+                  2 * dimensions[dataIndex][1].weight,
                 tension,
               },
               {
@@ -193,7 +189,7 @@ const Radar: NextPage = () => {
                 tension,
               },
             ],
-            labels: Object.keys(dimensions),
+            labels: dimensions.map(([name]) => name),
           },
           options: {
             animation: false,
@@ -217,7 +213,7 @@ const Radar: NextPage = () => {
               {
                 backgroundColor: dimensionColor,
                 borderColor: dimensionColor,
-                data: Object.values(dimensions).map(({ value }) => value),
+                data: dimensions.map(([, { value }]) => value),
                 type: "line",
               },
               {
@@ -267,7 +263,7 @@ const Radar: NextPage = () => {
                 type: "line",
               },
             ],
-            labels: Object.keys(dimensions),
+            labels: dimensions.map(([name]) => name),
           },
 
           options: {
@@ -326,71 +322,83 @@ const Radar: NextPage = () => {
               </Button>
             </div>
             <StandardLevelSlider />
-            {Object.entries(dimensions).map(([dimensionName, { value }]) => (
-              <Grid
-                alignItems="center"
-                container
-                key={`${dimensionName}-slider`}
-                spacing={1}
-              >
-                <Grid item xs={1}>
-                  <IconButton
-                    aria-label="delete-dimension"
-                    color="primary"
-                    component="label"
-                    onClick={() =>
-                      setDimensions((old) =>
-                        Object.fromEntries(
-                          Object.entries(old).filter(
-                            ([name]) => name !== dimensionName
-                          )
+            {dimensions.map(
+              ([dimensionName, { value, weight }], dimensionIndex) => (
+                <Grid
+                  alignItems="center"
+                  container
+                  key={`${dimensionName}-slider`}
+                  spacing={1}
+                >
+                  <Grid item xs={1}>
+                    <IconButton
+                      aria-label="delete-dimension"
+                      color="primary"
+                      component="label"
+                      onClick={() =>
+                        setDimensions((old) =>
+                          old.filter(([name]) => name !== dimensionName)
                         )
-                      )
-                    }
-                    size="small"
-                  >
-                    <Clear />
-                  </IconButton>
+                      }
+                      size="small"
+                    >
+                      <Clear />
+                    </IconButton>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextField
+                      id="outlined-number"
+                      label="weight"
+                      onChange={({ target }) => {
+                        setDimensions((old) =>
+                          old
+                            .slice(0, dimensionIndex)
+                            .concat([
+                              [
+                                dimensionName,
+                                {
+                                  ...old[dimensionIndex][1],
+                                  weight: Math.max(Number(target.value), 0),
+                                },
+                              ],
+                            ])
+                            .concat(old.slice(dimensionIndex + 1))
+                        );
+                      }}
+                      size="small"
+                      type="number"
+                      value={weight}
+                    />
+                  </Grid>
+                  <Grid item xs={9}>
+                    <SliderWithLabels
+                      label={dimensionName}
+                      max={7}
+                      min={1}
+                      onChange={(_event, newValue) =>
+                        setDimensions((old) =>
+                          old
+                            .slice(0, dimensionIndex)
+                            .concat([
+                              [
+                                dimensionName,
+                                {
+                                  ...old[dimensionIndex][1],
+                                  value: newValue as number,
+                                },
+                              ],
+                            ])
+                            .concat(old.slice(dimensionIndex + 1))
+                        )
+                      }
+                      size="small"
+                      step={1}
+                      value={value}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={2}>
-                  <TextField
-                    id="outlined-number"
-                    label="weight"
-                    onChange={({ target }) => {
-                      setDimensions((old) => ({
-                        ...old,
-                        [dimensionName]: {
-                          ...old[dimensionName],
-                          weight: Math.max(Number(target.value), 0),
-                        },
-                      }));
-                    }}
-                    size="small"
-                    type="number"
-                    value={dimensions[dimensionName].weight}
-                  />
-                </Grid>
-                <Grid item xs={9}>
-                  <SliderWithLabels
-                    label={dimensionName}
-                    max={7}
-                    min={1}
-                    onChange={(_event, newValue) =>
-                      setDimensions((old) => ({
-                        ...old,
-                        [dimensionName]: {
-                          ...old[dimensionName],
-                          value: newValue as number,
-                        },
-                      }))
-                    }
-                    size="small"
-                    step={1}
-                    value={value}
-                  />
-                </Grid>
-              </Grid>
-            ))}
+              )
+            )}
             <Typography>
               The shaded area shows{" "}
               <code>
