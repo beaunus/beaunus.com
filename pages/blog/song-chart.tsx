@@ -458,67 +458,69 @@ const SongChart: NextPage = () => {
 										marginTop={1}
 										rowGap={1}
 									>
-										{section.chords.map((chord, chordIndex) => (
-											<div
-												key={`${section}-${sectionIndex}-${chord.root}-${chordIndex}`}
-												style={{
-													width: `${
-														100 * (chord.durationInBeats / NUM_BEATS_PER_ROW)
-													}%`,
-												}}
-											>
-												<Stack
-													alignItems="center"
-													className="px-1 mx-1"
-													direction="row"
-													justifyContent="center"
-													onClick={(event) => {
-														if (event.detail === 2) {
-															setTargetChordIndexes({
-																chordIndex,
-																sectionIndex,
-															});
-															setIsChordDialogOpen(true);
-														}
-													}}
+										{section.chords.map((chord, chordIndex) => {
+											const isOutOfKey = notesInChord(chord).some(
+												(noteName) =>
+													Math.abs(
+														Math.round(meanIndexInCircleOfFifths) -
+															((circleOfFifths.indexOf(noteName) + 12) % 12)
+													) > 3
+											);
+											return (
+												<div
+													key={`${section}-${sectionIndex}-${chord.root}-${chordIndex}`}
 													style={{
-														backgroundColor: `hsl(${
-															hueByNoteName[chord.root]
-														}, 100%, 50%, 0.3)`,
-														...(notesInChord(chord).some(
-															(noteName) =>
-																Math.abs(
-																	Math.round(meanIndexInCircleOfFifths) -
-																		((circleOfFifths.indexOf(noteName) + 12) %
-																			12)
-																) > 3
-														)
-															? { border: "solid red 2px" }
-															: {}),
+														width: `${
+															100 * (chord.durationInBeats / NUM_BEATS_PER_ROW)
+														}%`,
 													}}
 												>
-													<Stack alignItems="center" direction="column">
-														<div>
-															{CHORD_QUALITY_BY_NAME[
-																chord.qualityName
-															].decorate(
-																FUNCTION_BY_INTERVAL[
-																	(NOTE_NAMES.indexOf(chord.root) -
-																		tonicIndex +
-																		12) %
-																		12
-																]
-															)}
-														</div>
-														<div>
-															{CHORD_QUALITY_BY_NAME[
-																chord.qualityName
-															].decorate(chord.root)}
-														</div>
+													<Stack
+														alignItems="center"
+														className="px-1 mx-1"
+														direction="row"
+														justifyContent="center"
+														onClick={(event) => {
+															if (event.detail === 2) {
+																setTargetChordIndexes({
+																	chordIndex,
+																	sectionIndex,
+																});
+																setIsChordDialogOpen(true);
+															}
+														}}
+														style={{
+															backgroundColor: `hsl(${
+																hueByNoteName[chord.root]
+															}, 100%, 50%, 0.3)`,
+															...(isOutOfKey
+																? { border: "solid red 2px" }
+																: {}),
+														}}
+													>
+														<Stack alignItems="center" direction="column">
+															<div>
+																{CHORD_QUALITY_BY_NAME[
+																	chord.qualityName
+																].decorate(
+																	FUNCTION_BY_INTERVAL[
+																		(NOTE_NAMES.indexOf(chord.root) -
+																			tonicIndex +
+																			12) %
+																			12
+																	]
+																)}
+															</div>
+															<div>
+																{CHORD_QUALITY_BY_NAME[
+																	chord.qualityName
+																].decorate(chord.root)}
+															</div>
+														</Stack>
 													</Stack>
-												</Stack>
-											</div>
-										))}
+												</div>
+											);
+										})}
 									</Stack>
 								</Stack>
 							</ListItem>
