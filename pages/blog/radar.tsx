@@ -1,9 +1,10 @@
-import { Clear } from "@mui/icons-material";
+import { Clear, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Slider from "@mui/material/Slider";
 import TextField from "@mui/material/TextField";
+import { Stack } from "@mui/system";
 import ChartJS, { Color } from "chart.js/auto";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -52,8 +53,8 @@ const SLIDER_RANGE: [number, number] = [1, 7];
 
 const StandardLevelSlider: React.FC = () => (
   <Grid container spacing={2}>
-    <Grid item xs={3} />
-    <Grid item xs={9}>
+    <Grid item xs={4} />
+    <Grid item xs={8}>
       <Slider
         defaultValue={Object.values(STANDARD_LEVELS).map(({ value }) => value)}
         disabled={true}
@@ -330,20 +331,64 @@ const Radar: NextPage = () => {
                   key={`${dimensionName}-slider`}
                   spacing={1}
                 >
-                  <Grid item xs={1}>
-                    <IconButton
-                      aria-label="delete-dimension"
-                      color="primary"
-                      component="label"
-                      onClick={() =>
-                        setDimensions((old) =>
-                          old.filter(([name]) => name !== dimensionName)
-                        )
-                      }
-                      size="small"
+                  <Grid item xs={2}>
+                    <Stack
+                      alignItems="center"
+                      direction="row"
+                      justifyContent="space-between"
                     >
-                      <Clear />
-                    </IconButton>
+                      <IconButton
+                        aria-label="delete-dimension"
+                        color="primary"
+                        component="label"
+                        onClick={() =>
+                          setDimensions((old) =>
+                            old.filter(([name]) => name !== dimensionName)
+                          )
+                        }
+                        size="small"
+                      >
+                        <Clear />
+                      </IconButton>
+                      <Stack direction="column">
+                        <IconButton
+                          aria-label="move-up-dimension"
+                          color="primary"
+                          component="label"
+                          disabled={dimensionIndex < 1}
+                          onClick={() =>
+                            setDimensions((old) =>
+                              old
+                                .slice(0, dimensionIndex - 1)
+                                .concat([old[dimensionIndex]])
+                                .concat([old[dimensionIndex - 1]])
+                                .concat(old.slice(dimensionIndex + 1))
+                            )
+                          }
+                          size="small"
+                        >
+                          <KeyboardArrowUp />
+                        </IconButton>
+                        <IconButton
+                          aria-label="move-down-dimension"
+                          color="primary"
+                          component="label"
+                          disabled={dimensionIndex >= dimensions.length - 1}
+                          onClick={() =>
+                            setDimensions((old) =>
+                              old
+                                .slice(0, dimensionIndex)
+                                .concat([old[dimensionIndex + 1]])
+                                .concat([old[dimensionIndex]])
+                                .concat(old.slice(dimensionIndex + 2))
+                            )
+                          }
+                          size="small"
+                        >
+                          <KeyboardArrowDown />
+                        </IconButton>
+                      </Stack>
+                    </Stack>
                   </Grid>
                   <Grid item xs={2}>
                     <TextField
@@ -370,7 +415,7 @@ const Radar: NextPage = () => {
                       value={weight}
                     />
                   </Grid>
-                  <Grid item xs={9}>
+                  <Grid item xs={8}>
                     <SliderWithLabels
                       label={dimensionName}
                       max={7}
