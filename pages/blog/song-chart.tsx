@@ -1,17 +1,24 @@
-import { MoreVert } from "@mui/icons-material";
-import { FormControlLabel, Stack } from "@mui/material";
+import { FormControlLabel, Stack, TextField } from "@mui/material";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import InputLabel from "@mui/material/InputLabel";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import MenuItem from "@mui/material/MenuItem";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
+import Select from "@mui/material/Select";
 import ChartJS from "chart.js/auto";
 import _ from "lodash";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { FC, ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 const NOTE_NAMES = [
 	"C",
@@ -53,15 +60,16 @@ const CHORD_QUALITY_BY_NAME: Record<string, ChordQuality> = {
 		),
 		spelling: [0, 3, 7, 10],
 	},
-};
+} as const;
 const NORMALIZATION_VALUES = ["none", "sum", "max"] as const;
 const NUM_BEATS_PER_ROW = 16;
 
 type NormalizationValue = (typeof NORMALIZATION_VALUES)[number];
 type NoteName = (typeof NOTE_NAMES)[number];
+type ChordQualityName = keyof typeof CHORD_QUALITY_BY_NAME;
 type ChordQuality = {
 	decorate: (label: string) => ReactNode;
-	spelling: number[];
+	spelling: readonly number[];
 };
 type Chord = {
 	qualityName: keyof typeof CHORD_QUALITY_BY_NAME;
@@ -82,7 +90,7 @@ const hueByNoteName = Object.fromEntries(
 	])
 );
 
-const sections: Section[] = [
+const DEFAULT_SECTIONS: Section[] = [
 	{
 		chords: [
 			{ durationInBeats: 8, qualityName: "minorSeventh", root: "A" },
@@ -198,13 +206,6 @@ const sections: Section[] = [
 	},
 ];
 
-const colorBySectionName = Object.fromEntries(
-	_.uniqBy(sections, "name").map(({ name }, index, sectionsNames) => [
-		name,
-		`hsl(${(index / sectionsNames.length) * 360}, 100%, 50%, 0.5)`,
-	])
-);
-
 const notesInChord = ({ qualityName, root }: Chord) =>
 	CHORD_QUALITY_BY_NAME[qualityName].spelling.map(
 		(numHalfSteps) =>
@@ -214,7 +215,20 @@ const notesInChord = ({ qualityName, root }: Chord) =>
 const SongChart: NextPage = () => {
 	const radarChartRef = useRef<HTMLCanvasElement>(null);
 
+	const [isChordDialogOpen, setIsChordDialogOpen] = useState(false);
 	const [normalization, setNormalization] = useState<NormalizationValue>("max");
+	const [sections, setSections] = useState<Section[]>(DEFAULT_SECTIONS);
+	const [targetChordIndexes, setTargetChordIndexes] = useState({
+		chordIndex: 0,
+		sectionIndex: 0,
+	});
+
+	const colorBySectionName = Object.fromEntries(
+		_.uniqBy(sections, "name").map(({ name }, index, sectionsNames) => [
+			name,
+			`hsl(${(index / sectionsNames.length) * 360}, 100%, 50%, 0.5)`,
+		])
+	);
 
 	const noteNameCountsBySection = Object.fromEntries(
 		Object.entries(_.groupBy(sections, "name")).map(
@@ -312,6 +326,111 @@ const SongChart: NextPage = () => {
 		[normalization]
 	);
 
+	const ChordDialog = () => {
+		const [chord, setChord] = useState(
+			sections[targetChordIndexes.sectionIndex].chords[
+				targetChordIndexes.chordIndex
+			]
+		);
+
+		return (
+			<Dialog
+				onClose={() => setIsChordDialogOpen(false)}
+				open={isChordDialogOpen}
+			>
+				<DialogTitle>Chord Details</DialogTitle>
+				<DialogContent>
+					<Stack className="p-2" direction="row" flexWrap="wrap" gap={2}>
+						<FormControl>
+							<InputLabel id="root-label">Root</InputLabel>
+							<Select
+								id="root"
+								labelId="root-label"
+								onChange={({ target }) =>
+									setChord((old) => ({
+										...old,
+										root: target.value as NoteName,
+									}))
+								}
+								value={chord?.root}
+							>
+								{NOTE_NAMES.map((noteName) => (
+									<MenuItem key={noteName} value={noteName}>
+										{noteName}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+						<FormControl sx={{ minWidth: 200 }}>
+							<InputLabel id="quality-label">Quality</InputLabel>
+							<Select
+								id="quality"
+								labelId="quality-label"
+								onChange={({ target }) =>
+									setChord((old) => ({
+										...old,
+										qualityName: target.value as ChordQualityName,
+									}))
+								}
+								value={chord?.qualityName}
+							>
+								{Object.keys(CHORD_QUALITY_BY_NAME).map((name) => (
+									<MenuItem key={name} value={name}>
+										{name}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+
+						<FormControl>
+							<TextField
+								InputLabelProps={{ shrink: true }}
+								id="duration"
+								label="Duration"
+								onChange={({ target }) =>
+									setChord((old) => ({
+										...old,
+										durationInBeats: Math.max(Number(target.value), 0),
+									}))
+								}
+								type="number"
+								value={chord?.durationInBeats}
+							/>
+						</FormControl>
+					</Stack>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={() => setIsChordDialogOpen(false)}>Cancel</Button>
+					<Button
+						onClick={() => {
+							setSections((old) =>
+								old
+									.slice(0, targetChordIndexes.sectionIndex)
+									.concat([
+										{
+											...old[targetChordIndexes.sectionIndex],
+											chords: old[targetChordIndexes.sectionIndex].chords
+												.slice(0, targetChordIndexes.chordIndex)
+												.concat([chord])
+												.concat(
+													old[targetChordIndexes.sectionIndex].chords.slice(
+														targetChordIndexes.chordIndex + 1
+													)
+												),
+										},
+									])
+									.concat(old.slice(targetChordIndexes.sectionIndex + 1))
+							);
+							setIsChordDialogOpen(false);
+						}}
+					>
+						Save
+					</Button>
+				</DialogActions>
+			</Dialog>
+		);
+	};
+
 	return (
 		<>
 			<Head>
@@ -353,6 +472,15 @@ const SongChart: NextPage = () => {
 													className="px-1 mx-1"
 													direction="row"
 													justifyContent="center"
+													onClick={(event) => {
+														if (event.detail === 2) {
+															setTargetChordIndexes({
+																chordIndex,
+																sectionIndex,
+															});
+															setIsChordDialogOpen(true);
+														}
+													}}
 													style={{
 														backgroundColor: `hsl(${
 															hueByNoteName[chord.root]
@@ -425,6 +553,7 @@ const SongChart: NextPage = () => {
 					</Stack>
 				</Stack>
 			</div>
+			<ChordDialog />
 		</>
 	);
 };
