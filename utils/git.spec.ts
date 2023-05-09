@@ -2,100 +2,100 @@ import { aGitPathString, aGitFileLine, NameChangeType } from "./factories";
 import * as Git from "./git";
 
 describe("git", () => {
-  describe("parseFileNameString", () => {
-    describe("no nameChangeType", () => {
-      it("should return the pathString itself as afterChange", () => {
-        const pathString = aGitPathString();
-        const actual = Git.parsePathString(pathString);
+	describe("parseFileNameString", () => {
+		describe("no nameChangeType", () => {
+			it("should return the pathString itself as afterChange", () => {
+				const pathString = aGitPathString();
+				const actual = Git.parsePathString(pathString);
 
-        expect(actual).toStrictEqual({ afterChange: pathString });
-      });
-    });
+				expect(actual).toStrictEqual({ afterChange: pathString });
+			});
+		});
 
-    describe("full nameChangeType", () => {
-      it("should return the correct beforeChange and afterChange values", () => {
-        const pathString = aGitPathString("full");
-        const [beforeChange, afterChange] = pathString.split(" => ");
-        const actual = Git.parsePathString(pathString);
+		describe("full nameChangeType", () => {
+			it("should return the correct beforeChange and afterChange values", () => {
+				const pathString = aGitPathString("full");
+				const [beforeChange, afterChange] = pathString.split(" => ");
+				const actual = Git.parsePathString(pathString);
 
-        expect(actual).toStrictEqual({ afterChange, beforeChange });
-      });
-    });
+				expect(actual).toStrictEqual({ afterChange, beforeChange });
+			});
+		});
 
-    describe("partial nameChangeType", () => {
-      it("should return the correct beforeChange and afterChange values", () => {
-        const pathString = aGitPathString("partial");
-        const [commonPrefix, changeSubstring, commonSuffix] =
-          pathString.split(/[{}]/);
-        const [before, after] = changeSubstring.split(" => ");
-        const actual = Git.parsePathString(pathString);
+		describe("partial nameChangeType", () => {
+			it("should return the correct beforeChange and afterChange values", () => {
+				const pathString = aGitPathString("partial");
+				const [commonPrefix, changeSubstring, commonSuffix] =
+					pathString.split(/[{}]/);
+				const [before, after] = changeSubstring.split(" => ");
+				const actual = Git.parsePathString(pathString);
 
-        expect(actual).toStrictEqual({
-          afterChange: `${commonPrefix}${after}${commonSuffix}`,
-          beforeChange: `${commonPrefix}${before}${commonSuffix}`,
-        });
-      });
-    });
-  });
+				expect(actual).toStrictEqual({
+					afterChange: `${commonPrefix}${after}${commonSuffix}`,
+					beforeChange: `${commonPrefix}${before}${commonSuffix}`,
+				});
+			});
+		});
+	});
 
-  describe("parseFileString", () => {
-    describe("numLinesAdded and numLinesDeleted", () => {
-      describe.each<NameChangeType>([undefined, "full", "partial"])(
-        "with nameChangeType: %s",
-        (nameChange) => {
-          describe("non-binary file", () => {
-            it("should be non-negative numbers", () => {
-              const actual = Git.parseFileString(
-                aGitFileLine({ isBinary: false, nameChangeType: nameChange })
-              );
+	describe("parseFileString", () => {
+		describe("numLinesAdded and numLinesDeleted", () => {
+			describe.each<NameChangeType>([undefined, "full", "partial"])(
+				"with nameChangeType: %s",
+				(nameChange) => {
+					describe("non-binary file", () => {
+						it("should be non-negative numbers", () => {
+							const actual = Git.parseFileString(
+								aGitFileLine({ isBinary: false, nameChangeType: nameChange })
+							);
 
-              expect(actual.numLinesAdded).toBeGreaterThanOrEqual(0);
-              expect(actual.numLinesDeleted).toBeGreaterThanOrEqual(0);
-            });
-          });
+							expect(actual.numLinesAdded).toBeGreaterThanOrEqual(0);
+							expect(actual.numLinesDeleted).toBeGreaterThanOrEqual(0);
+						});
+					});
 
-          describe("binary file", () => {
-            it("should be undefined", () => {
-              const actual = Git.parseFileString(
-                aGitFileLine({ isBinary: true, nameChangeType: nameChange })
-              );
+					describe("binary file", () => {
+						it("should be undefined", () => {
+							const actual = Git.parseFileString(
+								aGitFileLine({ isBinary: true, nameChangeType: nameChange })
+							);
 
-              expect(actual.numLinesAdded).toBeUndefined();
-              expect(actual.numLinesDeleted).toBeUndefined();
-            });
-          });
-        }
-      );
-    });
+							expect(actual.numLinesAdded).toBeUndefined();
+							expect(actual.numLinesDeleted).toBeUndefined();
+						});
+					});
+				}
+			);
+		});
 
-    describe("path", () => {
-      describe.each<boolean>([false, true])("with isBinary: %p", (isBinary) => {
-        describe.each<NameChangeType>([undefined, "full", "partial"])(
-          "with nameChangeType: %s",
-          (nameChangeType) => {
-            it("should be whatever parsePathString returns", () => {
-              const expected = {
-                afterChange: `${Math.random()}`,
-                beforeChange: `${Math.random()}`,
-              };
-              jest.spyOn(Git, "parsePathString").mockReturnValue(expected);
+		describe("path", () => {
+			describe.each<boolean>([false, true])("with isBinary: %p", (isBinary) => {
+				describe.each<NameChangeType>([undefined, "full", "partial"])(
+					"with nameChangeType: %s",
+					(nameChangeType) => {
+						it("should be whatever parsePathString returns", () => {
+							const expected = {
+								afterChange: `${Math.random()}`,
+								beforeChange: `${Math.random()}`,
+							};
+							jest.spyOn(Git, "parsePathString").mockReturnValue(expected);
 
-              const gitFileLine = aGitFileLine({ isBinary, nameChangeType });
-              const [, , pathString] = gitFileLine.split("\t");
+							const gitFileLine = aGitFileLine({ isBinary, nameChangeType });
+							const [, , pathString] = gitFileLine.split("\t");
 
-              expect(Git.parseFileString(gitFileLine).path).toStrictEqual(
-                expected
-              );
-              expect(Git.parsePathString).toHaveBeenCalledWith(pathString);
-            });
-          }
-        );
-      });
-    });
-  });
+							expect(Git.parseFileString(gitFileLine).path).toStrictEqual(
+								expected
+							);
+							expect(Git.parsePathString).toHaveBeenCalledWith(pathString);
+						});
+					}
+				);
+			});
+		});
+	});
 
-  describe("splitGitLog", () => {
-    const gitLogString = `commit d7b1c30ec615bdd3097110d5014929e6541343b7
+	describe("splitGitLog", () => {
+		const gitLogString = `commit d7b1c30ec615bdd3097110d5014929e6541343b7
 Merge: e69522d72 931936a7d
 Author: FirstName LastName <first.last@domain.com>
 Date:   Thu Mar 16 17:20:32 2023 +0900
@@ -133,10 +133,10 @@ Date:   Thu Mar 16 16:18:12 2023 +0900
 4	0	src/utils/sub-domain/nested-folder/constants.ts
 `;
 
-    it("should return an array with an element for each commit", () => {
-      const numCommits = gitLogString.match(/commit/g)?.length ?? 0;
+		it("should return an array with an element for each commit", () => {
+			const numCommits = gitLogString.match(/commit/g)?.length ?? 0;
 
-      expect(Git.splitGitLog(gitLogString)).toHaveLength(numCommits);
-    });
-  });
+			expect(Git.splitGitLog(gitLogString)).toHaveLength(numCommits);
+		});
+	});
 });
