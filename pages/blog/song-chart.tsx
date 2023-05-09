@@ -217,18 +217,16 @@ const ChordChip: FC<{
 			alignItems="center"
 			className="px-1 mx-1"
 			direction="row"
-			justifyContent="space-between"
+			justifyContent="center"
 			style={{
 				backgroundColor: `hsl(${hueByNoteName[root]}, 100%, 50%, 0.3)`,
 				...(isOutOfKey ? { border: "solid red 2px" } : {}),
 			}}
 		>
-			<MoreVert className="opacity-0" htmlColor="#aaa" />
 			<Stack alignItems="center" direction="column">
 				<div>{CHORD_QUALITY_BY_NAME[qualityName].decorate(chordFunction)}</div>
 				<div>{CHORD_QUALITY_BY_NAME[qualityName].decorate(root)}</div>
 			</Stack>
-			<MoreVert htmlColor="#aaa" />
 		</Stack>
 	</div>
 );
