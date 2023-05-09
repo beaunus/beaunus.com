@@ -212,25 +212,23 @@ const ChordChip: FC<{
 	qualityName: string;
 	root: NoteName;
 }> = ({ chordFunction, durationInBeats, isOutOfKey, qualityName, root }) => (
-	<div
-		style={{
-			backgroundColor: `hsl(${hueByNoteName[root]}, 100%, 50%, 0.3)`,
-			width: `${100 * (durationInBeats / NUM_BEATS_PER_ROW)}%`,
-			...(isOutOfKey ? { border: "solid red 2px" } : {}),
-		}}
-	>
+	<div style={{ width: `${100 * (durationInBeats / NUM_BEATS_PER_ROW)}%` }}>
 		<Stack
 			alignItems="center"
-			className="px-1"
+			className="px-1 mx-1"
 			direction="row"
 			justifyContent="space-between"
+			style={{
+				backgroundColor: `hsl(${hueByNoteName[root]}, 100%, 50%, 0.3)`,
+				...(isOutOfKey ? { border: "solid red 2px" } : {}),
+			}}
 		>
-			<MoreVert htmlColor="#666" />
+			<MoreVert htmlColor="#aaa" />
 			<Stack alignItems="center" direction="column">
 				<div>{CHORD_QUALITY_BY_NAME[qualityName].decorate(chordFunction)}</div>
 				<div>{CHORD_QUALITY_BY_NAME[qualityName].decorate(root)}</div>
 			</Stack>
-			<MoreVert htmlColor="#666" />
+			<MoreVert htmlColor="#aaa" />
 		</Stack>
 	</div>
 );
