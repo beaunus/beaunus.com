@@ -223,7 +223,7 @@ const ChordChip: FC<{
 				...(isOutOfKey ? { border: "solid red 2px" } : {}),
 			}}
 		>
-			<MoreVert htmlColor="#aaa" />
+			<MoreVert className="opacity-0" htmlColor="#aaa" />
 			<Stack alignItems="center" direction="column">
 				<div>{CHORD_QUALITY_BY_NAME[qualityName].decorate(chordFunction)}</div>
 				<div>{CHORD_QUALITY_BY_NAME[qualityName].decorate(root)}</div>
