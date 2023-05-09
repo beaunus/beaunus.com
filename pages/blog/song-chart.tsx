@@ -225,12 +225,12 @@ const ChordChip: FC<{
 			direction="row"
 			justifyContent="space-between"
 		>
-			<MoreVert htmlColor="#ccc" />
+			<MoreVert htmlColor="#666" />
 			<Stack alignItems="center" direction="column">
 				<div>{CHORD_QUALITY_BY_NAME[qualityName].decorate(chordFunction)}</div>
 				<div>{CHORD_QUALITY_BY_NAME[qualityName].decorate(root)}</div>
 			</Stack>
-			<MoreVert htmlColor="#ccc" />
+			<MoreVert htmlColor="#666" />
 		</Stack>
 	</div>
 );
