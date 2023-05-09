@@ -215,8 +215,6 @@ const ChordChip: FC<{
 	<div
 		style={{
 			backgroundColor: `hsl(${hueByNoteName[root]}, 100%, 50%, 0.3)`,
-			height: "auto",
-			textAlign: "center",
 			width: `${100 * (durationInBeats / NUM_BEATS_PER_ROW)}%`,
 			...(isOutOfKey ? { border: "solid red 2px" } : {}),
 		}}
@@ -228,7 +226,7 @@ const ChordChip: FC<{
 			justifyContent="space-between"
 		>
 			<MoreVert htmlColor="#ccc" />
-			<Stack direction="column">
+			<Stack alignItems="center" direction="column">
 				<div>{CHORD_QUALITY_BY_NAME[qualityName].decorate(chordFunction)}</div>
 				<div>{CHORD_QUALITY_BY_NAME[qualityName].decorate(root)}</div>
 			</Stack>
