@@ -1,6 +1,8 @@
 import encHex from "crypto-js/enc-hex";
 import sha256 from "crypto-js/sha256";
 
+export const identity = <T>(x: T) => x;
+
 export function sleep(ms: number) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }
