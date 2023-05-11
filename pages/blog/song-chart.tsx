@@ -20,8 +20,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { ReactNode, useEffect, useRef, useState } from "react";
 
-import { identity } from "../../utils";
-
 const NOTE_NAMES = [
 	"C",
 	"C♯/D♭",
@@ -51,7 +49,34 @@ const FUNCTION_BY_INTERVAL = [
 	"vii",
 ];
 const CHORD_QUALITY_BY_NAME: Record<string, ChordQuality> = {
+	diminished: {
+		decorate: (label) => (
+			<>
+				{label.toLowerCase()}
+				<sup>o7</sup>
+			</>
+		),
+		spelling: [0, 3, 6, 9],
+	},
+	halfDiminished: {
+		decorate: (label) => (
+			<>
+				{label.toLowerCase()}
+				<sup>ø7</sup>
+			</>
+		),
+		spelling: [0, 3, 6, 10],
+	},
 	major: { decorate: (label) => label.toUpperCase(), spelling: [0, 4, 7] },
+	majorSeventh: {
+		decorate: (label) => (
+			<>
+				{label.toUpperCase()}
+				<sup>Δ7</sup>
+			</>
+		),
+		spelling: [0, 4, 7, 10],
+	},
 	minor: { decorate: (label) => label.toLowerCase(), spelling: [0, 3, 7] },
 	minorSeventh: {
 		decorate: (label) => (
@@ -95,153 +120,130 @@ const hueByNoteName = Object.fromEntries(
 
 const DEFAULT_SECTIONS: Section[] = [
 	{
-		chords: [{ durationInBeats: 4, root: null }],
-		name: "Count Off",
-	},
-	{
-		chords: Array(2)
-			.fill([
-				{ durationInBeats: 1.5, qualityName: "power", root: "G" },
-				{ durationInBeats: 1.5, qualityName: "power", root: "E" },
-				{ durationInBeats: 1, qualityName: "power", root: "C" },
-				{ durationInBeats: 1.5, qualityName: "power", root: "G" },
-				{ durationInBeats: 2.5, qualityName: "power", root: "E" },
-			])
-			.flatMap(identity),
+		chords: [
+			{ durationInBeats: 8, root: null },
+			{ durationInBeats: 8, root: null },
+			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 2.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 1.5, qualityName: "majorSeventh", root: "D♯/E♭" },
+			{ durationInBeats: 2.5, qualityName: "minorSeventh", root: "D♯/E♭" },
+			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
+		],
 		name: "Intro",
 	},
 	{
-		chords: Array(4)
-			.fill([
-				{ durationInBeats: 1.5, qualityName: "power", root: "G" },
-				{ durationInBeats: 1.5, qualityName: "power", root: "E" },
-				{ durationInBeats: 1, qualityName: "power", root: "C" },
-				{ durationInBeats: 1.5, qualityName: "power", root: "G" },
-				{ durationInBeats: 2.5, qualityName: "power", root: "E" },
-			])
-			.flatMap(identity),
+		chords: [
+			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
+			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
+			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
+			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
+			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
+		],
 		name: "Verse",
 	},
 	{
-		chords: Array(4)
-			.fill([
-				{ durationInBeats: 3, qualityName: "power", root: "E" },
-				{ durationInBeats: 1, qualityName: "power", root: "D" },
-				{ durationInBeats: 3, qualityName: "power", root: "E" },
-				{ durationInBeats: 1, qualityName: "power", root: "F" },
-			])
-			.flatMap(identity),
-		name: "Pre Chorus",
+		chords: [
+			{ durationInBeats: 8, qualityName: "halfDiminished", root: "D" },
+			{ durationInBeats: 8, qualityName: "minorSeventh", root: "C" },
+		],
+		name: "PreChorus",
 	},
 	{
-		chords: Array(4)
-			.fill([
-				{ durationInBeats: 1.5, qualityName: "power", root: "G" },
-				{ durationInBeats: 1.5, qualityName: "power", root: "E" },
-				{ durationInBeats: 1, qualityName: "power", root: "C" },
-				{ durationInBeats: 1.5, qualityName: "power", root: "G" },
-				{ durationInBeats: 2.5, qualityName: "power", root: "E" },
-			])
-			.flatMap(identity),
+		chords: [
+			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 2.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 1.5, qualityName: "majorSeventh", root: "D♯/E♭" },
+			{ durationInBeats: 2.5, qualityName: "minorSeventh", root: "D♯/E♭" },
+			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
+		],
 		name: "Chorus",
 	},
 	{
 		chords: [
-			{ durationInBeats: 4, qualityName: "major", root: "A" },
-			{ durationInBeats: 4, qualityName: "major", root: "C" },
-			{ durationInBeats: 4, qualityName: "major", root: "E" },
-			{ durationInBeats: 4, qualityName: "major", root: "G" },
-			{ durationInBeats: 4, qualityName: "major", root: "A" },
-			{ durationInBeats: 4, qualityName: "major", root: "C" },
-			{ durationInBeats: 4, qualityName: "major", root: "E" },
-			{ durationInBeats: 1.5, qualityName: "power", root: "G" },
-			{ durationInBeats: 2.5, qualityName: "power", root: "E" },
+			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
+			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
+			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
+			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
+			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
 		],
-		name: "Post Chorus",
-	},
-	{
-		chords: Array(4)
-			.fill([
-				{ durationInBeats: 1.5, qualityName: "power", root: "G" },
-				{ durationInBeats: 1.5, qualityName: "power", root: "E" },
-				{ durationInBeats: 1, qualityName: "power", root: "C" },
-				{ durationInBeats: 1.5, qualityName: "power", root: "G" },
-				{ durationInBeats: 2.5, qualityName: "power", root: "E" },
-			])
-			.flatMap(identity),
 		name: "Verse",
 	},
 	{
-		chords: Array(4)
-			.fill([
-				{ durationInBeats: 3, qualityName: "power", root: "E" },
-				{ durationInBeats: 1, qualityName: "power", root: "D" },
-				{ durationInBeats: 3, qualityName: "power", root: "E" },
-				{ durationInBeats: 1, qualityName: "power", root: "F" },
-			])
-			.flatMap(identity),
-		name: "Pre Chorus",
+		chords: [
+			{ durationInBeats: 8, qualityName: "halfDiminished", root: "D" },
+			{ durationInBeats: 8, qualityName: "minorSeventh", root: "C" },
+		],
+		name: "PreChorus",
 	},
 	{
-		chords: Array(4)
-			.fill([
-				{ durationInBeats: 1.5, qualityName: "power", root: "G" },
-				{ durationInBeats: 1.5, qualityName: "power", root: "E" },
-				{ durationInBeats: 1, qualityName: "power", root: "C" },
-				{ durationInBeats: 1.5, qualityName: "power", root: "G" },
-				{ durationInBeats: 2.5, qualityName: "power", root: "E" },
-			])
-			.flatMap(identity),
-		name: "Chorus",
-	},
-	{
-		chords: Array(4)
-			.fill([
-				{ durationInBeats: 1, qualityName: "power", root: "E" },
-				{ durationInBeats: 1, qualityName: "power", root: "B" },
-				{ durationInBeats: 1, qualityName: "power", root: "A♯/B♭" },
-				{ durationInBeats: 1, qualityName: "power", root: "G" },
-				{ durationInBeats: 4, qualityName: "power", root: "E" },
-			])
-			.flatMap(identity),
-		name: "Bridge",
-	},
-	{
-		chords: Array(4)
-			.fill([
-				{ durationInBeats: 1.5, qualityName: "power", root: "G" },
-				{ durationInBeats: 1.5, qualityName: "power", root: "E" },
-				{ durationInBeats: 1, qualityName: "power", root: "C" },
-				{ durationInBeats: 1.5, qualityName: "power", root: "G" },
-				{ durationInBeats: 2.5, qualityName: "power", root: "E" },
-			])
-			.flatMap(identity),
+		chords: [
+			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 2.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 1.5, qualityName: "majorSeventh", root: "D♯/E♭" },
+			{ durationInBeats: 2.5, qualityName: "minorSeventh", root: "D♯/E♭" },
+			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 2.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 1.5, qualityName: "majorSeventh", root: "D♯/E♭" },
+			{ durationInBeats: 2.5, qualityName: "minorSeventh", root: "D♯/E♭" },
+			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
+		],
 		name: "Chorus",
 	},
 	{
 		chords: [
-			{ durationInBeats: 4, qualityName: "major", root: "A" },
-			{ durationInBeats: 4, qualityName: "major", root: "C" },
-			{ durationInBeats: 4, qualityName: "major", root: "E" },
-			{ durationInBeats: 4, qualityName: "major", root: "G" },
-			{ durationInBeats: 4, qualityName: "major", root: "A" },
-			{ durationInBeats: 4, qualityName: "major", root: "C" },
-			{ durationInBeats: 4, qualityName: "major", root: "E" },
-			{ durationInBeats: 1.5, qualityName: "power", root: "G" },
-			{ durationInBeats: 2.5, qualityName: "power", root: "E" },
+			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 2.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 1.5, qualityName: "majorSeventh", root: "D♯/E♭" },
+			{ durationInBeats: 2.5, qualityName: "minorSeventh", root: "D♯/E♭" },
+			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
+			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
+			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
 		],
-		name: "Post Chorus",
-	},
-	{
-		chords: Array(4)
-			.fill([
-				{ durationInBeats: 1.5, qualityName: "power", root: "G" },
-				{ durationInBeats: 1.5, qualityName: "power", root: "E" },
-				{ durationInBeats: 1, qualityName: "power", root: "C" },
-				{ durationInBeats: 1.5, qualityName: "power", root: "G" },
-				{ durationInBeats: 2.5, qualityName: "power", root: "E" },
-			])
-			.flatMap(identity),
 		name: "Outro",
 	},
 ];
@@ -314,14 +316,21 @@ const SongChart: NextPage = () => {
 	);
 	const meanIndexInCircleOfFifths = _.mean(
 		Object.entries(noteNameCountsTotal).flatMap(([noteName, count]) =>
-			Array(Math.round(count)).fill(
+			Array(Math.round(count * 1000)).fill(
 				circleOfFifths.indexOf(noteName as NoteName)
 			)
 		)
 	);
 	const tonicIndex = NOTE_NAMES.indexOf(
-		circleOfFifths[(Math.round(meanIndexInCircleOfFifths) + 10) % 12]
+		circleOfFifths[(Math.round(meanIndexInCircleOfFifths) + 14) % 12]
 	);
+	console.log({
+		tonicIndex,
+		meanIndexInCircleOfFifths,
+		circleOfFifths,
+		noteNameCountsTotal,
+		NOTE_NAMES,
+	});
 
 	useEffect(
 		function createChart() {
@@ -506,6 +515,10 @@ const SongChart: NextPage = () => {
 										rowGap={1}
 									>
 										{section.chords.map((chord, chordIndex) => {
+											console.log({
+												chord,
+												"notesInChord(chord)": notesInChord(chord),
+											});
 											const isOutOfKey = notesInChord(chord).some(
 												(noteName) =>
 													Math.abs(
