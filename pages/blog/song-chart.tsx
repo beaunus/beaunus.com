@@ -73,7 +73,7 @@ type ChordQuality = {
 };
 type Chord = {
 	qualityName: keyof typeof CHORD_QUALITY_BY_NAME;
-	root: NoteName;
+	root: NoteName | null;
 };
 type Section = {
 	chords: (Chord & { durationInBeats: number })[];
@@ -207,10 +207,14 @@ const DEFAULT_SECTIONS: Section[] = [
 ];
 
 const notesInChord = ({ qualityName, root }: Chord) =>
-	CHORD_QUALITY_BY_NAME[qualityName].spelling.map(
-		(numHalfSteps) =>
-			NOTE_NAMES[(NOTE_NAMES.indexOf(root) + numHalfSteps) % NOTE_NAMES.length]
-	);
+	root && qualityName
+		? CHORD_QUALITY_BY_NAME[qualityName].spelling.map(
+				(numHalfSteps) =>
+					NOTE_NAMES[
+						(NOTE_NAMES.indexOf(root) + numHalfSteps) % NOTE_NAMES.length
+					]
+		  )
+		: [];
 
 const SongChart: NextPage = () => {
 	const radarChartRef = useRef<HTMLCanvasElement>(null);
@@ -258,10 +262,12 @@ const SongChart: NextPage = () => {
 			Object.assign(
 				acc,
 				Object.fromEntries(
-					Object.entries(noteNameCountsForSection).map(([noteName, count]) => [
-						noteName,
-						(acc[noteName as NoteName] ?? 0) + count,
-					])
+					Object.entries(noteNameCountsForSection)
+						.filter(([noteName]) => noteName)
+						.map(([noteName, count]) => [
+							noteName,
+							(acc[noteName as NoteName] ?? 0) + count,
+						])
 				)
 			),
 		{}
@@ -305,6 +311,7 @@ const SongChart: NextPage = () => {
 							r: {
 								angleLines: { display: true },
 								grid: { display: false, drawTicks: false },
+								min: 0,
 								pointLabels: {
 									color: ({ label }) =>
 										`hsl(${hueByNoteName[label]}, 100%, 30%, 1)`,
@@ -490,32 +497,40 @@ const SongChart: NextPage = () => {
 															}
 														}}
 														style={{
-															backgroundColor: `hsl(${
-																hueByNoteName[chord.root]
-															}, 100%, 50%, 0.3)`,
+															backgroundColor: chord.root
+																? `hsl(${
+																		hueByNoteName[chord.root]
+																  }, 100%, 50%, 0.3)`
+																: "#ccc",
 															...(isOutOfKey
 																? { border: "solid red 2px" }
 																: {}),
 														}}
 													>
 														<Stack alignItems="center" direction="column">
-															<div>
-																{CHORD_QUALITY_BY_NAME[
-																	chord.qualityName
-																].decorate(
-																	FUNCTION_BY_INTERVAL[
-																		(NOTE_NAMES.indexOf(chord.root) -
-																			tonicIndex +
-																			12) %
-																			12
-																	]
-																)}
-															</div>
-															<div>
-																{CHORD_QUALITY_BY_NAME[
-																	chord.qualityName
-																].decorate(chord.root)}
-															</div>
+															{chord.root && chord.qualityName ? (
+																<>
+																	<div>
+																		{CHORD_QUALITY_BY_NAME[
+																			chord.qualityName
+																		].decorate(
+																			FUNCTION_BY_INTERVAL[
+																				(NOTE_NAMES.indexOf(chord.root) -
+																					tonicIndex +
+																					12) %
+																					12
+																			]
+																		)}
+																	</div>
+																	<div>
+																		{CHORD_QUALITY_BY_NAME[
+																			chord.qualityName
+																		].decorate(chord.root)}
+																	</div>
+																</>
+															) : (
+																"None"
+															)}
 														</Stack>
 													</Stack>
 												</div>
