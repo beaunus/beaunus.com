@@ -517,7 +517,7 @@ const SongChart: NextPage = () => {
 											>
 												<Stack
 													alignItems="center"
-													className="px-1 mx-1"
+													className="px-1 mx-1 h-full"
 													direction="row"
 													justifyContent="center"
 													onClick={(event) => {
