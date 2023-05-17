@@ -272,9 +272,9 @@ const SongChart: NextPage = () => {
 	const [tonicIndex, setTonicIndex] = useState(0);
 
 	const colorBySectionName = Object.fromEntries(
-		_.uniqBy(sections, "name").map(({ name }, index, sectionsNames) => [
+		_.uniqBy(sections, "name").map(({ name }, index, sectionNames) => [
 			name,
-			`hsl(${(index / sectionsNames.length) * 360}, 100%, 50%, 0.5)`,
+			`hsl(${(index / sectionNames.length) * 360}, 100%, 50%, 0.5)`,
 		])
 	);
 
