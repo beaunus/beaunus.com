@@ -466,11 +466,11 @@ const SongChart: NextPage = () => {
 			<Head>
 				<title>Song Chart | Beaunus</title>
 			</Head>
-			<div className="flex flex-col gap-5 w-full">
+			<div className="flex flex-col gap-5 p-4 w-full">
 				<div className="text-2xl font-semibold text-center text-cyan-700">
 					Song Chart
 				</div>
-				<Box className="px-2">
+				<Box>
 					<FormControl>
 						<InputLabel id="tonic-label">Tonic</InputLabel>
 						<Select
@@ -489,92 +489,89 @@ const SongChart: NextPage = () => {
 					</FormControl>
 				</Box>
 				<Stack direction={{ md: "column", xl: "row" }}>
-					<List className="w-full max-w-5xl">
+					<Stack className="w-full max-w-5xl">
 						{sections.map((section, sectionIndex) => (
-							<ListItem key={`${section.name}-${sectionIndex}`}>
-								<Stack marginTop={0.5} width="100%">
-									<ListItemText
-										className="px-2"
-										primary={section.name}
-										style={{
-											backgroundColor: colorBySectionName[section.name],
-										}}
-									/>
-									<Stack
-										direction="row"
-										flexWrap="wrap"
-										marginTop={1}
-										rowGap={1}
-									>
-										{section.chords.map((chord, chordIndex) => (
-											<div
-												key={`${section}-${sectionIndex}-${chord.root}-${chordIndex}`}
+							<Stack
+								key={`${section.name}-${sectionIndex}`}
+								marginTop={0.5}
+								width="100%"
+							>
+								<ListItemText
+									className="px-2"
+									primary={section.name}
+									style={{
+										backgroundColor: colorBySectionName[section.name],
+									}}
+								/>
+								<Stack direction="row" flexWrap="wrap" marginTop={1} rowGap={1}>
+									{section.chords.map((chord, chordIndex) => (
+										<div
+											key={`${section}-${sectionIndex}-${chord.root}-${chordIndex}`}
+											style={{
+												width: `${
+													100 * (chord.durationInBeats / NUM_BEATS_PER_ROW)
+												}%`,
+											}}
+										>
+											<Stack
+												alignItems="center"
+												className="px-1 mx-1 h-full"
+												direction="row"
+												justifyContent="center"
+												onClick={(event) => {
+													if (event.detail === 2) {
+														setTargetChordIndexes({
+															chordIndex,
+															sectionIndex,
+														});
+														setIsChordDialogOpen(true);
+													}
+												}}
 												style={{
-													width: `${
-														100 * (chord.durationInBeats / NUM_BEATS_PER_ROW)
-													}%`,
+													backgroundColor: chord.root
+														? `hsl(${
+																hueByNoteName[chord.root]
+														  }, 100%, 50%, 0.3)`
+														: "#ccc",
+													...(notesInChord(chord).some(
+														(noteName) => !notesInScale.includes(noteName)
+													)
+														? { border: "solid red 2px" }
+														: {}),
 												}}
 											>
-												<Stack
-													alignItems="center"
-													className="px-1 mx-1 h-full"
-													direction="row"
-													justifyContent="center"
-													onClick={(event) => {
-														if (event.detail === 2) {
-															setTargetChordIndexes({
-																chordIndex,
-																sectionIndex,
-															});
-															setIsChordDialogOpen(true);
-														}
-													}}
-													style={{
-														backgroundColor: chord.root
-															? `hsl(${
-																	hueByNoteName[chord.root]
-															  }, 100%, 50%, 0.3)`
-															: "#ccc",
-														...(notesInChord(chord).some(
-															(noteName) => !notesInScale.includes(noteName)
-														)
-															? { border: "solid red 2px" }
-															: {}),
-													}}
-												>
-													<Stack alignItems="center" direction="column">
-														{chord.root && chord.qualityName ? (
-															<>
-																<div>
-																	{CHORD_QUALITY_BY_NAME[
-																		chord.qualityName
-																	].decorate(
-																		FUNCTION_BY_INTERVAL[
-																			(NOTE_NAMES.indexOf(chord.root) -
-																				tonicIndex +
-																				12) %
-																				12
-																		]
-																	)}
-																</div>
-																<div>
-																	{CHORD_QUALITY_BY_NAME[
-																		chord.qualityName
-																	].decorate(chord.root)}
-																</div>
-															</>
-														) : (
-															"None"
-														)}
-													</Stack>
+												<Stack alignItems="center" direction="column">
+													{chord.root && chord.qualityName ? (
+														<>
+															<div>
+																{CHORD_QUALITY_BY_NAME[
+																	chord.qualityName
+																].decorate(
+																	FUNCTION_BY_INTERVAL[
+																		(NOTE_NAMES.indexOf(chord.root) -
+																			tonicIndex +
+																			12) %
+																			12
+																	]
+																)}
+															</div>
+															<div>
+																{CHORD_QUALITY_BY_NAME[
+																	chord.qualityName
+																].decorate(chord.root)}
+															</div>
+														</>
+													) : (
+														"None"
+													)}
 												</Stack>
-											</div>
-										))}
-									</Stack>
+											</Stack>
+										</div>
+									))}
 								</Stack>
-							</ListItem>
+							</Stack>
 						))}
-					</List>
+					</Stack>
 					<Stack className="shrink w-full xl:w-1/2">
 						<FormControl className="px-14">
 							<FormLabel id="normalization-radio-buttons-group-label">
