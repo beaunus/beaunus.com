@@ -536,10 +536,11 @@ const SongChart: NextPage = () => {
 										rowGap={1}
 									>
 										{section.chords.map((chord, chordIndex) => {
-											const isChordInKey = notesInChord(chord).every(
-												(noteName) =>
-													notesInScale(tonicIndex).includes(noteName)
-											);
+											const percentNotesOutOfKey =
+												notesInChord(chord).filter(
+													(noteName) =>
+														!notesInScale(tonicIndex).includes(noteName)
+												).length / notesInChord(chord).length;
 											return (
 												<div
 													key={`${section}-${sectionIndex}-${chord.root}-${chordIndex}`}
@@ -569,9 +570,9 @@ const SongChart: NextPage = () => {
 																		hueByNoteName[chord.root]
 																  }, 100%, 50%, 0.3)`
 																: "#ccc",
-															...(isChordInKey
-																? {}
-																: { border: "solid red 2px" }),
+															...(percentNotesOutOfKey > 0
+																? { border: "solid red 2px" }
+																: {}),
 														}}
 													>
 														<Stack alignItems="center" direction="column">
