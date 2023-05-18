@@ -1,5 +1,4 @@
 import { FormControlLabel, Stack, TextField } from "@mui/material";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -8,13 +7,13 @@ import DialogTitle from "@mui/material/DialogTitle";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import Select from "@mui/material/Select";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ChartJS from "chart.js/auto";
 import _ from "lodash";
 import type { NextPage } from "next";
@@ -470,134 +469,141 @@ const SongChart: NextPage = () => {
 				<div className="text-2xl font-semibold text-center text-cyan-700">
 					Song Chart
 				</div>
-				<Box>
-					<FormControl>
-						<InputLabel id="tonic-label">Tonic</InputLabel>
-						<Select
-							id="tonic"
-							label="Tonic"
-							labelId="tonic-label"
-							onChange={({ target }) => setTonicIndex(Number(target.value))}
-							value={tonicIndex}
-						>
-							{NOTE_NAMES.map((noteName, index) => (
-								<MenuItem key={`tonic-${index}`} value={index}>
-									{noteName}
-								</MenuItem>
-							))}
-						</Select>
-					</FormControl>
-				</Box>
-				<Stack direction={{ md: "column", xl: "row" }}>
-					<Stack className="w-full max-w-5xl">
-						{sections.map((section, sectionIndex) => (
-							<Stack
-								key={`${section.name}-${sectionIndex}`}
-								marginTop={0.5}
-								width="100%"
+				<Stack direction="column" gap={1}>
+					<ToggleButtonGroup
+						aria-label="tonic"
+						exclusive
+						fullWidth
+						onChange={(_event, newValue) => setTonicIndex(newValue)}
+						size="small"
+						value={tonicIndex}
+					>
+						{NOTE_NAMES.map((noteName, index) => (
+							<ToggleButton
+								aria-label={noteName}
+								key={`tonic-${noteName}-${index}`}
+								value={index}
 							>
-								<ListItemText
-									className="px-2"
-									primary={section.name}
-									style={{
-										backgroundColor: colorBySectionName[section.name],
-									}}
-								/>
-								<Stack direction="row" flexWrap="wrap" marginTop={1} rowGap={1}>
-									{section.chords.map((chord, chordIndex) => (
-										<div
-											key={`${section}-${sectionIndex}-${chord.root}-${chordIndex}`}
-											style={{
-												width: `${
-													100 * (chord.durationInBeats / NUM_BEATS_PER_ROW)
-												}%`,
-											}}
-										>
-											<Stack
-												alignItems="center"
-												className="px-1 mx-1 h-full"
-												direction="row"
-												justifyContent="center"
-												onClick={(event) => {
-													if (event.detail === 2) {
-														setTargetChordIndexes({
-															chordIndex,
-															sectionIndex,
-														});
-														setIsChordDialogOpen(true);
-													}
-												}}
+								{noteName}
+							</ToggleButton>
+						))}
+					</ToggleButtonGroup>
+					<Stack direction={{ md: "column", xl: "row" }}>
+						<Stack className="w-full max-w-5xl">
+							{sections.map((section, sectionIndex) => (
+								<Stack
+									key={`${section.name}-${sectionIndex}`}
+									marginTop={0.5}
+									width="100%"
+								>
+									<ListItemText
+										className="px-2"
+										primary={section.name}
+										style={{
+											backgroundColor: colorBySectionName[section.name],
+										}}
+									/>
+									<Stack
+										direction="row"
+										flexWrap="wrap"
+										marginTop={1}
+										rowGap={1}
+									>
+										{section.chords.map((chord, chordIndex) => (
+											<div
+												key={`${section}-${sectionIndex}-${chord.root}-${chordIndex}`}
 												style={{
-													backgroundColor: chord.root
-														? `hsl(${
-																hueByNoteName[chord.root]
-														  }, 100%, 50%, 0.3)`
-														: "#ccc",
-													...(notesInChord(chord).some(
-														(noteName) => !notesInScale.includes(noteName)
-													)
-														? { border: "solid red 2px" }
-														: {}),
+													width: `${
+														100 * (chord.durationInBeats / NUM_BEATS_PER_ROW)
+													}%`,
 												}}
 											>
-												<Stack alignItems="center" direction="column">
-													{chord.root && chord.qualityName ? (
-														<>
-															<div>
-																{CHORD_QUALITY_BY_NAME[
-																	chord.qualityName
-																].decorate(
-																	FUNCTION_BY_INTERVAL[
-																		(NOTE_NAMES.indexOf(chord.root) -
-																			tonicIndex +
-																			12) %
-																			12
-																	]
-																)}
-															</div>
-															<div>
-																{CHORD_QUALITY_BY_NAME[
-																	chord.qualityName
-																].decorate(chord.root)}
-															</div>
-														</>
-													) : (
-														"None"
-													)}
+												<Stack
+													alignItems="center"
+													className="px-1 mx-1 h-full"
+													direction="row"
+													justifyContent="center"
+													onClick={(event) => {
+														if (event.detail === 2) {
+															setTargetChordIndexes({
+																chordIndex,
+																sectionIndex,
+															});
+															setIsChordDialogOpen(true);
+														}
+													}}
+													style={{
+														backgroundColor: chord.root
+															? `hsl(${
+																	hueByNoteName[chord.root]
+															  }, 100%, 50%, 0.3)`
+															: "#ccc",
+														...(notesInChord(chord).some(
+															(noteName) => !notesInScale.includes(noteName)
+														)
+															? { border: "solid red 2px" }
+															: {}),
+													}}
+												>
+													<Stack alignItems="center" direction="column">
+														{chord.root && chord.qualityName ? (
+															<>
+																<div>
+																	{CHORD_QUALITY_BY_NAME[
+																		chord.qualityName
+																	].decorate(
+																		FUNCTION_BY_INTERVAL[
+																			(NOTE_NAMES.indexOf(chord.root) -
+																				tonicIndex +
+																				12) %
+																				12
+																		]
+																	)}
+																</div>
+																<div>
+																	{CHORD_QUALITY_BY_NAME[
+																		chord.qualityName
+																	].decorate(chord.root)}
+																</div>
+															</>
+														) : (
+															"None"
+														)}
+													</Stack>
 												</Stack>
-											</Stack>
-										</div>
-									))}
+											</div>
+										))}
+									</Stack>
 								</Stack>
-							</Stack>
-						))}
-					</Stack>
-					<Stack className="shrink w-full xl:w-1/2">
-						<FormControl className="px-14">
-							<FormLabel id="normalization-radio-buttons-group-label">
-								Normalization
-							</FormLabel>
-							<RadioGroup
-								aria-labelledby="normalization-radio-buttons-group-label"
-								defaultValue={normalization}
-								name="normalization-radio-buttons-group"
-								onChange={(_event, newValue) =>
-									setNormalization(newValue as NormalizationValue)
-								}
-								row
-								value={normalization}
-							>
-								{NORMALIZATION_VALUES.map((normalizationValue) => (
-									<FormControlLabel
-										control={<Radio />}
-										key={normalizationValue}
-										label={normalizationValue}
-										value={normalizationValue}
-									/>
-								))}
-							</RadioGroup>
-						</FormControl>
-						<canvas ref={radarChartRef} />
+							))}
+						</Stack>
+						<Stack className="shrink w-full xl:w-1/2">
+							<FormControl className="px-14">
+								<FormLabel id="normalization-radio-buttons-group-label">
+									Normalization
+								</FormLabel>
+								<RadioGroup
+									aria-labelledby="normalization-radio-buttons-group-label"
+									defaultValue={normalization}
+									name="normalization-radio-buttons-group"
+									onChange={(_event, newValue) =>
+										setNormalization(newValue as NormalizationValue)
+									}
+									row
+									value={normalization}
+								>
+									{NORMALIZATION_VALUES.map((normalizationValue) => (
+										<FormControlLabel
+											control={<Radio />}
+											key={normalizationValue}
+											label={normalizationValue}
+											value={normalizationValue}
+										/>
+									))}
+								</RadioGroup>
+							</FormControl>
+							<canvas ref={radarChartRef} />
+						</Stack>
 					</Stack>
 				</Stack>
 			</div>
