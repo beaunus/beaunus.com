@@ -597,7 +597,17 @@ const SongChart: NextPage = () => {
 																	<div>
 																		{CHORD_QUALITY_BY_NAME[
 																			chord.qualityName
-																		].decorate(chord.root)}
+																		].decorate(
+																			chord.root.includes("/")
+																				? chord.root.split("/")[
+																						Number(
+																							circleOfFifths.indexOf(
+																								NOTE_NAMES[tonicIndex]
+																							) > 5
+																						)
+																				  ]
+																				: chord.root
+																		)}
 																	</div>
 																</>
 															) : (
