@@ -484,7 +484,9 @@ const SongChart: NextPage = () => {
 						aria-label="tonic"
 						exclusive
 						fullWidth
-						onChange={(_event, newValue) => setTonicIndex(newValue)}
+						onChange={(_event, newValue) => {
+							if (newValue !== null) setTonicIndex(newValue);
+						}}
 						size="small"
 						value={tonicIndex}
 					>
