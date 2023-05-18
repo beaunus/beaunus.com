@@ -262,6 +262,11 @@ const notesInChord = ({ qualityName, root }: Chord) =>
 		  )
 		: [];
 
+const notesInScale = (tonicIndex: number) =>
+	[0, 2, 4, 5, 7, 9, 11].map(
+		(interval) => NOTE_NAMES[(tonicIndex + interval) % 12]
+	);
+
 const SongChart: NextPage = () => {
 	const radarChartRef = useRef<HTMLCanvasElement>(null);
 
@@ -280,6 +285,11 @@ const SongChart: NextPage = () => {
 			`hsl(${(index / sectionNames.length) * 360}, 100%, 50%, 0.5)`,
 		])
 	);
+
+	const chordsInSong = _.uniqBy(
+		sections.flatMap((section) => section.chords).filter(({ root }) => root),
+		({ qualityName, root }) => `${root}-${qualityName}`
+	).map(({ qualityName, root }) => ({ qualityName, root }));
 
 	const noteNameCountsBySection = Object.fromEntries(
 		Object.entries(_.groupBy(sections, "name")).map(
@@ -302,10 +312,6 @@ const SongChart: NextPage = () => {
 					),
 			]
 		)
-	);
-
-	const notesInScale = [0, 2, 4, 5, 7, 9, 11].map(
-		(interval) => NOTE_NAMES[(tonicIndex + interval) % 12]
 	);
 
 	useEffect(
@@ -482,15 +488,29 @@ const SongChart: NextPage = () => {
 						size="small"
 						value={tonicIndex}
 					>
-						{NOTE_NAMES.map((noteName, index) => (
-							<ToggleButton
-								aria-label={noteName}
-								key={`tonic-${noteName}-${index}`}
-								value={index}
-							>
-								{noteName}
-							</ToggleButton>
-						))}
+						{NOTE_NAMES.map((noteName, index) => {
+							const percentChordsOutOfKey =
+								chordsInSong.filter((chord) =>
+									notesInChord(chord).some(
+										(noteNameInChord) =>
+											!notesInScale(index).includes(noteNameInChord)
+									)
+								).length / chordsInSong.length;
+							return (
+								<ToggleButton
+									aria-label={noteName}
+									key={`tonic-${noteName}-${index}`}
+									style={{
+										backgroundColor: `hsl(${hueByNoteName[noteName]}, ${
+											100 - 100 * percentChordsOutOfKey
+										}%, ${75 + 25 * percentChordsOutOfKey}%)`,
+									}}
+									value={index}
+								>
+									{noteName}
+								</ToggleButton>
+							);
+						})}
 					</ToggleButtonGroup>
 					<Stack direction={{ md: "column", xl: "row" }}>
 						<Stack className="w-full max-w-5xl">
@@ -543,7 +563,8 @@ const SongChart: NextPage = () => {
 															  }, 100%, 50%, 0.3)`
 															: "#ccc",
 														...(notesInChord(chord).some(
-															(noteName) => !notesInScale.includes(noteName)
+															(noteName) =>
+																!notesInScale(tonicIndex).includes(noteName)
 														)
 															? { border: "solid red 2px" }
 															: {}),
