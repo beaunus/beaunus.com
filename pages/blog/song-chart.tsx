@@ -533,71 +533,74 @@ const SongChart: NextPage = () => {
 										marginTop={1}
 										rowGap={1}
 									>
-										{section.chords.map((chord, chordIndex) => (
-											<div
-												key={`${section}-${sectionIndex}-${chord.root}-${chordIndex}`}
-												style={{
-													width: `${
-														100 * (chord.durationInBeats / NUM_BEATS_PER_ROW)
-													}%`,
-												}}
-											>
-												<Stack
-													alignItems="center"
-													className="px-1 mx-1 h-full"
-													direction="row"
-													justifyContent="center"
-													onClick={(event) => {
-														if (event.detail === 2) {
-															setTargetChordIndexes({
-																chordIndex,
-																sectionIndex,
-															});
-															setIsChordDialogOpen(true);
-														}
-													}}
+										{section.chords.map((chord, chordIndex) => {
+											const isChordInKey = notesInChord(chord).every(
+												(noteName) =>
+													notesInScale(tonicIndex).includes(noteName)
+											);
+											return (
+												<div
+													key={`${section}-${sectionIndex}-${chord.root}-${chordIndex}`}
 													style={{
-														backgroundColor: chord.root
-															? `hsl(${
-																	hueByNoteName[chord.root]
-															  }, 100%, 50%, 0.3)`
-															: "#ccc",
-														...(notesInChord(chord).some(
-															(noteName) =>
-																!notesInScale(tonicIndex).includes(noteName)
-														)
-															? { border: "solid red 2px" }
-															: {}),
+														width: `${
+															100 * (chord.durationInBeats / NUM_BEATS_PER_ROW)
+														}%`,
 													}}
 												>
-													<Stack alignItems="center" direction="column">
-														{chord.root && chord.qualityName ? (
-															<>
-																<div>
-																	{CHORD_QUALITY_BY_NAME[
-																		chord.qualityName
-																	].decorate(
-																		FUNCTION_BY_INTERVAL[
-																			(NOTE_NAMES.indexOf(chord.root) -
-																				tonicIndex +
-																				12) %
-																				12
-																		]
-																	)}
-																</div>
-																<div>
-																	{CHORD_QUALITY_BY_NAME[
-																		chord.qualityName
-																	].decorate(chord.root)}
-																</div>
-															</>
-														) : (
-															"None"
-														)}
+													<Stack
+														alignItems="center"
+														className="px-1 mx-1 h-full"
+														direction="row"
+														justifyContent="center"
+														onClick={(event) => {
+															if (event.detail === 2) {
+																setTargetChordIndexes({
+																	chordIndex,
+																	sectionIndex,
+																});
+																setIsChordDialogOpen(true);
+															}
+														}}
+														style={{
+															backgroundColor: chord.root
+																? `hsl(${
+																		hueByNoteName[chord.root]
+																  }, 100%, 50%, 0.3)`
+																: "#ccc",
+															...(isChordInKey
+																? {}
+																: { border: "solid red 2px" }),
+														}}
+													>
+														<Stack alignItems="center" direction="column">
+															{chord.root && chord.qualityName ? (
+																<>
+																	<div>
+																		{CHORD_QUALITY_BY_NAME[
+																			chord.qualityName
+																		].decorate(
+																			FUNCTION_BY_INTERVAL[
+																				(NOTE_NAMES.indexOf(chord.root) -
+																					tonicIndex +
+																					12) %
+																					12
+																			]
+																		)}
+																	</div>
+																	<div>
+																		{CHORD_QUALITY_BY_NAME[
+																			chord.qualityName
+																		].decorate(chord.root)}
+																	</div>
+																</>
+															) : (
+																"None"
+															)}
+														</Stack>
 													</Stack>
-												</Stack>
-											</div>
-										))}
+												</div>
+											);
+										})}
 									</Stack>
 								</Stack>
 							))}
