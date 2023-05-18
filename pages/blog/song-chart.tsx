@@ -1,19 +1,23 @@
-import { FormControlLabel, Stack, TextField } from "@mui/material";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import InputLabel from "@mui/material/InputLabel";
-import ListItemText from "@mui/material/ListItemText";
-import MenuItem from "@mui/material/MenuItem";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import Select from "@mui/material/Select";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import {
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
+	FormControl,
+	FormControlLabel,
+	FormLabel,
+	InputLabel,
+	ListItemText,
+	MenuItem,
+	Radio,
+	RadioGroup,
+	Select,
+	Stack,
+	TextField,
+	ToggleButton,
+	ToggleButtonGroup,
+} from "@mui/material";
 import ChartJS from "chart.js/auto";
 import _ from "lodash";
 import type { NextPage } from "next";
