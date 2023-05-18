@@ -571,7 +571,11 @@ const SongChart: NextPage = () => {
 																  }, 100%, 50%, 0.3)`
 																: "#ccc",
 															...(percentNotesOutOfKey > 0
-																? { border: "solid red 2px" }
+																? {
+																		border: `double rgb(255, 0, 0, ${
+																			0.1 + 0.9 * percentNotesOutOfKey
+																		}) ${2 + 6 * percentNotesOutOfKey}px`,
+																  }
 																: {}),
 														}}
 													>
