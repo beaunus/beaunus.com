@@ -20,8 +20,10 @@ import {
 } from "@mui/material";
 import ChartJS from "chart.js/auto";
 import _ from "lodash";
+import LZString from "lz-string";
 import type { NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { ReactNode, useEffect, useRef, useState } from "react";
 
 import { playChord } from "../../utils/audio";
@@ -242,6 +244,8 @@ const notesInScale = (tonicIndex: number) =>
 const SongChart: NextPage = () => {
 	const radarChartRef = useRef<HTMLCanvasElement>(null);
 
+	const router = useRouter();
+
 	const [audioCtx, setAudioCtx] = useState<AudioContext>();
 	const [isChordDialogOpen, setIsChordDialogOpen] = useState(false);
 	const [normalization, setNormalization] = useState<NormalizationValue>("max");
@@ -290,6 +294,28 @@ const SongChart: NextPage = () => {
 			]
 		)
 	);
+
+	useEffect(() => {
+		console.log(router.query.thing);
+		if (router.query.thing)
+			console.log(
+				JSON.parse(LZString.decompressFromUTF16(router.query.thing.toString()))
+			);
+	}, [router.isReady]);
+
+	useEffect(() => {
+		const stringified = JSON.stringify(sections);
+		const encoded = LZString.compressToUTF16(stringified);
+		const decoded = LZString.decompressFromUTF16(encoded);
+		const parsed = JSON.parse(decoded);
+		console.log({
+			sections,
+			stringified,
+			encoded,
+			decoded,
+			parsed,
+		});
+	}, [sections]);
 
 	useEffect(
 		function createChart() {
