@@ -126,10 +126,6 @@ const DEFAULT_SECTIONS: Section[] = [
 			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
 			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
 			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
-			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
-			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
-			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
-			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
 		],
 		name: "Verse",
 	},
@@ -160,10 +156,6 @@ const DEFAULT_SECTIONS: Section[] = [
 	},
 	{
 		chords: [
-			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
-			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
-			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
-			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
 			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
 			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
 			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
