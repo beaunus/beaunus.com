@@ -188,7 +188,7 @@ export const NOTE_NAMES = [
 	"A",
 	"A♯/B♭",
 	"B",
-];
+] as const;
 
 export const OSCILLATOR_TYPES: OscillatorType[] = [
 	"sawtooth",
