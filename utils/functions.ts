@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { A_FREQUENCY, A_KEY_NUMBER } from "./constants";
+import { A_FREQUENCY, A_KEY_NUMBER } from "./constants/music";
 
 export const areRotations = <T>(arrayA: T[], arrayB: T[]) => {
 	for (let i = 0; i < arrayA.length; ++i)

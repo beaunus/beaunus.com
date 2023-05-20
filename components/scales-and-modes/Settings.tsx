@@ -2,7 +2,7 @@ import _ from "lodash";
 import React, { useContext } from "react";
 
 import { AudioConfigContext } from "../../contexts/AudioConfigContext";
-import { NOTE_NAMES, OSCILLATOR_TYPES } from "../../utils/constants";
+import { NOTE_NAMES, OSCILLATOR_TYPES } from "../../utils/constants/music";
 
 export const Settings: React.FC = () => {
 	const {

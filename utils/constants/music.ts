@@ -1,9 +1,8 @@
 import _ from "lodash";
 import { ReactNode } from "react";
 
-import { INTERVALS, ModeSet, ScaleDirection } from "../types";
-
-import { combineElements, generateAllCombinations } from "./functions";
+import { INTERVALS, ModeSet, ScaleDirection } from "../../types";
+import { combineElements, generateAllCombinations } from "../functions";
 
 const {
 	perfectUnison,

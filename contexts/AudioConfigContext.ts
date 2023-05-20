@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ModeCategoryName, OSCILLATOR_TYPES } from "../utils/constants";
+import { ModeCategoryName, OSCILLATOR_TYPES } from "../utils/constants/music";
 
 export const AudioConfigContext = React.createContext({
 	/* eslint-disable @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars, sort-keys */

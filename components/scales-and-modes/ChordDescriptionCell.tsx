@@ -8,7 +8,7 @@ import {
 	INDEXES_BY_CHORD_CLASS,
 	OSCILLATOR_TYPES,
 	CHORD_NAME_BY_INTERVALS,
-} from "../../utils/constants";
+} from "../../utils/constants/music";
 
 export const ChordDescriptionCell: React.FC<{
 	intervals: number[];

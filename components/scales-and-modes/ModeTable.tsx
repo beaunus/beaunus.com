@@ -3,7 +3,7 @@ import React, { FC } from "react";
 
 import { AudioConfigContext } from "../../contexts/AudioConfigContext";
 import { ModeSet } from "../../types";
-import { INTERVALS_OF_WHITE_KEYS } from "../../utils/constants";
+import { INTERVALS_OF_WHITE_KEYS } from "../../utils/constants/music";
 import { rotateArray } from "../../utils/functions";
 
 import { ModeRow } from "./ModeRow";

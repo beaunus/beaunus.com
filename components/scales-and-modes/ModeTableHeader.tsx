@@ -8,7 +8,7 @@ import {
 	INTERVALS_OF_WHITE_KEYS,
 	NOTE_NAMES,
 	OSCILLATOR_TYPES,
-} from "../../utils/constants";
+} from "../../utils/constants/music";
 import { rotateArray } from "../../utils/functions";
 
 export const ModeTableHeader: React.FC<{

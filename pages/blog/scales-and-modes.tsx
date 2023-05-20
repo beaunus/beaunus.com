@@ -9,7 +9,7 @@ import {
 	OSCILLATOR_TYPES,
 	ModeCategoryName,
 	MODES_BY_CATEGORY_NAME,
-} from "../../utils/constants";
+} from "../../utils/constants/music";
 import { areRotations } from "../../utils/functions";
 
 const ScalesAndModes: NextPage = () => {

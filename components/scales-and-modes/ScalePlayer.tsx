@@ -6,7 +6,7 @@ import { playScale } from "../../utils/audio";
 import {
 	OSCILLATOR_TYPES,
 	LABEL_BY_SCALE_DIRECTION,
-} from "../../utils/constants";
+} from "../../utils/constants/music";
 
 export const ScalePlayer: React.FC<{
 	keyNumbers: number[];

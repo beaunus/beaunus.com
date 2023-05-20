@@ -2,7 +2,7 @@ import _ from "lodash";
 import React from "react";
 
 import { AudioConfigContext } from "../../contexts/AudioConfigContext";
-import { BASE_INTERVALS } from "../../utils/constants";
+import { BASE_INTERVALS } from "../../utils/constants/music";
 import { romanNumerals, rotateArray } from "../../utils/functions";
 
 import { ChordDescriptionCell } from "./ChordDescriptionCell";
