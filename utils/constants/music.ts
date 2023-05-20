@@ -65,6 +65,21 @@ export const CHORD_NAME_BY_INTERVALS = Object.fromEntries(
 	]).entries()
 );
 
+export const FUNCTION_BY_INTERVAL = [
+	"i",
+	"♭ii",
+	"ii",
+	"♭iii",
+	"iii",
+	"iv",
+	"♭v",
+	"v",
+	"♭vi",
+	"vi",
+	"♭vii",
+	"vii",
+] as const;
+
 export const INDEXES_BY_CHORD_CLASS = Object.fromEntries(
 	Object.entries({
 		/* eslint-disable sort-keys */
