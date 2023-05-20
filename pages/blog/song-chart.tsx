@@ -24,7 +24,12 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { ReactNode, useEffect, useRef, useState } from "react";
 
-import { FUNCTION_BY_INTERVAL, NOTE_NAMES } from "../../utils/constants/music";
+import { playChord } from "../../utils/audio";
+import {
+	C_KEY_NUMBER,
+	FUNCTION_BY_INTERVAL,
+	NOTE_NAMES,
+} from "../../utils/constants/music";
 
 const CHORD_QUALITY_BY_NAME: Record<string, ChordQuality> = {
 	diminished: {
@@ -245,6 +250,7 @@ const notesInScale = (tonicIndex: number) =>
 const SongChart: NextPage = () => {
 	const radarChartRef = useRef<HTMLCanvasElement>(null);
 
+	const [audioCtx, setAudioCtx] = useState<AudioContext>();
 	const [isChordDialogOpen, setIsChordDialogOpen] = useState(false);
 	const [normalization, setNormalization] = useState<NormalizationValue>("max");
 	const [sections, setSections] = useState<Section[]>(DEFAULT_SECTIONS);
@@ -253,6 +259,10 @@ const SongChart: NextPage = () => {
 		sectionIndex: 0,
 	});
 	const [tonicIndex, setTonicIndex] = useState(0);
+
+	function activateAudio() {
+		if (!audioCtx) setAudioCtx(new window.AudioContext());
+	}
 
 	const colorBySectionName = Object.fromEntries(
 		_.uniqBy(sections, "name").map(({ name }, index, { length }) => [
@@ -450,7 +460,7 @@ const SongChart: NextPage = () => {
 			<Head>
 				<title>Song Chart | Beaunus</title>
 			</Head>
-			<div className="flex flex-col gap-5 p-4 w-full">
+			<div className="flex flex-col gap-5 p-4 w-full" onClick={activateAudio}>
 				<div className="text-2xl font-semibold text-center text-cyan-700">
 					Song Chart
 				</div>
@@ -531,6 +541,32 @@ const SongChart: NextPage = () => {
 														direction="row"
 														justifyContent="center"
 														onClick={(event) => {
+															if (event.detail === 1) {
+																playChord({
+																	audioCtx,
+																	durationInSeconds: 0.5,
+																	keyNumbers: notesInChord(chord)
+																		.map((noteName) =>
+																			NOTE_NAMES.indexOf(noteName)
+																		)
+																		.map(
+																			(
+																				indexOfNoteInNoteNames,
+																				indexOfNoteInChord,
+																				indexesOfNotesInChord
+																			) =>
+																				(indexOfNoteInChord > 0 &&
+																				indexOfNoteInNoteNames <
+																					indexesOfNotesInChord[
+																						indexOfNoteInChord - 1
+																					]
+																					? indexOfNoteInNoteNames + 12
+																					: indexOfNoteInNoteNames) +
+																				C_KEY_NUMBER
+																		),
+																	oscillatorType: "sine",
+																});
+															}
 															if (event.detail === 2) {
 																setTargetChordIndexes({
 																	chordIndex,

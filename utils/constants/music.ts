@@ -65,6 +65,8 @@ export const CHORD_NAME_BY_INTERVALS = Object.fromEntries(
 	]).entries()
 );
 
+export const C_KEY_NUMBER = 60;
+
 export const FUNCTION_BY_INTERVAL = [
 	"i",
 	"♭ii",
