@@ -20,10 +20,13 @@ import {
 } from "@mui/material";
 import ChartJS from "chart.js/auto";
 import _ from "lodash";
+import LZString from "lz-string";
 import type { NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { ReactNode, useEffect, useRef, useState } from "react";
 
+import { isBrowser } from "../../utils";
 import { playChord } from "../../utils/audio";
 import {
 	C_KEY_NUMBER,
@@ -242,6 +245,8 @@ const notesInScale = (tonicIndex: number) =>
 const SongChart: NextPage = () => {
 	const radarChartRef = useRef<HTMLCanvasElement>(null);
 
+	const router = useRouter();
+
 	const [audioCtx, setAudioCtx] = useState<AudioContext>();
 	const [isChordDialogOpen, setIsChordDialogOpen] = useState(false);
 	const [normalization, setNormalization] = useState<NormalizationValue>("max");
@@ -289,6 +294,33 @@ const SongChart: NextPage = () => {
 					),
 			]
 		)
+	);
+
+	useEffect(() => {
+		if (isBrowser()) {
+			const encodedSectionsFromUrl = new URLSearchParams(
+				window.location.search
+			).get("sections");
+			if (encodedSectionsFromUrl) {
+				return setSections(
+					JSON.parse(LZString.decompressFromBase64(encodedSectionsFromUrl))
+				);
+			}
+		}
+	}, []);
+
+	useEffect(
+		function updateQueryString() {
+			router.replace(
+				{},
+				{
+					query: {
+						sections: LZString.compressToBase64(JSON.stringify(sections)),
+					},
+				}
+			);
+		},
+		[sections]
 	);
 
 	useEffect(
@@ -344,7 +376,7 @@ const SongChart: NextPage = () => {
 
 	const ChordDialog = () => {
 		const [chord, setChord] = useState(
-			sections[targetChordIndexes.sectionIndex].chords[
+			sections[targetChordIndexes.sectionIndex]?.chords[
 				targetChordIndexes.chordIndex
 			]
 		);

@@ -70,8 +70,6 @@ const StandardLevelSlider: React.FC = () => (
 	</Grid>
 );
 
-export const isBrowser = (): boolean => typeof window !== "undefined";
-
 const Radar: NextPage = () => {
 	const [dimensions, setDimensions] = useState<Dimension[]>([]);
 	const [pendingDimensionName, setPendingDimensionName] = useState<string>("");
