@@ -24,22 +24,8 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { ReactNode, useEffect, useRef, useState } from "react";
 
-import { NOTE_NAMES } from "../../utils/constants/music";
+import { FUNCTION_BY_INTERVAL, NOTE_NAMES } from "../../utils/constants/music";
 
-const FUNCTION_BY_INTERVAL = [
-	"i",
-	"♭ii",
-	"ii",
-	"♭iii",
-	"iii",
-	"iv",
-	"♭v",
-	"v",
-	"♭vi",
-	"vi",
-	"♭vii",
-	"vii",
-];
 const CHORD_QUALITY_BY_NAME: Record<string, ChordQuality> = {
 	diminished: {
 		decorate: (label) => (
