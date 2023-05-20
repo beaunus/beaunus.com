@@ -296,7 +296,7 @@ const SongChart: NextPage = () => {
 			([sectionName, instances]) => [
 				sectionName,
 				instances
-					.flatMap((instance) => instance.chords)
+					.flatMap(({ chords }) => chords)
 					.reduce<Partial<Record<NoteName, number>>>(
 						(noteNameCounts, chord) =>
 							Object.assign(
