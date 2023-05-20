@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+body > div:first-child,
+div#__next,
+div#__next > div {
+	height: 100%;
+}
+
+section:nth-child(even):not(:last-of-type) {
+	-webkit-clip-path: polygon(0 0%, 100% 4%, 100% 96%, 0% 100%);
+	clip-path: polygon(0 0%, 100% 4%, 100% 96%, 0% 100%);
+}
+
+$border: solid black 1px;
+
+.triad {
+	&-major {
+		@apply text-blue-600;
+	}
+
+	&-minor {
+		@apply lowercase text-red-700;
+	}
+
+	&-diminished {
+		@apply text-green-800;
+	}
+}
+
+.bright {
+	@apply bg-green-500;
+}
+.dark {
+	@apply bg-red-500;
+}
+
+.bg-fade-0 {
+	@apply bg-opacity-0;
+}
+.bg-fade-10 {
+	@apply bg-opacity-10;
+}
+.bg-fade-20 {
+	@apply bg-opacity-20;
+}
+.bg-fade-30 {
+	@apply bg-opacity-30;
+}
+.bg-fade-40 {
+	@apply bg-opacity-40;
+}
+.bg-fade-50 {
+	@apply bg-opacity-50;
+}
+.bg-fade-60 {
+	@apply bg-opacity-60;
+}
+.bg-fade-70 {
+	@apply bg-opacity-70;
+}
+.bg-fade-80 {
+	@apply bg-opacity-80;
+}
+.bg-fade-90 {
+	@apply bg-opacity-90;
+}
+.bg-fade-100 {
+	@apply bg-opacity-100;
+}
+
+.fade-0 {
+	@apply opacity-0;
+}
+.fade-10 {
+	@apply opacity-10;
+}
+.fade-20 {
+	@apply opacity-20;
+}
+.fade-30 {
+	@apply opacity-30;
+}
+.fade-40 {
+	@apply opacity-40;
+}
+.fade-50 {
+	@apply opacity-50;
+}
+.fade-60 {
+	@apply opacity-60;
+}
+.fade-70 {
+	@apply opacity-70;
+}
+.fade-80 {
+	@apply opacity-80;
+}
+.fade-90 {
+	@apply opacity-90;
+}
+.fade-100 {
+	@apply opacity-100;
+}
+
+table.modes-table {
+	col.white-key {
+		&.ionian {
+			@apply bg-gray-100;
+		}
+		&:not(.ionian) {
+			@apply bg-white;
+		}
+	}
+	col.black-key {
+		&.ionian {
+			@apply bg-gray-300;
+		}
+		&:not(.ionian) {
+			@apply bg-gray-400;
+		}
+	}
+	tr {
+		&:nth-child(even) {
+			td {
+				@apply border-t-2 border-t-black;
+			}
+		}
+		&:nth-child(odd) {
+			td {
+				@apply border-t-2 border-dashed border-t-black;
+			}
+		}
+		&:last-child {
+			td {
+				@apply border-b-2 border-b-black;
+			}
+		}
+		td,
+		th {
+			&:not(:first-child) {
+				@apply border-l-2 border-l-black text-center;
+			}
+			&:last-child {
+				@apply border-r-2 border-r-black text-center;
+			}
+			&.spacer {
+				border-bottom: "solid black 1px";
+				height: "10px";
+			}
+		}
+	}
+}

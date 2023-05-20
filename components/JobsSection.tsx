@@ -232,7 +232,7 @@ const jobs = [
 		),
 		logoImage: { height: 300, isRounded: true, src: Photos.BoyPiano },
 		title: "Scales and Modes",
-		url: "http://scales-and-modes.beaunus.com",
+		url: "/blog/scales-and-modes",
 	},
 ];
 

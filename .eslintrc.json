@@ -102,6 +102,6 @@
     },
     "jsdoc": { "mode": "typescript" },
     "react": { "version": "detect" },
-    "tailwindcss": { "cssFiles": ["styles/**/*.css"] }
+    "tailwindcss": { "cssFiles": ["styles/**/*.scss"] }
   }
 }
