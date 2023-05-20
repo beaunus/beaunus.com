@@ -56,5 +56,5 @@ export const romanNumerals = (intervals: number[], baseIntervals: number[]) =>
 			) + ["I", "II", "III", "IV", "V", "VI", "VII"][index]
 	);
 
-export const rotateArray = <T>(array: T[], offset: number) =>
+export const rotateArray = <T>(array: readonly T[], offset: number) =>
 	array.slice(offset).concat(array.slice(0, offset));

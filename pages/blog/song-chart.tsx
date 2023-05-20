@@ -24,20 +24,8 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { ReactNode, useEffect, useRef, useState } from "react";
 
-const NOTE_NAMES = [
-	"C",
-	"C♯/D♭",
-	"D",
-	"D♯/E♭",
-	"E",
-	"F",
-	"F♯/G♭",
-	"G",
-	"G♯/A♭",
-	"A",
-	"A♯/B♭",
-	"B",
-] as const;
+import { NOTE_NAMES } from "../../utils/constants/music";
+
 const FUNCTION_BY_INTERVAL = [
 	"i",
 	"♭ii",
