@@ -104,13 +104,11 @@ type ChordQuality = {
 	spelling: readonly number[];
 };
 type Chord = {
+	durationInBeats: number;
 	qualityName?: keyof typeof CHORD_QUALITY_BY_NAME;
 	root: NoteName | null;
 };
-type Section = {
-	chords: (Chord & { durationInBeats: number })[];
-	name: string;
-};
+type Section = { chords: Chord[]; name: string };
 
 const circleOfFifths = NOTE_NAMES.map(
 	(_noteName, index) => NOTE_NAMES[(index * 7) % NOTE_NAMES.length]
@@ -252,7 +250,10 @@ const DEFAULT_SECTIONS: Section[] = [
 	},
 ];
 
-const notesInChord = ({ qualityName, root }: Chord) =>
+const notesInChord = ({
+	qualityName,
+	root,
+}: Pick<Chord, "qualityName" | "root">) =>
 	root && qualityName
 		? CHORD_QUALITY_BY_NAME[qualityName].spelling.map(
 				(numHalfSteps) =>
