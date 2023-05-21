@@ -1,3 +1,4 @@
+import Editor from "@monaco-editor/react";
 import {
 	Button,
 	Dialog,
@@ -14,6 +15,7 @@ import {
 	RadioGroup,
 	Select,
 	Stack,
+	Switch,
 	TextField,
 	ToggleButton,
 	ToggleButtonGroup,
@@ -251,6 +253,7 @@ const SongChart: NextPage = () => {
 	const [isChordDialogOpen, setIsChordDialogOpen] = useState(false);
 	const [normalization, setNormalization] = useState<NormalizationValue>("max");
 	const [sections, setSections] = useState<Section[]>(DEFAULT_SECTIONS);
+	const [shouldShowEditor, setShouldShowEditor] = useState(false);
 	const [targetChordIndexes, setTargetChordIndexes] = useState({
 		chordIndex: 0,
 		sectionIndex: 0,
@@ -523,7 +526,41 @@ const SongChart: NextPage = () => {
 							);
 						})}
 					</ToggleButtonGroup>
-					<Stack direction={{ md: "column", xl: "row" }}>
+					<FormControlLabel
+						control={
+							<Switch
+								checked={shouldShowEditor}
+								onChange={(_event, newValue) => setShouldShowEditor(newValue)}
+							/>
+						}
+						label="Show Editor"
+					/>
+
+					<Stack className="border-2" direction={{ md: "column", xl: "row" }}>
+						{shouldShowEditor ? (
+							<Editor
+								className=" min-h-screen"
+								defaultLanguage="json"
+								defaultValue={JSON.stringify(sections)}
+								height="100%"
+								onChange={(newValue) => {
+									if (newValue)
+										try {
+											setSections(JSON.parse(newValue));
+										} catch (error) {
+											// No-op
+										}
+								}}
+								onMount={(editor) => {
+									setTimeout(
+										() =>
+											editor.getAction("editor.action.formatDocument").run(),
+										100
+									);
+								}}
+								options={{ tabSize: 2 }}
+							/>
+						) : null}
 						<Stack className="w-full max-w-5xl">
 							{sections.map((section, sectionIndex) => (
 								<Stack
