@@ -551,12 +551,32 @@ const SongChart: NextPage = () => {
 											// No-op
 										}
 								}}
-								onMount={(editor) => {
+								onMount={(editor, monaco) => {
 									setTimeout(
 										() =>
 											editor.getAction("editor.action.formatDocument").run(),
 										100
 									);
+									monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+										validate: true,
+										schemas: [
+											{
+												uri: "http://myserver/foo-schema.json", // id of the first schema
+												fileMatch: ["*"], // associate with our model
+												schema: {
+													type: "object",
+													properties: {
+														p1: {
+															enum: ["v1", "v2"],
+														},
+														p2: {
+															$ref: "http://myserver/bar-schema.json", // reference the second schema
+														},
+													},
+												},
+											},
+										],
+									});
 								}}
 								options={{ tabSize: 2 }}
 							/>
