@@ -539,7 +539,7 @@ const SongChart: NextPage = () => {
 					<Stack className="border-2" direction={{ md: "column", xl: "row" }}>
 						{shouldShowEditor ? (
 							<Editor
-								className=" min-h-screen"
+								className="min-h-screen"
 								defaultLanguage="json"
 								defaultValue={JSON.stringify(sections)}
 								height="100%"
@@ -554,7 +554,7 @@ const SongChart: NextPage = () => {
 								onMount={(editor) => {
 									setTimeout(
 										() =>
-											editor.getAction("editor.action.formatDocument").run(),
+											editor.getAction("editor.action.formatDocument")?.run(),
 										100
 									);
 								}}

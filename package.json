@@ -29,6 +29,7 @@
 		"linkifyjs": "^4.1.0",
 		"lodash": "^4.17.21",
 		"lz-string": "^1.5.0",
+		"monaco-editor": "^0.38.0",
 		"multimatch": "^6.0.0",
 		"next": "^13.1.1",
 		"react": "^18.2.0",
