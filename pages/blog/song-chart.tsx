@@ -26,7 +26,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { ReactNode, useEffect, useRef, useState } from "react";
 
-import { isBrowser } from "../../utils";
+import { isBrowser, moduloPositive } from "../../utils";
 import { playChord } from "../../utils/audio";
 import {
 	C_KEY_NUMBER,
@@ -232,14 +232,14 @@ const notesInChord = ({
 		? CHORD_QUALITY_BY_NAME[qualityName].spelling.map(
 				(numHalfSteps) =>
 					NOTE_NAMES[
-						(NOTE_NAMES.indexOf(root) + numHalfSteps) % NOTE_NAMES.length
+						moduloPositive(NOTE_NAMES.indexOf(root) + numHalfSteps, 12)
 					]
 		  )
 		: [];
 
 const notesInScale = (tonicIndex: number) =>
 	[0, 2, 4, 5, 7, 9, 11].map(
-		(interval) => NOTE_NAMES[(tonicIndex + interval) % 12]
+		(interval) => NOTE_NAMES[moduloPositive(tonicIndex + interval, 12)]
 	);
 
 const SongChart: NextPage = () => {

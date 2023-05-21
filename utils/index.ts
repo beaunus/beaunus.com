@@ -5,6 +5,9 @@ export const identity = <T>(x: T) => x;
 
 export const isBrowser = (): boolean => typeof window !== "undefined";
 
+export const moduloPositive = (dividend: number, divisor: number) =>
+	((dividend % divisor) + divisor) % divisor;
+
 export function sleep(ms: number) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }
