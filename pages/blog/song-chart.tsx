@@ -89,10 +89,28 @@ type ChordQuality = {
 };
 type Chord = {
 	durationInBeats: number;
-	qualityName?: keyof typeof CHORD_QUALITY_BY_NAME;
-	root: NoteName | null;
+	qualityName?: ChordQualityName;
+	root?: NoteName;
+};
+const chordSchema = {
+	$schema: "http://json-schema.org/draft-07/schema#",
+	properties: {
+		durationInBeats: { type: "number" },
+		qualityName: { enum: Object.keys(CHORD_QUALITY_BY_NAME), type: "string" },
+		root: { enum: NOTE_NAMES, type: "string" },
+	},
+	required: ["durationInBeats"],
+	type: "object",
 };
 type Section = { chords: Chord[]; name: string };
+const sectionSchema = {
+	$schema: "http://json-schema.org/draft-07/schema#",
+	properties: {
+		chords: { items: chordSchema, type: "array" },
+		name: { type: "string" },
+	},
+	type: "object",
+};
 
 const circleOfFifths = NOTE_NAMES.map(
 	(_noteName, index) => NOTE_NAMES[(index * 7) % NOTE_NAMES.length]
@@ -107,8 +125,8 @@ const hueByNoteName = Object.fromEntries(
 const DEFAULT_SECTIONS: Section[] = [
 	{
 		chords: [
-			{ durationInBeats: 8, root: null },
-			{ durationInBeats: 8, root: null },
+			{ durationInBeats: 8 },
+			{ durationInBeats: 8 },
 			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
 			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
 			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
@@ -378,7 +396,7 @@ const SongChart: NextPage = () => {
 	);
 
 	const ChordDialog = () => {
-		const [chord, setChord] = useState(
+		const [chord, setChord] = useState<Chord>(
 			sections[targetChordIndexes.sectionIndex]?.chords[
 				targetChordIndexes.chordIndex
 			]
@@ -398,10 +416,11 @@ const SongChart: NextPage = () => {
 								id="root"
 								labelId="root-label"
 								onChange={({ target }) =>
-									setChord((old) => ({
-										...old,
-										root: target.value as NoteName,
-									}))
+									setChord((old) =>
+										old.qualityName
+											? { ...old, root: target.value as NoteName }
+											: old
+									)
 								}
 								value={chord?.root}
 							>
@@ -418,10 +437,11 @@ const SongChart: NextPage = () => {
 								id="quality"
 								labelId="quality-label"
 								onChange={({ target }) =>
-									setChord((old) => ({
-										...old,
-										qualityName: target.value as ChordQualityName,
-									}))
+									setChord((old) =>
+										old.root
+											? { ...old, qualityName: target.value as NoteName }
+											: old
+									)
 								}
 								value={chord?.qualityName}
 							>
@@ -551,12 +571,28 @@ const SongChart: NextPage = () => {
 											// No-op
 										}
 								}}
-								onMount={(editor) => {
+								onMount={(editor, monaco) => {
 									setTimeout(
 										() =>
 											editor.getAction("editor.action.formatDocument")?.run(),
 										100
 									);
+									monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+										schemas: [
+											{
+												fileMatch: ["*"],
+												schema: {
+													description: "Section",
+													items: sectionSchema,
+													minItems: 1,
+													type: "array",
+													uniqueItems: true,
+												},
+												uri: "song-chart",
+											},
+										],
+										validate: true,
+									});
 								}}
 								options={{ tabSize: 2 }}
 							/>
