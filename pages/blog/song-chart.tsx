@@ -173,6 +173,38 @@ const notesInScale = (tonicIndex: number) =>
 		(interval) => NOTE_NAMES[moduloPositive(tonicIndex + interval, 12)]
 	);
 
+const ChordLabel: React.FC<{ chord: Chord; tonicIndex: number }> = ({
+	chord,
+	tonicIndex,
+}) => (
+	<Stack alignItems="center" direction="column">
+		{chord.root &&
+		chord.qualityName &&
+		CHORD_QUALITY_BY_NAME[chord.qualityName] ? (
+			<>
+				<div>
+					{CHORD_QUALITY_BY_NAME[chord.qualityName].decorate(
+						FUNCTION_BY_INTERVAL[
+							(NOTE_NAMES.indexOf(chord.root) - tonicIndex + 12) % 12
+						]
+					)}
+				</div>
+				<div>
+					{CHORD_QUALITY_BY_NAME[chord.qualityName].decorate(
+						chord.root.includes("/")
+							? chord.root.split("/")[
+									Number(circleOfFifths.indexOf(NOTE_NAMES[tonicIndex]) > 5)
+							  ]
+							: chord.root
+					)}
+				</div>
+			</>
+		) : (
+			"None"
+		)}
+	</Stack>
+);
+
 const SongChart: NextPage = () => {
 	const radarChartRef = useRef<HTMLCanvasElement>(null);
 
@@ -502,43 +534,7 @@ const SongChart: NextPage = () => {
 																: {}),
 														}}
 													>
-														<Stack alignItems="center" direction="column">
-															{chord.root &&
-															chord.qualityName &&
-															CHORD_QUALITY_BY_NAME[chord.qualityName] ? (
-																<>
-																	<div>
-																		{CHORD_QUALITY_BY_NAME[
-																			chord.qualityName
-																		].decorate(
-																			FUNCTION_BY_INTERVAL[
-																				(NOTE_NAMES.indexOf(chord.root) -
-																					tonicIndex +
-																					12) %
-																					12
-																			]
-																		)}
-																	</div>
-																	<div>
-																		{CHORD_QUALITY_BY_NAME[
-																			chord.qualityName
-																		].decorate(
-																			chord.root.includes("/")
-																				? chord.root.split("/")[
-																						Number(
-																							circleOfFifths.indexOf(
-																								NOTE_NAMES[tonicIndex]
-																							) > 5
-																						)
-																				  ]
-																				: chord.root
-																		)}
-																	</div>
-																</>
-															) : (
-																"None"
-															)}
-														</Stack>
+														<ChordLabel chord={chord} tonicIndex={tonicIndex} />
 													</Stack>
 												</div>
 											);
