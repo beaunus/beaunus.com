@@ -312,6 +312,11 @@ const SongChart: NextPage = () => {
 								),
 								fill: true,
 								label: sectionName,
+								pointBorderColor: "black",
+								pointBorderWidth: (context) => {
+									console.log({ context });
+									return 5;
+								},
 							})
 						),
 						labels: circleOfFifths,
