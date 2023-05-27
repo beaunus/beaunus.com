@@ -116,6 +116,7 @@ type ChordQuality = {
 	spelling: readonly number[];
 };
 type Chord = {
+	bass?: NoteName;
 	durationInBeats: number;
 	qualityName?: ChordQualityName;
 	root?: NoteName;
@@ -123,6 +124,7 @@ type Chord = {
 const chordSchema = {
 	$schema: "http://json-schema.org/draft-07/schema#",
 	properties: {
+		bass: { enum: NOTE_NAMES, type: "string" },
 		durationInBeats: { type: "number" },
 		qualityName: { enum: Object.keys(CHORD_QUALITY_BY_NAME), type: "string" },
 		root: { enum: NOTE_NAMES, type: "string" },
@@ -151,17 +153,20 @@ const hueByNoteName = Object.fromEntries(
 );
 
 const notesInChord = ({
+	bass,
 	qualityName,
 	root,
-}: Pick<Chord, "qualityName" | "root">) =>
-	root && qualityName && CHORD_QUALITY_BY_NAME[qualityName]
-		? CHORD_QUALITY_BY_NAME[qualityName].spelling.map(
-				(numHalfSteps) =>
-					NOTE_NAMES[
-						moduloPositive(NOTE_NAMES.indexOf(root) + numHalfSteps, 12)
-					]
-		  )
-		: [];
+}: Pick<Chord, "bass" | "qualityName" | "root">) =>
+	(bass ? [bass] : []).concat(
+		...(root && qualityName && CHORD_QUALITY_BY_NAME[qualityName]
+			? CHORD_QUALITY_BY_NAME[qualityName].spelling.map(
+					(numHalfSteps) =>
+						NOTE_NAMES[
+							moduloPositive(NOTE_NAMES.indexOf(root) + numHalfSteps, 12)
+						]
+			  )
+			: [])
+	);
 
 const notesInScale = (tonicIndex: number) =>
 	[0, 2, 4, 5, 7, 9, 11].map(
