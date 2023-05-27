@@ -433,7 +433,7 @@ const SongChart: NextPage = () => {
 														className="px-1 mx-1 h-full"
 														direction="row"
 														justifyContent="center"
-														onClick={(event) => {
+														onClick={() => {
 															playChord({
 																audioCtx,
 																durationInSeconds: 0.5,
