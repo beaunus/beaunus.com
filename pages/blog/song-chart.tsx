@@ -187,6 +187,13 @@ const ChordLabel: React.FC<{ chord: Chord; tonicIndex: number }> = ({
 						(NOTE_NAMES.indexOf(chord.root) - tonicIndex + 12) % 12
 					]
 				)}
+				{chord.bass
+					? ` / ${
+							FUNCTION_BY_INTERVAL[
+								(NOTE_NAMES.indexOf(chord.bass) - tonicIndex + 12) % 12
+							]
+					  }`
+					: ""}
 			</div>
 			<div>
 				{CHORD_QUALITY_BY_NAME[chord.qualityName].decorate(
@@ -196,6 +203,7 @@ const ChordLabel: React.FC<{ chord: Chord; tonicIndex: number }> = ({
 						  ]
 						: chord.root
 				)}
+				{chord.bass ? ` / ${chord.bass}` : ""}
 			</div>
 		</Stack>
 	) : (
