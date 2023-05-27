@@ -47,6 +47,15 @@ const CHORD_QUALITY_BY_NAME: Record<string, ChordQuality> = {
 		spelling: [0, 3, 6, 10],
 	},
 	major: { decorate: (label) => label.toUpperCase(), spelling: [0, 4, 7] },
+	majorNinth: {
+		decorate: (label) => (
+			<>
+				{label.toUpperCase()}
+				<sup>Δ9</sup>
+			</>
+		),
+		spelling: [0, 4, 7, 11, 14],
+	},
 	majorSeventh: {
 		decorate: (label) => (
 			<>
@@ -57,6 +66,15 @@ const CHORD_QUALITY_BY_NAME: Record<string, ChordQuality> = {
 		spelling: [0, 4, 7, 11],
 	},
 	minor: { decorate: (label) => label.toLowerCase(), spelling: [0, 3, 7] },
+	minorNinth: {
+		decorate: (label) => (
+			<>
+				{label.toLowerCase()}
+				<sup>9</sup>
+			</>
+		),
+		spelling: [0, 3, 7, 10, 14],
+	},
 	minorSeventh: {
 		decorate: (label) => (
 			<>
