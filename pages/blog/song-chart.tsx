@@ -374,7 +374,7 @@ const SongChart: NextPage = () => {
 						/>
 					</Stack>
 
-					<Stack className="border-2" direction={{ md: "column", xl: "row" }}>
+					<Stack direction={{ md: "column", xl: "row" }}>
 						{shouldShowEditor ? (
 							<Editor
 								className="max-w-2xl min-h-screen"
