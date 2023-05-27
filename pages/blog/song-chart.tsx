@@ -76,6 +76,24 @@ const CHORD_QUALITY_BY_NAME: Record<string, ChordQuality> = {
 		spelling: [0, 3, 7, 10],
 	},
 	power: { decorate: (label) => `${label.toUpperCase()}5`, spelling: [0, 7] },
+	seventh: {
+		decorate: (label) => (
+			<>
+				{label.toUpperCase()}
+				<sup>7</sup>
+			</>
+		),
+		spelling: [0, 4, 7, 10],
+	},
+	sixth: {
+		decorate: (label) => (
+			<>
+				{label.toUpperCase()}
+				<sup>6</sup>
+			</>
+		),
+		spelling: [0, 4, 8],
+	},
 } as const;
 const NORMALIZATION_VALUES = ["none", "sum", "max"] as const;
 const NUM_BEATS_PER_ROW = 8;
