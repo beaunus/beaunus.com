@@ -1,22 +1,13 @@
 import Editor from "@monaco-editor/react";
 import {
-	Button,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogTitle,
 	FormControl,
 	FormControlLabel,
 	FormLabel,
-	InputLabel,
 	ListItemText,
-	MenuItem,
 	Radio,
 	RadioGroup,
-	Select,
 	Stack,
 	Switch,
-	TextField,
 	ToggleButton,
 	ToggleButtonGroup,
 } from "@mui/material";
@@ -164,14 +155,9 @@ const SongChart: NextPage = () => {
 	const router = useRouter();
 
 	const [audioCtx, setAudioCtx] = useState<AudioContext>();
-	const [isChordDialogOpen, setIsChordDialogOpen] = useState(false);
 	const [normalization, setNormalization] = useState<NormalizationValue>("max");
 	const [sections, setSections] = useState<Section[]>([]);
 	const [shouldShowEditor, setShouldShowEditor] = useState(false);
-	const [targetChordIndexes, setTargetChordIndexes] = useState({
-		chordIndex: 0,
-		sectionIndex: 0,
-	});
 	const [tonicIndex, setTonicIndex] = useState(0);
 
 	function activateAudio() {
@@ -294,113 +280,6 @@ const SongChart: NextPage = () => {
 		},
 		[normalization, sections, tonicIndex]
 	);
-
-	const ChordDialog = () => {
-		const [chord, setChord] = useState<Chord>(
-			sections[targetChordIndexes.sectionIndex]?.chords?.[
-				targetChordIndexes.chordIndex
-			]
-		);
-
-		return (
-			<Dialog
-				onClose={() => setIsChordDialogOpen(false)}
-				open={isChordDialogOpen}
-			>
-				<DialogTitle>Chord Details</DialogTitle>
-				<DialogContent>
-					<Stack className="p-2" direction="row" flexWrap="wrap" gap={2}>
-						<FormControl>
-							<InputLabel id="root-label">Root</InputLabel>
-							<Select
-								id="root"
-								labelId="root-label"
-								onChange={({ target }) =>
-									setChord((old) =>
-										old.qualityName
-											? { ...old, root: target.value as NoteName }
-											: old
-									)
-								}
-								value={chord?.root}
-							>
-								{NOTE_NAMES.map((noteName) => (
-									<MenuItem key={noteName} value={noteName}>
-										{noteName}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-						<FormControl sx={{ minWidth: 200 }}>
-							<InputLabel id="quality-label">Quality</InputLabel>
-							<Select
-								id="quality"
-								labelId="quality-label"
-								onChange={({ target }) =>
-									setChord((old) =>
-										old.root
-											? { ...old, qualityName: target.value as NoteName }
-											: old
-									)
-								}
-								value={chord?.qualityName}
-							>
-								{Object.keys(CHORD_QUALITY_BY_NAME).map((name) => (
-									<MenuItem key={name} value={name}>
-										{name}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-
-						<FormControl>
-							<TextField
-								InputLabelProps={{ shrink: true }}
-								id="duration"
-								label="Duration"
-								onChange={({ target }) =>
-									setChord((old) => ({
-										...old,
-										durationInBeats: Math.max(Number(target.value), 0),
-									}))
-								}
-								type="number"
-								value={chord?.durationInBeats}
-							/>
-						</FormControl>
-					</Stack>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={() => setIsChordDialogOpen(false)}>Cancel</Button>
-					<Button
-						onClick={() => {
-							setSections((old) =>
-								old
-									.slice(0, targetChordIndexes.sectionIndex)
-									.concat([
-										{
-											...old[targetChordIndexes.sectionIndex],
-											chords: old[targetChordIndexes.sectionIndex].chords
-												.slice(0, targetChordIndexes.chordIndex)
-												.concat([chord])
-												.concat(
-													old[targetChordIndexes.sectionIndex].chords.slice(
-														targetChordIndexes.chordIndex + 1
-													)
-												),
-										},
-									])
-									.concat(old.slice(targetChordIndexes.sectionIndex + 1))
-							);
-							setIsChordDialogOpen(false);
-						}}
-					>
-						Save
-					</Button>
-				</DialogActions>
-			</Dialog>
-		);
-	};
 
 	return (
 		<>
@@ -537,39 +416,29 @@ const SongChart: NextPage = () => {
 														direction="row"
 														justifyContent="center"
 														onClick={(event) => {
-															if (event.detail === 1) {
-																playChord({
-																	audioCtx,
-																	durationInSeconds: 0.5,
-																	keyNumbers: notesInChord(chord)
-																		.map((noteName) =>
-																			NOTE_NAMES.indexOf(noteName)
-																		)
-																		.map(
-																			(
-																				indexOfNoteInNoteNames,
-																				indexOfNoteInChord,
-																				indexesOfNotesInChord
-																			) =>
-																				(indexOfNoteInChord > 0 &&
-																				indexOfNoteInNoteNames <
-																					indexesOfNotesInChord[
-																						indexOfNoteInChord - 1
-																					]
-																					? indexOfNoteInNoteNames + 12
-																					: indexOfNoteInNoteNames) +
-																				C_KEY_NUMBER
-																		),
-																	oscillatorType: "sine",
-																});
-															}
-															if (event.detail === 2) {
-																setTargetChordIndexes({
-																	chordIndex,
-																	sectionIndex,
-																});
-																setIsChordDialogOpen(true);
-															}
+															playChord({
+																audioCtx,
+																durationInSeconds: 0.5,
+																keyNumbers: notesInChord(chord)
+																	.map((noteName) =>
+																		NOTE_NAMES.indexOf(noteName)
+																	)
+																	.map(
+																		(
+																			indexOfNoteInNoteNames,
+																			indexOfNoteInChord,
+																			indexesOfNotesInChord
+																		) =>
+																			(indexOfNoteInChord > 0 &&
+																			indexOfNoteInNoteNames <
+																				indexesOfNotesInChord[
+																					indexOfNoteInChord - 1
+																				]
+																				? indexOfNoteInNoteNames + 12
+																				: indexOfNoteInNoteNames) + C_KEY_NUMBER
+																	),
+																oscillatorType: "sine",
+															});
 														}}
 														style={{
 															backgroundColor: chord.root
@@ -661,7 +530,6 @@ const SongChart: NextPage = () => {
 					</Stack>
 				</Stack>
 			</div>
-			<ChordDialog />
 		</>
 	);
 };
