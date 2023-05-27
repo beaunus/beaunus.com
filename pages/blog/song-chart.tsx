@@ -434,27 +434,28 @@ const SongChart: NextPage = () => {
 														direction="row"
 														justifyContent="center"
 														onClick={() => {
+															const keyNumbers = notesInChord(chord)
+																.map((noteName) => NOTE_NAMES.indexOf(noteName))
+																.map(
+																	(
+																		indexOfNoteInNoteNames,
+																		indexOfNoteInChord,
+																		indexesOfNotesInChord
+																	) =>
+																		(indexOfNoteInChord > 0 &&
+																		indexOfNoteInNoteNames <
+																			indexesOfNotesInChord[
+																				indexOfNoteInChord - 1
+																			]
+																			? indexOfNoteInNoteNames + 12
+																			: indexOfNoteInNoteNames) + C_KEY_NUMBER
+																);
 															playChord({
 																audioCtx,
 																durationInSeconds: 0.5,
-																keyNumbers: notesInChord(chord)
-																	.map((noteName) =>
-																		NOTE_NAMES.indexOf(noteName)
-																	)
-																	.map(
-																		(
-																			indexOfNoteInNoteNames,
-																			indexOfNoteInChord,
-																			indexesOfNotesInChord
-																		) =>
-																			(indexOfNoteInChord > 0 &&
-																			indexOfNoteInNoteNames <
-																				indexesOfNotesInChord[
-																					indexOfNoteInChord - 1
-																				]
-																				? indexOfNoteInNoteNames + 12
-																				: indexOfNoteInNoteNames) + C_KEY_NUMBER
-																	),
+																keyNumbers: keyNumbers.concat(
+																	keyNumbers[0] - 24
+																),
 																oscillatorType: "sine",
 															});
 														}}
