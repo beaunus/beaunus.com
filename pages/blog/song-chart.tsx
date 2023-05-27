@@ -8,6 +8,7 @@ import {
 	RadioGroup,
 	Stack,
 	Switch,
+	TextField,
 	ToggleButton,
 	ToggleButtonGroup,
 } from "@mui/material";
@@ -174,6 +175,8 @@ const SongChart: NextPage = () => {
 
 	const [audioCtx, setAudioCtx] = useState<AudioContext>();
 	const [normalization, setNormalization] = useState<NormalizationValue>("max");
+	const [octaveBass, setOctaveBass] = useState(-2);
+	const [octaveChord, setOctaveChord] = useState(0);
 	const [sections, setSections] = useState<Section[]>([]);
 	const [shouldShowEditor, setShouldShowEditor] = useState(false);
 	const [tonicIndex, setTonicIndex] = useState(0);
@@ -343,15 +346,33 @@ const SongChart: NextPage = () => {
 							);
 						})}
 					</ToggleButtonGroup>
-					<FormControlLabel
-						control={
-							<Switch
-								checked={shouldShowEditor}
-								onChange={(_event, newValue) => setShouldShowEditor(newValue)}
-							/>
-						}
-						label="Show Editor"
-					/>
+					<Stack direction="row">
+						<FormControlLabel
+							control={
+								<Switch
+									checked={shouldShowEditor}
+									onChange={(_event, newValue) => setShouldShowEditor(newValue)}
+								/>
+							}
+							label="Show Editor"
+						/>
+						<TextField
+							InputLabelProps={{ shrink: true }}
+							id="chord-octave-number"
+							label="Chord Octave"
+							onChange={({ target }) => setOctaveChord(Number(target.value))}
+							type="number"
+							value={octaveChord}
+						/>
+						<TextField
+							InputLabelProps={{ shrink: true }}
+							id="bass-octave-number"
+							label="Bass Octave"
+							onChange={({ target }) => setOctaveBass(Number(target.value))}
+							type="number"
+							value={octaveBass}
+						/>
+					</Stack>
 
 					<Stack className="border-2" direction={{ md: "column", xl: "row" }}>
 						{shouldShowEditor ? (
@@ -448,13 +469,15 @@ const SongChart: NextPage = () => {
 																				indexOfNoteInChord - 1
 																			]
 																			? indexOfNoteInNoteNames + 12
-																			: indexOfNoteInNoteNames) + C_KEY_NUMBER
+																			: indexOfNoteInNoteNames) +
+																		C_KEY_NUMBER +
+																		octaveChord * 12
 																);
 															playChord({
 																audioCtx,
 																durationInSeconds: 0.5,
 																keyNumbers: keyNumbers.concat(
-																	keyNumbers[0] - 24
+																	keyNumbers[0] + octaveBass * 12
 																),
 																oscillatorType: "sine",
 															});
