@@ -230,7 +230,7 @@ const notesInChord = ({
 	qualityName,
 	root,
 }: Pick<Chord, "qualityName" | "root">) =>
-	root && qualityName
+	root && qualityName && CHORD_QUALITY_BY_NAME[qualityName]
 		? CHORD_QUALITY_BY_NAME[qualityName].spelling.map(
 				(numHalfSteps) =>
 					NOTE_NAMES[
@@ -652,7 +652,9 @@ const SongChart: NextPage = () => {
 														}}
 													>
 														<Stack alignItems="center" direction="column">
-															{chord.root && chord.qualityName ? (
+															{chord.root &&
+															chord.qualityName &&
+															CHORD_QUALITY_BY_NAME[chord.qualityName] ? (
 																<>
 																	<div>
 																		{CHORD_QUALITY_BY_NAME[
