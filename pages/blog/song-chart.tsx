@@ -122,128 +122,6 @@ const hueByNoteName = Object.fromEntries(
 	])
 );
 
-const DEFAULT_SECTIONS: Section[] = [
-	{
-		chords: [
-			{ durationInBeats: 8 },
-			{ durationInBeats: 8 },
-			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
-			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 2.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 1.5, qualityName: "majorSeventh", root: "D♯/E♭" },
-			{ durationInBeats: 2.5, qualityName: "minorSeventh", root: "D♯/E♭" },
-			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
-		],
-		name: "Intro",
-	},
-	{
-		chords: [
-			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
-			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
-			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
-			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
-		],
-		name: "Verse",
-	},
-	{
-		chords: [
-			{ durationInBeats: 8, qualityName: "halfDiminished", root: "D" },
-			{ durationInBeats: 8, qualityName: "minorSeventh", root: "C" },
-		],
-		name: "PreChorus",
-	},
-	{
-		chords: [
-			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
-			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 2.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 1.5, qualityName: "majorSeventh", root: "D♯/E♭" },
-			{ durationInBeats: 2.5, qualityName: "minorSeventh", root: "D♯/E♭" },
-			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
-		],
-		name: "Chorus",
-	},
-	{
-		chords: [
-			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
-			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
-			{ durationInBeats: 8, qualityName: "halfDiminished", root: "C" },
-			{ durationInBeats: 8, qualityName: "major", root: "A♯/B♭" },
-		],
-		name: "Verse",
-	},
-	{
-		chords: [
-			{ durationInBeats: 8, qualityName: "halfDiminished", root: "D" },
-			{ durationInBeats: 8, qualityName: "minorSeventh", root: "C" },
-		],
-		name: "PreChorus",
-	},
-	{
-		chords: [
-			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
-			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 2.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 1.5, qualityName: "majorSeventh", root: "D♯/E♭" },
-			{ durationInBeats: 2.5, qualityName: "minorSeventh", root: "D♯/E♭" },
-			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
-			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
-			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 2.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 1.5, qualityName: "majorSeventh", root: "D♯/E♭" },
-			{ durationInBeats: 2.5, qualityName: "minorSeventh", root: "D♯/E♭" },
-			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
-		],
-		name: "Chorus",
-	},
-	{
-		chords: [
-			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
-			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 2.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 1.5, qualityName: "majorSeventh", root: "D♯/E♭" },
-			{ durationInBeats: 2.5, qualityName: "minorSeventh", root: "D♯/E♭" },
-			{ durationInBeats: 2, qualityName: "major", root: "F♯/G♭" },
-			{ durationInBeats: 1.5, qualityName: "major", root: "G♯/A♭" },
-			{ durationInBeats: 4.5, qualityName: "major", root: "A♯/B♭" },
-		],
-		name: "Outro",
-	},
-];
-
 const notesInChord = ({
 	qualityName,
 	root,
@@ -270,7 +148,7 @@ const SongChart: NextPage = () => {
 	const [audioCtx, setAudioCtx] = useState<AudioContext>();
 	const [isChordDialogOpen, setIsChordDialogOpen] = useState(false);
 	const [normalization, setNormalization] = useState<NormalizationValue>("max");
-	const [sections, setSections] = useState<Section[]>(DEFAULT_SECTIONS);
+	const [sections, setSections] = useState<Section[]>([]);
 	const [shouldShowEditor, setShouldShowEditor] = useState(false);
 	const [targetChordIndexes, setTargetChordIndexes] = useState({
 		chordIndex: 0,
@@ -290,7 +168,9 @@ const SongChart: NextPage = () => {
 	);
 
 	const chordsInSong = _.uniqBy(
-		sections.flatMap((section) => section.chords).filter(({ root }) => root),
+		sections
+			.flatMap((section) => section.chords)
+			.filter((chord) => chord?.root),
 		({ qualityName, root }) => `${root}-${qualityName}`
 	).map(({ qualityName, root }) => ({ qualityName, root }));
 
@@ -302,15 +182,17 @@ const SongChart: NextPage = () => {
 					.flatMap(({ chords }) => chords)
 					.reduce<Partial<Record<NoteName, number>>>(
 						(noteNameCounts, chord) =>
-							Object.assign(
-								noteNameCounts,
-								Object.fromEntries(
-									notesInChord(chord).map((noteName) => [
-										noteName,
-										(noteNameCounts[noteName] ?? 0) + chord.durationInBeats,
-									])
-								)
-							),
+							chord
+								? Object.assign(
+										noteNameCounts,
+										Object.fromEntries(
+											notesInChord(chord).map((noteName) => [
+												noteName,
+												(noteNameCounts[noteName] ?? 0) + chord.durationInBeats,
+											])
+										)
+								  )
+								: {},
 						{}
 					),
 			]
@@ -397,7 +279,7 @@ const SongChart: NextPage = () => {
 
 	const ChordDialog = () => {
 		const [chord, setChord] = useState<Chord>(
-			sections[targetChordIndexes.sectionIndex]?.chords[
+			sections[targetChordIndexes.sectionIndex]?.chords?.[
 				targetChordIndexes.chordIndex
 			]
 		);
@@ -584,7 +466,6 @@ const SongChart: NextPage = () => {
 												schema: {
 													description: "Section",
 													items: sectionSchema,
-													minItems: 1,
 													type: "array",
 													uniqueItems: true,
 												},
@@ -617,7 +498,7 @@ const SongChart: NextPage = () => {
 										marginTop={1}
 										rowGap={1}
 									>
-										{section.chords.map((chord, chordIndex) => {
+										{section.chords?.map((chord, chordIndex) => {
 											const percentNotesOutOfKey =
 												notesInChord(chord).filter(
 													(noteName) =>
