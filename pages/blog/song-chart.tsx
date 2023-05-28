@@ -266,13 +266,13 @@ const SongChart: NextPage = () => {
 		)
 	);
 
-	useEffect(() => {
+	useEffect(function loadSectionsFromUrl() {
 		if (isBrowser()) {
 			const encodedSectionsFromUrl = new URLSearchParams(
 				window.location.search
 			).get("sections");
 			if (encodedSectionsFromUrl) {
-				return setSections(
+				setSections(
 					JSON.parse(LZString.decompressFromBase64(encodedSectionsFromUrl))
 				);
 			}
@@ -281,14 +281,15 @@ const SongChart: NextPage = () => {
 
 	useEffect(
 		function updateQueryString() {
-			router.replace(
-				{},
-				{
-					query: {
-						sections: LZString.compressToBase64(JSON.stringify(sections)),
-					},
-				}
-			);
+			if (sections.length)
+				router.replace(
+					{},
+					{
+						query: {
+							sections: LZString.compressToBase64(JSON.stringify(sections)),
+						},
+					}
+				);
 		},
 		[sections]
 	);
