@@ -116,7 +116,7 @@ const valueIterateeByCriteria: Record<
 type Criteria = keyof typeof valueIterateeByCriteria;
 
 const GitThing: NextPage = () => {
-	const barChartRef = useRef<HTMLCanvasElement>(null);
+	const fileBarChartRef = useRef<HTMLCanvasElement>(null);
 	const [statsByFileName, setStatsByFileName] = useState<Record<string, Stats>>(
 		{}
 	);
@@ -173,7 +173,7 @@ const GitThing: NextPage = () => {
 	}, [authorsToInclude, allCommits, fromDay, toDay]);
 
 	useEffect(() => {
-		if (barChartRef.current) {
+		if (fileBarChartRef.current) {
 			const valueIterateeNumerator = valueIterateeByCriteria[criteriaNumerator];
 			const valueIterateeDenominator =
 				valueIterateeByCriteria[criteriaDenominator];
@@ -208,7 +208,7 @@ const GitThing: NextPage = () => {
 				)
 			);
 
-			const barChart = new ChartJS(barChartRef.current, {
+			const fileBarChart = new ChartJS(fileBarChartRef.current, {
 				data: {
 					datasets: [
 						{
@@ -250,7 +250,7 @@ const GitThing: NextPage = () => {
 			});
 
 			return () => {
-				barChart.destroy();
+				fileBarChart.destroy();
 			};
 		}
 	}, [
@@ -591,7 +591,7 @@ const GitThing: NextPage = () => {
 						value={fileNameGlobExcludePending}
 					/>
 				</div>
-				<canvas className="max-h-[50vh]" ref={barChartRef} />
+				<canvas className="max-h-[50vh]" ref={fileBarChartRef} />
 				{focusedDataEntry ? (
 					<>
 						<Typography variant="h5">{focusedDataEntry[0]}</Typography>
