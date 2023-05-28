@@ -115,6 +115,101 @@ const valueIterateeByCriteria: Record<
 };
 type Criteria = keyof typeof valueIterateeByCriteria;
 
+const repositorySummaryMetrics: {
+	label: string;
+	resolverForDetails: ({
+		allCommits,
+		allCommitsFiltered,
+	}: {
+		allCommits: GitCommit[];
+		allCommitsFiltered: GitCommit[];
+	}) => ReactNode;
+	resolverForValue: ({
+		allCommits,
+		allCommitsFiltered,
+	}: {
+		allCommits: GitCommit[];
+		allCommitsFiltered: GitCommit[];
+	}) => ReactNode;
+}[] = [
+	{
+		label: "Number of commits (all time)",
+		resolverForDetails: () => null,
+		resolverForValue: ({ allCommits }) =>
+			Number(allCommits.length).toLocaleString(),
+	},
+	{
+		label: "Number of commits (based on filters)",
+		resolverForDetails: () => null,
+		resolverForValue: ({ allCommitsFiltered }) =>
+			Number(allCommitsFiltered.length).toLocaleString(),
+	},
+	{
+		label: "% of all commits (based on filters)",
+		resolverForDetails: () => null,
+		resolverForValue: ({ allCommits, allCommitsFiltered }) =>
+			allCommits.length
+				? `${((100 * allCommitsFiltered.length) / allCommits.length).toFixed(
+						2
+				  )}%`
+				: null,
+	},
+	{
+		label: "Number of committers (all time)",
+		resolverForDetails: ({ allCommits }) => (
+			<details>
+				<summary>Details</summary>
+				<ul>
+					{_.uniqBy(allCommits, ({ author }) => author)
+						.sort((a, b) =>
+							a.author < b.author ? -1 : a.author > b.author ? 1 : 0
+						)
+						.map(({ author }) => (
+							<li key={`num-committers-${author}`}>{author}</li>
+						))}
+				</ul>
+			</details>
+		),
+		resolverForValue: ({ allCommits }) =>
+			Number(
+				_.uniqBy(allCommits, ({ author }) => author).length
+			).toLocaleString(),
+	},
+	{
+		label: "Number of committers (based on filters)",
+		resolverForDetails: ({ allCommitsFiltered }) => (
+			<details>
+				<summary>Details</summary>
+				<ul>
+					{_.uniqBy(allCommitsFiltered, ({ author }) => author)
+						.sort((a, b) =>
+							a.author < b.author ? -1 : a.author > b.author ? 1 : 0
+						)
+						.map(({ author }) => (
+							<li key={`num-committers-${author}`}>{author}</li>
+						))}
+				</ul>
+			</details>
+		),
+		resolverForValue: ({ allCommitsFiltered }) =>
+			Number(
+				_.uniqBy(allCommitsFiltered, ({ author }) => author).length
+			).toLocaleString(),
+	},
+	{
+		label: "% of all committers (based on filters)",
+		resolverForDetails: () => null,
+		resolverForValue: ({ allCommits, allCommitsFiltered }) =>
+			allCommits.length
+				? `${(
+						(100 *
+							_.uniqBy(allCommitsFiltered, ({ author }) => author).length) /
+						_.uniqBy(allCommits, ({ author }) => author).length
+				  ).toFixed(2)}%`
+				: null,
+	},
+];
+
 const GitThing: NextPage = () => {
 	const fileBarChartRef = useRef<HTMLCanvasElement>(null);
 	const [statsByFileName, setStatsByFileName] = useState<Record<string, Stats>>(
@@ -290,7 +385,7 @@ const GitThing: NextPage = () => {
 						setFromDay(dateRangeOfCommits[0]);
 						setNumFilesToShow(newNumFilesTotal);
 						setNumFilesTotal(newNumFilesTotal);
-						setToDay(dateRangeOfCommits[1]);
+						setToDay(dateRangeOfCommits[1].add(1, "day"));
 					});
 				}}
 				type="file"
@@ -583,6 +678,35 @@ const GitThing: NextPage = () => {
 						value={fileNameGlobExcludePending}
 					/>
 				</div>
+				<Typography variant="h5">Repository Summary</Typography>
+				<TableContainer>
+					<Table aria-label="criteria table" size="small">
+						<TableHead>
+							<TableRow className="whitespace-nowrap">
+								<TableCell component="th">Metric</TableCell>
+								<TableCell component="th">Value</TableCell>
+								<TableCell component="th" width="100%">
+									Details
+								</TableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{repositorySummaryMetrics.map(
+								({ label, resolverForDetails, resolverForValue }) => (
+									<TableRow key={label}>
+										<TableCell className="whitespace-nowrap">{label}</TableCell>
+										<TableCell align="right" className="font-mono">
+											{resolverForValue({ allCommits, allCommitsFiltered })}
+										</TableCell>
+										<TableCell>
+											{resolverForDetails({ allCommits, allCommitsFiltered })}
+										</TableCell>
+									</TableRow>
+								)
+							)}
+						</TableBody>
+					</Table>
+				</TableContainer>
 				<canvas className="max-h-[50vh]" ref={fileBarChartRef} />
 				{focusedDataEntry ? (
 					<>
