@@ -120,7 +120,7 @@ export const CommitTable: FC<{
 									<code>{commit.commitHash.slice(0, 7)}</code>
 								</HighlightedLink>
 							</TableCell>
-							<TableCell className="whitespace-nowrap">
+							<TableCell className="font-mono whitespace-nowrap">
 								{dayjs(commit.date).format("YYYY-MM-DD")}
 							</TableCell>
 							<TableCell className="whitespace-nowrap">
