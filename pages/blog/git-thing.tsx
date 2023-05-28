@@ -160,7 +160,7 @@ const GitThing: NextPage = () => {
 	const [focusedDataEntry, setFocusedDataEntry] = useState<[string, Stats]>();
 	const [baseGithubRepository, setBaseGithubRepository] = useState("");
 
-	const commitsFiltered = allCommits.filter(
+	const allCommitsFiltered = allCommits.filter(
 		({ author, date }) =>
 			(!authorsToInclude.length || authorsToInclude.includes(author)) &&
 			isDateWithinSelectedRange(date, {
@@ -170,7 +170,7 @@ const GitThing: NextPage = () => {
 	);
 
 	useEffect(() => {
-		const newStatsByFileName = computeStatsByFileName(commitsFiltered);
+		const newStatsByFileName = computeStatsByFileName(allCommitsFiltered);
 		setNumFilesInSelectedDayRange(Object.keys(newStatsByFileName).length);
 		setStatsByFileName(newStatsByFileName);
 	}, [authorsToInclude, allCommits, fromDay, toDay]);
