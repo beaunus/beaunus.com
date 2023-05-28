@@ -124,9 +124,12 @@ const GitThing: NextPage = () => {
 		{}
 	);
 	const [allCommits, setAllCommits] = useState<GitCommit[]>([]);
+	const [allCommitsFiltered, setAllCommitsFiltered] = useState<GitCommit[]>([]);
 	const [authorsToInclude, setAuthorsToInclude] = useState<
 		GitCommit["author"][]
 	>([]);
+	const [commitMessageRegExpString, setCommitMessageRegExpString] =
+		useState("");
 	const [criteriaNumerator, setCriteriaNumerator] =
 		useState<Criteria>("numCommits");
 	const [criteriaDenominator, setCriteriaDenominator] =
@@ -163,20 +166,24 @@ const GitThing: NextPage = () => {
 	const [focusedDataEntry, setFocusedDataEntry] = useState<[string, Stats]>();
 	const [baseGithubRepository, setBaseGithubRepository] = useState("");
 
-	const allCommitsFiltered = allCommits.filter(
-		({ author, date }) =>
-			(!authorsToInclude.length || authorsToInclude.includes(author)) &&
-			isDateWithinSelectedRange(date, {
-				fromTimestamp: fromDay.valueOf(),
-				toTimestamp: toDay.valueOf(),
-			})
-	);
-
 	useEffect(() => {
-		const newStatsByFileName = computeStatsByFileName(allCommitsFiltered);
+		const commitMessageRegExp = commitMessageRegExpString
+			? new RegExp(commitMessageRegExpString, "i")
+			: null;
+		const newAllCommitsFiltered = allCommits.filter(
+			({ author, date, message }) =>
+				(!authorsToInclude.length || authorsToInclude.includes(author)) &&
+				(!commitMessageRegExp || commitMessageRegExp.test(message)) &&
+				isDateWithinSelectedRange(date, {
+					fromTimestamp: fromDay.valueOf(),
+					toTimestamp: toDay.valueOf(),
+				})
+		);
+		setAllCommitsFiltered(newAllCommitsFiltered);
+		const newStatsByFileName = computeStatsByFileName(newAllCommitsFiltered);
 		setNumFilesInSelectedDayRange(Object.keys(newStatsByFileName).length);
 		setStatsByFileName(newStatsByFileName);
-	}, [authorsToInclude, allCommits, fromDay, toDay]);
+	}, [allCommits, authorsToInclude, commitMessageRegExpString, fromDay, toDay]);
 
 	useEffect(() => {
 		if (fileBarChartRef.current) {
@@ -260,6 +267,7 @@ const GitThing: NextPage = () => {
 			};
 		}
 	}, [
+		commitMessageRegExpString,
 		criteriaDenominator,
 		criteriaNumerator,
 		fileNameGlobExclude,
@@ -414,6 +422,16 @@ const GitThing: NextPage = () => {
 						/>
 					)}
 					size="small"
+				/>
+				<TextField
+					InputLabelProps={{ shrink: true }}
+					className="grow my-2"
+					label="Commit message"
+					onChange={({ target }) => {
+						setCommitMessageRegExpString(target.value);
+					}}
+					size="small"
+					value={commitMessageRegExpString}
 				/>
 				<FormLabel id="date-slider-label">Date Range</FormLabel>
 				<SliderWithLabels
