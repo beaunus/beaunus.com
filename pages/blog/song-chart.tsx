@@ -222,7 +222,7 @@ const SongChart: NextPage = () => {
 									return sectionName === mostRecentlyPlayedChord?.sectionName &&
 										indexesOfMostRecentlyPlayedChord.includes(indexOfThisNote)
 										? 10
-										: 0;
+										: 2;
 								},
 								showLine: false,
 							})
