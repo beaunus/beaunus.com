@@ -426,7 +426,7 @@ const GitThing: NextPage = () => {
 				<TextField
 					InputLabelProps={{ shrink: true }}
 					className="grow my-2"
-					label="Commit message"
+					label="Commit message filter (RegExp)"
 					onChange={({ target }) => {
 						setCommitMessageRegExpString(target.value);
 					}}
