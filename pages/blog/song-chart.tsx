@@ -23,7 +23,7 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 import { isBrowser, moduloPositive } from "../../utils";
 import { playChord } from "../../utils/audio";
 import {
-	C_KEY_NUMBER,
+	KEY_NUMBER_C,
 	FUNCTION_BY_INTERVAL,
 	NOTE_NAMES,
 } from "../../utils/constants/music";
@@ -522,7 +522,7 @@ const SongChart: NextPage = () => {
 																			]
 																			? indexOfNoteInNoteNames + 12
 																			: indexOfNoteInNoteNames) +
-																		C_KEY_NUMBER +
+																		KEY_NUMBER_C +
 																		octaveChord * 12
 																);
 															playChord({

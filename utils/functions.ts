@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { A_FREQUENCY, A_KEY_NUMBER } from "./constants/music";
+import { A_FREQUENCY, KEY_NUMBER_A } from "./constants/music";
 
 export const areRotations = <T>(arrayA: T[], arrayB: T[]) => {
 	for (let i = 0; i < arrayA.length; ++i)
@@ -46,7 +46,7 @@ export function* generateAllCombinations<T>(
 }
 
 export const keyNumberToFrequency = (keyNumber: number) =>
-	2 ** ((keyNumber - A_KEY_NUMBER) / 12) * A_FREQUENCY;
+	2 ** ((keyNumber - KEY_NUMBER_A) / 12) * A_FREQUENCY;
 
 export const romanNumerals = (intervals: number[], baseIntervals: number[]) =>
 	intervals.map(

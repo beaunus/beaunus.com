@@ -24,7 +24,6 @@ const {
 } = INTERVALS;
 
 export const A_FREQUENCY = 440;
-export const A_KEY_NUMBER = 69;
 
 export const BASE_INTERVALS = [1, 1, 0.5, 1, 1, 1, 0.5];
 
@@ -65,8 +64,6 @@ export const CHORD_NAME_BY_INTERVALS = Object.fromEntries(
 	]).entries()
 );
 
-export const C_KEY_NUMBER = 60;
-
 export const FUNCTION_BY_INTERVAL = [
 	"i",
 	"♭ii",
@@ -98,6 +95,9 @@ export const INDEXES_BY_CHORD_CLASS = Object.fromEntries(
 );
 
 export const INTERVALS_OF_WHITE_KEYS = [0, 2, 4, 5, 7, 9, 11];
+
+export const KEY_NUMBER_A = 69;
+export const KEY_NUMBER_C = 60;
 
 export const LABEL_BY_SCALE_DIRECTION: Record<ScaleDirection, string> = {
 	[ScaleDirection.down]: "⇘",
