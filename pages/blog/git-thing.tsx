@@ -29,7 +29,7 @@ import { FC, ReactNode, useEffect, useRef, useState } from "react";
 
 import { CommitTable } from "../../components/git-thing/CommitTable";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
-import { stringToHex } from "../../utils";
+import { isDateWithinSelectedRange, stringToHex } from "../../utils";
 import {
 	computeDateRange,
 	computeStatsByFileName,
@@ -160,20 +160,13 @@ const GitThing: NextPage = () => {
 	const [focusedDataEntry, setFocusedDataEntry] = useState<[string, Stats]>();
 	const [baseGithubRepository, setBaseGithubRepository] = useState("");
 
-	const isDateWithinSelectedRange = (date: Date | Dayjs | string | number) => {
-		const dateValue =
-			date instanceof Date || date instanceof Dayjs
-				? date.valueOf()
-				: typeof date === "string"
-				? new Date(date).valueOf()
-				: date;
-		return dateValue >= fromDay.valueOf() && dateValue < toDay.valueOf();
-	};
-
 	const commitsFiltered = allCommits.filter(
 		({ author, date }) =>
 			(!authorsToInclude.length || authorsToInclude.includes(author)) &&
-			isDateWithinSelectedRange(date)
+			isDateWithinSelectedRange(date, {
+				fromTimestamp: fromDay.valueOf(),
+				toTimestamp: toDay.valueOf(),
+			})
 	);
 
 	useEffect(() => {
@@ -631,7 +624,10 @@ const GitThing: NextPage = () => {
 									baseGithubRepository={baseGithubRepository}
 									commits={focusedDataEntry[1].commits.filter(
 										({ author, date }) =>
-											isDateWithinSelectedRange(date) &&
+											isDateWithinSelectedRange(date, {
+												fromTimestamp: fromDay.valueOf(),
+												toTimestamp: toDay.valueOf(),
+											}) &&
 											(!authorsToInclude.length ||
 												authorsToInclude.includes(author))
 									)}
