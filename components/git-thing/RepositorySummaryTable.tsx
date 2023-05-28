@@ -23,7 +23,7 @@ const REPOSITORY_SUMMARY_METRICS: {
 	}) => ReactNode;
 }[] = [
 	{
-		label: "Number of commits (all time)",
+		label: "Commits (all time)",
 		resolverDetails: ({ allCommits }) => (
 			<details>
 				<summary>Details</summary>
@@ -38,7 +38,7 @@ const REPOSITORY_SUMMARY_METRICS: {
 			Number(allCommits.length).toLocaleString(),
 	},
 	{
-		label: "Number of commits (based on filters)",
+		label: "Commits (based on filters)",
 		resolverDetails: ({ allCommitsFiltered }) => (
 			<details>
 				<summary>Details</summary>
@@ -49,21 +49,17 @@ const REPOSITORY_SUMMARY_METRICS: {
 				</ul>
 			</details>
 		),
-		resolverValue: ({ allCommitsFiltered }) =>
-			Number(allCommitsFiltered.length).toLocaleString(),
-	},
-	{
-		label: "% of all commits (based on filters)",
-		resolverDetails: () => null,
 		resolverValue: ({ allCommits, allCommitsFiltered }) =>
-			allCommits.length
-				? `${((100 * allCommitsFiltered.length) / allCommits.length).toFixed(
-						2
-				  )}%`
-				: null,
+			allCommits.length ? (
+				<>
+					{Number(allCommitsFiltered.length).toLocaleString()}
+					<br />
+					{((100 * allCommitsFiltered.length) / allCommits.length).toFixed(2)}%
+				</>
+			) : null,
 	},
 	{
-		label: "Number of committers (all time)",
+		label: "Committers (all time)",
 		resolverDetails: ({ allCommits }) => (
 			<details>
 				<summary>Details</summary>
@@ -84,7 +80,7 @@ const REPOSITORY_SUMMARY_METRICS: {
 			).toLocaleString(),
 	},
 	{
-		label: "Number of committers (based on filters)",
+		label: "Committers (based on filters)",
 		resolverDetails: ({ allCommitsFiltered }) => (
 			<details>
 				<summary>Details</summary>
@@ -99,22 +95,21 @@ const REPOSITORY_SUMMARY_METRICS: {
 				</ul>
 			</details>
 		),
-		resolverValue: ({ allCommitsFiltered }) =>
-			Number(
-				_.uniqBy(allCommitsFiltered, ({ author }) => author).length
-			).toLocaleString(),
-	},
-	{
-		label: "% of all committers (based on filters)",
-		resolverDetails: () => null,
 		resolverValue: ({ allCommits, allCommitsFiltered }) =>
-			allCommits.length
-				? `${(
+			allCommits.length ? (
+				<>
+					{Number(
+						_.uniqBy(allCommitsFiltered, ({ author }) => author).length
+					).toLocaleString()}
+					<br />
+					{(
 						(100 *
 							_.uniqBy(allCommitsFiltered, ({ author }) => author).length) /
 						_.uniqBy(allCommits, ({ author }) => author).length
-				  ).toFixed(2)}%`
-				: null,
+					).toFixed(2)}
+					%
+				</>
+			) : null,
 	},
 ];
 
