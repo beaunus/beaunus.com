@@ -208,12 +208,12 @@ const SongChart: NextPage = () => {
 								),
 								fill: true,
 								label: sectionName,
-								pointBorderColor: mostRecentlyPlayedChord
+								pointBackgroundColor: mostRecentlyPlayedChord
 									? `hsl(${
 											hueBySectionName[mostRecentlyPlayedChord.sectionName]
 									  }, 100%, 30%)`
 									: "transparent",
-								pointBorderWidth: (context: ScriptableContext<"radar">) => {
+								pointRadius: (context: ScriptableContext<"radar">) => {
 									const indexesOfMostRecentlyPlayedChord =
 										mostRecentlyPlayedChord
 											? notesInChord(mostRecentlyPlayedChord.chord).map(
