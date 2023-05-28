@@ -18,118 +18,23 @@ import LZString from "lz-string";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { isBrowser, moduloPositive } from "../../utils";
 import { playChord } from "../../utils/audio";
 import {
-	KEY_NUMBER_C,
+	Chord,
+	CHORD_QUALITY_BY_NAME,
 	FUNCTION_BY_INTERVAL,
+	KEY_NUMBER_C,
+	NoteName,
 	NOTE_NAMES,
 } from "../../utils/constants/music";
 
-const CHORD_QUALITY_BY_NAME: Record<string, ChordQuality> = {
-	diminished: {
-		decorate: (label) => (
-			<>
-				{label.toLowerCase()}
-				<sup>o7</sup>
-			</>
-		),
-		spelling: [0, 3, 6, 9],
-	},
-	halfDiminished: {
-		decorate: (label) => (
-			<>
-				{label.toLowerCase()}
-				<sup>ø7</sup>
-			</>
-		),
-		spelling: [0, 3, 6, 10],
-	},
-	major: { decorate: (label) => label.toUpperCase(), spelling: [0, 4, 7] },
-	majorNinth: {
-		decorate: (label) => (
-			<>
-				{label.toUpperCase()}
-				<sup>Δ9</sup>
-			</>
-		),
-		spelling: [0, 4, 7, 11, 14],
-	},
-	majorSeventh: {
-		decorate: (label) => (
-			<>
-				{label.toUpperCase()}
-				<sup>Δ7</sup>
-			</>
-		),
-		spelling: [0, 4, 7, 11],
-	},
-	minor: { decorate: (label) => label.toLowerCase(), spelling: [0, 3, 7] },
-	minorNinth: {
-		decorate: (label) => (
-			<>
-				{label.toLowerCase()}
-				<sup>9</sup>
-			</>
-		),
-		spelling: [0, 3, 7, 10, 14],
-	},
-	minorSeventh: {
-		decorate: (label) => (
-			<>
-				{label.toLowerCase()}
-				<sup>7</sup>
-			</>
-		),
-		spelling: [0, 3, 7, 10],
-	},
-	power: { decorate: (label) => `${label.toUpperCase()}5`, spelling: [0, 7] },
-	seventh: {
-		decorate: (label) => (
-			<>
-				{label.toUpperCase()}
-				<sup>7</sup>
-			</>
-		),
-		spelling: [0, 4, 7, 10],
-	},
-	seventhFlatFive: {
-		decorate: (label) => (
-			<>
-				{label.toUpperCase()}
-				<sup>7♭5</sup>
-			</>
-		),
-		spelling: [0, 4, 6, 10],
-	},
-	sixth: {
-		decorate: (label) => (
-			<>
-				{label.toUpperCase()}
-				<sup>6</sup>
-			</>
-		),
-		spelling: [0, 4, 8],
-	},
-} as const;
 const NORMALIZATION_VALUES = ["none", "sum", "max"] as const;
+type NormalizationValue = (typeof NORMALIZATION_VALUES)[number];
 const NUM_BEATS_PER_ROW = 8;
 
-type NormalizationValue = (typeof NORMALIZATION_VALUES)[number];
-type NoteName = (typeof NOTE_NAMES)[number];
-type ChordQualityName = keyof typeof CHORD_QUALITY_BY_NAME;
-type ChordQuality = {
-	decorate: (label: string) => ReactNode;
-	spelling: readonly number[];
-};
-type Chord = {
-	bass?: NoteName;
-	durationInBeats: number;
-	qualityName?: ChordQualityName;
-	root?: NoteName;
-};
 const chordSchema = {
 	$schema: "http://json-schema.org/draft-07/schema#",
 	properties: {

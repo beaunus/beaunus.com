@@ -64,6 +64,107 @@ export const CHORD_NAME_BY_INTERVALS = Object.fromEntries(
 	]).entries()
 );
 
+export const CHORD_QUALITY_BY_NAME: Record<string, ChordQuality> = {
+	diminished: {
+		decorate: (label) => (
+			<>
+				{label.toLowerCase()}
+				<sup>o7</sup>
+			</>
+		),
+		spelling: [0, 3, 6, 9],
+	},
+	halfDiminished: {
+		decorate: (label) => (
+			<>
+				{label.toLowerCase()}
+				<sup>ø7</sup>
+			</>
+		),
+		spelling: [0, 3, 6, 10],
+	},
+	major: { decorate: (label) => label.toUpperCase(), spelling: [0, 4, 7] },
+	majorNinth: {
+		decorate: (label) => (
+			<>
+				{label.toUpperCase()}
+				<sup>Δ9</sup>
+			</>
+		),
+		spelling: [0, 4, 7, 11, 14],
+	},
+	majorSeventh: {
+		decorate: (label) => (
+			<>
+				{label.toUpperCase()}
+				<sup>Δ7</sup>
+			</>
+		),
+		spelling: [0, 4, 7, 11],
+	},
+	minor: { decorate: (label) => label.toLowerCase(), spelling: [0, 3, 7] },
+	minorNinth: {
+		decorate: (label) => (
+			<>
+				{label.toLowerCase()}
+				<sup>9</sup>
+			</>
+		),
+		spelling: [0, 3, 7, 10, 14],
+	},
+	minorSeventh: {
+		decorate: (label) => (
+			<>
+				{label.toLowerCase()}
+				<sup>7</sup>
+			</>
+		),
+		spelling: [0, 3, 7, 10],
+	},
+	power: { decorate: (label) => `${label.toUpperCase()}5`, spelling: [0, 7] },
+	seventh: {
+		decorate: (label) => (
+			<>
+				{label.toUpperCase()}
+				<sup>7</sup>
+			</>
+		),
+		spelling: [0, 4, 7, 10],
+	},
+	seventhFlatFive: {
+		decorate: (label) => (
+			<>
+				{label.toUpperCase()}
+				<sup>7♭5</sup>
+			</>
+		),
+		spelling: [0, 4, 6, 10],
+	},
+	sixth: {
+		decorate: (label) => (
+			<>
+				{label.toUpperCase()}
+				<sup>6</sup>
+			</>
+		),
+		spelling: [0, 4, 8],
+	},
+} as const;
+
+export type Chord = {
+	bass?: NoteName;
+	durationInBeats: number;
+	qualityName?: ChordQualityName;
+	root?: NoteName;
+};
+
+export type ChordQuality = {
+	decorate: (label: string) => ReactNode;
+	spelling: readonly number[];
+};
+
+export type ChordQualityName = keyof typeof CHORD_QUALITY_BY_NAME;
+
 export const FUNCTION_BY_INTERVAL = [
 	"i",
 	"♭ii",
@@ -206,6 +307,7 @@ export const NOTE_NAMES = [
 	"A♯/B♭",
 	"B",
 ] as const;
+export type NoteName = (typeof NOTE_NAMES)[number];
 
 export const OSCILLATOR_TYPES: OscillatorType[] = [
 	"sawtooth",
