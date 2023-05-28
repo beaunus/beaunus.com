@@ -228,6 +228,7 @@ const SongChart: NextPage = () => {
 										? 10
 										: 0;
 								},
+								showLine: false,
 							})
 						),
 						labels: CIRCLE_OF_FIFTHS,
