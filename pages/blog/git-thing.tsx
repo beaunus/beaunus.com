@@ -17,6 +17,8 @@ import {
 	TableHead,
 	TableRow,
 	TextField,
+	ToggleButton,
+	ToggleButtonGroup,
 	Typography,
 } from "@mui/material";
 import ChartJS from "chart.js/auto";
@@ -501,19 +503,23 @@ const GitThing: NextPage = () => {
 							<KeyboardDoubleArrowRightIcon />
 						</Button>
 					</ButtonGroup>
-					<ButtonGroup aria-label="snap button group">
+					<ToggleButtonGroup
+						aria-label="snap button group"
+						value={toDay.diff(fromDay, "days")}
+					>
 						{[7, 14, 28, 28 * 6].map((numDaysToSnapTo) => (
-							<Button
+							<ToggleButton
 								key={`${numDaysToSnapTo}-snap`}
 								onClick={() =>
 									setFromDay(toDay.subtract(numDaysToSnapTo, "days"))
 								}
 								size="small"
+								value={numDaysToSnapTo}
 							>
 								{numDaysToSnapTo} days
-							</Button>
+							</ToggleButton>
 						))}
-					</ButtonGroup>
+					</ToggleButtonGroup>
 					<FormControlLabel
 						control={<Switch />}
 						label="Lock interval"
@@ -577,17 +583,21 @@ const GitThing: NextPage = () => {
 						step={1}
 						value={numFilesToShow}
 					/>
-					<ButtonGroup aria-label="num files button group">
+					<ToggleButtonGroup
+						aria-label="num files button group"
+						value={numFilesToShow}
+					>
 						{[10, 25, 50, 100].map((numFiles) => (
-							<Button
+							<ToggleButton
 								key={`${numFiles}-num-files-button`}
 								onClick={() => setNumFilesToShow(numFiles)}
 								size="small"
+								value={numFiles}
 							>
 								{numFiles}
-							</Button>
+							</ToggleButton>
 						))}
-					</ButtonGroup>
+					</ToggleButtonGroup>
 				</div>
 
 				<canvas className="max-h-[50vh]" ref={fileBarChartRef} />
