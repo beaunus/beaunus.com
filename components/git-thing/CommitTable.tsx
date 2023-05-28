@@ -107,6 +107,7 @@ export const CommitTable: FC<{
 						: sortedCommits.reverse()
 					).map((commit) => (
 						<TableRow
+							className="align-top"
 							key={commit.commitHash}
 							sx={{
 								// eslint-disable-next-line @typescript-eslint/naming-convention
