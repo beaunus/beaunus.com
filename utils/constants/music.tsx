@@ -148,7 +148,7 @@ export const CHORD_QUALITY_BY_NAME: Record<string, ChordQuality> = {
 				<sup>6</sup>
 			</>
 		),
-		spelling: [0, 4, 8],
+		spelling: [0, 4, 7, 8],
 	},
 } as const;
 
