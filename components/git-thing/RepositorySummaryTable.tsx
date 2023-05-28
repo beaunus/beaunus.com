@@ -24,16 +24,7 @@ const REPOSITORY_SUMMARY_METRICS: {
 }[] = [
 	{
 		label: "Commits (all time)",
-		resolverDetails: ({ allCommits }) => (
-			<details>
-				<summary>Details</summary>
-				<ul>
-					{allCommits.map(({ message }, index) => (
-						<li key={`commits-all-time-${index}`}>{message}</li>
-					))}
-				</ul>
-			</details>
-		),
+		resolverDetails: () => null,
 		resolverValue: ({ allCommits }) =>
 			Number(allCommits.length).toLocaleString(),
 	},
