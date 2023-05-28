@@ -128,11 +128,9 @@ const SongChart: NextPage = () => {
 	);
 
 	const chordsInSong = _.uniqBy(
-		sections
-			.flatMap((section) => section.chords)
-			.filter((chord) => chord?.root),
+		sections.flatMap((section) => section.chords),
 		({ qualityName, root }) => `${root}-${qualityName}`
-	).map(({ qualityName, root }) => ({ qualityName, root }));
+	).filter(({ root }) => root);
 
 	const noteNameCountsBySection = Object.fromEntries(
 		Object.entries(_.groupBy(sections, "name")).map(
