@@ -158,6 +158,8 @@ const GitThing: NextPage = () => {
 	const [fileNameGlobInclude, setFileNameGlobInclude] = useState("");
 	const [fileNameGlobIncludePending, setFileNameGlobIncludePending] =
 		useState("");
+	const [fileNamesToInclude, setFileNamesToInclude] = useState<string[]>([]);
+	const [fileNamesToExclude, setFileNamesToExclude] = useState<string[]>([]);
 	const [
 		mostRecentFileNameGlobIncludeEditTimestamp,
 		setMostRecentFileNameGlobIncludeEditTimestamp,
@@ -186,19 +188,24 @@ const GitThing: NextPage = () => {
 	}, [allCommits, authorsToInclude, commitMessageRegExpString, fromDay, toDay]);
 
 	useEffect(() => {
+		const allFileNames = _.uniq(
+			allCommits.flatMap(({ files }) =>
+				files.map(({ path }) => path.afterChange)
+			)
+		);
+		setFileNamesToInclude(
+			multimatch(allFileNames, fileNameGlobInclude.split(" "))
+		);
+		setFileNamesToExclude(
+			multimatch(allFileNames, fileNameGlobExclude.split(" "))
+		);
+	}, [allCommits, fileNameGlobInclude, fileNameGlobExclude]);
+
+	useEffect(() => {
 		if (fileBarChartRef.current) {
 			const valueIterateeNumerator = valueIterateeByCriteria[criteriaNumerator];
 			const valueIterateeDenominator =
 				valueIterateeByCriteria[criteriaDenominator];
-
-			const fileNamesToInclude = multimatch(
-				Object.keys(statsByFileName),
-				fileNameGlobInclude.split(" ")
-			);
-			const fileNamesToExclude = multimatch(
-				Object.keys(statsByFileName),
-				fileNameGlobExclude.split(" ")
-			);
 
 			const dataEntries = Object.entries(
 				Object.fromEntries(
@@ -587,6 +594,10 @@ const GitThing: NextPage = () => {
 				<RepositorySummaryTable
 					allCommits={allCommits}
 					allCommitsFiltered={allCommitsFiltered}
+					fileNameFilter={(fileName) =>
+						(!fileNameGlobInclude || fileNamesToInclude.includes(fileName)) &&
+						(!fileNameGlobExclude || !fileNamesToExclude.includes(fileName))
+					}
 				/>
 				<div className="flex gap-4">
 					<SliderWithLabels

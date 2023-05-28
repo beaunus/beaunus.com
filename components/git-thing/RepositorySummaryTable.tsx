@@ -6,6 +6,7 @@ import {
 	TableHead,
 	TableRow,
 } from "@mui/material";
+import { Stack } from "@mui/system";
 import _ from "lodash";
 import { FC, ReactNode } from "react";
 
@@ -16,10 +17,12 @@ const REPOSITORY_SUMMARY_METRICS: {
 	resolverDetails: (commits: {
 		allCommits: GitCommit[];
 		allCommitsFiltered: GitCommit[];
+		fileNameFilter: (fileName: string) => boolean;
 	}) => ReactNode;
 	resolverValue: (commits: {
 		allCommits: GitCommit[];
 		allCommitsFiltered: GitCommit[];
+		fileNameFilter: (fileName: string) => boolean;
 	}) => ReactNode;
 }[] = [
 	{
@@ -102,12 +105,70 @@ const REPOSITORY_SUMMARY_METRICS: {
 				</>
 			) : null,
 	},
+	{
+		label: "Lines changed",
+		resolverDetails: ({ allCommitsFiltered, fileNameFilter }) => (
+			<details>
+				<summary>Details</summary>
+				<Stack>
+					{allCommitsFiltered
+						.flatMap(({ files }) => files)
+						.filter((file) => fileNameFilter(file.path.afterChange))
+						.sort((a, b) =>
+							Number((b.numLinesAdded ?? 0) - (a.numLinesAdded ?? 0))
+						)
+						.map(({ numLinesAdded, numLinesDeleted, path }, index) => (
+							<Stack
+								direction="row"
+								key={`num-lines-changed-for-${path.afterChange}-${index}`}
+							>
+								<div className="w-20">
+									{numLinesAdded ? `+${numLinesAdded} ` : ""}
+								</div>
+								<div className="w-20">
+									{numLinesDeleted ? `-${numLinesDeleted} ` : ""}
+								</div>
+								<div>{path.afterChange}</div>
+							</Stack>
+						))}
+				</Stack>
+			</details>
+		),
+		resolverValue: ({ allCommits, allCommitsFiltered, fileNameFilter }) => {
+			const numLinesChangedAllTime = _.sumBy(
+				allCommits
+					.flatMap(({ files }) => files)
+					.filter((file) => fileNameFilter(file.path.afterChange)),
+				({ numLinesAdded, numLinesDeleted }) =>
+					(numLinesAdded ?? 0) + (numLinesDeleted ?? 0)
+			);
+			const numLinesChangedFiltered = _.sumBy(
+				allCommitsFiltered
+					.flatMap(({ files }) => files)
+					.filter((file) => fileNameFilter(file.path.afterChange)),
+				({ numLinesAdded, numLinesDeleted }) =>
+					(numLinesAdded ?? 0) + (numLinesDeleted ?? 0)
+			);
+			return allCommits.length ? (
+				<>
+					{numLinesChangedFiltered.toLocaleString()}&nbsp;/&nbsp;
+					{numLinesChangedAllTime.toLocaleString()}
+					<br />
+					{((100 * numLinesChangedFiltered) / numLinesChangedAllTime).toFixed(
+						2
+					)}
+					%
+				</>
+			) : null;
+		},
+	},
 ];
 
 export const RepositorySummaryTable: FC<{
 	allCommits: GitCommit[];
 	allCommitsFiltered: GitCommit[];
-}> = ({ allCommits, allCommitsFiltered }) => (
+	fileNameFilter: (fileName: string) => boolean;
+}> = ({ allCommits, allCommitsFiltered, fileNameFilter }) => (
 	<TableContainer>
 		<Table aria-label="criteria table" size="small">
 			<TableHead>
@@ -128,10 +189,18 @@ export const RepositorySummaryTable: FC<{
 						>
 							<TableCell className="whitespace-nowrap">{label}</TableCell>
 							<TableCell align="right" className="font-mono">
-								{resolverValue({ allCommits, allCommitsFiltered })}
+								{resolverValue({
+									allCommits,
+									allCommitsFiltered,
+									fileNameFilter,
+								})}
 							</TableCell>
 							<TableCell>
-								{resolverDetails({ allCommits, allCommitsFiltered })}
+								{resolverDetails({
+									allCommits,
+									allCommitsFiltered,
+									fileNameFilter,
+								})}
 							</TableCell>
 						</TableRow>
 					)
