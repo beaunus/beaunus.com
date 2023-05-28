@@ -12,7 +12,7 @@ import {
 	ToggleButton,
 	ToggleButtonGroup,
 } from "@mui/material";
-import ChartJS from "chart.js/auto";
+import ChartJS, { ScriptableContext } from "chart.js/auto";
 import _ from "lodash";
 import LZString from "lz-string";
 import type { NextPage } from "next";
@@ -109,6 +109,10 @@ const SongChart: NextPage = () => {
 	const router = useRouter();
 
 	const [audioCtx, setAudioCtx] = useState<AudioContext>();
+	const [mostRecentlyPlayedChord, setMostRecentlyPlayedChord] = useState<{
+		chord: Chord;
+		sectionName: Section["name"];
+	}>();
 	const [normalization, setNormalization] = useState<NormalizationValue>("max");
 	const [octaveBass, setOctaveBass] = useState(-2);
 	const [octaveChord, setOctaveChord] = useState(0);
@@ -120,10 +124,10 @@ const SongChart: NextPage = () => {
 		if (!audioCtx) setAudioCtx(new window.AudioContext());
 	}
 
-	const colorBySectionName = Object.fromEntries(
+	const hueBySectionName = Object.fromEntries(
 		_.uniqBy(sections, "name").map(({ name }, index, { length }) => [
 			name,
-			`hsl(${(index / length) * 360}, 100%, 50%, 0.5)`,
+			(index / length) * 360,
 		])
 	);
 
@@ -192,7 +196,7 @@ const SongChart: NextPage = () => {
 					data: {
 						datasets: Object.entries(noteNameCountsBySection).map(
 							([sectionName, noteNameCountsForSection]) => ({
-								backgroundColor: colorBySectionName[sectionName],
+								backgroundColor: `hsl(${hueBySectionName[sectionName]}, 100%, 50%, 0.5)`,
 								data: CIRCLE_OF_FIFTHS.map(
 									(noteName) =>
 										(noteNameCountsForSection[noteName] ?? 0) /
@@ -204,11 +208,32 @@ const SongChart: NextPage = () => {
 								),
 								fill: true,
 								label: sectionName,
+								pointBorderColor: mostRecentlyPlayedChord
+									? `hsl(${
+											hueBySectionName[mostRecentlyPlayedChord.sectionName]
+									  }, 100%, 30%, 1)`
+									: "transparent",
+								pointBorderWidth: (context: ScriptableContext<"radar">) => {
+									const indexesOfMostRecentlyPlayedChord =
+										mostRecentlyPlayedChord
+											? notesInChord(mostRecentlyPlayedChord.chord).map(
+													(noteName) => NOTE_NAMES.indexOf(noteName)
+											  )
+											: [];
+									const indexOfThisNote = NOTE_NAMES.indexOf(
+										CIRCLE_OF_FIFTHS[context.dataIndex]
+									);
+									return sectionName === mostRecentlyPlayedChord?.sectionName &&
+										indexesOfMostRecentlyPlayedChord.includes(indexOfThisNote)
+										? 10
+										: 0;
+								},
 							})
 						),
 						labels: CIRCLE_OF_FIFTHS,
 					},
 					options: {
+						animation: false,
 						scales: {
 							r: {
 								angleLines: { display: true },
@@ -233,7 +258,7 @@ const SongChart: NextPage = () => {
 				};
 			}
 		},
-		[normalization, sections, tonicIndex]
+		[mostRecentlyPlayedChord, normalization, sections, tonicIndex]
 	);
 
 	return (
@@ -359,7 +384,9 @@ const SongChart: NextPage = () => {
 										className="px-2"
 										primary={section.name}
 										style={{
-											backgroundColor: colorBySectionName[section.name],
+											backgroundColor: `hsl(${
+												hueBySectionName[section.name]
+											}, 100%, 50%, 0.5)`,
 										}}
 									/>
 									<Stack
@@ -414,6 +441,10 @@ const SongChart: NextPage = () => {
 																	keyNumbers[0] + octaveBass * 12
 																),
 																oscillatorType: "sine",
+															});
+															setMostRecentlyPlayedChord({
+																chord,
+																sectionName: section.name,
 															});
 														}}
 														style={{
