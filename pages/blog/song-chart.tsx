@@ -95,6 +95,15 @@ const CHORD_QUALITY_BY_NAME: Record<string, ChordQuality> = {
 		),
 		spelling: [0, 4, 7, 10],
 	},
+	seventhFlatFive: {
+		decorate: (label) => (
+			<>
+				{label.toUpperCase()}
+				<sup>7♭5</sup>
+			</>
+		),
+		spelling: [0, 4, 6, 10],
+	},
 	sixth: {
 		decorate: (label) => (
 			<>
