@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { ReactNode } from "react";
 
+import { moduloPositive } from "..";
 import { INTERVALS, ModeSet, ScaleDirection } from "../../types";
 import { combineElements, generateAllCombinations } from "../functions";
 
@@ -308,6 +309,10 @@ export const NOTE_NAMES = [
 	"B",
 ] as const;
 export type NoteName = (typeof NOTE_NAMES)[number];
+// eslint-disable-next-line sort-exports/sort-exports
+export const CIRCLE_OF_FIFTHS = NOTE_NAMES.map(
+	(_noteName, index) => NOTE_NAMES[(index * 7) % NOTE_NAMES.length]
+);
 
 export const OSCILLATOR_TYPES: OscillatorType[] = [
 	"sawtooth",
@@ -315,3 +320,24 @@ export const OSCILLATOR_TYPES: OscillatorType[] = [
 	"square",
 	"triangle",
 ];
+
+export const notesInChord = ({
+	bass,
+	qualityName,
+	root,
+}: Pick<Chord, "bass" | "qualityName" | "root">) =>
+	(bass ? [bass] : []).concat(
+		...(root && qualityName && CHORD_QUALITY_BY_NAME[qualityName]
+			? CHORD_QUALITY_BY_NAME[qualityName].spelling.map(
+					(numHalfSteps) =>
+						NOTE_NAMES[
+							moduloPositive(NOTE_NAMES.indexOf(root) + numHalfSteps, 12)
+						]
+			  )
+			: [])
+	);
+
+export const notesInScale = (tonicIndex: number) =>
+	[0, 2, 4, 5, 7, 9, 11].map(
+		(interval) => NOTE_NAMES[moduloPositive(tonicIndex + interval, 12)]
+	);

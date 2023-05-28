@@ -20,14 +20,17 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
-import { isBrowser, moduloPositive } from "../../utils";
+import { isBrowser } from "../../utils";
 import { playChord } from "../../utils/audio";
 import {
 	Chord,
 	CHORD_QUALITY_BY_NAME,
+	CIRCLE_OF_FIFTHS,
 	FUNCTION_BY_INTERVAL,
 	KEY_NUMBER_C,
 	NoteName,
+	notesInChord,
+	notesInScale,
 	NOTE_NAMES,
 } from "../../utils/constants/music";
 
@@ -56,36 +59,12 @@ const sectionSchema = {
 	type: "object",
 };
 
-const circleOfFifths = NOTE_NAMES.map(
-	(_noteName, index) => NOTE_NAMES[(index * 7) % NOTE_NAMES.length]
-);
 const hueByNoteName = Object.fromEntries(
-	circleOfFifths.map((noteName, index) => [
+	CIRCLE_OF_FIFTHS.map((noteName, index) => [
 		noteName,
-		(index / circleOfFifths.length) * 360,
+		(index / CIRCLE_OF_FIFTHS.length) * 360,
 	])
 );
-
-const notesInChord = ({
-	bass,
-	qualityName,
-	root,
-}: Pick<Chord, "bass" | "qualityName" | "root">) =>
-	(bass ? [bass] : []).concat(
-		...(root && qualityName && CHORD_QUALITY_BY_NAME[qualityName]
-			? CHORD_QUALITY_BY_NAME[qualityName].spelling.map(
-					(numHalfSteps) =>
-						NOTE_NAMES[
-							moduloPositive(NOTE_NAMES.indexOf(root) + numHalfSteps, 12)
-						]
-			  )
-			: [])
-	);
-
-const notesInScale = (tonicIndex: number) =>
-	[0, 2, 4, 5, 7, 9, 11].map(
-		(interval) => NOTE_NAMES[moduloPositive(tonicIndex + interval, 12)]
-	);
 
 const ChordLabel: React.FC<{ chord: Chord; tonicIndex: number }> = ({
 	chord,
@@ -113,7 +92,7 @@ const ChordLabel: React.FC<{ chord: Chord; tonicIndex: number }> = ({
 				{CHORD_QUALITY_BY_NAME[chord.qualityName].decorate(
 					chord.root.includes("/")
 						? chord.root.split("/")[
-								Number(circleOfFifths.indexOf(NOTE_NAMES[tonicIndex]) > 5)
+								Number(CIRCLE_OF_FIFTHS.indexOf(NOTE_NAMES[tonicIndex]) > 5)
 						  ]
 						: chord.root
 				)}
@@ -216,7 +195,7 @@ const SongChart: NextPage = () => {
 						datasets: Object.entries(noteNameCountsBySection).map(
 							([sectionName, noteNameCountsForSection]) => ({
 								backgroundColor: colorBySectionName[sectionName],
-								data: circleOfFifths.map(
+								data: CIRCLE_OF_FIFTHS.map(
 									(noteName) =>
 										(noteNameCountsForSection[noteName] ?? 0) /
 										(normalization === "max"
@@ -229,7 +208,7 @@ const SongChart: NextPage = () => {
 								label: sectionName,
 							})
 						),
-						labels: circleOfFifths,
+						labels: CIRCLE_OF_FIFTHS,
 					},
 					options: {
 						scales: {
@@ -243,7 +222,7 @@ const SongChart: NextPage = () => {
 									font: { size: 20 },
 								},
 								startAngle:
-									300 - circleOfFifths.indexOf(NOTE_NAMES[tonicIndex]) * 30,
+									300 - CIRCLE_OF_FIFTHS.indexOf(NOTE_NAMES[tonicIndex]) * 30,
 								ticks: { display: false },
 							},
 						},
