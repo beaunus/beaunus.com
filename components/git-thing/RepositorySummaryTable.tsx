@@ -5,9 +5,10 @@ import {
 	TableContainer,
 	TableHead,
 	TableRow,
+	TextField,
 } from "@mui/material";
 import _ from "lodash";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useState } from "react";
 
 import { GitCommit } from "../../utils/git";
 
@@ -15,9 +16,11 @@ export const RepositorySummaryTable: FC<{
 	allCommits: GitCommit[];
 	allCommitsFiltered: GitCommit[];
 }> = ({ allCommits, allCommitsFiltered }) => {
+	const [commitRegExpString, setCommitRegExpString] = useState("");
+
 	const REPOSITORY_SUMMARY_METRICS: {
 		details: ReactNode;
-		label: string;
+		label: ReactNode;
 		value: ReactNode;
 	}[] = [
 		{
@@ -38,6 +41,43 @@ export const RepositorySummaryTable: FC<{
 						2
 				  )}%`
 				: null,
+		},
+		{
+			details: (
+				<details>
+					<summary>Details</summary>
+					<ul>
+						{allCommitsFiltered
+							.filter(
+								({ message }) =>
+									!commitRegExpString ||
+									new RegExp(commitRegExpString, "i").test(message)
+							)
+							.map(({ message }, index) => (
+								<li key={`regex-commits-${index}`}>{message}</li>
+							))}
+					</ul>
+				</details>
+			),
+			label: (
+				<TextField
+					InputLabelProps={{ shrink: true }}
+					className="grow my-2"
+					label="Commit message"
+					onChange={({ target }) => {
+						setCommitRegExpString(target.value);
+					}}
+					size="small"
+					value={commitRegExpString}
+				/>
+			),
+			value: Number(
+				allCommitsFiltered.filter(
+					({ message }) =>
+						!commitRegExpString ||
+						new RegExp(commitRegExpString, "i").test(message)
+				).length
+			).toLocaleString(),
 		},
 		{
 			details: (
@@ -105,15 +145,17 @@ export const RepositorySummaryTable: FC<{
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{REPOSITORY_SUMMARY_METRICS.map(({ label, details, value }) => (
-						<TableRow key={label}>
-							<TableCell className="whitespace-nowrap">{label}</TableCell>
-							<TableCell align="right" className="font-mono">
-								{value}
-							</TableCell>
-							<TableCell>{details}</TableCell>
-						</TableRow>
-					))}
+					{REPOSITORY_SUMMARY_METRICS.map(
+						({ label, details, value }, index) => (
+							<TableRow key={`repository-summary-metrics-${index}`}>
+								<TableCell className="whitespace-nowrap">{label}</TableCell>
+								<TableCell align="right" className="font-mono">
+									{value}
+								</TableCell>
+								<TableCell>{details}</TableCell>
+							</TableRow>
+						)
+					)}
 				</TableBody>
 			</Table>
 		</TableContainer>
