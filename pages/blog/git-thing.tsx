@@ -160,14 +160,24 @@ const GitThing: NextPage = () => {
 	const [focusedDataEntry, setFocusedDataEntry] = useState<[string, Stats]>();
 	const [baseGithubRepository, setBaseGithubRepository] = useState("");
 
+	const isDateWithinSelectedRange = (date: Date | Dayjs | string | number) => {
+		const dateValue =
+			date instanceof Date || date instanceof Dayjs
+				? date.valueOf()
+				: typeof date === "string"
+				? new Date(date).valueOf()
+				: date;
+		return dateValue >= fromDay.valueOf() && dateValue < toDay.valueOf();
+	};
+
+	const commitsFiltered = allCommits.filter(
+		({ author, date }) =>
+			(!authorsToInclude.length || authorsToInclude.includes(author)) &&
+			isDateWithinSelectedRange(date)
+	);
+
 	useEffect(() => {
-		const newStatsByFileName = computeStatsByFileName(
-			allCommits.filter(
-				({ author, date }) =>
-					(!authorsToInclude.length || authorsToInclude.includes(author)) &&
-					isDateWithinSelectedRange(date)
-			)
-		);
+		const newStatsByFileName = computeStatsByFileName(commitsFiltered);
 		setNumFilesInSelectedDayRange(Object.keys(newStatsByFileName).length);
 		setStatsByFileName(newStatsByFileName);
 	}, [authorsToInclude, allCommits, fromDay, toDay]);
@@ -262,16 +272,6 @@ const GitThing: NextPage = () => {
 		scaleType,
 		statsByFileName,
 	]);
-
-	const isDateWithinSelectedRange = (date: Date | Dayjs | string | number) => {
-		const dateValue =
-			date instanceof Date || date instanceof Dayjs
-				? date.valueOf()
-				: typeof date === "string"
-				? new Date(date).valueOf()
-				: date;
-		return dateValue >= fromDay.valueOf() && dateValue < toDay.valueOf();
-	};
 
 	const UploadButton: FC = () => (
 		<Button component="label" fullWidth size="small" variant="contained">
@@ -419,7 +419,6 @@ const GitThing: NextPage = () => {
 					)}
 					size="small"
 				/>
-
 				<div className="flex gap-4">
 					<SliderWithLabels
 						className="grow"
