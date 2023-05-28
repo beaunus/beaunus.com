@@ -413,19 +413,6 @@ const GitThing: NextPage = () => {
 					)}
 					size="small"
 				/>
-				<div className="flex gap-4">
-					<ButtonGroup aria-label="num files button group">
-						{[10, 25, 50, 100].map((numFiles) => (
-							<Button
-								key={`${numFiles}-num-files-button`}
-								onClick={() => setNumFilesToShow(numFiles)}
-								size="small"
-							>
-								{numFiles}
-							</Button>
-						))}
-					</ButtonGroup>
-				</div>
 				<FormLabel id="date-slider-label">Date Range</FormLabel>
 				<SliderWithLabels
 					disabled={!historyStart}
@@ -577,18 +564,32 @@ const GitThing: NextPage = () => {
 					allCommits={allCommits}
 					allCommitsFiltered={allCommitsFiltered}
 				/>
-				<SliderWithLabels
-					className="grow"
-					disabled={!numFilesToShow}
-					displayValue={`Showing ${numFilesToShow} (of ${numFilesInSelectedDayRange})`}
-					label="Number of files to show"
-					max={numFilesTotal}
-					min={1}
-					onChange={(_event, newValue) => setNumFilesToShow(Number(newValue))}
-					size="small"
-					step={1}
-					value={numFilesToShow}
-				/>
+				<div className="flex gap-4">
+					<SliderWithLabels
+						className="grow"
+						disabled={!numFilesToShow}
+						displayValue={`Showing ${numFilesToShow} (of ${numFilesInSelectedDayRange})`}
+						label="Number of files to show"
+						max={numFilesTotal}
+						min={1}
+						onChange={(_event, newValue) => setNumFilesToShow(Number(newValue))}
+						size="small"
+						step={1}
+						value={numFilesToShow}
+					/>
+					<ButtonGroup aria-label="num files button group">
+						{[10, 25, 50, 100].map((numFiles) => (
+							<Button
+								key={`${numFiles}-num-files-button`}
+								onClick={() => setNumFilesToShow(numFiles)}
+								size="small"
+							>
+								{numFiles}
+							</Button>
+						))}
+					</ButtonGroup>
+				</div>
+
 				<canvas className="max-h-[50vh]" ref={fileBarChartRef} />
 				{focusedDataEntry ? (
 					<>
