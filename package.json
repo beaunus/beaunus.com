@@ -79,8 +79,5 @@
 		"node": "^18"
 	},
 	"engineStrict": true,
-	"lint-staged": {
-		"*.{js,ts,tsx}": "eslint --cache --fix"
-	},
 	"packageManager": "yarn@1.22.19"
 }
