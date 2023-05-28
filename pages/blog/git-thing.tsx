@@ -615,7 +615,10 @@ const GitThing: NextPage = () => {
 														statsByFileName[focusedDataEntry[0]]
 													);
 													return (
-														<TableRow key={`criteria-value-${criteria}`}>
+														<TableRow
+															className="align-top"
+															key={`criteria-value-${criteria}`}
+														>
 															<TableCell>{criteria}</TableCell>
 															<TableCell align="right" className="font-mono">
 																{value}

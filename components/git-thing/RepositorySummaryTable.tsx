@@ -147,7 +147,10 @@ export const RepositorySummaryTable: FC<{
 				<TableBody>
 					{REPOSITORY_SUMMARY_METRICS.map(
 						({ label, details, value }, index) => (
-							<TableRow key={`repository-summary-metrics-${index}`}>
+							<TableRow
+								className="align-top"
+								key={`repository-summary-metrics-${index}`}
+							>
 								<TableCell className="whitespace-nowrap">{label}</TableCell>
 								<TableCell align="right" className="font-mono">
 									{value}
