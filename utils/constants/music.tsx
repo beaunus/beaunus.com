@@ -188,7 +188,7 @@ export const INDEXES_BY_CHORD_CLASS = Object.fromEntries(
 		"": [1, 3, 5],
 		sus2: [1, 2, 5],
 		sus4: [1, 4, 5],
-		seven: [1, 3, 5, 7],
+		seventh: [1, 3, 5, 7],
 		/* eslint-enable sort-keys */
 	}).map(([chordName, indexes]) => [
 		chordName,
