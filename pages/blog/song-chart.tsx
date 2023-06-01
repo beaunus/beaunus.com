@@ -132,7 +132,7 @@ const SongChart: NextPage = () => {
 	);
 
 	const chordsInSong = _.uniqBy(
-		sections.flatMap((section) => section.chords),
+		sections.flatMap((section) => section.chords ?? []),
 		({ qualityName, root }) => `${root}-${qualityName}`
 	).filter(({ root }) => root);
 
