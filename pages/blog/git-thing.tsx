@@ -280,6 +280,8 @@ const GitThing: NextPage = () => {
 		criteriaNumerator,
 		fileNameGlobExclude,
 		fileNameGlobInclude,
+		fileNamesToExclude,
+		fileNamesToInclude,
 		numFilesToShow,
 		scaleType,
 		statsByFileName,
