@@ -165,6 +165,8 @@ const GitThing: NextPage = () => {
 	const [isIntervalLocked, setIsIntervalLocked] = useState(false);
 	const [focusedDataEntry, setFocusedDataEntry] = useState<[string, Stats]>();
 	const [baseGithubRepository, setBaseGithubRepository] = useState("");
+	const [fileNamesToInclude, setFileNamesToInclude] = useState<string[]>([]);
+	const [fileNamesToExclude, setFileNamesToExclude] = useState<string[]>([]);
 
 	useEffect(() => {
 		const commitMessageRegExp = commitMessageRegExpString
@@ -186,19 +188,25 @@ const GitThing: NextPage = () => {
 	}, [allCommits, authorsToInclude, commitMessageRegExpString, fromDay, toDay]);
 
 	useEffect(() => {
+		const allFileNames = _.uniq(
+			allCommits.flatMap((commit) =>
+				commit.files.map((file) => file.path.afterChange)
+			)
+		);
+
+		setFileNamesToInclude(
+			multimatch(allFileNames, fileNameGlobInclude.split(" "))
+		);
+		setFileNamesToExclude(
+			multimatch(allFileNames, fileNameGlobExclude.split(" "))
+		);
+	}, [allCommits, fileNameGlobInclude, fileNameGlobExclude]);
+
+	useEffect(() => {
 		if (fileBarChartRef.current) {
 			const valueIterateeNumerator = valueIterateeByCriteria[criteriaNumerator];
 			const valueIterateeDenominator =
 				valueIterateeByCriteria[criteriaDenominator];
-
-			const fileNamesToInclude = multimatch(
-				Object.keys(statsByFileName),
-				fileNameGlobInclude.split(" ")
-			);
-			const fileNamesToExclude = multimatch(
-				Object.keys(statsByFileName),
-				fileNameGlobExclude.split(" ")
-			);
 
 			const dataEntries = Object.entries(
 				Object.fromEntries(
