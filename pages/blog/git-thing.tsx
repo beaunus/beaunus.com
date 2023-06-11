@@ -595,6 +595,10 @@ const GitThing: NextPage = () => {
 				<RepositorySummaryTable
 					allCommits={allCommits}
 					allCommitsFiltered={allCommitsFiltered}
+					fileNameFilter={(fileName) =>
+						(!fileNameGlobInclude || fileNamesToInclude.includes(fileName)) &&
+						(!fileNameGlobExclude || !fileNamesToExclude.includes(fileName))
+					}
 				/>
 				<div className="flex gap-4">
 					<SliderWithLabels
