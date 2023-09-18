@@ -168,24 +168,27 @@ const GitThing: NextPage = () => {
 	const [fileNamesToInclude, setFileNamesToInclude] = useState<string[]>([]);
 	const [fileNamesToExclude, setFileNamesToExclude] = useState<string[]>([]);
 
-	useEffect(() => {
-		const commitMessageRegExp = commitMessageRegExpString
-			? new RegExp(commitMessageRegExpString, "i")
-			: null;
-		const newAllCommitsFiltered = allCommits.filter(
-			({ author, date, message }) =>
-				(!authorsToInclude.length || authorsToInclude.includes(author)) &&
-				(!commitMessageRegExp || commitMessageRegExp.test(message)) &&
-				isDateWithinSelectedRange(date, {
-					fromTimestamp: fromDay.valueOf(),
-					toTimestamp: toDay.valueOf(),
-				})
-		);
-		setAllCommitsFiltered(newAllCommitsFiltered);
-		const newStatsByFileName = computeStatsByFileName(newAllCommitsFiltered);
-		setNumFilesInSelectedDayRange(Object.keys(newStatsByFileName).length);
-		setStatsByFileName(newStatsByFileName);
-	}, [allCommits, authorsToInclude, commitMessageRegExpString, fromDay, toDay]);
+	useEffect(
+		function setCommitsAndStats() {
+			const commitMessageRegExp = commitMessageRegExpString
+				? new RegExp(commitMessageRegExpString, "i")
+				: null;
+			const newAllCommitsFiltered = allCommits.filter(
+				({ author, date, message }) =>
+					(!authorsToInclude.length || authorsToInclude.includes(author)) &&
+					(!commitMessageRegExp || commitMessageRegExp.test(message)) &&
+					isDateWithinSelectedRange(date, {
+						fromTimestamp: fromDay.valueOf(),
+						toTimestamp: toDay.valueOf(),
+					})
+			);
+			setAllCommitsFiltered(newAllCommitsFiltered);
+			const newStatsByFileName = computeStatsByFileName(newAllCommitsFiltered);
+			setNumFilesInSelectedDayRange(Object.keys(newStatsByFileName).length);
+			setStatsByFileName(newStatsByFileName);
+		},
+		[allCommits, authorsToInclude, commitMessageRegExpString, fromDay, toDay]
+	);
 
 	useEffect(() => {
 		const allFileNames = _.uniq(
