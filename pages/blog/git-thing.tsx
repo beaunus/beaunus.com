@@ -123,6 +123,7 @@ type Criteria = keyof typeof valueIterateeByCriteria;
 
 const GitThing: NextPage = () => {
 	const fileBarChartRef = useRef<HTMLCanvasElement>(null);
+	const timelineChartRef = useRef<HTMLCanvasElement>(null);
 	const [statsByFileName, setStatsByFileName] = useState<Record<string, Stats>>(
 		{}
 	);
@@ -170,6 +171,7 @@ const GitThing: NextPage = () => {
 	const [baseGithubRepository, setBaseGithubRepository] = useState("");
 	const [fileNamesToInclude, setFileNamesToInclude] = useState<string[]>([]);
 	const [fileNamesToExclude, setFileNamesToExclude] = useState<string[]>([]);
+	const [numBars, setNumBars] = useState(1);
 
 	useEffect(
 		function setCommitsAndStats() {
@@ -295,6 +297,63 @@ const GitThing: NextPage = () => {
 			numFilesToShow,
 			scaleType,
 			statsByFileName,
+		]
+	);
+
+	useEffect(
+		function updateTimelineChart() {
+			if (timelineChartRef.current) {
+				const barLengthInMs = toDay.diff(fromDay, "ms") / numBars;
+				const barDates = Array.from({ length: numBars }, (_iterable, index) =>
+					fromDay.add(index * barLengthInMs, "ms")
+				);
+
+				const timelineChart = new ChartJS(timelineChartRef.current, {
+					data: {
+						datasets: [
+							{
+								backgroundColor: "red",
+								borderColor: "red",
+								data: barDates.map((date, index) => {
+									const commitsInRange = allCommitsFiltered.filter((commit) =>
+										isDateWithinSelectedRange(commit.date, {
+											fromTimestamp: date.valueOf(),
+											toTimestamp:
+												barDates[index + 1]?.valueOf() ?? toDay.valueOf(),
+										})
+									);
+									return commitsInRange.length;
+								}),
+							},
+						],
+						labels: barDates.map((date) => date.format("YYYY-MM-DD")),
+					},
+					options: {
+						animation: false,
+						plugins: { legend: { display: false } },
+					},
+					type: "bar",
+				});
+
+				return () => {
+					timelineChart.destroy();
+				};
+			}
+		},
+		[
+			commitMessageRegExpString,
+			criteriaDenominator,
+			criteriaNumerator,
+			fileNameGlobExclude,
+			fileNameGlobInclude,
+			fileNamesToExclude,
+			fileNamesToInclude,
+			fromDay,
+			numBars,
+			numFilesToShow,
+			scaleType,
+			statsByFileName,
+			toDay,
 		]
 	);
 
@@ -576,6 +635,23 @@ const GitThing: NextPage = () => {
 						/>
 					</Stack>
 				</Stack>
+				<Stack alignItems="center" direction="row" gap={1}>
+					<TextField
+						InputLabelProps={{ shrink: true }}
+						label="Num bars"
+						onChange={({ target }) => {
+							setNumBars(Math.max(Number(target.value), 1));
+						}}
+						size="small"
+						type="number"
+						value={numBars}
+					/>
+					<Typography>
+						Each bar ~={" "}
+						{Number(toDay.diff(fromDay, "days") / numBars).toFixed(2)} days
+					</Typography>
+				</Stack>
+				<canvas className="max-h-[50vh]" ref={timelineChartRef} />
 				<Stack direction="row" gap={1}>
 					<TextField
 						InputLabelProps={{ shrink: true }}
@@ -652,7 +728,6 @@ const GitThing: NextPage = () => {
 						))}
 					</ToggleButtonGroup>
 				</Stack>
-
 				<canvas className="max-h-[50vh]" ref={fileBarChartRef} />
 				{focusedDataEntry ? (
 					<>
