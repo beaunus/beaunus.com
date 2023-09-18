@@ -208,90 +208,95 @@ const GitThing: NextPage = () => {
 		[allCommits, fileNameGlobInclude, fileNameGlobExclude]
 	);
 
-	useEffect(() => {
-		if (fileBarChartRef.current) {
-			const valueIterateeNumerator = valueIterateeByCriteria[criteriaNumerator];
-			const valueIterateeDenominator =
-				valueIterateeByCriteria[criteriaDenominator];
+	useEffect(
+		function updateFileBarChart() {
+			if (fileBarChartRef.current) {
+				const valueIterateeNumerator =
+					valueIterateeByCriteria[criteriaNumerator];
+				const valueIterateeDenominator =
+					valueIterateeByCriteria[criteriaDenominator];
 
-			const dataEntries = Object.entries(
-				Object.fromEntries(
-					_.sortBy(
-						Object.entries(statsByFileName).filter(
-							([fileName]) =>
-								(!fileNameGlobInclude ||
-									fileNamesToInclude.includes(fileName)) &&
-								(!fileNameGlobExclude || !fileNamesToExclude.includes(fileName))
-						),
-						([, stats]) =>
-							-(scaleType === "linear (abs)"
-								? Math.abs(
+				const dataEntries = Object.entries(
+					Object.fromEntries(
+						_.sortBy(
+							Object.entries(statsByFileName).filter(
+								([fileName]) =>
+									(!fileNameGlobInclude ||
+										fileNamesToInclude.includes(fileName)) &&
+									(!fileNameGlobExclude ||
+										!fileNamesToExclude.includes(fileName))
+							),
+							([, stats]) =>
+								-(scaleType === "linear (abs)"
+									? Math.abs(
+											valueIterateeNumerator(stats).value /
+												valueIterateeDenominator(stats).value
+									  )
+									: valueIterateeNumerator(stats).value /
+									  valueIterateeDenominator(stats).value)
+						).slice(0, numFilesToShow)
+					)
+				);
+
+				const fileBarChart = new ChartJS(fileBarChartRef.current, {
+					data: {
+						datasets: [
+							{
+								backgroundColor: dataEntries.map(([fileName]) =>
+									stringToHex(fileName)
+								),
+								data: dataEntries.map(
+									([, stats]) =>
 										valueIterateeNumerator(stats).value /
-											valueIterateeDenominator(stats).value
-								  )
-								: valueIterateeNumerator(stats).value /
-								  valueIterateeDenominator(stats).value)
-					).slice(0, numFilesToShow)
-				)
-			);
-
-			const fileBarChart = new ChartJS(fileBarChartRef.current, {
-				data: {
-					datasets: [
-						{
-							backgroundColor: dataEntries.map(([fileName]) =>
-								stringToHex(fileName)
-							),
-							data: dataEntries.map(
-								([, stats]) =>
-									valueIterateeNumerator(stats).value /
-									valueIterateeDenominator(stats).value
-							),
-						},
-					],
-					labels: dataEntries.map(([filename]) => filename),
-				},
-				options: {
-					animation: false,
-					indexAxis: "y",
-					maintainAspectRatio: false,
-					normalized: true,
-					onClick: (_event, elements) => {
-						if (elements?.[0]?.index !== undefined) {
-							setFocusedDataEntry(dataEntries[elements?.[0].index]);
-						}
+										valueIterateeDenominator(stats).value
+								),
+							},
+						],
+						labels: dataEntries.map(([filename]) => filename),
 					},
-					plugins: { legend: { display: false } },
-					scales: {
-						myScale: {
-							axis: "x",
-							position: "top",
-							type:
-								scaleType === "linear" || scaleType === "linear (abs)"
-									? "linear"
-									: "logarithmic",
+					options: {
+						animation: false,
+						indexAxis: "y",
+						maintainAspectRatio: false,
+						normalized: true,
+						onClick: (_event, elements) => {
+							if (elements?.[0]?.index !== undefined) {
+								setFocusedDataEntry(dataEntries[elements?.[0].index]);
+							}
+						},
+						plugins: { legend: { display: false } },
+						scales: {
+							myScale: {
+								axis: "x",
+								position: "top",
+								type:
+									scaleType === "linear" || scaleType === "linear (abs)"
+										? "linear"
+										: "logarithmic",
+							},
 						},
 					},
-				},
-				type: "bar",
-			});
+					type: "bar",
+				});
 
-			return () => {
-				fileBarChart.destroy();
-			};
-		}
-	}, [
-		commitMessageRegExpString,
-		criteriaDenominator,
-		criteriaNumerator,
-		fileNameGlobExclude,
-		fileNameGlobInclude,
-		fileNamesToExclude,
-		fileNamesToInclude,
-		numFilesToShow,
-		scaleType,
-		statsByFileName,
-	]);
+				return () => {
+					fileBarChart.destroy();
+				};
+			}
+		},
+		[
+			commitMessageRegExpString,
+			criteriaDenominator,
+			criteriaNumerator,
+			fileNameGlobExclude,
+			fileNameGlobInclude,
+			fileNamesToExclude,
+			fileNamesToInclude,
+			numFilesToShow,
+			scaleType,
+			statsByFileName,
+		]
+	);
 
 	const UploadButton: FC = () => (
 		<Button component="label" fullWidth size="small" variant="contained">
