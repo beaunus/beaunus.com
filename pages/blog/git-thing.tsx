@@ -373,7 +373,7 @@ const GitThing: NextPage = () => {
 							onChange={(e) => setCriteriaNumerator(e.target.value as Criteria)}
 							value={criteriaNumerator}
 						>
-							<div className="flex flex-wrap">
+							<Stack direction="row" flexWrap="wrap">
 								{Object.keys(valueIterateeByCriteria).map((name) => (
 									<FormControlLabel
 										control={<Radio size="small" />}
@@ -382,7 +382,7 @@ const GitThing: NextPage = () => {
 										value={name}
 									/>
 								))}
-							</div>
+							</Stack>
 						</RadioGroup>
 					</Grid>
 					<Grid item xs={6}>
@@ -396,7 +396,7 @@ const GitThing: NextPage = () => {
 							}
 							value={criteriaDenominator}
 						>
-							<div className="flex flex-wrap">
+							<Stack direction="row" flexWrap="wrap">
 								{Object.keys(valueIterateeByCriteria).map((name) => (
 									<FormControlLabel
 										control={<Radio size="small" />}
@@ -405,7 +405,7 @@ const GitThing: NextPage = () => {
 										value={name}
 									/>
 								))}
-							</div>
+							</Stack>
 						</RadioGroup>
 					</Grid>
 				</Grid>
