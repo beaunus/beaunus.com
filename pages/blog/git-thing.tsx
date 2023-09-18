@@ -613,7 +613,7 @@ const GitThing: NextPage = () => {
 						(!fileNameGlobExclude || !fileNamesToExclude.includes(fileName))
 					}
 				/>
-				<div className="flex gap-4">
+				<Stack direction="row" gap={2}>
 					<SliderWithLabels
 						className="grow"
 						disabled={!numFilesToShow}
@@ -641,7 +641,7 @@ const GitThing: NextPage = () => {
 							</ToggleButton>
 						))}
 					</ToggleButtonGroup>
-				</div>
+				</Stack>
 
 				<canvas className="max-h-[50vh]" ref={fileBarChartRef} />
 				{focusedDataEntry ? (
