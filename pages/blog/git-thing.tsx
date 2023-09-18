@@ -190,20 +190,23 @@ const GitThing: NextPage = () => {
 		[allCommits, authorsToInclude, commitMessageRegExpString, fromDay, toDay]
 	);
 
-	useEffect(() => {
-		const allFileNames = _.uniq(
-			allCommits.flatMap((commit) =>
-				commit.files.map((file) => file.path.afterChange)
-			)
-		);
+	useEffect(
+		function setFileNameFilters() {
+			const allFileNames = _.uniq(
+				allCommits.flatMap((commit) =>
+					commit.files.map((file) => file.path.afterChange)
+				)
+			);
 
-		setFileNamesToInclude(
-			multimatch(allFileNames, fileNameGlobInclude.split(" "))
-		);
-		setFileNamesToExclude(
-			multimatch(allFileNames, fileNameGlobExclude.split(" "))
-		);
-	}, [allCommits, fileNameGlobInclude, fileNameGlobExclude]);
+			setFileNamesToInclude(
+				multimatch(allFileNames, fileNameGlobInclude.split(" "))
+			);
+			setFileNamesToExclude(
+				multimatch(allFileNames, fileNameGlobExclude.split(" "))
+			);
+		},
+		[allCommits, fileNameGlobInclude, fileNameGlobExclude]
+	);
 
 	useEffect(() => {
 		if (fileBarChartRef.current) {
