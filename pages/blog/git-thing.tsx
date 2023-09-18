@@ -566,7 +566,7 @@ const GitThing: NextPage = () => {
 						value={isIntervalLocked}
 					/>
 				</Stack>
-				<div className="flex gap-2">
+				<Stack direction="row" gap={1}>
 					<TextField
 						InputLabelProps={{ shrink: true }}
 						className="grow"
@@ -603,7 +603,7 @@ const GitThing: NextPage = () => {
 						size="small"
 						value={fileNameGlobExcludePending}
 					/>
-				</div>
+				</Stack>
 				<Typography variant="h5">Repository Summary</Typography>
 				<RepositorySummaryTable
 					allCommits={allCommits}
