@@ -454,117 +454,127 @@ const GitThing: NextPage = () => {
 					size="small"
 					value={commitMessageRegExpString}
 				/>
-				<FormLabel id="date-slider-label">Date Range</FormLabel>
-				<SliderWithLabels
-					disabled={!historyStart}
-					max={historyEnd.add(1, "day").valueOf()}
-					min={historyStart.valueOf()}
-					onChange={(_event, newValue) => {
-						const [leftValue, rightValue] = (newValue as number[]).map(Number);
-						const interval = toDay.diff(fromDay);
-						if (isIntervalLocked) {
-							const isLeftSliderMovingLeft = leftValue < fromDay.valueOf();
-							const isLeftSliderMovingRight = leftValue > fromDay.valueOf();
-							const isThereSpaceToMoveRight =
-								leftValue + interval < historyEnd.valueOf();
+				<Stack gap={2}>
+					<Stack direction="row" gap={2}>
+						<FormLabel className="whitespace-nowrap" id="date-slider-label">
+							Date Range
+						</FormLabel>
+						<SliderWithLabels
+							disabled={!historyStart}
+							max={historyEnd.add(1, "day").valueOf()}
+							min={historyStart.valueOf()}
+							onChange={(_event, newValue) => {
+								const [leftValue, rightValue] = (newValue as number[]).map(
+									Number
+								);
+								const interval = toDay.diff(fromDay);
+								if (isIntervalLocked) {
+									const isLeftSliderMovingLeft = leftValue < fromDay.valueOf();
+									const isLeftSliderMovingRight = leftValue > fromDay.valueOf();
+									const isThereSpaceToMoveRight =
+										leftValue + interval < historyEnd.valueOf();
 
-							const isRightSliderMovingRight = rightValue > toDay.valueOf();
-							const isRightSliderMovingLeft = rightValue < toDay.valueOf();
-							const isThereSpaceToMoveLeft =
-								rightValue - interval >= historyStart.valueOf();
+									const isRightSliderMovingRight = rightValue > toDay.valueOf();
+									const isRightSliderMovingLeft = rightValue < toDay.valueOf();
+									const isThereSpaceToMoveLeft =
+										rightValue - interval >= historyStart.valueOf();
 
-							if (
-								isLeftSliderMovingLeft ||
-								(isLeftSliderMovingRight && isThereSpaceToMoveRight)
-							) {
-								setFromDay(dayjs(leftValue));
-								setToDay(dayjs(leftValue + interval));
-							} else if (
-								isRightSliderMovingRight ||
-								(isRightSliderMovingLeft && isThereSpaceToMoveLeft)
-							) {
-								setFromDay(dayjs(rightValue - interval));
-								setToDay(dayjs(rightValue));
+									if (
+										isLeftSliderMovingLeft ||
+										(isLeftSliderMovingRight && isThereSpaceToMoveRight)
+									) {
+										setFromDay(dayjs(leftValue));
+										setToDay(dayjs(leftValue + interval));
+									} else if (
+										isRightSliderMovingRight ||
+										(isRightSliderMovingLeft && isThereSpaceToMoveLeft)
+									) {
+										setFromDay(dayjs(rightValue - interval));
+										setToDay(dayjs(rightValue));
+									}
+								} else {
+									setFromDay(dayjs(leftValue));
+									setToDay(dayjs(rightValue));
+								}
+							}}
+							size="small"
+							step={NUM_MS_IN_ONE_DAY}
+							value={
+								fromDay && toDay
+									? [fromDay.valueOf(), toDay.valueOf()]
+									: undefined
 							}
-						} else {
-							setFromDay(dayjs(leftValue));
-							setToDay(dayjs(rightValue));
-						}
-					}}
-					size="small"
-					step={NUM_MS_IN_ONE_DAY}
-					value={
-						fromDay && toDay ? [fromDay.valueOf(), toDay.valueOf()] : undefined
-					}
-					valueLabelDisplay="auto"
-					valueLabelFormat={(timestamp) =>
-						dayjs(timestamp).format("YYYY-MM-DD")
-					}
-				/>
-				<Stack direction="row" gap={1} justifyContent="space-between">
-					<TextField
-						InputLabelProps={{ shrink: true }}
-						label="Num days to jump"
-						onChange={({ target }) => {
-							setJumpSize(Math.max(Number(target.value), 1));
-						}}
-						size="small"
-						type="number"
-						value={jumpSize}
-					/>
-					<ButtonGroup aria-label="jump button group">
-						<Button
-							onClick={function jumpToLeft() {
-								const isSpaceToDecrement =
-									fromDay >= historyStart.add(jumpSize, "days");
-
-								if (isSpaceToDecrement) {
-									setFromDay((old) => old.subtract(jumpSize, "day"));
-									setToDay((old) => old.subtract(jumpSize, "day"));
-								}
+							valueLabelDisplay="auto"
+							valueLabelFormat={(timestamp) =>
+								dayjs(timestamp).format("YYYY-MM-DD")
+							}
+						/>
+					</Stack>
+					<Stack direction="row" gap={1} justifyContent="space-between">
+						<TextField
+							InputLabelProps={{ shrink: true }}
+							label="Num days to jump"
+							onChange={({ target }) => {
+								setJumpSize(Math.max(Number(target.value), 1));
 							}}
 							size="small"
-						>
-							<KeyboardDoubleArrowLeftIcon />
-						</Button>
-						<Button
-							onClick={function jumpToRight() {
-								const isSpaceToIncrement =
-									toDay <= historyEnd.subtract(jumpSize, "days");
+							type="number"
+							value={jumpSize}
+						/>
+						<ButtonGroup aria-label="jump button group">
+							<Button
+								onClick={function jumpToLeft() {
+									const isSpaceToDecrement =
+										fromDay >= historyStart.add(jumpSize, "days");
 
-								if (isSpaceToIncrement) {
-									setFromDay((old) => old.add(jumpSize, "day"));
-									setToDay((old) => old.add(jumpSize, "day"));
-								}
-							}}
-							size="small"
-						>
-							<KeyboardDoubleArrowRightIcon />
-						</Button>
-					</ButtonGroup>
-					<ToggleButtonGroup
-						aria-label="snap button group"
-						value={toDay.diff(fromDay, "days")}
-					>
-						{[7, 14, 28, 28 * 6].map((numDaysToSnapTo) => (
-							<ToggleButton
-								key={`${numDaysToSnapTo}-snap`}
-								onClick={function snapToNumDays() {
-									setFromDay(toDay.subtract(numDaysToSnapTo, "days"));
+									if (isSpaceToDecrement) {
+										setFromDay((old) => old.subtract(jumpSize, "day"));
+										setToDay((old) => old.subtract(jumpSize, "day"));
+									}
 								}}
 								size="small"
-								value={numDaysToSnapTo}
 							>
-								{numDaysToSnapTo} days
-							</ToggleButton>
-						))}
-					</ToggleButtonGroup>
-					<FormControlLabel
-						control={<Switch />}
-						label="Lock interval"
-						onChange={(_event, newValue) => setIsIntervalLocked(newValue)}
-						value={isIntervalLocked}
-					/>
+								<KeyboardDoubleArrowLeftIcon />
+							</Button>
+							<Button
+								onClick={function jumpToRight() {
+									const isSpaceToIncrement =
+										toDay <= historyEnd.subtract(jumpSize, "days");
+
+									if (isSpaceToIncrement) {
+										setFromDay((old) => old.add(jumpSize, "day"));
+										setToDay((old) => old.add(jumpSize, "day"));
+									}
+								}}
+								size="small"
+							>
+								<KeyboardDoubleArrowRightIcon />
+							</Button>
+						</ButtonGroup>
+						<ToggleButtonGroup
+							aria-label="snap button group"
+							value={toDay.diff(fromDay, "days")}
+						>
+							{[7, 14, 28, 28 * 6].map((numDaysToSnapTo) => (
+								<ToggleButton
+									key={`${numDaysToSnapTo}-snap`}
+									onClick={function snapToNumDays() {
+										setFromDay(toDay.subtract(numDaysToSnapTo, "days"));
+									}}
+									size="small"
+									value={numDaysToSnapTo}
+								>
+									{numDaysToSnapTo} days
+								</ToggleButton>
+							))}
+						</ToggleButtonGroup>
+						<FormControlLabel
+							control={<Switch />}
+							label="Lock interval"
+							onChange={(_event, newValue) => setIsIntervalLocked(newValue)}
+							value={isIntervalLocked}
+						/>
+					</Stack>
 				</Stack>
 				<Stack direction="row" gap={1}>
 					<TextField
