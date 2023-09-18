@@ -2,6 +2,8 @@ import encHex from "crypto-js/enc-hex";
 import sha256 from "crypto-js/sha256";
 import { Dayjs } from "dayjs";
 
+export const NUM_MS_IN_ONE_DAY = 1000 * 60 * 60 * 24;
+
 export const identity = <T>(x: T) => x;
 
 export const isBrowser = (): boolean => typeof window !== "undefined";

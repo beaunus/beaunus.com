@@ -32,7 +32,11 @@ import { FC, ReactNode, useEffect, useRef, useState } from "react";
 import { CommitTable } from "../../components/git-thing/CommitTable";
 import { RepositorySummaryTable } from "../../components/git-thing/RepositorySummaryTable";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
-import { isDateWithinSelectedRange, stringToHex } from "../../utils";
+import {
+	isDateWithinSelectedRange,
+	NUM_MS_IN_ONE_DAY,
+	stringToHex,
+} from "../../utils";
 import {
 	computeDateRange,
 	computeStatsByFileName,
@@ -57,8 +61,6 @@ const FILE_NAME_GLOB_EXCLUDE_DEFAULT = [
 
 const SCALE_TYPES = ["linear", "linear (abs)", "logarithmic"] as const;
 type ScaleType = (typeof SCALE_TYPES)[number];
-
-const NUM_MS_IN_ONE_DAY = 1000 * 60 * 60 * 24;
 
 const valueIterateeByCriteria: Record<
 	string,
