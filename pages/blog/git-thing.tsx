@@ -269,10 +269,7 @@ const GitThing: NextPage = () => {
 							myScale: {
 								axis: "x",
 								position: "top",
-								type:
-									scaleType === "linear" || scaleType === "linear (abs)"
-										? "linear"
-										: "logarithmic",
+								type: scaleType === "logarithmic" ? "logarithmic" : "linear",
 							},
 						},
 					},
