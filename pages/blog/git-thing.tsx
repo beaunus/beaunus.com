@@ -335,7 +335,7 @@ const GitThing: NextPage = () => {
 			<Head>
 				<title>Git thing | Beaunus</title>
 			</Head>
-			<div className="flex flex-col gap-5 px-14 w-full">
+			<Stack gap={2.5} paddingX={7} width="100%">
 				<div className="text-2xl font-semibold text-center text-cyan-700">
 					Git thing
 				</div>
@@ -702,7 +702,7 @@ const GitThing: NextPage = () => {
 						)}
 					</>
 				) : null}
-			</div>
+			</Stack>
 		</>
 	);
 };
