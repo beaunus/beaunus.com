@@ -511,7 +511,7 @@ const GitThing: NextPage = () => {
 					/>
 					<ButtonGroup aria-label="jump button group">
 						<Button
-							onClick={() => {
+							onClick={function jumpToLeft() {
 								const isSpaceToDecrement =
 									fromDay >= historyStart.add(jumpSize, "days");
 
@@ -525,7 +525,7 @@ const GitThing: NextPage = () => {
 							<KeyboardDoubleArrowLeftIcon />
 						</Button>
 						<Button
-							onClick={() => {
+							onClick={function jumpToRight() {
 								const isSpaceToIncrement =
 									toDay <= historyEnd.subtract(jumpSize, "days");
 
