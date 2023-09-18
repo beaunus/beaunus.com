@@ -546,9 +546,9 @@ const GitThing: NextPage = () => {
 						{[7, 14, 28, 28 * 6].map((numDaysToSnapTo) => (
 							<ToggleButton
 								key={`${numDaysToSnapTo}-snap`}
-								onClick={() =>
-									setFromDay(toDay.subtract(numDaysToSnapTo, "days"))
-								}
+								onClick={function snapToNumDays() {
+									setFromDay(toDay.subtract(numDaysToSnapTo, "days"));
+								}}
 								size="small"
 								value={numDaysToSnapTo}
 							>
