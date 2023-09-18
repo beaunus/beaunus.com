@@ -194,7 +194,7 @@ const GitThing: NextPage = () => {
 		function setFileNameFilters() {
 			const allFileNames = _.uniq(
 				allCommits.flatMap(({ files }) =>
-					files.map((file) => file.path.afterChange)
+					files.map(({ path }) => path.afterChange)
 				)
 			);
 
