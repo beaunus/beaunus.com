@@ -9,6 +9,7 @@ import {
 	Grid,
 	Radio,
 	RadioGroup,
+	Stack,
 	Switch,
 	Table,
 	TableBody,
@@ -500,7 +501,7 @@ const GitThing: NextPage = () => {
 						dayjs(timestamp).format("YYYY-MM-DD")
 					}
 				/>
-				<div className="flex gap-1 justify-between">
+				<Stack direction="row" gap={1} justifyContent="space-between">
 					<TextField
 						InputLabelProps={{ shrink: true }}
 						label="Num days to jump"
@@ -564,7 +565,7 @@ const GitThing: NextPage = () => {
 						onChange={(_event, newValue) => setIsIntervalLocked(newValue)}
 						value={isIntervalLocked}
 					/>
-				</div>
+				</Stack>
 				<div className="flex gap-2">
 					<TextField
 						InputLabelProps={{ shrink: true }}
