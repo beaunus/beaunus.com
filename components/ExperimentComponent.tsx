@@ -121,7 +121,7 @@ export const ExperimentComponent = <T,>({
 };
 
 export type ExperimentDefinition<T> = {
-	execute: (values: T, i: number) => T;
-	initialValues: T;
-	update: (values: T, i: number) => void;
+	execute: (values: Readonly<T>, i: number) => T;
+	initialValues: Readonly<T>;
+	update: (values: Readonly<T>, i: number) => void;
 };
