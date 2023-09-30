@@ -40,14 +40,14 @@ const Poisson: NextPage = () => {
 
 	const generateExperiment = <T,>({
 		execute,
-		initialize,
+		initialValues,
 		update,
 	}: {
 		execute: (values: T, i: number) => T;
-		initialize: () => T;
+		initialValues: T;
 		update: (values: T) => void;
 	}): Experiment => {
-		let values = initialize();
+		let values = initialValues;
 		let isRunningBit = false;
 		let i = 0;
 		setPercentProgress(0);
@@ -252,11 +252,11 @@ const Poisson: NextPage = () => {
 														.concat(didEventHappen),
 												};
 											},
-											initialize: () => ({
+											initialValues: {
 												countByGapSize: {},
 												mostRecentTrueIndex: 0,
 												samples: Array.from({ length: 100 }, () => false),
-											}),
+											},
 											update: (values) => {
 												setCountByGapSizeState(values.countByGapSize);
 												setSamplesState(values.samples);
