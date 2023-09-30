@@ -20,15 +20,17 @@ type Experiment = {
 	performExperiment: VoidFunction;
 };
 
+type ExperimentDefinition<T> = {
+	execute: (values: T, i: number) => T;
+	initialValues: T;
+	update: (values: T, i: number) => void;
+};
+
 const ExperimentComponent = <T,>({
 	execute,
 	initialValues,
 	update,
-}: {
-	execute: (values: T, i: number) => T;
-	initialValues: T;
-	update: (values: T, i: number) => void;
-}) => {
+}: ExperimentDefinition<T>) => {
 	const [currentExperiment, setCurrentExperiment] =
 		React.useState<Experiment>();
 
