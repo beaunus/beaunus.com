@@ -43,11 +43,11 @@ const Poisson: NextPage = () => {
 		initialize,
 		update,
 	}: {
-		execute: (values: T, i: number) => void;
+		execute: (values: T, i: number) => T;
 		initialize: () => T;
 		update: (values: T) => void;
 	}): Experiment => {
-		const values = initialize();
+		let values = initialize();
 		let isRunningBit = false;
 		let i = 0;
 		setPercentProgress(0);
@@ -58,7 +58,7 @@ const Poisson: NextPage = () => {
 			performExperiment: async () => {
 				isRunningBit = true;
 				for (; isRunningBit && i < 10 ** numTrialsExponent; ++i) {
-					execute(values, i);
+					values = execute(values, i);
 					if (i % 10 ** windowSizeExponent === 0) {
 						update(values);
 						setNumCompleteTrials(i);
@@ -232,19 +232,25 @@ const Poisson: NextPage = () => {
 											samples: Array<boolean>;
 										}>({
 											execute: (values, i) => {
-												/* eslint-disable no-param-reassign */
 												const didEventHappen =
 													Math.random() < probabilityOfEvent;
-												if (i > 0 && didEventHappen) {
-													const thisGap = i - values.mostRecentTrueIndex - 1;
-													values.countByGapSize[thisGap] =
-														(values.countByGapSize[thisGap] ?? 0) + 1;
-													values.mostRecentTrueIndex = i;
-												}
-												values.samples = values.samples
-													.slice(1)
-													.concat(didEventHappen);
-												/* eslint-enable no-param-reassign */
+												const thisGap = i - values.mostRecentTrueIndex - 1;
+												return {
+													...values,
+													...(i > 0 && didEventHappen
+														? {
+																countByGapSize: {
+																	...values.countByGapSize,
+																	[thisGap]:
+																		(values.countByGapSize[thisGap] ?? 0) + 1,
+																},
+																mostRecentTrueIndex: i,
+														  }
+														: {}),
+													samples: values.samples
+														.slice(1)
+														.concat(didEventHappen),
+												};
 											},
 											initialize: () => ({
 												countByGapSize: {},
