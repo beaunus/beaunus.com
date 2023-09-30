@@ -199,6 +199,40 @@ const Poisson: NextPage = () => {
 		}
 	}, [samplesState]);
 
+	const poissonExperimentDefinition: ExperimentDefinition<{
+		countByGapSize: Record<number, number>;
+		mostRecentTrueIndex: number;
+		samples: Array<boolean>;
+	}> = {
+		execute: (values, i) => {
+			const didEventHappen = Math.random() < probabilityOfEvent;
+			const thisGap = i - values.mostRecentTrueIndex - 1;
+			return {
+				...values,
+				...(i > 0 && didEventHappen
+					? {
+							countByGapSize: {
+								...values.countByGapSize,
+								[thisGap]: (values.countByGapSize[thisGap] ?? 0) + 1,
+							},
+							mostRecentTrueIndex: i,
+					  }
+					: {}),
+				samples: values.samples.slice(1).concat(didEventHappen),
+			};
+		},
+		initialValues: {
+			countByGapSize: {},
+			mostRecentTrueIndex: 0,
+			samples: Array.from({ length: 100 }, () => false),
+		},
+		update: (values, i) => {
+			setCountByGapSizeState(values.countByGapSize);
+			setNumCompleteTrials(i);
+			setSamplesState(values.samples);
+		},
+	};
+
 	return (
 		<>
 			<Head>
@@ -266,39 +300,7 @@ const Poisson: NextPage = () => {
 							}
 							value={probabilityOfEvent * 100}
 						/>
-						<ExperimentComponent<{
-							countByGapSize: Record<number, number>;
-							mostRecentTrueIndex: number;
-							samples: Array<boolean>;
-						}>
-							execute={(values, i) => {
-								const didEventHappen = Math.random() < probabilityOfEvent;
-								const thisGap = i - values.mostRecentTrueIndex - 1;
-								return {
-									...values,
-									...(i > 0 && didEventHappen
-										? {
-												countByGapSize: {
-													...values.countByGapSize,
-													[thisGap]: (values.countByGapSize[thisGap] ?? 0) + 1,
-												},
-												mostRecentTrueIndex: i,
-										  }
-										: {}),
-									samples: values.samples.slice(1).concat(didEventHappen),
-								};
-							}}
-							initialValues={{
-								countByGapSize: {},
-								mostRecentTrueIndex: 0,
-								samples: Array.from({ length: 100 }, () => false),
-							}}
-							update={(values, i) => {
-								setCountByGapSizeState(values.countByGapSize);
-								setNumCompleteTrials(i);
-								setSamplesState(values.samples);
-							}}
-						/>
+						<ExperimentComponent {...poissonExperimentDefinition} />
 						<Box>
 							<canvas className="max-h-10" ref={samplesChartRef} />
 							<Typography variant="body2">
