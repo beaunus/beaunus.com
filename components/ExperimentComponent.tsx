@@ -26,6 +26,7 @@ export const ExperimentComponent = <T,>({
 
 	const [numTrialsExponent, setNumTrialsExponent] = React.useState(2);
 	const [percentProgress, setPercentProgress] = React.useState(0);
+	const [sleepInterval, setSleepInterval] = React.useState(0);
 	const [windowSizeExponent, setWindowSizeExponent] = React.useState(0);
 
 	const generateExperiment = (): Experiment => {
@@ -44,7 +45,7 @@ export const ExperimentComponent = <T,>({
 					if (i % 10 ** windowSizeExponent === 0) {
 						update(values, i);
 						setPercentProgress(100 * (i / 10 ** numTrialsExponent));
-						await sleep(0);
+						await sleep(sleepInterval);
 					}
 				}
 				if (i === 10 ** numTrialsExponent) {
@@ -78,6 +79,14 @@ export const ExperimentComponent = <T,>({
 					setWindowSizeExponent(newValue as number)
 				}
 				value={Math.min(windowSizeExponent, numTrialsExponent)}
+			/>
+			<SliderWithLabels
+				displayValue={sleepInterval.toLocaleString()}
+				label="Number of milliseconds between trials"
+				max={1000}
+				min={0}
+				onChange={(_event, newValue) => setSleepInterval(newValue as number)}
+				value={sleepInterval}
 			/>
 			<Grid container spacing={2} width="100%">
 				<Grid item xs={6}>
