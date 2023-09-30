@@ -38,17 +38,17 @@ const Poisson: NextPage = () => {
 	const [percentProgress, setPercentProgress] = React.useState(0);
 	const [windowSizeExponent, setWindowSizeExponent] = React.useState(0);
 
-	const generateExperiment = (): Experiment => {
-		let isRunningBit: boolean;
-		const experimentValues: {
-			countByGapSize: Record<number, number>;
-			mostRecentTrueIndex: number;
-			samples: Array<boolean>;
-		} = {
-			countByGapSize: {},
-			mostRecentTrueIndex: 0,
-			samples: Array.from({ length: 100 }, () => false),
-		};
+	const generateExperiment = <T,>({
+		execute,
+		initialize,
+		update,
+	}: {
+		execute: (experimentValues: T, i: number) => void;
+		initialize: () => T;
+		update: (experimentValues: T) => void;
+	}): Experiment => {
+		const experimentValues = initialize();
+		let isRunningBit = false;
 		let i = 0;
 		setPercentProgress(0);
 
@@ -57,30 +57,18 @@ const Poisson: NextPage = () => {
 			pause: () => (isRunningBit = false),
 			performExperiment: async () => {
 				isRunningBit = true;
-
 				for (; isRunningBit && i < 10 ** numTrialsExponent; ++i) {
-					const didEventHappen = Math.random() < probabilityOfEvent;
-					if (i > 0 && didEventHappen) {
-						const thisGap = i - experimentValues.mostRecentTrueIndex - 1;
-						experimentValues.countByGapSize[thisGap] =
-							(experimentValues.countByGapSize[thisGap] ?? 0) + 1;
-						experimentValues.mostRecentTrueIndex = i;
-					}
-					experimentValues.samples = experimentValues.samples
-						.slice(1)
-						.concat(didEventHappen);
+					execute(experimentValues, i);
 					if (i % 10 ** windowSizeExponent === 0) {
-						setCountByGapSizeState(experimentValues.countByGapSize);
+						update(experimentValues);
 						setNumCompleteTrials(i);
-						setSamplesState(experimentValues.samples);
 						setPercentProgress(100 * (i / 10 ** numTrialsExponent));
 						await sleep(0);
 					}
 				}
 				if (i === 10 ** numTrialsExponent) {
-					setCountByGapSizeState(experimentValues.countByGapSize);
+					update(experimentValues);
 					setNumCompleteTrials(i);
-					setSamplesState(experimentValues.samples);
 					setPercentProgress(100);
 				}
 			},
@@ -238,7 +226,37 @@ const Poisson: NextPage = () => {
 									fullWidth
 									onClick={() => {
 										currentExperiment?.pause();
-										const a = generateExperiment();
+										const a = generateExperiment<{
+											countByGapSize: Record<number, number>;
+											mostRecentTrueIndex: number;
+											samples: Array<boolean>;
+										}>({
+											execute: (experimentValues, i) => {
+												/* eslint-disable no-param-reassign */
+												const didEventHappen =
+													Math.random() < probabilityOfEvent;
+												if (i > 0 && didEventHappen) {
+													const thisGap =
+														i - experimentValues.mostRecentTrueIndex - 1;
+													experimentValues.countByGapSize[thisGap] =
+														(experimentValues.countByGapSize[thisGap] ?? 0) + 1;
+													experimentValues.mostRecentTrueIndex = i;
+												}
+												experimentValues.samples = experimentValues.samples
+													.slice(1)
+													.concat(didEventHappen);
+												/* eslint-enable no-param-reassign */
+											},
+											initialize: () => ({
+												countByGapSize: {},
+												mostRecentTrueIndex: 0,
+												samples: Array.from({ length: 100 }, () => false),
+											}),
+											update: (experimentValues) => {
+												setCountByGapSizeState(experimentValues.countByGapSize);
+												setSamplesState(experimentValues.samples);
+											},
+										});
 										setCurrentExperiment(a);
 										a.performExperiment();
 									}}
