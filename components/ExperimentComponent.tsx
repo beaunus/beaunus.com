@@ -112,7 +112,7 @@ export const ExperimentComponent = <T,>({
 					</Button>
 				</Grid>
 			</Grid>
-			<Box>
+			<Box width="100%">
 				<Typography gutterBottom>Progress</Typography>
 				<LinearProgress value={percentProgress} variant="determinate" />
 			</Box>
