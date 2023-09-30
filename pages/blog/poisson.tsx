@@ -20,33 +20,23 @@ type Experiment = {
 	performExperiment: VoidFunction;
 };
 
-const Poisson: NextPage = () => {
-	const samplesChartRef = React.useRef<HTMLCanvasElement>(null);
-	const barChartRef = React.useRef<HTMLCanvasElement>(null);
-
-	const [countByGapSizeState, setCountByGapSizeState] = React.useState<
-		Record<number, number>
-	>({});
+const ExperimentComponent = <T,>({
+	execute,
+	initialValues,
+	update,
+}: {
+	execute: (values: T, i: number) => T;
+	initialValues: T;
+	update: (values: T, i: number) => void;
+}) => {
 	const [currentExperiment, setCurrentExperiment] =
 		React.useState<Experiment>();
-	const [probabilityOfEvent, setProbabilityOfEvent] = React.useState(0.5);
-	const [samplesState, setSamplesState] = React.useState(
-		Array.from({ length: 100 }, () => false)
-	);
-	const [numCompleteTrials, setNumCompleteTrials] = React.useState(0);
+
 	const [numTrialsExponent, setNumTrialsExponent] = React.useState(2);
 	const [percentProgress, setPercentProgress] = React.useState(0);
 	const [windowSizeExponent, setWindowSizeExponent] = React.useState(0);
 
-	const generateExperiment = <T,>({
-		execute,
-		initialValues,
-		update,
-	}: {
-		execute: (values: T, i: number) => T;
-		initialValues: T;
-		update: (values: T) => void;
-	}): Experiment => {
+	const generateExperiment = (): Experiment => {
 		let values = initialValues;
 		let isRunningBit = false;
 		let i = 0;
@@ -60,20 +50,96 @@ const Poisson: NextPage = () => {
 				for (; isRunningBit && i < 10 ** numTrialsExponent; ++i) {
 					values = execute(values, i);
 					if (i % 10 ** windowSizeExponent === 0) {
-						update(values);
-						setNumCompleteTrials(i);
+						update(values, i);
 						setPercentProgress(100 * (i / 10 ** numTrialsExponent));
 						await sleep(0);
 					}
 				}
 				if (i === 10 ** numTrialsExponent) {
-					update(values);
-					setNumCompleteTrials(i);
+					update(values, i);
 					setPercentProgress(100);
 				}
 			},
 		};
 	};
+
+	return (
+		<>
+			<SliderWithLabels
+				displayValue={(10 ** numTrialsExponent).toLocaleString()}
+				label="Number of trials"
+				max={6}
+				min={0}
+				onChange={(_event, newValue) =>
+					setNumTrialsExponent(newValue as number)
+				}
+				value={numTrialsExponent}
+			/>
+			<SliderWithLabels
+				displayValue={(
+					10 ** Math.min(windowSizeExponent, numTrialsExponent)
+				).toLocaleString()}
+				label="Number of experiments between snapshots"
+				max={numTrialsExponent}
+				min={0}
+				onChange={(_event, newValue) =>
+					setWindowSizeExponent(newValue as number)
+				}
+				value={Math.min(windowSizeExponent, numTrialsExponent)}
+			/>
+			<Grid container spacing={2} width="100%">
+				<Grid item xs={6}>
+					<Button
+						fullWidth
+						onClick={() => {
+							currentExperiment?.pause();
+							const a = generateExperiment();
+							setCurrentExperiment(a);
+							a.performExperiment();
+						}}
+						variant="outlined"
+					>
+						<Tooltip title="Start a new experiment with the above configuration">
+							<span>Start</span>
+						</Tooltip>
+					</Button>
+				</Grid>
+				<Grid item xs={6}>
+					<Button
+						fullWidth
+						onClick={() => {
+							currentExperiment?.isRunning()
+								? currentExperiment?.pause()
+								: currentExperiment?.performExperiment();
+						}}
+						variant="outlined"
+					>
+						<Tooltip title="Pause or resume the currently running experiment">
+							<span>Toggle</span>
+						</Tooltip>
+					</Button>
+				</Grid>
+			</Grid>
+			<Box>
+				<Typography gutterBottom>Progress</Typography>
+				<LinearProgress value={percentProgress} variant="determinate" />
+			</Box>
+		</>
+	);
+};
+
+const Poisson: NextPage = () => {
+	const samplesChartRef = React.useRef<HTMLCanvasElement>(null);
+	const barChartRef = React.useRef<HTMLCanvasElement>(null);
+
+	const [countByGapSizeState, setCountByGapSizeState] = React.useState<
+		Record<number, number>
+	>({});
+	const [probabilityOfEvent, setProbabilityOfEvent] = React.useState(0.5);
+	const [samplesState, setSamplesState] = React.useState(
+		Array.from({ length: 100 }, () => false)
+	);
+	const [numCompleteTrials, setNumCompleteTrials] = React.useState(0);
 
 	React.useEffect(() => {
 		if (samplesChartRef.current && barChartRef.current) {
@@ -198,100 +264,39 @@ const Poisson: NextPage = () => {
 							}
 							value={probabilityOfEvent * 100}
 						/>
-						<SliderWithLabels
-							displayValue={(10 ** numTrialsExponent).toLocaleString()}
-							label="Number of trials"
-							max={6}
-							min={0}
-							onChange={(_event, newValue) =>
-								setNumTrialsExponent(newValue as number)
-							}
-							value={numTrialsExponent}
+						<ExperimentComponent<{
+							countByGapSize: Record<number, number>;
+							mostRecentTrueIndex: number;
+							samples: Array<boolean>;
+						}>
+							execute={(values, i) => {
+								const didEventHappen = Math.random() < probabilityOfEvent;
+								const thisGap = i - values.mostRecentTrueIndex - 1;
+								return {
+									...values,
+									...(i > 0 && didEventHappen
+										? {
+												countByGapSize: {
+													...values.countByGapSize,
+													[thisGap]: (values.countByGapSize[thisGap] ?? 0) + 1,
+												},
+												mostRecentTrueIndex: i,
+										  }
+										: {}),
+									samples: values.samples.slice(1).concat(didEventHappen),
+								};
+							}}
+							initialValues={{
+								countByGapSize: {},
+								mostRecentTrueIndex: 0,
+								samples: Array.from({ length: 100 }, () => false),
+							}}
+							update={(values, i) => {
+								setCountByGapSizeState(values.countByGapSize);
+								setNumCompleteTrials(i);
+								setSamplesState(values.samples);
+							}}
 						/>
-						<SliderWithLabels
-							displayValue={(
-								10 ** Math.min(windowSizeExponent, numTrialsExponent)
-							).toLocaleString()}
-							label="Number of experiments between snapshots"
-							max={numTrialsExponent}
-							min={0}
-							onChange={(_event, newValue) =>
-								setWindowSizeExponent(newValue as number)
-							}
-							value={Math.min(windowSizeExponent, numTrialsExponent)}
-						/>
-						<Grid container spacing={2} width="100%">
-							<Grid item xs={6}>
-								<Button
-									fullWidth
-									onClick={() => {
-										currentExperiment?.pause();
-										const a = generateExperiment<{
-											countByGapSize: Record<number, number>;
-											mostRecentTrueIndex: number;
-											samples: Array<boolean>;
-										}>({
-											execute: (values, i) => {
-												const didEventHappen =
-													Math.random() < probabilityOfEvent;
-												const thisGap = i - values.mostRecentTrueIndex - 1;
-												return {
-													...values,
-													...(i > 0 && didEventHappen
-														? {
-																countByGapSize: {
-																	...values.countByGapSize,
-																	[thisGap]:
-																		(values.countByGapSize[thisGap] ?? 0) + 1,
-																},
-																mostRecentTrueIndex: i,
-														  }
-														: {}),
-													samples: values.samples
-														.slice(1)
-														.concat(didEventHappen),
-												};
-											},
-											initialValues: {
-												countByGapSize: {},
-												mostRecentTrueIndex: 0,
-												samples: Array.from({ length: 100 }, () => false),
-											},
-											update: (values) => {
-												setCountByGapSizeState(values.countByGapSize);
-												setSamplesState(values.samples);
-											},
-										});
-										setCurrentExperiment(a);
-										a.performExperiment();
-									}}
-									variant="outlined"
-								>
-									<Tooltip title="Start a new experiment with the above configuration">
-										<span>Start</span>
-									</Tooltip>
-								</Button>
-							</Grid>
-							<Grid item xs={6}>
-								<Button
-									fullWidth
-									onClick={() => {
-										currentExperiment?.isRunning()
-											? currentExperiment?.pause()
-											: currentExperiment?.performExperiment();
-									}}
-									variant="outlined"
-								>
-									<Tooltip title="Pause or resume the currently running experiment">
-										<span>Toggle</span>
-									</Tooltip>
-								</Button>
-							</Grid>
-						</Grid>
-						<Box>
-							<Typography gutterBottom>Progress</Typography>
-							<LinearProgress value={percentProgress} variant="determinate" />
-						</Box>
 						<Box>
 							<canvas className="max-h-10" ref={samplesChartRef} />
 							<Typography variant="body2">
