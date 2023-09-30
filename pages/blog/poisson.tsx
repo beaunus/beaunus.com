@@ -43,11 +43,11 @@ const Poisson: NextPage = () => {
 		initialize,
 		update,
 	}: {
-		execute: (experimentValues: T, i: number) => void;
+		execute: (values: T, i: number) => void;
 		initialize: () => T;
-		update: (experimentValues: T) => void;
+		update: (values: T) => void;
 	}): Experiment => {
-		const experimentValues = initialize();
+		const values = initialize();
 		let isRunningBit = false;
 		let i = 0;
 		setPercentProgress(0);
@@ -58,16 +58,16 @@ const Poisson: NextPage = () => {
 			performExperiment: async () => {
 				isRunningBit = true;
 				for (; isRunningBit && i < 10 ** numTrialsExponent; ++i) {
-					execute(experimentValues, i);
+					execute(values, i);
 					if (i % 10 ** windowSizeExponent === 0) {
-						update(experimentValues);
+						update(values);
 						setNumCompleteTrials(i);
 						setPercentProgress(100 * (i / 10 ** numTrialsExponent));
 						await sleep(0);
 					}
 				}
 				if (i === 10 ** numTrialsExponent) {
-					update(experimentValues);
+					update(values);
 					setNumCompleteTrials(i);
 					setPercentProgress(100);
 				}
@@ -231,18 +231,17 @@ const Poisson: NextPage = () => {
 											mostRecentTrueIndex: number;
 											samples: Array<boolean>;
 										}>({
-											execute: (experimentValues, i) => {
+											execute: (values, i) => {
 												/* eslint-disable no-param-reassign */
 												const didEventHappen =
 													Math.random() < probabilityOfEvent;
 												if (i > 0 && didEventHappen) {
-													const thisGap =
-														i - experimentValues.mostRecentTrueIndex - 1;
-													experimentValues.countByGapSize[thisGap] =
-														(experimentValues.countByGapSize[thisGap] ?? 0) + 1;
-													experimentValues.mostRecentTrueIndex = i;
+													const thisGap = i - values.mostRecentTrueIndex - 1;
+													values.countByGapSize[thisGap] =
+														(values.countByGapSize[thisGap] ?? 0) + 1;
+													values.mostRecentTrueIndex = i;
 												}
-												experimentValues.samples = experimentValues.samples
+												values.samples = values.samples
 													.slice(1)
 													.concat(didEventHappen);
 												/* eslint-enable no-param-reassign */
@@ -252,9 +251,9 @@ const Poisson: NextPage = () => {
 												mostRecentTrueIndex: 0,
 												samples: Array.from({ length: 100 }, () => false),
 											}),
-											update: (experimentValues) => {
-												setCountByGapSizeState(experimentValues.countByGapSize);
-												setSamplesState(experimentValues.samples);
+											update: (values) => {
+												setCountByGapSizeState(values.countByGapSize);
+												setSamplesState(values.samples);
 											},
 										});
 										setCurrentExperiment(a);
