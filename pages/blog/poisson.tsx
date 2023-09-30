@@ -21,9 +21,7 @@ const Poisson: NextPage = () => {
 		Record<number, number>
 	>({});
 	const [probabilityOfEvent, setProbabilityOfEvent] = React.useState(0.5);
-	const [samplesState, setSamplesState] = React.useState(
-		Array.from({ length: 100 }, () => false)
-	);
+	const [samplesState, setSamplesState] = React.useState<boolean[]>([]);
 	const [numCompleteTrials, setNumCompleteTrials] = React.useState(0);
 
 	React.useEffect(() => {
