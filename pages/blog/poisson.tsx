@@ -40,10 +40,16 @@ const Poisson: NextPage = () => {
 
 	const generateExperiment = (): Experiment => {
 		let isRunningBit: boolean;
-		const countByGapSize: Record<number, number> = {};
-		let samples = Array.from({ length: 100 }, () => false);
-		let i = 0,
-			mostRecentTrueIndex = 0;
+		const experimentValues: {
+			countByGapSize: Record<number, number>;
+			mostRecentTrueIndex: number;
+			samples: Array<boolean>;
+		} = {
+			countByGapSize: {},
+			mostRecentTrueIndex: 0,
+			samples: Array.from({ length: 100 }, () => false),
+		};
+		let i = 0;
 		setPercentProgress(0);
 
 		return {
@@ -55,23 +61,26 @@ const Poisson: NextPage = () => {
 				for (; isRunningBit && i < 10 ** numTrialsExponent; ++i) {
 					const didEventHappen = Math.random() < probabilityOfEvent;
 					if (i > 0 && didEventHappen) {
-						const thisGap = i - mostRecentTrueIndex - 1;
-						countByGapSize[thisGap] = (countByGapSize[thisGap] ?? 0) + 1;
-						mostRecentTrueIndex = i;
+						const thisGap = i - experimentValues.mostRecentTrueIndex - 1;
+						experimentValues.countByGapSize[thisGap] =
+							(experimentValues.countByGapSize[thisGap] ?? 0) + 1;
+						experimentValues.mostRecentTrueIndex = i;
 					}
-					samples = samples.slice(1).concat(didEventHappen);
+					experimentValues.samples = experimentValues.samples
+						.slice(1)
+						.concat(didEventHappen);
 					if (i % 10 ** windowSizeExponent === 0) {
-						setCountByGapSizeState(countByGapSize);
+						setCountByGapSizeState(experimentValues.countByGapSize);
 						setNumCompleteTrials(i);
-						setSamplesState(samples);
+						setSamplesState(experimentValues.samples);
 						setPercentProgress(100 * (i / 10 ** numTrialsExponent));
 						await sleep(0);
 					}
 				}
 				if (i === 10 ** numTrialsExponent) {
-					setCountByGapSizeState(countByGapSize);
+					setCountByGapSizeState(experimentValues.countByGapSize);
 					setNumCompleteTrials(i);
-					setSamplesState(samples);
+					setSamplesState(experimentValues.samples);
 					setPercentProgress(100);
 				}
 			},
