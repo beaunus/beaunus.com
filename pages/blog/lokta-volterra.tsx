@@ -57,6 +57,16 @@ function takeAStep(
 	};
 }
 
+const willFoxSurvive = (fox: Fox) => fox.numTrialsSurvivedSoFar < fox.lifespan;
+
+const canFoxReproduce = (fox: Fox) =>
+	fox.numTrialsSurvivedSoFar > MIN_MATING_AGE &&
+	fox.numTrialsSinceLastReproduction >= MATING_RECOVERY_DURATION;
+
+const canPairMate = (foxA: Fox, foxB: Fox) =>
+	Math.hypot(foxA.point.x - foxB.point.x, foxA.point.y - foxB.point.y) <
+	MAX_MATING_DISTANCE;
+
 const LoktaVolterra: NextPage = () => {
 	const scatterChartRef = React.useRef<HTMLCanvasElement>(null);
 	const lineChartRef = React.useRef<HTMLCanvasElement>(null);
@@ -144,13 +154,6 @@ const LoktaVolterra: NextPage = () => {
 		}
 	}, [foxes]);
 
-	const willFoxSurvive = (fox: Fox) =>
-		fox.numTrialsSurvivedSoFar < fox.lifespan;
-
-	const canFoxReproduce = (fox: Fox) =>
-		fox.numTrialsSurvivedSoFar > MIN_MATING_AGE &&
-		fox.numTrialsSinceLastReproduction >= MATING_RECOVERY_DURATION;
-
 	const numFoxesAfterEachTrialInternal: {
 		thatCanMate: number;
 		total: number;
@@ -190,10 +193,6 @@ const LoktaVolterra: NextPage = () => {
 								])
 						  )
 						: {};
-
-				const canPairMate = (foxA: Fox, foxB: Fox) =>
-					Math.hypot(foxA.point.x - foxB.point.x, foxA.point.y - foxB.point.y) <
-					MAX_MATING_DISTANCE;
 
 				const foxPairsWhoShouldMate = Object.entries(
 					closestFertileNeighborOrigIndexByOrigIndex
