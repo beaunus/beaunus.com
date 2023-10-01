@@ -32,7 +32,7 @@ export const ExperimentComponent = <T,>({
 
 	const generateExperiment = (): Experiment => {
 		let values = initialValues;
-		let isRunningBit = false;
+		let isRunning = false;
 		let i = 0;
 		setPercentProgress(0);
 
@@ -47,11 +47,11 @@ export const ExperimentComponent = <T,>({
 
 		return {
 			executeTrial,
-			isRunning: () => isRunningBit,
-			pause: () => (isRunningBit = false),
+			isRunning: () => isRunning,
+			pause: () => (isRunning = false),
 			performExperiment: async () => {
-				isRunningBit = true;
-				while (isRunningBit && i < 10 ** numTrialsExponent) {
+				isRunning = true;
+				while (isRunning && i < 10 ** numTrialsExponent) {
 					executeTrial();
 					if (i % 10 ** windowSizeExponent === 0) await sleep(sleepInterval);
 				}
