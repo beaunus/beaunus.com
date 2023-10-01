@@ -94,10 +94,14 @@ const LoktaVolterra: NextPage = () => {
 									: "#00f",
 							borderColor: "#f00",
 							data: foxes.map(({ point }) => point),
-							pointRadius: ({ dataIndex }) =>
-								(maxLifespan -
-									(foxes[dataIndex]?.numTrialsSurvivedSoFar ?? 0)) /
-								(maxLifespan / 10),
+							pointRadius: ({ dataIndex }) => {
+								const fox = foxes[dataIndex] ?? {};
+								return (
+									(fox.lifespan -
+										(foxes[dataIndex]?.numTrialsSurvivedSoFar ?? 0)) /
+									(fox.lifespan / 10)
+								);
+							},
 						},
 						{
 							backgroundColor: "rgba(0,0,0,0)",
