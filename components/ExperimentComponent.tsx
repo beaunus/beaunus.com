@@ -11,6 +11,7 @@ import { sleep } from "../utils";
 import { SliderWithLabels } from "./SliderWithLabels";
 
 type Experiment = {
+	executeTrial: VoidFunction;
 	isRunning: () => boolean;
 	pause: VoidFunction;
 	performExperiment: VoidFunction;
@@ -35,18 +36,24 @@ export const ExperimentComponent = <T,>({
 		let i = 0;
 		setPercentProgress(0);
 
+		const executeTrial = () => {
+			values = execute(values, i);
+			++i;
+			if (i % 10 ** windowSizeExponent === 0) {
+				update(values, i);
+				setPercentProgress(100 * (i / 10 ** numTrialsExponent));
+			}
+		};
+
 		return {
+			executeTrial,
 			isRunning: () => isRunningBit,
 			pause: () => (isRunningBit = false),
 			performExperiment: async () => {
 				isRunningBit = true;
-				for (; isRunningBit && i < 10 ** numTrialsExponent; ++i) {
-					values = execute(values, i);
-					if (i % 10 ** windowSizeExponent === 0) {
-						update(values, i);
-						setPercentProgress(100 * (i / 10 ** numTrialsExponent));
-						await sleep(sleepInterval);
-					}
+				while (isRunningBit && i < 10 ** numTrialsExponent) {
+					executeTrial();
+					if (i % 10 ** windowSizeExponent === 0) await sleep(sleepInterval);
 				}
 				if (i === 10 ** numTrialsExponent) {
 					update(values, i);
@@ -89,7 +96,7 @@ export const ExperimentComponent = <T,>({
 				value={sleepInterval}
 			/>
 			<Grid container spacing={2} width="100%">
-				<Grid item xs={6}>
+				<Grid item xs={4}>
 					<Button
 						fullWidth
 						onClick={() => {
@@ -105,7 +112,7 @@ export const ExperimentComponent = <T,>({
 						</Tooltip>
 					</Button>
 				</Grid>
-				<Grid item xs={6}>
+				<Grid item xs={4}>
 					<Button
 						fullWidth
 						onClick={() => {
@@ -118,6 +125,15 @@ export const ExperimentComponent = <T,>({
 						<Tooltip title="Pause or resume the currently running experiment">
 							<span>Toggle</span>
 						</Tooltip>
+					</Button>
+				</Grid>
+				<Grid item xs={4}>
+					<Button
+						fullWidth
+						onClick={currentExperiment?.executeTrial}
+						variant="outlined"
+					>
+						<span>Execute Single Trial</span>
 					</Button>
 				</Grid>
 			</Grid>
