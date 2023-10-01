@@ -130,7 +130,7 @@ const LoktaVolterra: NextPage = () => {
 					],
 				},
 				options: {
-					animation: { duration: 0 },
+					animation: false,
 					plugins: {
 						legend: { display: false },
 						tooltip: {
