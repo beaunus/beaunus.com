@@ -27,6 +27,15 @@ const BlogIndex: NextPage = () => (
 					</div>
 				</div>
 			</Segment>
+			<Segment>
+				<div className="flex flex-wrap gap-5 items-center">
+					<div className="text-xl font-semibold text-purple-800 whitespace-nowrap">
+						<HighlightedLink href="/blog/lokta-volterra">
+							Lotka-Volterra predator-prey model
+						</HighlightedLink>
+					</div>
+				</div>
+			</Segment>
 		</div>
 	</>
 );

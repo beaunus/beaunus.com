@@ -4,6 +4,11 @@ import { Dayjs } from "dayjs";
 
 export const NUM_MS_IN_ONE_DAY = 1000 * 60 * 60 * 24;
 
+export const cartesianToPolar = ({ x, y }: { x: number; y: number }) => ({
+	radius: Math.hypot(x, y),
+	theta: Math.atan2(y, x),
+});
+
 export const identity = <T>(x: T) => x;
 
 export const isBrowser = (): boolean => typeof window !== "undefined";
@@ -23,6 +28,14 @@ export const isDateWithinSelectedRange = (
 
 export const moduloPositive = (dividend: number, divisor: number) =>
 	((dividend % divisor) + divisor) % divisor;
+
+export const polarToCartesian = ({
+	radius,
+	theta,
+}: {
+	radius: number;
+	theta: number;
+}) => ({ x: radius * Math.cos(theta), y: radius * Math.sin(theta) });
 
 export const sleep = (ms: number) =>
 	new Promise((resolve) => setTimeout(resolve, ms));
