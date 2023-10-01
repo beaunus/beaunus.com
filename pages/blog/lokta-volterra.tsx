@@ -25,23 +25,39 @@ type Fox = {
 function takeAStep(
 	fromPoint: Point,
 	distance: number,
-	boundaries: { max: Point; min: Point }
+	boundaries: { max: Point; min: Point },
+	shouldWrap?: boolean
 ) {
 	const diffCartesian = polarToCartesian({
 		radius: distance,
 		theta: Math.random() * 2 * Math.PI,
 	});
 
-	return {
-		x: Math.max(
-			Math.min(fromPoint.x + diffCartesian.x, boundaries.max.x),
-			boundaries.min.x
-		),
-		y: Math.max(
-			Math.min(fromPoint.y + diffCartesian.y, boundaries.max.y),
-			boundaries.min.y
-		),
-	};
+	return shouldWrap
+		? {
+				x:
+					fromPoint.x + diffCartesian.x > boundaries.max.x
+						? fromPoint.x + diffCartesian.x - boundaries.max.x
+						: fromPoint.x + diffCartesian.x < boundaries.min.x
+						? fromPoint.x + diffCartesian.x + boundaries.max.x
+						: fromPoint.x + diffCartesian.x,
+				y:
+					fromPoint.y + diffCartesian.y > boundaries.max.y
+						? fromPoint.y + diffCartesian.y - boundaries.max.y
+						: fromPoint.y + diffCartesian.y < boundaries.min.y
+						? fromPoint.y + diffCartesian.y + boundaries.max.y
+						: fromPoint.y + diffCartesian.y,
+		  }
+		: {
+				x: Math.max(
+					Math.min(fromPoint.x + diffCartesian.x, boundaries.max.x),
+					boundaries.min.x
+				),
+				y: Math.max(
+					Math.min(fromPoint.y + diffCartesian.y, boundaries.max.y),
+					boundaries.min.y
+				),
+		  };
 }
 
 const willFoxSurvive = (fox: Fox) => fox.numTrialsSurvivedSoFar < fox.lifespan;
@@ -229,10 +245,12 @@ const LoktaVolterra: NextPage = () => {
 								? 0
 								: fox.numTrialsSinceLastReproduction + 1,
 							numTrialsSurvivedSoFar: fox.numTrialsSurvivedSoFar + 1,
-							point: takeAStep(fox.point, stepSize, {
-								max: { x: 1, y: 1 },
-								min: { x: 0, y: 0 },
-							}),
+							point: takeAStep(
+								fox.point,
+								stepSize,
+								{ max: { x: 1, y: 1 }, min: { x: 0, y: 0 } },
+								true
+							),
 						}))
 						.concat(
 							foxPairsWhoShouldMate.map(([originalIndexA, originalIndexB]) => {
