@@ -35,6 +35,28 @@ const MATING_RECOVERY_DURATION = 90;
 const INITIAL_NUM_FOXES = 10;
 const STEP_SIZE = 0.05;
 
+function takeAStep(
+	fromPoint: Point,
+	distance: number,
+	boundaries: { max: Point; min: Point }
+) {
+	const diffCartesian = polarToCartesian({
+		radius: distance,
+		theta: Math.random() * 2 * Math.PI,
+	});
+
+	return {
+		x: Math.max(
+			Math.min(fromPoint.x + diffCartesian.x, boundaries.max.x),
+			boundaries.min.x
+		),
+		y: Math.max(
+			Math.min(fromPoint.y + diffCartesian.y, boundaries.max.y),
+			boundaries.min.y
+		),
+	};
+}
+
 const LoktaVolterra: NextPage = () => {
 	const scatterChartRef = React.useRef<HTMLCanvasElement>(null);
 	const lineChartRef = React.useRef<HTMLCanvasElement>(null);
@@ -121,28 +143,6 @@ const LoktaVolterra: NextPage = () => {
 			};
 		}
 	}, [foxes]);
-
-	function takeAStep(
-		fromPoint: Point,
-		distance: number,
-		boundaries: { max: Point; min: Point }
-	) {
-		const diffCartesian = polarToCartesian({
-			radius: distance,
-			theta: Math.random() * 2 * Math.PI,
-		});
-
-		return {
-			x: Math.max(
-				Math.min(fromPoint.x + diffCartesian.x, boundaries.max.x),
-				boundaries.min.x
-			),
-			y: Math.max(
-				Math.min(fromPoint.y + diffCartesian.y, boundaries.max.y),
-				boundaries.min.y
-			),
-		};
-	}
 
 	const willFoxSurvive = (fox: Fox) =>
 		fox.numTrialsSurvivedSoFar < fox.lifespan;
