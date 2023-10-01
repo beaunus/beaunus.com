@@ -1,3 +1,4 @@
+import { Grid, TextField } from "@mui/material";
 import ChartJS, { Point } from "chart.js/auto";
 import _ from "lodash";
 import { KDTree } from "mnemonist";
@@ -10,6 +11,7 @@ import {
 	ExperimentDefinition,
 } from "../../components/ExperimentComponent";
 import { Segment } from "../../components/Segment";
+import { SliderWithLabels } from "../../components/SliderWithLabels";
 import { polarToCartesian } from "../../utils";
 
 type Fox = {
@@ -19,21 +21,6 @@ type Fox = {
 	numTrialsSurvivedSoFar: number;
 	point: Point;
 };
-
-const aFox = (point: Point = { x: Math.random(), y: Math.random() }): Fox => ({
-	id: _.uniqueId("fox"),
-	lifespan: Math.floor(MAX_LIFESPAN * (0.5 + Math.random() * 0.5)),
-	numTrialsSinceLastReproduction: 0,
-	numTrialsSurvivedSoFar: 100,
-	point,
-});
-
-const MAX_LIFESPAN = 1000;
-const MAX_MATING_DISTANCE = 0.017;
-const MIN_MATING_AGE = 100;
-const MATING_RECOVERY_DURATION = 90;
-const INITIAL_NUM_FOXES = 10;
-const STEP_SIZE = 0.05;
 
 function takeAStep(
 	fromPoint: Point,
@@ -59,14 +46,6 @@ function takeAStep(
 
 const willFoxSurvive = (fox: Fox) => fox.numTrialsSurvivedSoFar < fox.lifespan;
 
-const canFoxReproduce = (fox: Fox) =>
-	fox.numTrialsSurvivedSoFar > MIN_MATING_AGE &&
-	fox.numTrialsSinceLastReproduction >= MATING_RECOVERY_DURATION;
-
-const canPairMate = (foxA: Fox, foxB: Fox) =>
-	Math.hypot(foxA.point.x - foxB.point.x, foxA.point.y - foxB.point.y) <
-	MAX_MATING_DISTANCE;
-
 const LoktaVolterra: NextPage = () => {
 	const scatterChartRef = React.useRef<HTMLCanvasElement>(null);
 	const lineChartRef = React.useRef<HTMLCanvasElement>(null);
@@ -75,6 +54,33 @@ const LoktaVolterra: NextPage = () => {
 	const [numFoxesAfterEachTrial, setNumFoxesAfterEachTrial] = React.useState<
 		{ thatCanMate: number; total: number }[]
 	>([]);
+
+	const [maxLifespan, setMaxLifespan] = React.useState(1000);
+	const [minMatingAge, setMinMatingAge] = React.useState(100);
+	const [matingRecoveryDuration, setMatingRecoveryDuration] =
+		React.useState(90);
+	const [initialNumFoxes, setInitialNumFoxes] = React.useState(10);
+
+	const [maxMatingDistance, setMaxMatingDistance] = React.useState(0.017);
+	const [stepSize, setStepSize] = React.useState(0.05);
+
+	const canFoxReproduce = (fox: Fox) =>
+		fox.numTrialsSurvivedSoFar > minMatingAge &&
+		fox.numTrialsSinceLastReproduction >= matingRecoveryDuration;
+
+	const canPairMate = (foxA: Fox, foxB: Fox) =>
+		Math.hypot(foxA.point.x - foxB.point.x, foxA.point.y - foxB.point.y) <
+		maxMatingDistance;
+
+	const aFox = (
+		point: Point = { x: Math.random(), y: Math.random() }
+	): Fox => ({
+		id: _.uniqueId("fox"),
+		lifespan: Math.floor(maxLifespan * (0.5 + Math.random() * 0.5)),
+		numTrialsSinceLastReproduction: 0,
+		numTrialsSurvivedSoFar: 100,
+		point,
+	});
 
 	React.useEffect(() => {
 		if (scatterChartRef.current && lineChartRef.current) {
@@ -89,9 +95,9 @@ const LoktaVolterra: NextPage = () => {
 							borderColor: "#f00",
 							data: foxes.map(({ point }) => point),
 							pointRadius: ({ dataIndex }) =>
-								(MAX_LIFESPAN -
+								(maxLifespan -
 									(foxes[dataIndex]?.numTrialsSurvivedSoFar ?? 0)) /
-								(MAX_LIFESPAN / 10),
+								(maxLifespan / 10),
 						},
 						{
 							backgroundColor: "rgba(0,0,0,0)",
@@ -219,7 +225,7 @@ const LoktaVolterra: NextPage = () => {
 								? 0
 								: fox.numTrialsSinceLastReproduction + 1,
 							numTrialsSurvivedSoFar: fox.numTrialsSurvivedSoFar + 1,
-							point: takeAStep(fox.point, STEP_SIZE, {
+							point: takeAStep(fox.point, stepSize, {
 								max: { x: 1, y: 1 },
 								min: { x: 0, y: 0 },
 							}),
@@ -236,7 +242,7 @@ const LoktaVolterra: NextPage = () => {
 						),
 				};
 			},
-			initialValues: { foxes: Array.from({ length: INITIAL_NUM_FOXES }, aFox) },
+			initialValues: { foxes: Array.from({ length: initialNumFoxes }, aFox) },
 			update: (values) => {
 				setFoxes(values.foxes);
 				setNumFoxesAfterEachTrial(numFoxesAfterEachTrialInternal);
@@ -255,6 +261,72 @@ const LoktaVolterra: NextPage = () => {
 							Lotka-Volterra predator-prey model
 						</div>
 					</div>
+					<Grid container spacing={2} width="100%">
+						<Grid item xs={3}>
+							<TextField
+								InputLabelProps={{ shrink: true }}
+								label="MAX Lifespan"
+								onChange={({ currentTarget }) =>
+									setMaxLifespan(Number(currentTarget.value))
+								}
+								type="number"
+								value={maxLifespan}
+							/>
+						</Grid>
+						<Grid item xs={3}>
+							<TextField
+								InputLabelProps={{ shrink: true }}
+								label="MIN Mating Age"
+								onChange={({ currentTarget }) =>
+									setMinMatingAge(Number(currentTarget.value))
+								}
+								type="number"
+								value={minMatingAge}
+							/>
+						</Grid>
+						<Grid item xs={3}>
+							<TextField
+								InputLabelProps={{ shrink: true }}
+								label="Mating Recovery Duration"
+								onChange={({ currentTarget }) =>
+									setMatingRecoveryDuration(Number(currentTarget.value))
+								}
+								type="number"
+								value={matingRecoveryDuration}
+							/>
+						</Grid>
+						<Grid item xs={3}>
+							<TextField
+								InputLabelProps={{ shrink: true }}
+								label="Initial Number of Foxes"
+								onChange={({ currentTarget }) =>
+									setInitialNumFoxes(Number(currentTarget.value))
+								}
+								type="number"
+								value={initialNumFoxes}
+							/>
+						</Grid>
+					</Grid>
+					<SliderWithLabels
+						displayValue={maxMatingDistance.toLocaleString()}
+						label="MAX Mating Distance"
+						max={1}
+						min={0}
+						onChange={(_event, newValue) =>
+							setMaxMatingDistance(newValue as number)
+						}
+						step={0.001}
+						value={maxMatingDistance}
+					/>
+					<SliderWithLabels
+						displayValue={stepSize.toLocaleString()}
+						label="Step Size"
+						max={1}
+						min={0}
+						onChange={(_event, newValue) => setStepSize(newValue as number)}
+						step={0.001}
+						value={stepSize}
+					/>
 					<ExperimentComponent {...loktaExperimentDefinition} />
 					<canvas
 						className="m-8 max-w-full max-h-[50vh] border-2"
