@@ -251,7 +251,7 @@ const LoktaVolterra: NextPage = () => {
 							numTrialsSurvivedSoFar: fox.numTrialsSurvivedSoFar + 1,
 							point: takeAStep(
 								fox.point,
-								stepSize,
+								Math.random() * stepSize,
 								{ max: { x: 1, y: 1 }, min: { x: 0, y: 0 } },
 								true
 							),
