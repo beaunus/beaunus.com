@@ -351,6 +351,7 @@ const LoktaVolterra: NextPage = () => {
 					/>
 					<ExperimentComponent
 						experimentDefinition={loktaExperimentDefinition}
+						initialControlValues={{ numTrialsExponent: 4 }}
 					/>
 					<canvas
 						className="m-8 max-w-full max-h-[50vh] border-2"
