@@ -98,9 +98,7 @@ const LoktaVolterra: NextPage = () => {
 		point,
 	});
 
-	const COLORS = {
-		fox: { fertile: "rgb(256,0,0)", infertile: "rgb(256,0,0,0.2)" },
-	};
+	const COLORS = { fox: "red" };
 
 	React.useEffect(() => {
 		if (scatterChartRef.current && lineChartRef.current) {
@@ -110,8 +108,12 @@ const LoktaVolterra: NextPage = () => {
 						{
 							backgroundColor: ({ dataIndex }) =>
 								foxes[dataIndex] && canFoxReproduce(foxes[dataIndex])
-									? COLORS.fox.fertile
-									: COLORS.fox.infertile,
+									? COLORS.fox
+									: "transparent",
+							borderColor: ({ dataIndex }) =>
+								foxes[dataIndex] && canFoxReproduce(foxes[dataIndex])
+									? "transparent"
+									: COLORS.fox,
 							data: foxes.map(({ point }) => point),
 							pointRadius: ({ dataIndex }) =>
 								foxes[dataIndex]
