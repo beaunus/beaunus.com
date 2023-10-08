@@ -19,16 +19,28 @@ type Experiment = {
 
 export const ExperimentComponent = <T,>({
 	experimentDefinition: { execute, initialValues, update },
+	initialControlValues,
 }: {
 	experimentDefinition: ExperimentDefinition<T>;
+	initialControlValues?: {
+		numTrialsExponent?: number;
+		sleepInterval?: number;
+		windowSizeExponent?: number;
+	};
 }) => {
 	const [currentExperiment, setCurrentExperiment] =
 		React.useState<Experiment>();
 
-	const [numTrialsExponent, setNumTrialsExponent] = React.useState(2);
+	const [numTrialsExponent, setNumTrialsExponent] = React.useState(
+		initialControlValues?.numTrialsExponent ?? 2
+	);
 	const [percentProgress, setPercentProgress] = React.useState(0);
-	const [sleepInterval, setSleepInterval] = React.useState(0);
-	const [windowSizeExponent, setWindowSizeExponent] = React.useState(0);
+	const [sleepInterval, setSleepInterval] = React.useState(
+		initialControlValues?.sleepInterval ?? 0
+	);
+	const [windowSizeExponent, setWindowSizeExponent] = React.useState(
+		initialControlValues?.windowSizeExponent ?? 0
+	);
 
 	const generateExperiment = (): Experiment => {
 		let values = initialValues;
