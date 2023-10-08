@@ -191,14 +191,15 @@ const LoktaVolterra: NextPage = () => {
 	const loktaExperimentDefinition: ExperimentDefinition<{ foxes: Array<Fox> }> =
 		{
 			execute: (values) => {
-				numFoxesAfterEachTrialInternal.push({
-					thatCanMate: values.foxes.filter(canFoxReproduce).length,
-					total: values.foxes.length,
-				});
-
 				const fertileFoxes = values.foxes
 					.map((fox, index) => ({ fox, originalIndex: index }))
 					.filter(({ fox }) => canFoxReproduce(fox));
+
+				numFoxesAfterEachTrialInternal.push({
+					thatCanMate: fertileFoxes.length,
+					total: values.foxes.length,
+				});
+
 				const fertileFoxTree = KDTree.from(
 					fertileFoxes.map(({ fox, originalIndex }) => [
 						{ fox, originalIndex },
