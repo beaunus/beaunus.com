@@ -22,12 +22,17 @@ type Fox = {
 	point: Point;
 };
 
-function takeAStep(
-	fromPoint: Point,
-	distance: number,
-	boundaries: { max: Point; min: Point },
-	shouldWrap?: boolean
-) {
+function takeAStep({
+	boundaries,
+	distance,
+	fromPoint,
+	shouldWrap,
+}: {
+	boundaries: { max: Point; min: Point };
+	distance: number;
+	fromPoint: Point;
+	shouldWrap?: boolean;
+}) {
 	const diffCartesian = polarToCartesian({
 		radius: distance,
 		theta: Math.random() * 2 * Math.PI,
@@ -249,12 +254,12 @@ const LoktaVolterra: NextPage = () => {
 								? 0
 								: fox.numTrialsSinceLastReproduction + 1,
 							numTrialsSurvivedSoFar: fox.numTrialsSurvivedSoFar + 1,
-							point: takeAStep(
-								fox.point,
-								Math.random() * stepSize,
-								{ max: { x: 1, y: 1 }, min: { x: 0, y: 0 } },
-								true
-							),
+							point: takeAStep({
+								boundaries: { max: { x: 1, y: 1 }, min: { x: 0, y: 0 } },
+								distance: Math.random() * stepSize,
+								fromPoint: fox.point,
+								shouldWrap: true,
+							}),
 						}))
 						.concat(
 							foxPairsWhoShouldMate.map(([originalIndexA, originalIndexB]) => {
