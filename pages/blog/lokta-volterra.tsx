@@ -1,10 +1,20 @@
-import { Grid, TextField } from "@mui/material";
+import { ArrowRightAlt } from "@mui/icons-material";
+import {
+	Container,
+	Grid,
+	Table,
+	TableBody,
+	TableCell,
+	TableRow,
+	TextField,
+	Typography,
+} from "@mui/material";
 import ChartJS, { Point } from "chart.js/auto";
 import _ from "lodash";
 import { KDTree } from "mnemonist";
 import type { NextPage } from "next";
 import Head from "next/head";
-import React from "react";
+import * as React from "react";
 
 import {
 	ExperimentComponent,
@@ -119,6 +129,7 @@ const LoktaVolterra: NextPage = () => {
 								foxes[dataIndex] && canFoxReproduce(foxes[dataIndex])
 									? "transparent"
 									: COLORS.fox,
+							borderWidth: 2,
 							data: foxes.map(({ point }) => point),
 							pointRadius: ({ dataIndex }) =>
 								foxes[dataIndex]
@@ -362,6 +373,62 @@ const LoktaVolterra: NextPage = () => {
 						experimentDefinition={loktaExperimentDefinition}
 						initialControlValues={{ numTrialsExponent: 4 }}
 					/>
+					<Container>
+						<Typography>
+							This experiment simulates the Lotka-Volterra predator-prey model.
+						</Typography>
+						<Table size="small">
+							<TableBody>
+								<TableRow>
+									<TableCell component="th" scope="row">
+										<Typography>Foxes</Typography>
+									</TableCell>
+									<TableCell>
+										<Table className="w-min" size="small">
+											<TableBody>
+												<TableRow>
+													<TableCell align="right">
+														<Typography>Infertile</Typography>
+													</TableCell>
+													<TableCell>
+														<div className="w-4 h-4 rounded-full border-2 border-red-600" />
+													</TableCell>
+													<TableCell>
+														<ArrowRightAlt />
+													</TableCell>
+													<TableCell>
+														<div className="w-4 h-4 bg-red-600 rounded-full border-red-600" />
+													</TableCell>
+													<TableCell>
+														<Typography>Fertile</Typography>
+													</TableCell>
+												</TableRow>
+												<TableRow>
+													<TableCell align="right">
+														<Typography noWrap>
+															Near beginning of life
+														</Typography>
+													</TableCell>
+													<TableCell>
+														<div className="w-4 h-4 bg-red-600 rounded-full border-red-600" />
+													</TableCell>
+													<TableCell>
+														<ArrowRightAlt />
+													</TableCell>
+													<TableCell>
+														<div className="w-1 h-1 bg-red-600 rounded-full border-red-600" />
+													</TableCell>
+													<TableCell>
+														<Typography noWrap>Near end of life</Typography>
+													</TableCell>
+												</TableRow>
+											</TableBody>
+										</Table>
+									</TableCell>
+								</TableRow>
+							</TableBody>
+						</Table>
+					</Container>
 					<canvas
 						className="m-8 max-w-full max-h-[50vh] border-2"
 						ref={scatterChartRef}
