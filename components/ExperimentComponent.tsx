@@ -18,10 +18,10 @@ type Experiment = {
 };
 
 export const ExperimentComponent = <T,>({
-	execute,
-	initialValues,
-	update,
-}: ExperimentDefinition<T>) => {
+	experimentDefinition: { execute, initialValues, update },
+}: {
+	experimentDefinition: ExperimentDefinition<T>;
+}) => {
 	const [currentExperiment, setCurrentExperiment] =
 		React.useState<Experiment>();
 

@@ -181,7 +181,9 @@ const Poisson: NextPage = () => {
 							}
 							value={probabilityOfEvent * 100}
 						/>
-						<ExperimentComponent {...poissonExperimentDefinition} />
+						<ExperimentComponent
+							experimentDefinition={poissonExperimentDefinition}
+						/>
 						<Box>
 							<canvas className="max-h-10" ref={samplesChartRef} />
 							<Typography variant="body2">

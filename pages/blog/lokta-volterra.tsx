@@ -349,7 +349,9 @@ const LoktaVolterra: NextPage = () => {
 						step={0.001}
 						value={stepSize}
 					/>
-					<ExperimentComponent {...loktaExperimentDefinition} />
+					<ExperimentComponent
+						experimentDefinition={loktaExperimentDefinition}
+					/>
 					<canvas
 						className="m-8 max-w-full max-h-[50vh] border-2"
 						ref={scatterChartRef}
