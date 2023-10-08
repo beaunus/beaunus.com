@@ -98,6 +98,10 @@ const LoktaVolterra: NextPage = () => {
 		point,
 	});
 
+	const COLORS = {
+		fox: { fertile: "rgb(256,0,0)", infertile: "rgb(256,0,0,0.2)" },
+	};
+
 	React.useEffect(() => {
 		if (scatterChartRef.current && lineChartRef.current) {
 			const scatterChart = new ChartJS(scatterChartRef.current, {
@@ -106,18 +110,15 @@ const LoktaVolterra: NextPage = () => {
 						{
 							backgroundColor: ({ dataIndex }) =>
 								foxes[dataIndex] && canFoxReproduce(foxes[dataIndex])
-									? "#f00"
-									: "#00f",
-							borderColor: "#f00",
+									? COLORS.fox.fertile
+									: COLORS.fox.infertile,
 							data: foxes.map(({ point }) => point),
-							pointRadius: ({ dataIndex }) => {
-								const fox = foxes[dataIndex] ?? {};
-								return (
-									(fox.lifespan -
-										(foxes[dataIndex]?.numTrialsSurvivedSoFar ?? 0)) /
-									(fox.lifespan / 10)
-								);
-							},
+							pointRadius: ({ dataIndex }) =>
+								foxes[dataIndex]
+									? (foxes[dataIndex].lifespan -
+											foxes[dataIndex].numTrialsSurvivedSoFar) /
+									  (foxes[dataIndex].lifespan / 10)
+									: 0,
 						},
 						{
 							backgroundColor: "rgba(0,0,0,0)",
