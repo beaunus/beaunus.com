@@ -325,7 +325,7 @@ const LoktaVolterra: NextPage = () => {
 
 	const numAnimalsAfterEachTrialInternal: Record<AnimalType, number>[] = [];
 
-	function computeMates(candidateAnimals: Animal[]) {
+	function computePairs(candidateAnimals: Animal[]) {
 		const fertileAnimals = candidateAnimals
 			.map((animal, index) => ({ animal, originalIndex: index }))
 			.filter(({ animal }) => canReproduce(animal));
@@ -366,9 +366,9 @@ const LoktaVolterra: NextPage = () => {
 		rabbits: Array<Animal>;
 	}> = {
 		execute: (values) => {
-			const foxPairsWhoShouldMate = computeMates(values.foxes);
+			const foxPairsWhoShouldMate = computePairs(values.foxes);
 			const foxesWhoMatedIndexes = foxPairsWhoShouldMate.flatMap((x) => x);
-			const rabbitPairsWhoShouldMate = computeMates(values.rabbits);
+			const rabbitPairsWhoShouldMate = computePairs(values.rabbits);
 			const rabbitsWhoMatedIndexes = rabbitPairsWhoShouldMate.flatMap((x) => x);
 
 			numAnimalsAfterEachTrialInternal.push({
