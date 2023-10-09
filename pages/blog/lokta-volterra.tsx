@@ -194,7 +194,8 @@ function computePairs({
 				indexA < indexB &&
 				closestNeighborOrigIndexByOrigIndex[`${indexB}`] === indexA &&
 				predicateForPair(candidates[indexA], candidates[indexB])
-		);
+		)
+		.map(([indexA, indexB]) => [candidates[indexA], candidates[indexB]]);
 }
 
 const LoktaVolterra: NextPage = () => {
@@ -395,10 +396,10 @@ const LoktaVolterra: NextPage = () => {
 			return {
 				foxes: values.foxes
 					.filter(willSurvive)
-					.map((fox, index) => ({
+					.map((fox) => ({
 						...fox,
 						age: fox.age + 1,
-						numTrialsSinceLastReproduction: foxesWhoMatedIndexes.includes(index)
+						numTrialsSinceLastReproduction: foxesWhoMatedIndexes.includes(fox)
 							? 0
 							: fox.numTrialsSinceLastReproduction + 1,
 						point: takeAStep({
@@ -409,9 +410,7 @@ const LoktaVolterra: NextPage = () => {
 						}),
 					}))
 					.concat(
-						foxPairsWhoShouldMate.map(([originalIndexA, originalIndexB]) => {
-							const foxA = values.foxes[originalIndexA];
-							const foxB = values.foxes[originalIndexB];
+						foxPairsWhoShouldMate.map(([foxA, foxB]) => {
 							return anAnimal("fox", {
 								x: (foxA.point.x + foxB.point.x) / 2,
 								y: (foxA.point.y + foxB.point.y) / 2,
@@ -420,11 +419,11 @@ const LoktaVolterra: NextPage = () => {
 					),
 				rabbits: values.rabbits
 					.filter(willSurvive)
-					.map((rabbit, index) => ({
+					.map((rabbit) => ({
 						...rabbit,
 						age: rabbit.age + 1,
 						numTrialsSinceLastReproduction: rabbitsWhoMatedIndexes.includes(
-							index
+							rabbit
 						)
 							? 0
 							: rabbit.numTrialsSinceLastReproduction + 1,
@@ -436,9 +435,7 @@ const LoktaVolterra: NextPage = () => {
 						}),
 					}))
 					.concat(
-						rabbitPairsWhoShouldMate.map(([originalIndexA, originalIndexB]) => {
-							const rabbitA = values.rabbits[originalIndexA];
-							const rabbitB = values.rabbits[originalIndexB];
+						rabbitPairsWhoShouldMate.map(([rabbitA, rabbitB]) => {
 							return anAnimal("rabbit", {
 								x: (rabbitA.point.x + rabbitB.point.x) / 2,
 								y: (rabbitA.point.y + rabbitB.point.y) / 2,
