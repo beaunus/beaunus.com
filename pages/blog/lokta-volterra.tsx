@@ -84,9 +84,10 @@ const LoktaVolterra: NextPage = () => {
 	const lineChartRef = React.useRef<HTMLCanvasElement>(null);
 
 	const [foxes, setFoxes] = React.useState<Animal[]>([]);
-	const [numFoxesAfterEachTrial, setNumFoxesAfterEachTrial] = React.useState<
-		{ thatCanMate: number; total: number }[]
-	>([]);
+	const [numAnimalsAfterEachTrial, setNumAnimalsAfterEachTrial] =
+		React.useState<{ foxes: { thatCanMate: number; total: number }[] }>({
+			foxes: [],
+		});
 
 	const [maxLifespan, setMaxLifespan] = React.useState(1000);
 	const [minMatingAge, setMinMatingAge] = React.useState(100);
@@ -182,11 +183,11 @@ const LoktaVolterra: NextPage = () => {
 							backgroundColor: "none",
 							borderColor: "green",
 							borderWidth: 2,
-							data: numFoxesAfterEachTrial.map(({ total }) => total),
+							data: numAnimalsAfterEachTrial.foxes.map(({ total }) => total),
 							pointRadius: 0,
 						},
 					],
-					labels: numFoxesAfterEachTrial,
+					labels: numAnimalsAfterEachTrial.foxes,
 				},
 				options: {
 					animation: { duration: 0 },
@@ -284,7 +285,10 @@ const LoktaVolterra: NextPage = () => {
 		initialValues: { foxes: Array.from({ length: initialNumFoxes }, anAnimal) },
 		update: (values) => {
 			setFoxes(values.foxes);
-			setNumFoxesAfterEachTrial(numFoxesAfterEachTrialInternal);
+			setNumAnimalsAfterEachTrial((old) => ({
+				...old,
+				foxes: numFoxesAfterEachTrialInternal,
+			}));
 		},
 	};
 
