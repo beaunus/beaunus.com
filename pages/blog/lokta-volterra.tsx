@@ -86,7 +86,7 @@ const LoktaVolterra: NextPage = () => {
 	const scatterChartRef = React.useRef<HTMLCanvasElement>(null);
 	const lineChartRef = React.useRef<HTMLCanvasElement>(null);
 
-	const [foxes, setFoxes] = React.useState<Animal[]>([]);
+	const [animals, setAnimals] = React.useState<{ fox: Animal[] }>({ fox: [] });
 	const [numAnimalsAfterEachTrial, setNumAnimalsAfterEachTrial] =
 		React.useState<{ fox: { thatCanMate: number; total: number } }[]>([]);
 
@@ -134,19 +134,20 @@ const LoktaVolterra: NextPage = () => {
 					datasets: [
 						{
 							backgroundColor: ({ dataIndex }) =>
-								foxes[dataIndex] && canReproduce(foxes[dataIndex])
+								animals.fox[dataIndex] && canReproduce(animals.fox[dataIndex])
 									? COLORS.fox
 									: "transparent",
 							borderColor: ({ dataIndex }) =>
-								foxes[dataIndex] && canReproduce(foxes[dataIndex])
+								animals.fox[dataIndex] && canReproduce(animals.fox[dataIndex])
 									? "transparent"
 									: COLORS.fox,
 							borderWidth: 2,
-							data: foxes.map(({ point }) => point),
+							data: animals.fox.map(({ point }) => point),
 							pointRadius: ({ dataIndex }) =>
-								foxes[dataIndex]
-									? (foxes[dataIndex].lifespan - foxes[dataIndex].age) /
-									  (foxes[dataIndex].lifespan / 10)
+								animals.fox[dataIndex]
+									? (animals.fox[dataIndex].lifespan -
+											animals.fox[dataIndex].age) /
+									  (animals.fox[dataIndex].lifespan / 10)
 									: 0,
 						},
 						{
@@ -166,7 +167,7 @@ const LoktaVolterra: NextPage = () => {
 						tooltip: {
 							callbacks: {
 								footer: ([tooltipItem]) => {
-									const fox = foxes[tooltipItem.dataIndex];
+									const fox = animals.fox[tooltipItem.dataIndex];
 									return [
 										`index: ${tooltipItem.dataIndex}`,
 										`id: ${fox.id}`,
@@ -208,7 +209,7 @@ const LoktaVolterra: NextPage = () => {
 				scatterChart.destroy();
 			};
 		}
-	}, [foxes]);
+	}, [animals]);
 
 	const numAnimalsAfterEachTrialInternal: {
 		fox: { thatCanMate: number; total: number };
@@ -293,7 +294,7 @@ const LoktaVolterra: NextPage = () => {
 			),
 		},
 		update: (values) => {
-			setFoxes(values.foxes);
+			setAnimals((old) => ({ ...old, fox: values.foxes }));
 			setNumAnimalsAfterEachTrial(numAnimalsAfterEachTrialInternal);
 		},
 	};
