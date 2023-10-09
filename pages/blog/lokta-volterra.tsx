@@ -199,13 +199,17 @@ const LoktaVolterra: NextPage = () => {
 						tooltip: {
 							callbacks: {
 								footer: ([tooltipItem]) => {
-									const fox = animals.fox[tooltipItem.dataIndex];
+									const animal =
+										animals[tooltipItem.datasetIndex === 0 ? "fox" : "rabbit"][
+											tooltipItem.dataIndex
+										];
 									return [
 										`index: ${tooltipItem.dataIndex}`,
-										`id: ${fox.id}`,
-										`lifespan: ${fox.lifespan}`,
-										`numTrialsSinceLastReproduction: ${fox.numTrialsSinceLastReproduction}`,
-										`age: ${fox.age}`,
+										`id: ${animal.id}`,
+										`lifespan: ${animal.lifespan}`,
+										`numTrialsSinceLastReproduction: ${animal.numTrialsSinceLastReproduction}`,
+										`age: ${animal.age}`,
+										`type: ${animal.type}`,
 									].join("\n");
 								},
 							},
