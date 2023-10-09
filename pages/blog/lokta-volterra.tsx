@@ -26,12 +26,15 @@ import { Segment } from "../../components/Segment";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
 import { polarToCartesian } from "../../utils";
 
+type AnimalType = "fox";
+
 type Animal = {
 	age: number;
 	id: string;
 	lifespan: number;
 	numTrialsSinceLastReproduction: number;
 	point: Point;
+	type: AnimalType;
 };
 
 function takeAStep({
@@ -85,37 +88,43 @@ const LoktaVolterra: NextPage = () => {
 
 	const [foxes, setFoxes] = React.useState<Animal[]>([]);
 	const [numAnimalsAfterEachTrial, setNumAnimalsAfterEachTrial] =
-		React.useState<{ foxes: { thatCanMate: number; total: number }[] }>({
-			foxes: [],
+		React.useState<{ fox: { thatCanMate: number; total: number }[] }>({
+			fox: [],
 		});
 
-	const [maxLifespan, setMaxLifespan] = React.useState(1000);
-	const [minMatingAge, setMinMatingAge] = React.useState(100);
-	const [matingRecoveryDuration, setMatingRecoveryDuration] =
-		React.useState(90);
-	const [initialNumFoxes, setInitialNumFoxes] = React.useState(10);
+	const [maxLifespan, setMaxLifespan] = React.useState({ fox: 1000 });
+	const [minMatingAge, setMinMatingAge] = React.useState({ fox: 100 });
+	const [matingRecoveryDuration, setMatingRecoveryDuration] = React.useState({
+		fox: 90,
+	});
+	const [initialNumAnimals, setInitialNumAnimals] = React.useState({ fox: 10 });
 
-	const [maxMatingDistance, setMaxMatingDistance] = React.useState(0.017);
-	const [stepSize, setStepSize] = React.useState(0.05);
+	const [maxMatingDistance, setMaxMatingDistance] = React.useState({
+		fox: 0.017,
+	});
+	const [stepSize, setStepSize] = React.useState({ fox: 0.05 });
 
 	const canReproduce = (animal: Animal) =>
-		animal.age >= minMatingAge &&
-		animal.numTrialsSinceLastReproduction >= matingRecoveryDuration;
+		animal.age >= minMatingAge[animal.type] &&
+		animal.numTrialsSinceLastReproduction >=
+			matingRecoveryDuration[animal.type];
 
 	const canPairMate = (animalA: Animal, animalB: Animal) =>
 		Math.hypot(
 			animalA.point.x - animalB.point.x,
 			animalA.point.y - animalB.point.y
-		) < maxMatingDistance;
+		) < maxMatingDistance[animalA.type];
 
 	const anAnimal = (
+		type: AnimalType,
 		point: Point = { x: Math.random(), y: Math.random() }
 	): Animal => ({
 		age: 0,
 		id: _.uniqueId(),
-		lifespan: Math.floor(maxLifespan * (0.5 + Math.random() * 0.5)),
+		lifespan: Math.floor(maxLifespan[type] * (0.5 + Math.random() * 0.5)),
 		numTrialsSinceLastReproduction: 0,
 		point,
+		type,
 	});
 
 	const COLORS = { fox: "red" };
@@ -183,11 +192,11 @@ const LoktaVolterra: NextPage = () => {
 							backgroundColor: "none",
 							borderColor: "green",
 							borderWidth: 2,
-							data: numAnimalsAfterEachTrial.foxes.map(({ total }) => total),
+							data: numAnimalsAfterEachTrial.fox.map(({ total }) => total),
 							pointRadius: 0,
 						},
 					],
-					labels: numAnimalsAfterEachTrial.foxes,
+					labels: numAnimalsAfterEachTrial.fox,
 				},
 				options: {
 					animation: { duration: 0 },
@@ -265,7 +274,7 @@ const LoktaVolterra: NextPage = () => {
 							: fox.numTrialsSinceLastReproduction + 1,
 						point: takeAStep({
 							boundaries: { max: { x: 1, y: 1 }, min: { x: 0, y: 0 } },
-							distance: Math.random() * stepSize,
+							distance: Math.random() * stepSize.fox,
 							fromPoint: fox.point,
 							shouldWrap: true,
 						}),
@@ -274,7 +283,7 @@ const LoktaVolterra: NextPage = () => {
 						foxPairsWhoShouldMate.map(([originalIndexA, originalIndexB]) => {
 							const foxA = values.foxes[originalIndexA];
 							const foxB = values.foxes[originalIndexB];
-							return anAnimal({
+							return anAnimal("fox", {
 								x: (foxA.point.x + foxB.point.x) / 2,
 								y: (foxA.point.y + foxB.point.y) / 2,
 							});
@@ -282,12 +291,16 @@ const LoktaVolterra: NextPage = () => {
 					),
 			};
 		},
-		initialValues: { foxes: Array.from({ length: initialNumFoxes }, anAnimal) },
+		initialValues: {
+			foxes: Array.from({ length: initialNumAnimals.fox }, () =>
+				anAnimal("fox")
+			),
+		},
 		update: (values) => {
 			setFoxes(values.foxes);
 			setNumAnimalsAfterEachTrial((old) => ({
 				...old,
-				foxes: numFoxesAfterEachTrialInternal,
+				fox: numFoxesAfterEachTrialInternal,
 			}));
 		},
 	};
@@ -313,10 +326,13 @@ const LoktaVolterra: NextPage = () => {
 										InputLabelProps={{ shrink: true }}
 										label="MAX Lifespan"
 										onChange={({ currentTarget }) =>
-											setMaxLifespan(Number(currentTarget.value))
+											setMaxLifespan((old) => ({
+												...old,
+												fox: Number(currentTarget.value),
+											}))
 										}
 										type="number"
-										value={maxLifespan}
+										value={maxLifespan.fox}
 									/>
 								</Grid>
 								<Grid item xs={3}>
@@ -324,10 +340,13 @@ const LoktaVolterra: NextPage = () => {
 										InputLabelProps={{ shrink: true }}
 										label="MIN Mating Age"
 										onChange={({ currentTarget }) =>
-											setMinMatingAge(Number(currentTarget.value))
+											setMinMatingAge((old) => ({
+												...old,
+												fox: Number(currentTarget.value),
+											}))
 										}
 										type="number"
-										value={minMatingAge}
+										value={minMatingAge.fox}
 									/>
 								</Grid>
 								<Grid item xs={3}>
@@ -335,10 +354,13 @@ const LoktaVolterra: NextPage = () => {
 										InputLabelProps={{ shrink: true }}
 										label="Mating Recovery Duration"
 										onChange={({ currentTarget }) =>
-											setMatingRecoveryDuration(Number(currentTarget.value))
+											setMatingRecoveryDuration((old) => ({
+												...old,
+												fox: Number(currentTarget.value),
+											}))
 										}
 										type="number"
-										value={matingRecoveryDuration}
+										value={matingRecoveryDuration.fox}
 									/>
 								</Grid>
 								<Grid item xs={3}>
@@ -346,32 +368,37 @@ const LoktaVolterra: NextPage = () => {
 										InputLabelProps={{ shrink: true }}
 										label="Initial Number"
 										onChange={({ currentTarget }) =>
-											setInitialNumFoxes(Number(currentTarget.value))
+											setInitialNumAnimals((old) => ({
+												...old,
+												fox: Number(currentTarget.value),
+											}))
 										}
 										type="number"
-										value={initialNumFoxes}
+										value={initialNumAnimals.fox}
 									/>
 								</Grid>
 							</Grid>
 							<SliderWithLabels
-								displayValue={maxMatingDistance.toLocaleString()}
+								displayValue={maxMatingDistance.fox.toLocaleString()}
 								label="MAX Mating Distance"
 								max={1}
 								min={0}
 								onChange={(_event, newValue) =>
-									setMaxMatingDistance(newValue as number)
+									setMaxMatingDistance({ fox: newValue as number })
 								}
 								step={0.001}
-								value={maxMatingDistance}
+								value={maxMatingDistance.fox}
 							/>
 							<SliderWithLabels
-								displayValue={stepSize.toLocaleString()}
+								displayValue={stepSize.fox.toLocaleString()}
 								label="Step Size"
 								max={1}
 								min={0}
-								onChange={(_event, newValue) => setStepSize(newValue as number)}
+								onChange={(_event, newValue) =>
+									setStepSize({ fox: newValue as number })
+								}
 								step={0.001}
-								value={stepSize}
+								value={stepSize.fox}
 							/>
 						</CardContent>
 					</Card>
