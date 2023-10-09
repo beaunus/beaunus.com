@@ -88,9 +88,7 @@ const LoktaVolterra: NextPage = () => {
 
 	const [foxes, setFoxes] = React.useState<Animal[]>([]);
 	const [numAnimalsAfterEachTrial, setNumAnimalsAfterEachTrial] =
-		React.useState<{ fox: { thatCanMate: number; total: number }[] }>({
-			fox: [],
-		});
+		React.useState<{ fox: { thatCanMate: number; total: number } }[]>([]);
 
 	const [maxLifespan, setMaxLifespan] = React.useState({ fox: 1000 });
 	const [minMatingAge, setMinMatingAge] = React.useState({ fox: 100 });
@@ -192,11 +190,11 @@ const LoktaVolterra: NextPage = () => {
 							backgroundColor: "none",
 							borderColor: "green",
 							borderWidth: 2,
-							data: numAnimalsAfterEachTrial.fox.map(({ total }) => total),
+							data: numAnimalsAfterEachTrial.map(({ fox: { total } }) => total),
 							pointRadius: 0,
 						},
 					],
-					labels: numAnimalsAfterEachTrial.fox,
+					labels: numAnimalsAfterEachTrial,
 				},
 				options: {
 					animation: { duration: 0 },
@@ -212,9 +210,8 @@ const LoktaVolterra: NextPage = () => {
 		}
 	}, [foxes]);
 
-	const numFoxesAfterEachTrialInternal: {
-		thatCanMate: number;
-		total: number;
+	const numAnimalsAfterEachTrialInternal: {
+		fox: { thatCanMate: number; total: number };
 	}[] = [];
 
 	const loktaExperimentDefinition: ExperimentDefinition<{
@@ -225,9 +222,8 @@ const LoktaVolterra: NextPage = () => {
 				.map((fox, index) => ({ fox, originalIndex: index }))
 				.filter(({ fox }) => canReproduce(fox));
 
-			numFoxesAfterEachTrialInternal.push({
-				thatCanMate: fertileFoxes.length,
-				total: values.foxes.length,
+			numAnimalsAfterEachTrialInternal.push({
+				fox: { thatCanMate: fertileFoxes.length, total: values.foxes.length },
 			});
 
 			const fertileFoxTree = KDTree.from(
@@ -298,10 +294,7 @@ const LoktaVolterra: NextPage = () => {
 		},
 		update: (values) => {
 			setFoxes(values.foxes);
-			setNumAnimalsAfterEachTrial((old) => ({
-				...old,
-				fox: numFoxesAfterEachTrialInternal,
-			}));
+			setNumAnimalsAfterEachTrial(numAnimalsAfterEachTrialInternal);
 		},
 	};
 
