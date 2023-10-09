@@ -1,5 +1,7 @@
 import { ArrowRightAlt } from "@mui/icons-material";
 import {
+	Card,
+	CardContent,
 	Container,
 	Grid,
 	Table,
@@ -298,72 +300,77 @@ const LoktaVolterra: NextPage = () => {
 							Lotka-Volterra predator-prey model
 						</div>
 					</div>
-					<Grid container spacing={2} width="100%">
-						<Grid item xs={3}>
-							<TextField
-								InputLabelProps={{ shrink: true }}
-								label="MAX Lifespan"
-								onChange={({ currentTarget }) =>
-									setMaxLifespan(Number(currentTarget.value))
+					<Card>
+						<CardContent className="space-y-2">
+							<Typography className="font-bold">Fox Parameters</Typography>
+							<Grid container spacing={2} width="100%">
+								<Grid item xs={3}>
+									<TextField
+										InputLabelProps={{ shrink: true }}
+										label="MAX Lifespan"
+										onChange={({ currentTarget }) =>
+											setMaxLifespan(Number(currentTarget.value))
+										}
+										type="number"
+										value={maxLifespan}
+									/>
+								</Grid>
+								<Grid item xs={3}>
+									<TextField
+										InputLabelProps={{ shrink: true }}
+										label="MIN Mating Age"
+										onChange={({ currentTarget }) =>
+											setMinMatingAge(Number(currentTarget.value))
+										}
+										type="number"
+										value={minMatingAge}
+									/>
+								</Grid>
+								<Grid item xs={3}>
+									<TextField
+										InputLabelProps={{ shrink: true }}
+										label="Mating Recovery Duration"
+										onChange={({ currentTarget }) =>
+											setMatingRecoveryDuration(Number(currentTarget.value))
+										}
+										type="number"
+										value={matingRecoveryDuration}
+									/>
+								</Grid>
+								<Grid item xs={3}>
+									<TextField
+										InputLabelProps={{ shrink: true }}
+										label="Initial Number"
+										onChange={({ currentTarget }) =>
+											setInitialNumFoxes(Number(currentTarget.value))
+										}
+										type="number"
+										value={initialNumFoxes}
+									/>
+								</Grid>
+							</Grid>
+							<SliderWithLabels
+								displayValue={maxMatingDistance.toLocaleString()}
+								label="MAX Mating Distance"
+								max={1}
+								min={0}
+								onChange={(_event, newValue) =>
+									setMaxMatingDistance(newValue as number)
 								}
-								type="number"
-								value={maxLifespan}
+								step={0.001}
+								value={maxMatingDistance}
 							/>
-						</Grid>
-						<Grid item xs={3}>
-							<TextField
-								InputLabelProps={{ shrink: true }}
-								label="MIN Mating Age"
-								onChange={({ currentTarget }) =>
-									setMinMatingAge(Number(currentTarget.value))
-								}
-								type="number"
-								value={minMatingAge}
+							<SliderWithLabels
+								displayValue={stepSize.toLocaleString()}
+								label="Step Size"
+								max={1}
+								min={0}
+								onChange={(_event, newValue) => setStepSize(newValue as number)}
+								step={0.001}
+								value={stepSize}
 							/>
-						</Grid>
-						<Grid item xs={3}>
-							<TextField
-								InputLabelProps={{ shrink: true }}
-								label="Mating Recovery Duration"
-								onChange={({ currentTarget }) =>
-									setMatingRecoveryDuration(Number(currentTarget.value))
-								}
-								type="number"
-								value={matingRecoveryDuration}
-							/>
-						</Grid>
-						<Grid item xs={3}>
-							<TextField
-								InputLabelProps={{ shrink: true }}
-								label="Initial Number of Foxes"
-								onChange={({ currentTarget }) =>
-									setInitialNumFoxes(Number(currentTarget.value))
-								}
-								type="number"
-								value={initialNumFoxes}
-							/>
-						</Grid>
-					</Grid>
-					<SliderWithLabels
-						displayValue={maxMatingDistance.toLocaleString()}
-						label="MAX Mating Distance"
-						max={1}
-						min={0}
-						onChange={(_event, newValue) =>
-							setMaxMatingDistance(newValue as number)
-						}
-						step={0.001}
-						value={maxMatingDistance}
-					/>
-					<SliderWithLabels
-						displayValue={stepSize.toLocaleString()}
-						label="Step Size"
-						max={1}
-						min={0}
-						onChange={(_event, newValue) => setStepSize(newValue as number)}
-						step={0.001}
-						value={stepSize}
-					/>
+						</CardContent>
+					</Card>
 					<ExperimentComponent
 						experimentDefinition={loktaExperimentDefinition}
 						initialControlValues={{ numTrialsExponent: 4 }}
