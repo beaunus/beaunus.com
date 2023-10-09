@@ -408,12 +408,12 @@ const LoktaVolterra: NextPage = () => {
 						}),
 					}))
 					.concat(
-						foxPairsWhoShouldMate.map(([foxA, foxB]) => {
-							return anAnimal("fox", {
+						foxPairsWhoShouldMate.map(([foxA, foxB]) =>
+							anAnimal("fox", {
 								x: (foxA.point.x + foxB.point.x) / 2,
 								y: (foxA.point.y + foxB.point.y) / 2,
-							});
-						})
+							})
+						)
 					),
 				rabbits: values.rabbits
 					.filter((rabbit) => rabbit.age < rabbit.lifespan)
@@ -433,12 +433,12 @@ const LoktaVolterra: NextPage = () => {
 						}),
 					}))
 					.concat(
-						rabbitPairsWhoShouldMate.map(([rabbitA, rabbitB]) => {
-							return anAnimal("rabbit", {
+						rabbitPairsWhoShouldMate.map(([rabbitA, rabbitB]) =>
+							anAnimal("rabbit", {
 								x: (rabbitA.point.x + rabbitB.point.x) / 2,
 								y: (rabbitA.point.y + rabbitB.point.y) / 2,
-							});
-						})
+							})
+						)
 					),
 			};
 		},
