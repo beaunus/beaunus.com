@@ -162,12 +162,12 @@ function computePairs({
 	predicateForIndividual: (animal: Animal) => boolean;
 	predicateForPair: (animalA: Animal, animalB: Animal) => boolean;
 }) {
-	const fertileAnimals = candidates
+	const qualifyingIndividuals = candidates
 		.map((animal, index) => ({ animal, originalIndex: index }))
 		.filter(({ animal }) => predicateForIndividual(animal));
 
-	const fertileAnimalTree = KDTree.from(
-		fertileAnimals.map(({ animal, originalIndex }) => [
+	const qualifyingIndividualsTree = KDTree.from(
+		qualifyingIndividuals.map(({ animal, originalIndex }) => [
 			{ animal, originalIndex },
 			Object.values(animal.point),
 		]),
@@ -175,11 +175,11 @@ function computePairs({
 	);
 
 	const closestFertileNeighborOrigIndexByOrigIndex: Record<number, number> =
-		fertileAnimals.length > 1
+		qualifyingIndividuals.length > 1
 			? Object.fromEntries(
-					fertileAnimals.map(({ animal, originalIndex }) => [
+					qualifyingIndividuals.map(({ animal, originalIndex }) => [
 						originalIndex,
-						fertileAnimalTree.kNearestNeighbors(
+						qualifyingIndividualsTree.kNearestNeighbors(
 							2,
 							Object.values(animal.point)
 						)[1]?.originalIndex,
