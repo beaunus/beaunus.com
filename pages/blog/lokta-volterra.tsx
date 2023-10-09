@@ -37,6 +37,8 @@ type Animal = {
 	type: AnimalType;
 };
 
+const COLORS = { fox: "red", rabbit: "blue" };
+
 function takeAStep({
 	boundaries,
 	distance,
@@ -137,8 +139,6 @@ const LoktaVolterra: NextPage = () => {
 		type,
 	});
 
-	const COLORS = { fox: "red", rabbit: "blue" };
-
 	React.useEffect(() => {
 		if (scatterChartRef.current && lineChartRef.current) {
 			const scatterChart = new ChartJS(scatterChartRef.current, {
@@ -221,9 +221,16 @@ const LoktaVolterra: NextPage = () => {
 					datasets: [
 						{
 							backgroundColor: "none",
-							borderColor: "green",
+							borderColor: COLORS.fox,
 							borderWidth: 2,
 							data: numAnimalsAfterEachTrial.map(({ fox: total }) => total),
+							pointRadius: 0,
+						},
+						{
+							backgroundColor: "none",
+							borderColor: COLORS.rabbit,
+							borderWidth: 2,
+							data: numAnimalsAfterEachTrial.map(({ rabbit: total }) => total),
 							pointRadius: 0,
 						},
 					],
