@@ -315,62 +315,47 @@ const LoktaVolterra: NextPage = () => {
 						<CardContent className="space-y-2">
 							<Typography className="font-bold">Fox Parameters</Typography>
 							<Grid container spacing={2} width="100%">
-								<Grid item xs={3}>
-									<TextField
-										InputLabelProps={{ shrink: true }}
-										label="MAX Lifespan"
-										onChange={({ currentTarget }) =>
-											setMaxLifespan((old) => ({
-												...old,
-												fox: Number(currentTarget.value),
-											}))
-										}
-										type="number"
-										value={maxLifespan.fox}
-									/>
-								</Grid>
-								<Grid item xs={3}>
-									<TextField
-										InputLabelProps={{ shrink: true }}
-										label="MIN Mating Age"
-										onChange={({ currentTarget }) =>
-											setMinMatingAge((old) => ({
-												...old,
-												fox: Number(currentTarget.value),
-											}))
-										}
-										type="number"
-										value={minMatingAge.fox}
-									/>
-								</Grid>
-								<Grid item xs={3}>
-									<TextField
-										InputLabelProps={{ shrink: true }}
-										label="Mating Recovery Duration"
-										onChange={({ currentTarget }) =>
-											setMatingRecoveryDuration((old) => ({
-												...old,
-												fox: Number(currentTarget.value),
-											}))
-										}
-										type="number"
-										value={matingRecoveryDuration.fox}
-									/>
-								</Grid>
-								<Grid item xs={3}>
-									<TextField
-										InputLabelProps={{ shrink: true }}
-										label="Initial Number"
-										onChange={({ currentTarget }) =>
-											setInitialNumAnimals((old) => ({
-												...old,
-												fox: Number(currentTarget.value),
-											}))
-										}
-										type="number"
-										value={initialNumAnimals.fox}
-									/>
-								</Grid>
+								{[
+									{
+										label: "MAX Lifespan",
+										setStateAction: setMaxLifespan,
+										state: maxLifespan,
+									},
+									{
+										label: "MIN Mating Age",
+										setStateAction: setMinMatingAge,
+										state: minMatingAge,
+									},
+									{
+										label: "Mating Recovery Duration",
+										setStateAction: setMatingRecoveryDuration,
+										state: matingRecoveryDuration,
+									},
+									{
+										label: "Initial Number",
+										setStateAction: setInitialNumAnimals,
+										state: initialNumAnimals,
+									},
+								].map(({ state, setStateAction, label }) => (
+									<Grid
+										item
+										key={JSON.stringify([state, setStateAction])}
+										xs={3}
+									>
+										<TextField
+											InputLabelProps={{ shrink: true }}
+											label={label}
+											onChange={({ currentTarget }) =>
+												setStateAction((old) => ({
+													...old,
+													fox: Number(currentTarget.value),
+												}))
+											}
+											type="number"
+											value={state.fox}
+										/>
+									</Grid>
+								))}
 							</Grid>
 							<SliderWithLabels
 								displayValue={maxMatingDistance.fox.toLocaleString()}
