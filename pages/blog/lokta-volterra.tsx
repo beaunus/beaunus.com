@@ -518,53 +518,79 @@ const LoktaVolterra: NextPage = () => {
 						</Typography>
 						<Table size="small">
 							<TableBody>
-								<TableRow>
-									<TableCell component="th" scope="row">
-										<Typography>Foxes</Typography>
-									</TableCell>
-									<TableCell>
-										<Table className="w-min" size="small">
-											<TableBody>
-												<TableRow>
-													<TableCell align="right">
-														<Typography>Infertile</Typography>
-													</TableCell>
-													<TableCell>
-														<div className="w-4 h-4 rounded-full border-2 border-red-600" />
-													</TableCell>
-													<TableCell>
-														<ArrowRightAlt />
-													</TableCell>
-													<TableCell>
-														<div className="w-4 h-4 bg-red-600 rounded-full border-red-600" />
-													</TableCell>
-													<TableCell>
-														<Typography>Fertile</Typography>
-													</TableCell>
-												</TableRow>
-												<TableRow>
-													<TableCell align="right">
-														<Typography noWrap>
-															Near beginning of life
-														</Typography>
-													</TableCell>
-													<TableCell>
-														<div className="w-4 h-4 bg-red-600 rounded-full border-red-600" />
-													</TableCell>
-													<TableCell>
-														<ArrowRightAlt />
-													</TableCell>
-													<TableCell>
-														<div className="w-1 h-1 bg-red-600 rounded-full border-red-600" />
-													</TableCell>
-													<TableCell>
-														<Typography noWrap>Near end of life</Typography>
-													</TableCell>
-												</TableRow>
-											</TableBody>
-										</Table>
-									</TableCell>
-								</TableRow>
+								{[
+									{ color: "red", label: "Foxes" },
+									{ color: "red", label: "Foxes" },
+								].map(({ color, label }) => (
+									<TableRow key={`legend-row-${label}`}>
+										<TableCell component="th" scope="row">
+											<Typography>{label}</Typography>
+										</TableCell>
+										<TableCell>
+											<Table className="w-min" size="small">
+												<TableBody>
+													<TableRow>
+														<TableCell align="right">
+															<Typography>Infertile</Typography>
+														</TableCell>
+														<TableCell>
+															<div
+																className="w-4 h-4 rounded-full border-2"
+																style={{ borderColor: color }}
+															/>
+														</TableCell>
+														<TableCell>
+															<ArrowRightAlt />
+														</TableCell>
+														<TableCell>
+															<div
+																className="w-4 h-4 rounded-full"
+																style={{
+																	backgroundColor: color,
+																	borderColor: color,
+																}}
+															/>
+														</TableCell>
+														<TableCell>
+															<Typography>Fertile</Typography>
+														</TableCell>
+													</TableRow>
+													<TableRow>
+														<TableCell align="right">
+															<Typography noWrap>
+																Near beginning of life
+															</Typography>
+														</TableCell>
+														<TableCell>
+															<div
+																className="w-4 h-4 rounded-full"
+																style={{
+																	backgroundColor: color,
+																	borderColor: color,
+																}}
+															/>
+														</TableCell>
+														<TableCell>
+															<ArrowRightAlt />
+														</TableCell>
+														<TableCell>
+															<div
+																className="w-1 h-1 rounded-full"
+																style={{
+																	backgroundColor: color,
+																	borderColor: color,
+																}}
+															/>
+														</TableCell>
+														<TableCell>
+															<Typography noWrap>Near end of life</Typography>
+														</TableCell>
+													</TableRow>
+												</TableBody>
+											</Table>
+										</TableCell>
+									</TableRow>
+								))}
 							</TableBody>
 						</Table>
 					</Container>
