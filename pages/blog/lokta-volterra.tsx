@@ -88,7 +88,7 @@ const LoktaVolterra: NextPage = () => {
 
 	const [animals, setAnimals] = React.useState<{ fox: Animal[] }>({ fox: [] });
 	const [numAnimalsAfterEachTrial, setNumAnimalsAfterEachTrial] =
-		React.useState<{ fox: { thatCanMate: number; total: number } }[]>([]);
+		React.useState<{ fox: number }[]>([]);
 
 	const [maxLifespan, setMaxLifespan] = React.useState({ fox: 1000 });
 	const [minMatingAge, setMinMatingAge] = React.useState({ fox: 100 });
@@ -191,7 +191,7 @@ const LoktaVolterra: NextPage = () => {
 							backgroundColor: "none",
 							borderColor: "green",
 							borderWidth: 2,
-							data: numAnimalsAfterEachTrial.map(({ fox: { total } }) => total),
+							data: numAnimalsAfterEachTrial.map(({ fox: total }) => total),
 							pointRadius: 0,
 						},
 					],
@@ -212,7 +212,7 @@ const LoktaVolterra: NextPage = () => {
 	}, [animals]);
 
 	const numAnimalsAfterEachTrialInternal: {
-		fox: { thatCanMate: number; total: number };
+		fox: number;
 	}[] = [];
 
 	const loktaExperimentDefinition: ExperimentDefinition<{
@@ -223,10 +223,6 @@ const LoktaVolterra: NextPage = () => {
 				.map((fox, index) => ({ fox, originalIndex: index }))
 				.filter(({ fox }) => canReproduce(fox));
 
-			numAnimalsAfterEachTrialInternal.push({
-				fox: { thatCanMate: fertileFoxes.length, total: values.foxes.length },
-			});
-
 			const fertileFoxTree = KDTree.from(
 				fertileFoxes.map(({ fox, originalIndex }) => [
 					{ fox, originalIndex },
@@ -234,6 +230,8 @@ const LoktaVolterra: NextPage = () => {
 				]),
 				2
 			);
+
+			numAnimalsAfterEachTrialInternal.push({ fox: fertileFoxTree.size });
 
 			const closestFertileFoxNeighborOrigIndexByOrigIndex: Record<
 				number,
