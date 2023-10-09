@@ -112,7 +112,7 @@ const LoktaVolterra: NextPage = () => {
 		id: _.uniqueId(),
 		lifespan: Math.floor(maxLifespan * (0.5 + Math.random() * 0.5)),
 		numTrialsSinceLastReproduction: 0,
-		numTrialsSurvivedSoFar: 100,
+		numTrialsSurvivedSoFar: 0,
 		point,
 	});
 
