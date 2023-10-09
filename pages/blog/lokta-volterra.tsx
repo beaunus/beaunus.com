@@ -328,9 +328,11 @@ const LoktaVolterra: NextPage = () => {
 	function computePairs({
 		candidateAnimals,
 		predicateForIndividual,
+		predicateForPair,
 	}: {
 		candidateAnimals: Animal[];
 		predicateForIndividual: (animal: Animal) => boolean;
+		predicateForPair: (animalA: Animal, animalB: Animal) => boolean;
 	}) {
 		const fertileAnimals = candidateAnimals
 			.map((animal, index) => ({ animal, originalIndex: index }))
@@ -363,7 +365,7 @@ const LoktaVolterra: NextPage = () => {
 				([indexA, indexB]) =>
 					indexA < indexB &&
 					closestFertileNeighborOrigIndexByOrigIndex[`${indexB}`] === indexA &&
-					canPairMate(candidateAnimals[indexA], candidateAnimals[indexB])
+					predicateForPair(candidateAnimals[indexA], candidateAnimals[indexB])
 			);
 	}
 
@@ -375,11 +377,13 @@ const LoktaVolterra: NextPage = () => {
 			const foxPairsWhoShouldMate = computePairs({
 				candidateAnimals: values.foxes,
 				predicateForIndividual: canReproduce,
+				predicateForPair: canPairMate,
 			});
 			const foxesWhoMatedIndexes = foxPairsWhoShouldMate.flatMap((x) => x);
 			const rabbitPairsWhoShouldMate = computePairs({
 				candidateAnimals: values.rabbits,
 				predicateForIndividual: canReproduce,
+				predicateForPair: canPairMate,
 			});
 			const rabbitsWhoMatedIndexes = rabbitPairsWhoShouldMate.flatMap((x) => x);
 
