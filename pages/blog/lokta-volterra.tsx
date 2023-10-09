@@ -235,7 +235,10 @@ const LoktaVolterra: NextPage = () => {
 				2
 			);
 
-			const closestFertileNeighborOrigIndexByOrigIndex: Record<number, number> =
+			const closestFertileFoxNeighborOrigIndexByOrigIndex: Record<
+				number,
+				number
+			> =
 				fertileFoxes.length > 1
 					? Object.fromEntries(
 							fertileFoxes.map(({ fox, originalIndex }) => [
@@ -247,13 +250,13 @@ const LoktaVolterra: NextPage = () => {
 					: {};
 
 			const foxPairsWhoShouldMate = Object.entries(
-				closestFertileNeighborOrigIndexByOrigIndex
+				closestFertileFoxNeighborOrigIndexByOrigIndex
 			)
 				.map(([a, b]) => [Number(a), b])
 				.filter(
 					([indexA, indexB]) =>
 						indexA < indexB &&
-						closestFertileNeighborOrigIndexByOrigIndex[`${indexB}`] ===
+						closestFertileFoxNeighborOrigIndexByOrigIndex[`${indexB}`] ===
 							indexA &&
 						canPairMate(values.foxes[indexA], values.foxes[indexB])
 				);
