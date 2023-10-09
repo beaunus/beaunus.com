@@ -26,7 +26,7 @@ import { Segment } from "../../components/Segment";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
 import { polarToCartesian } from "../../utils";
 
-type AnimalType = "fox";
+type AnimalType = "fox" | "rabbit";
 
 type Animal = {
 	age: number;
@@ -86,21 +86,33 @@ const LoktaVolterra: NextPage = () => {
 	const scatterChartRef = React.useRef<HTMLCanvasElement>(null);
 	const lineChartRef = React.useRef<HTMLCanvasElement>(null);
 
-	const [animals, setAnimals] = React.useState<{ fox: Animal[] }>({ fox: [] });
+	const [animals, setAnimals] = React.useState<Record<AnimalType, Animal[]>>({
+		fox: [],
+		rabbit: [],
+	});
 	const [numAnimalsAfterEachTrial, setNumAnimalsAfterEachTrial] =
-		React.useState<{ fox: number }[]>([]);
+		React.useState<Record<AnimalType, number>[]>([]);
 
-	const [maxLifespan, setMaxLifespan] = React.useState({ fox: 1000 });
-	const [minMatingAge, setMinMatingAge] = React.useState({ fox: 100 });
-	const [matingRecoveryDuration, setMatingRecoveryDuration] = React.useState({
-		fox: 90,
-	});
-	const [initialNumAnimals, setInitialNumAnimals] = React.useState({ fox: 10 });
+	const [maxLifespan, setMaxLifespan] = React.useState<
+		Record<AnimalType, number>
+	>({ fox: 1000, rabbit: 1000 });
+	const [minMatingAge, setMinMatingAge] = React.useState<
+		Record<AnimalType, number>
+	>({ fox: 100, rabbit: 100 });
+	const [matingRecoveryDuration, setMatingRecoveryDuration] = React.useState<
+		Record<AnimalType, number>
+	>({ fox: 90, rabbit: 90 });
+	const [initialNumAnimals, setInitialNumAnimals] = React.useState<
+		Record<AnimalType, number>
+	>({ fox: 10, rabbit: 10 });
 
-	const [maxMatingDistance, setMaxMatingDistance] = React.useState({
-		fox: 0.017,
+	const [maxMatingDistance, setMaxMatingDistance] = React.useState<
+		Record<AnimalType, number>
+	>({ fox: 0.017, rabbit: 0.017 });
+	const [stepSize, setStepSize] = React.useState<Record<AnimalType, number>>({
+		fox: 0.05,
+		rabbit: 0.05,
 	});
-	const [stepSize, setStepSize] = React.useState({ fox: 0.05 });
 
 	const canReproduce = (animal: Animal) =>
 		animal.age >= minMatingAge[animal.type] &&
@@ -125,7 +137,7 @@ const LoktaVolterra: NextPage = () => {
 		type,
 	});
 
-	const COLORS = { fox: "red" };
+	const COLORS = { fox: "red", rabbit: "blue" };
 
 	React.useEffect(() => {
 		if (scatterChartRef.current && lineChartRef.current) {
@@ -148,6 +160,26 @@ const LoktaVolterra: NextPage = () => {
 									? (animals.fox[dataIndex].lifespan -
 											animals.fox[dataIndex].age) /
 									  (animals.fox[dataIndex].lifespan / 10)
+									: 0,
+						},
+						{
+							backgroundColor: ({ dataIndex }) =>
+								animals.rabbit[dataIndex] &&
+								canReproduce(animals.rabbit[dataIndex])
+									? COLORS.rabbit
+									: "transparent",
+							borderColor: ({ dataIndex }) =>
+								animals.rabbit[dataIndex] &&
+								canReproduce(animals.rabbit[dataIndex])
+									? "transparent"
+									: COLORS.rabbit,
+							borderWidth: 2,
+							data: animals.rabbit.map(({ point }) => point),
+							pointRadius: ({ dataIndex }) =>
+								animals.rabbit[dataIndex]
+									? (animals.rabbit[dataIndex].lifespan -
+											animals.rabbit[dataIndex].age) /
+									  (animals.rabbit[dataIndex].lifespan / 10)
 									: 0,
 						},
 						{
@@ -211,9 +243,7 @@ const LoktaVolterra: NextPage = () => {
 		}
 	}, [animals]);
 
-	const numAnimalsAfterEachTrialInternal: {
-		fox: number;
-	}[] = [];
+	const numAnimalsAfterEachTrialInternal: Record<AnimalType, number>[] = [];
 
 	function computeMates(candidateAnimals: Animal[]) {
 		const fertileAnimals = candidateAnimals
@@ -253,11 +283,18 @@ const LoktaVolterra: NextPage = () => {
 
 	const loktaExperimentDefinition: ExperimentDefinition<{
 		foxes: Array<Animal>;
+		rabbits: Array<Animal>;
 	}> = {
 		execute: (values) => {
 			const foxPairsWhoShouldMate = computeMates(values.foxes);
 			const foxesWhoMatedIndexes = foxPairsWhoShouldMate.flatMap((x) => x);
-			numAnimalsAfterEachTrialInternal.push({ fox: values.foxes.length });
+			const rabbitPairsWhoShouldMate = computeMates(values.rabbits);
+			const rabbitsWhoMatedIndexes = rabbitPairsWhoShouldMate.flatMap((x) => x);
+
+			numAnimalsAfterEachTrialInternal.push({
+				fox: values.foxes.length,
+				rabbit: values.rabbits.length,
+			});
 
 			return {
 				foxes: values.foxes
@@ -285,15 +322,49 @@ const LoktaVolterra: NextPage = () => {
 							});
 						})
 					),
+				rabbits: values.rabbits
+					.filter(willSurvive)
+					.map((rabbit, index) => ({
+						...rabbit,
+						age: rabbit.age + 1,
+						numTrialsSinceLastReproduction: rabbitsWhoMatedIndexes.includes(
+							index
+						)
+							? 0
+							: rabbit.numTrialsSinceLastReproduction + 1,
+						point: takeAStep({
+							boundaries: { max: { x: 1, y: 1 }, min: { x: 0, y: 0 } },
+							distance: Math.random() * stepSize.rabbit,
+							fromPoint: rabbit.point,
+							shouldWrap: true,
+						}),
+					}))
+					.concat(
+						rabbitPairsWhoShouldMate.map(([originalIndexA, originalIndexB]) => {
+							const rabbitA = values.rabbits[originalIndexA];
+							const rabbitB = values.rabbits[originalIndexB];
+							return anAnimal("rabbit", {
+								x: (rabbitA.point.x + rabbitB.point.x) / 2,
+								y: (rabbitA.point.y + rabbitB.point.y) / 2,
+							});
+						})
+					),
 			};
 		},
 		initialValues: {
 			foxes: Array.from({ length: initialNumAnimals.fox }, () =>
 				anAnimal("fox")
 			),
+			rabbits: Array.from({ length: initialNumAnimals.rabbit }, () =>
+				anAnimal("rabbit")
+			),
 		},
 		update: (values) => {
-			setAnimals((old) => ({ ...old, fox: values.foxes }));
+			setAnimals((old) => ({
+				...old,
+				fox: values.foxes,
+				rabbit: values.rabbits,
+			}));
 			setNumAnimalsAfterEachTrial(numAnimalsAfterEachTrialInternal);
 		},
 	};
@@ -364,7 +435,10 @@ const LoktaVolterra: NextPage = () => {
 								max={1}
 								min={0}
 								onChange={(_event, newValue) =>
-									setMaxMatingDistance({ fox: newValue as number })
+									setMaxMatingDistance((old) => ({
+										...old,
+										fox: newValue as number,
+									}))
 								}
 								step={0.001}
 								value={maxMatingDistance.fox}
@@ -375,10 +449,62 @@ const LoktaVolterra: NextPage = () => {
 								max={1}
 								min={0}
 								onChange={(_event, newValue) =>
-									setStepSize({ fox: newValue as number })
+									setStepSize((old) => ({ ...old, fox: newValue as number }))
 								}
 								step={0.001}
 								value={stepSize.fox}
+							/>
+						</CardContent>
+					</Card>
+					<Card>
+						<CardContent className="space-y-2">
+							<Typography className="font-bold">Rabbit Parameters</Typography>
+							<Grid container spacing={2} width="100%">
+								{animalParameters.map(({ state, setStateAction, label }) => (
+									<Grid
+										item
+										key={JSON.stringify([state, setStateAction])}
+										xs={3}
+									>
+										<TextField
+											InputLabelProps={{ shrink: true }}
+											label={label}
+											onChange={({ currentTarget }) =>
+												setStateAction((old) => ({
+													...old,
+													rabbit: Number(currentTarget.value),
+												}))
+											}
+											type="number"
+											value={state.rabbit}
+										/>
+									</Grid>
+								))}
+							</Grid>
+							<SliderWithLabels
+								displayValue={maxMatingDistance.rabbit.toLocaleString()}
+								label="MAX Mating Distance"
+								max={1}
+								min={0}
+								onChange={(_event, newValue) =>
+									setMaxMatingDistance((old) => ({
+										...old,
+										rabbit: newValue as number,
+									}))
+								}
+								step={0.001}
+								value={maxMatingDistance.rabbit}
+							/>
+							<SliderWithLabels
+								displayValue={stepSize.rabbit.toLocaleString()}
+								label="Step Size"
+								max={1}
+								min={0}
+								onChange={(_event, newValue) =>
+									setStepSize((old) => ({ ...old, rabbit: newValue as number }))
+								}
+								step={0.001}
+								value={stepSize.rabbit}
 							/>
 						</CardContent>
 					</Card>
