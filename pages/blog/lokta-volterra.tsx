@@ -154,15 +154,15 @@ const Legend: React.FC = () => (
 );
 
 function computePairs({
-	candidateAnimals,
+	candidates,
 	predicateForIndividual,
 	predicateForPair,
 }: {
-	candidateAnimals: Animal[];
+	candidates: Animal[];
 	predicateForIndividual: (animal: Animal) => boolean;
 	predicateForPair: (animalA: Animal, animalB: Animal) => boolean;
 }) {
-	const fertileAnimals = candidateAnimals
+	const fertileAnimals = candidates
 		.map((animal, index) => ({ animal, originalIndex: index }))
 		.filter(({ animal }) => predicateForIndividual(animal));
 
@@ -193,7 +193,7 @@ function computePairs({
 			([indexA, indexB]) =>
 				indexA < indexB &&
 				closestFertileNeighborOrigIndexByOrigIndex[`${indexB}`] === indexA &&
-				predicateForPair(candidateAnimals[indexA], candidateAnimals[indexB])
+				predicateForPair(candidates[indexA], candidates[indexB])
 		);
 }
 
@@ -375,13 +375,13 @@ const LoktaVolterra: NextPage = () => {
 	}> = {
 		execute: (values) => {
 			const foxPairsWhoShouldMate = computePairs({
-				candidateAnimals: values.foxes,
+				candidates: values.foxes,
 				predicateForIndividual: canReproduce,
 				predicateForPair: canPairMate,
 			});
 			const foxesWhoMatedIndexes = foxPairsWhoShouldMate.flatMap((x) => x);
 			const rabbitPairsWhoShouldMate = computePairs({
-				candidateAnimals: values.rabbits,
+				candidates: values.rabbits,
 				predicateForIndividual: canReproduce,
 				predicateForPair: canPairMate,
 			});
