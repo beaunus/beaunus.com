@@ -325,10 +325,16 @@ const LoktaVolterra: NextPage = () => {
 
 	const numAnimalsAfterEachTrialInternal: Record<AnimalType, number>[] = [];
 
-	function computePairs({ candidateAnimals }: { candidateAnimals: Animal[] }) {
+	function computePairs({
+		candidateAnimals,
+		predicateForIndividual,
+	}: {
+		candidateAnimals: Animal[];
+		predicateForIndividual: (animal: Animal) => boolean;
+	}) {
 		const fertileAnimals = candidateAnimals
 			.map((animal, index) => ({ animal, originalIndex: index }))
-			.filter(({ animal }) => canReproduce(animal));
+			.filter(({ animal }) => predicateForIndividual(animal));
 
 		const fertileAnimalTree = KDTree.from(
 			fertileAnimals.map(({ animal, originalIndex }) => [
@@ -368,10 +374,12 @@ const LoktaVolterra: NextPage = () => {
 		execute: (values) => {
 			const foxPairsWhoShouldMate = computePairs({
 				candidateAnimals: values.foxes,
+				predicateForIndividual: canReproduce,
 			});
 			const foxesWhoMatedIndexes = foxPairsWhoShouldMate.flatMap((x) => x);
 			const rabbitPairsWhoShouldMate = computePairs({
 				candidateAnimals: values.rabbits,
+				predicateForIndividual: canReproduce,
 			});
 			const rabbitsWhoMatedIndexes = rabbitPairsWhoShouldMate.flatMap((x) => x);
 
