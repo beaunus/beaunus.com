@@ -25,10 +25,10 @@ import { SliderWithLabels } from "../../components/SliderWithLabels";
 import { polarToCartesian } from "../../utils";
 
 type Animal = {
+	age: number;
 	id: string;
 	lifespan: number;
 	numTrialsSinceLastReproduction: number;
-	numTrialsSurvivedSoFar: number;
 	point: Point;
 };
 
@@ -75,8 +75,7 @@ function takeAStep({
 		  };
 }
 
-const willFoxSurvive = (fox: Animal) =>
-	fox.numTrialsSurvivedSoFar < fox.lifespan;
+const willFoxSurvive = (fox: Animal) => fox.age < fox.lifespan;
 
 const LoktaVolterra: NextPage = () => {
 	const scatterChartRef = React.useRef<HTMLCanvasElement>(null);
@@ -97,7 +96,7 @@ const LoktaVolterra: NextPage = () => {
 	const [stepSize, setStepSize] = React.useState(0.05);
 
 	const canReproduce = (animal: Animal) =>
-		animal.numTrialsSurvivedSoFar > minMatingAge &&
+		animal.age > minMatingAge &&
 		animal.numTrialsSinceLastReproduction >= matingRecoveryDuration;
 
 	const canPairMate = (animalA: Animal, animalB: Animal) =>
@@ -109,10 +108,10 @@ const LoktaVolterra: NextPage = () => {
 	const anAnimal = (
 		point: Point = { x: Math.random(), y: Math.random() }
 	): Animal => ({
+		age: 0,
 		id: _.uniqueId(),
 		lifespan: Math.floor(maxLifespan * (0.5 + Math.random() * 0.5)),
 		numTrialsSinceLastReproduction: 0,
-		numTrialsSurvivedSoFar: 0,
 		point,
 	});
 
@@ -136,8 +135,7 @@ const LoktaVolterra: NextPage = () => {
 							data: foxes.map(({ point }) => point),
 							pointRadius: ({ dataIndex }) =>
 								foxes[dataIndex]
-									? (foxes[dataIndex].lifespan -
-											foxes[dataIndex].numTrialsSurvivedSoFar) /
+									? (foxes[dataIndex].lifespan - foxes[dataIndex].age) /
 									  (foxes[dataIndex].lifespan / 10)
 									: 0,
 						},
@@ -164,7 +162,7 @@ const LoktaVolterra: NextPage = () => {
 										`id: ${fox.id}`,
 										`lifespan: ${fox.lifespan}`,
 										`numTrialsSinceLastReproduction: ${fox.numTrialsSinceLastReproduction}`,
-										`numTrialsSurvivedSoFar: ${fox.numTrialsSurvivedSoFar}`,
+										`age: ${fox.age}`,
 									].join("\n");
 								},
 							},
@@ -258,10 +256,10 @@ const LoktaVolterra: NextPage = () => {
 					.filter(willFoxSurvive)
 					.map((fox, index) => ({
 						...fox,
+						age: fox.age + 1,
 						numTrialsSinceLastReproduction: foxesWhoMatedIndexes.includes(index)
 							? 0
 							: fox.numTrialsSinceLastReproduction + 1,
-						numTrialsSurvivedSoFar: fox.numTrialsSurvivedSoFar + 1,
 						point: takeAStep({
 							boundaries: { max: { x: 1, y: 1 }, min: { x: 0, y: 0 } },
 							distance: Math.random() * stepSize,
