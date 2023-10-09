@@ -84,6 +84,75 @@ function takeAStep({
 
 const willSurvive = (animal: Animal) => animal.age < animal.lifespan;
 
+const Legend: React.FC = () => (
+	<Table size="small">
+		<TableBody>
+			{[
+				{ color: "red", label: "Foxes" },
+				{ color: "blue", label: "Rabbits" },
+			].map(({ color, label }) => (
+				<TableRow key={`legend-row-${label}`}>
+					<TableCell component="th" scope="row">
+						<Typography>{label}</Typography>
+					</TableCell>
+					<TableCell>
+						<Table className="w-min" size="small">
+							<TableBody>
+								<TableRow>
+									<TableCell align="right">
+										<Typography>Infertile</Typography>
+									</TableCell>
+									<TableCell>
+										<div
+											className="w-4 h-4 rounded-full border-2"
+											style={{ borderColor: color }}
+										/>
+									</TableCell>
+									<TableCell>
+										<ArrowRightAlt />
+									</TableCell>
+									<TableCell>
+										<div
+											className="w-4 h-4 rounded-full"
+											style={{ backgroundColor: color, borderColor: color }}
+										/>
+									</TableCell>
+									<TableCell>
+										<Typography>Fertile</Typography>
+									</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell align="right">
+										<Typography noWrap>Near beginning of life</Typography>
+									</TableCell>
+									<TableCell>
+										<div
+											className="w-4 h-4 rounded-full"
+											style={{ backgroundColor: color, borderColor: color }}
+										/>
+									</TableCell>
+									<TableCell>
+										<ArrowRightAlt />
+									</TableCell>
+									<TableCell>
+										<div
+											className="w-1 h-1 rounded-full"
+											style={{ backgroundColor: color, borderColor: color }}
+										/>
+									</TableCell>
+									<TableCell>
+										<Typography noWrap>Near end of life</Typography>
+									</TableCell>
+								</TableRow>
+							</TableBody>
+						</Table>
+					</TableCell>
+				</TableRow>
+			))}
+		</TableBody>
+	</Table>
+);
+
 const LoktaVolterra: NextPage = () => {
 	const scatterChartRef = React.useRef<HTMLCanvasElement>(null);
 	const lineChartRef = React.useRef<HTMLCanvasElement>(null);
@@ -527,83 +596,7 @@ const LoktaVolterra: NextPage = () => {
 						<Typography>
 							This experiment simulates the Lotka-Volterra predator-prey model.
 						</Typography>
-						<Table size="small">
-							<TableBody>
-								{[
-									{ color: "red", label: "Foxes" },
-									{ color: "blue", label: "Rabbits" },
-								].map(({ color, label }) => (
-									<TableRow key={`legend-row-${label}`}>
-										<TableCell component="th" scope="row">
-											<Typography>{label}</Typography>
-										</TableCell>
-										<TableCell>
-											<Table className="w-min" size="small">
-												<TableBody>
-													<TableRow>
-														<TableCell align="right">
-															<Typography>Infertile</Typography>
-														</TableCell>
-														<TableCell>
-															<div
-																className="w-4 h-4 rounded-full border-2"
-																style={{ borderColor: color }}
-															/>
-														</TableCell>
-														<TableCell>
-															<ArrowRightAlt />
-														</TableCell>
-														<TableCell>
-															<div
-																className="w-4 h-4 rounded-full"
-																style={{
-																	backgroundColor: color,
-																	borderColor: color,
-																}}
-															/>
-														</TableCell>
-														<TableCell>
-															<Typography>Fertile</Typography>
-														</TableCell>
-													</TableRow>
-													<TableRow>
-														<TableCell align="right">
-															<Typography noWrap>
-																Near beginning of life
-															</Typography>
-														</TableCell>
-														<TableCell>
-															<div
-																className="w-4 h-4 rounded-full"
-																style={{
-																	backgroundColor: color,
-																	borderColor: color,
-																}}
-															/>
-														</TableCell>
-														<TableCell>
-															<ArrowRightAlt />
-														</TableCell>
-														<TableCell>
-															<div
-																className="w-1 h-1 rounded-full"
-																style={{
-																	backgroundColor: color,
-																	borderColor: color,
-																}}
-															/>
-														</TableCell>
-														<TableCell>
-															<Typography noWrap>Near end of life</Typography>
-														</TableCell>
-													</TableRow>
-												</TableBody>
-											</Table>
-										</TableCell>
-									</TableRow>
-								))}
-							</TableBody>
-						</Table>
+						<Legend />
 					</Container>
 					<canvas
 						className="m-8 max-w-full max-h-[50vh] border-2"
