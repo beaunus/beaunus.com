@@ -32,6 +32,7 @@ type Animal = {
 	age: number;
 	id: string;
 	lifespan: number;
+	numTrialsSinceLastMeal: number;
 	numTrialsSinceLastReproduction: number;
 	point: Point;
 	type: AnimalType;
@@ -212,23 +213,23 @@ const LoktaVolterra: NextPage = () => {
 	>({ fox: 1000, rabbit: 1000 });
 	const [minMatingAge, setMinMatingAge] = React.useState<
 		Record<AnimalType, number>
-	>({ fox: 100, rabbit: 100 });
+	>({ fox: 100, rabbit: 50 });
 	const [matingRecoveryDuration, setMatingRecoveryDuration] = React.useState<
 		Record<AnimalType, number>
-	>({ fox: 90, rabbit: 90 });
+	>({ fox: 90, rabbit: 40 });
 	const [initialNumAnimals, setInitialNumAnimals] = React.useState<
 		Record<AnimalType, number>
 	>({ fox: 10, rabbit: 10 });
 
 	const [maxMatingDistance, setMaxMatingDistance] = React.useState<
 		Record<AnimalType, number>
-	>({ fox: 0.017, rabbit: 0.017 });
+	>({ fox: 0.017, rabbit: 0.05 });
 	const [stepSize, setStepSize] = React.useState<Record<AnimalType, number>>({
 		fox: 0.05,
 		rabbit: 0.05,
 	});
 
-	const canReproduce = (animal: Animal) =>
+	const isFertile = (animal: Animal) =>
 		animal.age >= minMatingAge[animal.type] &&
 		animal.numTrialsSinceLastReproduction >=
 			matingRecoveryDuration[animal.type];
@@ -246,6 +247,7 @@ const LoktaVolterra: NextPage = () => {
 		age: 0,
 		id: _.uniqueId(),
 		lifespan: Math.floor(maxLifespan[type] * (0.5 + Math.random() * 0.5)),
+		numTrialsSinceLastMeal: 0,
 		numTrialsSinceLastReproduction: 0,
 		point,
 		type,
@@ -258,11 +260,11 @@ const LoktaVolterra: NextPage = () => {
 					datasets: [
 						{
 							backgroundColor: ({ dataIndex }) =>
-								animals.fox[dataIndex] && canReproduce(animals.fox[dataIndex])
+								animals.fox[dataIndex] && isFertile(animals.fox[dataIndex])
 									? COLORS.fox
 									: "transparent",
 							borderColor: ({ dataIndex }) =>
-								animals.fox[dataIndex] && canReproduce(animals.fox[dataIndex])
+								animals.fox[dataIndex] && isFertile(animals.fox[dataIndex])
 									? "transparent"
 									: COLORS.fox,
 							borderWidth: 2,
@@ -277,12 +279,12 @@ const LoktaVolterra: NextPage = () => {
 						{
 							backgroundColor: ({ dataIndex }) =>
 								animals.rabbit[dataIndex] &&
-								canReproduce(animals.rabbit[dataIndex])
+								isFertile(animals.rabbit[dataIndex])
 									? COLORS.rabbit
 									: "transparent",
 							borderColor: ({ dataIndex }) =>
 								animals.rabbit[dataIndex] &&
-								canReproduce(animals.rabbit[dataIndex])
+								isFertile(animals.rabbit[dataIndex])
 									? "transparent"
 									: COLORS.rabbit,
 							borderWidth: 2,
@@ -375,16 +377,29 @@ const LoktaVolterra: NextPage = () => {
 		execute: (values) => {
 			const foxPairsWhoShouldMate = computePairs({
 				candidates: values.foxes,
-				predicateForIndividual: canReproduce,
+				predicateForIndividual: (fox) =>
+					isFertile(fox) && fox.numTrialsSinceLastMeal < 100,
 				predicateForPair: canPairMate,
 			});
 			const foxesWhoMatedIndexes = foxPairsWhoShouldMate.flatMap((x) => x);
 			const rabbitPairsWhoShouldMate = computePairs({
 				candidates: values.rabbits,
-				predicateForIndividual: canReproduce,
+				predicateForIndividual: isFertile,
 				predicateForPair: canPairMate,
 			});
 			const rabbitsWhoMatedIndexes = rabbitPairsWhoShouldMate.flatMap((x) => x);
+
+			const whoEatsWho = computePairs({
+				candidates: values.foxes.concat(values.rabbits),
+				predicateForIndividual: () => true,
+				predicateForPair: (a, b) =>
+					a.type === "fox" &&
+					b.type === "rabbit" &&
+					a.numTrialsSinceLastMeal > 190 &&
+					Math.hypot(a.point.x - b.point.x, a.point.y - b.point.y) < 0.011,
+			});
+
+			console.log(whoEatsWho);
 
 			numAnimalsAfterEachTrialInternal.push({
 				fox: values.foxes.length,
@@ -393,10 +408,17 @@ const LoktaVolterra: NextPage = () => {
 
 			return {
 				foxes: values.foxes
-					.filter((fox) => fox.age < fox.lifespan)
+					.filter(
+						(fox) => fox.age < fox.lifespan && fox.numTrialsSinceLastMeal < 800
+					)
 					.map((fox) => ({
 						...fox,
 						age: fox.age + 1,
+						numTrialsSinceLastMeal: whoEatsWho.some(
+							([foxWhoEats]) => foxWhoEats === fox
+						)
+							? 0
+							: fox.numTrialsSinceLastMeal + 1,
 						numTrialsSinceLastReproduction: foxesWhoMatedIndexes.includes(fox)
 							? 0
 							: fox.numTrialsSinceLastReproduction + 1,
@@ -416,10 +438,17 @@ const LoktaVolterra: NextPage = () => {
 						)
 					),
 				rabbits: values.rabbits
-					.filter((rabbit) => rabbit.age < rabbit.lifespan)
+					.filter(
+						(rabbit) =>
+							rabbit.age < rabbit.lifespan &&
+							!whoEatsWho.some(
+								([, rabbitWhoGetsEaten]) => rabbit === rabbitWhoGetsEaten
+							)
+					)
 					.map((rabbit) => ({
 						...rabbit,
 						age: rabbit.age + 1,
+						numTrialsSinceLastMeal: rabbit.numTrialsSinceLastMeal + 1,
 						numTrialsSinceLastReproduction: rabbitsWhoMatedIndexes.includes(
 							rabbit
 						)
