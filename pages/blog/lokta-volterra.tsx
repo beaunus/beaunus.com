@@ -24,7 +24,7 @@ import { Segment } from "../../components/Segment";
 import { SliderWithLabels } from "../../components/SliderWithLabels";
 import { polarToCartesian } from "../../utils";
 
-type Fox = {
+type Animal = {
 	id: string;
 	lifespan: number;
 	numTrialsSinceLastReproduction: number;
@@ -75,13 +75,14 @@ function takeAStep({
 		  };
 }
 
-const willFoxSurvive = (fox: Fox) => fox.numTrialsSurvivedSoFar < fox.lifespan;
+const willFoxSurvive = (fox: Animal) =>
+	fox.numTrialsSurvivedSoFar < fox.lifespan;
 
 const LoktaVolterra: NextPage = () => {
 	const scatterChartRef = React.useRef<HTMLCanvasElement>(null);
 	const lineChartRef = React.useRef<HTMLCanvasElement>(null);
 
-	const [foxes, setFoxes] = React.useState<Fox[]>([]);
+	const [foxes, setFoxes] = React.useState<Animal[]>([]);
 	const [numFoxesAfterEachTrial, setNumFoxesAfterEachTrial] = React.useState<
 		{ thatCanMate: number; total: number }[]
 	>([]);
@@ -95,18 +96,20 @@ const LoktaVolterra: NextPage = () => {
 	const [maxMatingDistance, setMaxMatingDistance] = React.useState(0.017);
 	const [stepSize, setStepSize] = React.useState(0.05);
 
-	const canFoxReproduce = (fox: Fox) =>
-		fox.numTrialsSurvivedSoFar > minMatingAge &&
-		fox.numTrialsSinceLastReproduction >= matingRecoveryDuration;
+	const canReproduce = (animal: Animal) =>
+		animal.numTrialsSurvivedSoFar > minMatingAge &&
+		animal.numTrialsSinceLastReproduction >= matingRecoveryDuration;
 
-	const canPairMate = (foxA: Fox, foxB: Fox) =>
-		Math.hypot(foxA.point.x - foxB.point.x, foxA.point.y - foxB.point.y) <
-		maxMatingDistance;
+	const canPairMate = (animalA: Animal, animalB: Animal) =>
+		Math.hypot(
+			animalA.point.x - animalB.point.x,
+			animalA.point.y - animalB.point.y
+		) < maxMatingDistance;
 
-	const aFox = (
+	const anAnimal = (
 		point: Point = { x: Math.random(), y: Math.random() }
-	): Fox => ({
-		id: _.uniqueId("fox"),
+	): Animal => ({
+		id: _.uniqueId(),
 		lifespan: Math.floor(maxLifespan * (0.5 + Math.random() * 0.5)),
 		numTrialsSinceLastReproduction: 0,
 		numTrialsSurvivedSoFar: 100,
@@ -122,11 +125,11 @@ const LoktaVolterra: NextPage = () => {
 					datasets: [
 						{
 							backgroundColor: ({ dataIndex }) =>
-								foxes[dataIndex] && canFoxReproduce(foxes[dataIndex])
+								foxes[dataIndex] && canReproduce(foxes[dataIndex])
 									? COLORS.fox
 									: "transparent",
 							borderColor: ({ dataIndex }) =>
-								foxes[dataIndex] && canFoxReproduce(foxes[dataIndex])
+								foxes[dataIndex] && canReproduce(foxes[dataIndex])
 									? "transparent"
 									: COLORS.fox,
 							borderWidth: 2,
@@ -204,92 +207,86 @@ const LoktaVolterra: NextPage = () => {
 		total: number;
 	}[] = [];
 
-	const loktaExperimentDefinition: ExperimentDefinition<{ foxes: Array<Fox> }> =
-		{
-			execute: (values) => {
-				const fertileFoxes = values.foxes
-					.map((fox, index) => ({ fox, originalIndex: index }))
-					.filter(({ fox }) => canFoxReproduce(fox));
+	const loktaExperimentDefinition: ExperimentDefinition<{
+		foxes: Array<Animal>;
+	}> = {
+		execute: (values) => {
+			const fertileFoxes = values.foxes
+				.map((fox, index) => ({ fox, originalIndex: index }))
+				.filter(({ fox }) => canReproduce(fox));
 
-				numFoxesAfterEachTrialInternal.push({
-					thatCanMate: fertileFoxes.length,
-					total: values.foxes.length,
-				});
+			numFoxesAfterEachTrialInternal.push({
+				thatCanMate: fertileFoxes.length,
+				total: values.foxes.length,
+			});
 
-				const fertileFoxTree = KDTree.from(
-					fertileFoxes.map(({ fox, originalIndex }) => [
-						{ fox, originalIndex },
-						Object.values(fox.point),
-					]),
-					2
+			const fertileFoxTree = KDTree.from(
+				fertileFoxes.map(({ fox, originalIndex }) => [
+					{ fox, originalIndex },
+					Object.values(fox.point),
+				]),
+				2
+			);
+
+			const closestFertileNeighborOrigIndexByOrigIndex: Record<number, number> =
+				fertileFoxes.length > 1
+					? Object.fromEntries(
+							fertileFoxes.map(({ fox, originalIndex }) => [
+								originalIndex,
+								fertileFoxTree.kNearestNeighbors(2, Object.values(fox.point))[1]
+									?.originalIndex,
+							])
+					  )
+					: {};
+
+			const foxPairsWhoShouldMate = Object.entries(
+				closestFertileNeighborOrigIndexByOrigIndex
+			)
+				.map(([a, b]) => [Number(a), b])
+				.filter(
+					([indexA, indexB]) =>
+						indexA < indexB &&
+						closestFertileNeighborOrigIndexByOrigIndex[`${indexB}`] ===
+							indexA &&
+						canPairMate(values.foxes[indexA], values.foxes[indexB])
 				);
 
-				const closestFertileNeighborOrigIndexByOrigIndex: Record<
-					number,
-					number
-				> =
-					fertileFoxes.length > 1
-						? Object.fromEntries(
-								fertileFoxes.map(({ fox, originalIndex }) => [
-									originalIndex,
-									fertileFoxTree.kNearestNeighbors(
-										2,
-										Object.values(fox.point)
-									)[1]?.originalIndex,
-								])
-						  )
-						: {};
+			const foxesWhoMatedIndexes = foxPairsWhoShouldMate.flatMap((x) => x);
 
-				const foxPairsWhoShouldMate = Object.entries(
-					closestFertileNeighborOrigIndexByOrigIndex
-				)
-					.map(([a, b]) => [Number(a), b])
-					.filter(
-						([indexA, indexB]) =>
-							indexA < indexB &&
-							closestFertileNeighborOrigIndexByOrigIndex[`${indexB}`] ===
-								indexA &&
-							canPairMate(values.foxes[indexA], values.foxes[indexB])
-					);
-
-				const foxesWhoMatedIndexes = foxPairsWhoShouldMate.flatMap((x) => x);
-
-				return {
-					foxes: values.foxes
-						.filter(willFoxSurvive)
-						.map((fox, index) => ({
-							...fox,
-							numTrialsSinceLastReproduction: foxesWhoMatedIndexes.includes(
-								index
-							)
-								? 0
-								: fox.numTrialsSinceLastReproduction + 1,
-							numTrialsSurvivedSoFar: fox.numTrialsSurvivedSoFar + 1,
-							point: takeAStep({
-								boundaries: { max: { x: 1, y: 1 }, min: { x: 0, y: 0 } },
-								distance: Math.random() * stepSize,
-								fromPoint: fox.point,
-								shouldWrap: true,
-							}),
-						}))
-						.concat(
-							foxPairsWhoShouldMate.map(([originalIndexA, originalIndexB]) => {
-								const foxA = values.foxes[originalIndexA];
-								const foxB = values.foxes[originalIndexB];
-								return aFox({
-									x: (foxA.point.x + foxB.point.x) / 2,
-									y: (foxA.point.y + foxB.point.y) / 2,
-								});
-							})
-						),
-				};
-			},
-			initialValues: { foxes: Array.from({ length: initialNumFoxes }, aFox) },
-			update: (values) => {
-				setFoxes(values.foxes);
-				setNumFoxesAfterEachTrial(numFoxesAfterEachTrialInternal);
-			},
-		};
+			return {
+				foxes: values.foxes
+					.filter(willFoxSurvive)
+					.map((fox, index) => ({
+						...fox,
+						numTrialsSinceLastReproduction: foxesWhoMatedIndexes.includes(index)
+							? 0
+							: fox.numTrialsSinceLastReproduction + 1,
+						numTrialsSurvivedSoFar: fox.numTrialsSurvivedSoFar + 1,
+						point: takeAStep({
+							boundaries: { max: { x: 1, y: 1 }, min: { x: 0, y: 0 } },
+							distance: Math.random() * stepSize,
+							fromPoint: fox.point,
+							shouldWrap: true,
+						}),
+					}))
+					.concat(
+						foxPairsWhoShouldMate.map(([originalIndexA, originalIndexB]) => {
+							const foxA = values.foxes[originalIndexA];
+							const foxB = values.foxes[originalIndexB];
+							return anAnimal({
+								x: (foxA.point.x + foxB.point.x) / 2,
+								y: (foxA.point.y + foxB.point.y) / 2,
+							});
+						})
+					),
+			};
+		},
+		initialValues: { foxes: Array.from({ length: initialNumFoxes }, anAnimal) },
+		update: (values) => {
+			setFoxes(values.foxes);
+			setNumFoxesAfterEachTrial(numFoxesAfterEachTrialInternal);
+		},
+	};
 
 	return (
 		<>
