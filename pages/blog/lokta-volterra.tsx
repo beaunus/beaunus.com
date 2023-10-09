@@ -299,6 +299,29 @@ const LoktaVolterra: NextPage = () => {
 		},
 	};
 
+	const animalParameters = [
+		{
+			label: "MAX Lifespan",
+			setStateAction: setMaxLifespan,
+			state: maxLifespan,
+		},
+		{
+			label: "MIN Mating Age",
+			setStateAction: setMinMatingAge,
+			state: minMatingAge,
+		},
+		{
+			label: "Mating Recovery Duration",
+			setStateAction: setMatingRecoveryDuration,
+			state: matingRecoveryDuration,
+		},
+		{
+			label: "Initial Number",
+			setStateAction: setInitialNumAnimals,
+			state: initialNumAnimals,
+		},
+	];
+
 	return (
 		<>
 			<Head>
@@ -315,28 +338,7 @@ const LoktaVolterra: NextPage = () => {
 						<CardContent className="space-y-2">
 							<Typography className="font-bold">Fox Parameters</Typography>
 							<Grid container spacing={2} width="100%">
-								{[
-									{
-										label: "MAX Lifespan",
-										setStateAction: setMaxLifespan,
-										state: maxLifespan,
-									},
-									{
-										label: "MIN Mating Age",
-										setStateAction: setMinMatingAge,
-										state: minMatingAge,
-									},
-									{
-										label: "Mating Recovery Duration",
-										setStateAction: setMatingRecoveryDuration,
-										state: matingRecoveryDuration,
-									},
-									{
-										label: "Initial Number",
-										setStateAction: setInitialNumAnimals,
-										state: initialNumAnimals,
-									},
-								].map(({ state, setStateAction, label }) => (
+								{animalParameters.map(({ state, setStateAction, label }) => (
 									<Grid
 										item
 										key={JSON.stringify([state, setStateAction])}
