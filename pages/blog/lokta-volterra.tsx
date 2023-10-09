@@ -520,7 +520,7 @@ const LoktaVolterra: NextPage = () => {
 							<TableBody>
 								{[
 									{ color: "red", label: "Foxes" },
-									{ color: "red", label: "Foxes" },
+									{ color: "blue", label: "Rabbits" },
 								].map(({ color, label }) => (
 									<TableRow key={`legend-row-${label}`}>
 										<TableCell component="th" scope="row">
