@@ -1,3 +1,4 @@
+import { Card, CardContent } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
@@ -76,84 +77,87 @@ export const ExperimentComponent = <T,>({
 	};
 
 	return (
-		<>
-			<SliderWithLabels
-				displayValue={(10 ** numTrialsExponent).toLocaleString()}
-				label="Number of trials"
-				max={6}
-				min={0}
-				onChange={(_event, newValue) =>
-					setNumTrialsExponent(newValue as number)
-				}
-				value={numTrialsExponent}
-			/>
-			<SliderWithLabels
-				displayValue={(
-					10 ** Math.min(windowSizeExponent, numTrialsExponent)
-				).toLocaleString()}
-				label="Number of experiments between snapshots"
-				max={numTrialsExponent}
-				min={0}
-				onChange={(_event, newValue) =>
-					setWindowSizeExponent(newValue as number)
-				}
-				value={Math.min(windowSizeExponent, numTrialsExponent)}
-			/>
-			<SliderWithLabels
-				displayValue={sleepInterval.toLocaleString()}
-				label="Number of milliseconds between trials"
-				max={1000}
-				min={0}
-				onChange={(_event, newValue) => setSleepInterval(newValue as number)}
-				value={sleepInterval}
-			/>
-			<Grid container spacing={2} width="100%">
-				<Grid item xs={4}>
-					<Button
-						fullWidth
-						onClick={() => {
-							currentExperiment?.pause();
-							const a = generateExperiment();
-							setCurrentExperiment(a);
-							a.performExperiment();
-						}}
-						variant="outlined"
-					>
-						<Tooltip title="Start a new experiment with the above configuration">
-							<span>Start</span>
-						</Tooltip>
-					</Button>
+		<Card>
+			<CardContent className="space-y-2">
+				<Typography className="font-bold">Experiment Controls</Typography>
+				<SliderWithLabels
+					displayValue={(10 ** numTrialsExponent).toLocaleString()}
+					label="Number of trials"
+					max={6}
+					min={0}
+					onChange={(_event, newValue) =>
+						setNumTrialsExponent(newValue as number)
+					}
+					value={numTrialsExponent}
+				/>
+				<SliderWithLabels
+					displayValue={(
+						10 ** Math.min(windowSizeExponent, numTrialsExponent)
+					).toLocaleString()}
+					label="Number of experiments between snapshots"
+					max={numTrialsExponent}
+					min={0}
+					onChange={(_event, newValue) =>
+						setWindowSizeExponent(newValue as number)
+					}
+					value={Math.min(windowSizeExponent, numTrialsExponent)}
+				/>
+				<SliderWithLabels
+					displayValue={sleepInterval.toLocaleString()}
+					label="Number of milliseconds between trials"
+					max={1000}
+					min={0}
+					onChange={(_event, newValue) => setSleepInterval(newValue as number)}
+					value={sleepInterval}
+				/>
+				<Grid alignItems="center" container spacing={2} width="100%">
+					<Grid item xs={4}>
+						<Button
+							fullWidth
+							onClick={() => {
+								currentExperiment?.pause();
+								const a = generateExperiment();
+								setCurrentExperiment(a);
+								a.performExperiment();
+							}}
+							variant="outlined"
+						>
+							<Tooltip title="Start a new experiment with the above configuration">
+								<span>Start</span>
+							</Tooltip>
+						</Button>
+					</Grid>
+					<Grid item xs={4}>
+						<Button
+							fullWidth
+							onClick={() => {
+								currentExperiment?.isRunning()
+									? currentExperiment?.pause()
+									: currentExperiment?.performExperiment();
+							}}
+							variant="outlined"
+						>
+							<Tooltip title="Pause or resume the currently running experiment">
+								<span>Toggle</span>
+							</Tooltip>
+						</Button>
+					</Grid>
+					<Grid item xs={4}>
+						<Button
+							fullWidth
+							onClick={currentExperiment?.executeTrial}
+							variant="outlined"
+						>
+							<span>Execute Single Trial</span>
+						</Button>
+					</Grid>
 				</Grid>
-				<Grid item xs={4}>
-					<Button
-						fullWidth
-						onClick={() => {
-							currentExperiment?.isRunning()
-								? currentExperiment?.pause()
-								: currentExperiment?.performExperiment();
-						}}
-						variant="outlined"
-					>
-						<Tooltip title="Pause or resume the currently running experiment">
-							<span>Toggle</span>
-						</Tooltip>
-					</Button>
-				</Grid>
-				<Grid item xs={4}>
-					<Button
-						fullWidth
-						onClick={currentExperiment?.executeTrial}
-						variant="outlined"
-					>
-						<span>Execute Single Trial</span>
-					</Button>
-				</Grid>
-			</Grid>
-			<Box width="100%">
-				<Typography gutterBottom>Progress</Typography>
-				<LinearProgress value={percentProgress} variant="determinate" />
-			</Box>
-		</>
+				<Box width="100%">
+					<Typography gutterBottom>Progress</Typography>
+					<LinearProgress value={percentProgress} variant="determinate" />
+				</Box>
+			</CardContent>
+		</Card>
 	);
 };
 
