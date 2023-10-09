@@ -96,7 +96,7 @@ const LoktaVolterra: NextPage = () => {
 	const [stepSize, setStepSize] = React.useState(0.05);
 
 	const canReproduce = (animal: Animal) =>
-		animal.age > minMatingAge &&
+		animal.age >= minMatingAge &&
 		animal.numTrialsSinceLastReproduction >= matingRecoveryDuration;
 
 	const canPairMate = (animalA: Animal, animalB: Animal) =>
