@@ -161,7 +161,7 @@ function computePairs({
 	candidates: Animal[];
 	predicateForIndividual: (animal: Animal) => boolean;
 	predicateForPair: (animalA: Animal, animalB: Animal) => boolean;
-}) {
+}): [Animal, Animal][] {
 	const qualifyingIndividuals = candidates
 		.map((animal, index) => ({ animal, originalIndex: index }))
 		.filter(({ animal }) => predicateForIndividual(animal));
