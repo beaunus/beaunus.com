@@ -80,7 +80,7 @@ function takeAStep({
 		  };
 }
 
-const willFoxSurvive = (fox: Animal) => fox.age < fox.lifespan;
+const willSurvive = (animal: Animal) => animal.age < animal.lifespan;
 
 const LoktaVolterra: NextPage = () => {
 	const scatterChartRef = React.useRef<HTMLCanvasElement>(null);
@@ -261,7 +261,7 @@ const LoktaVolterra: NextPage = () => {
 
 			return {
 				foxes: values.foxes
-					.filter(willFoxSurvive)
+					.filter(willSurvive)
 					.map((fox, index) => ({
 						...fox,
 						age: fox.age + 1,
