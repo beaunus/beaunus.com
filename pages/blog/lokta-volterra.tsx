@@ -153,6 +153,50 @@ const Legend: React.FC = () => (
 	</Table>
 );
 
+function computePairs({
+	candidateAnimals,
+	predicateForIndividual,
+	predicateForPair,
+}: {
+	candidateAnimals: Animal[];
+	predicateForIndividual: (animal: Animal) => boolean;
+	predicateForPair: (animalA: Animal, animalB: Animal) => boolean;
+}) {
+	const fertileAnimals = candidateAnimals
+		.map((animal, index) => ({ animal, originalIndex: index }))
+		.filter(({ animal }) => predicateForIndividual(animal));
+
+	const fertileAnimalTree = KDTree.from(
+		fertileAnimals.map(({ animal, originalIndex }) => [
+			{ animal, originalIndex },
+			Object.values(animal.point),
+		]),
+		2
+	);
+
+	const closestFertileNeighborOrigIndexByOrigIndex: Record<number, number> =
+		fertileAnimals.length > 1
+			? Object.fromEntries(
+					fertileAnimals.map(({ animal, originalIndex }) => [
+						originalIndex,
+						fertileAnimalTree.kNearestNeighbors(
+							2,
+							Object.values(animal.point)
+						)[1]?.originalIndex,
+					])
+			  )
+			: {};
+
+	return Object.entries(closestFertileNeighborOrigIndexByOrigIndex)
+		.map(([a, b]) => [Number(a), b])
+		.filter(
+			([indexA, indexB]) =>
+				indexA < indexB &&
+				closestFertileNeighborOrigIndexByOrigIndex[`${indexB}`] === indexA &&
+				predicateForPair(candidateAnimals[indexA], candidateAnimals[indexB])
+		);
+}
+
 const LoktaVolterra: NextPage = () => {
 	const scatterChartRef = React.useRef<HTMLCanvasElement>(null);
 	const lineChartRef = React.useRef<HTMLCanvasElement>(null);
@@ -324,50 +368,6 @@ const LoktaVolterra: NextPage = () => {
 	}, [animals]);
 
 	const numAnimalsAfterEachTrialInternal: Record<AnimalType, number>[] = [];
-
-	function computePairs({
-		candidateAnimals,
-		predicateForIndividual,
-		predicateForPair,
-	}: {
-		candidateAnimals: Animal[];
-		predicateForIndividual: (animal: Animal) => boolean;
-		predicateForPair: (animalA: Animal, animalB: Animal) => boolean;
-	}) {
-		const fertileAnimals = candidateAnimals
-			.map((animal, index) => ({ animal, originalIndex: index }))
-			.filter(({ animal }) => predicateForIndividual(animal));
-
-		const fertileAnimalTree = KDTree.from(
-			fertileAnimals.map(({ animal, originalIndex }) => [
-				{ animal, originalIndex },
-				Object.values(animal.point),
-			]),
-			2
-		);
-
-		const closestFertileNeighborOrigIndexByOrigIndex: Record<number, number> =
-			fertileAnimals.length > 1
-				? Object.fromEntries(
-						fertileAnimals.map(({ animal, originalIndex }) => [
-							originalIndex,
-							fertileAnimalTree.kNearestNeighbors(
-								2,
-								Object.values(animal.point)
-							)[1]?.originalIndex,
-						])
-				  )
-				: {};
-
-		return Object.entries(closestFertileNeighborOrigIndexByOrigIndex)
-			.map(([a, b]) => [Number(a), b])
-			.filter(
-				([indexA, indexB]) =>
-					indexA < indexB &&
-					closestFertileNeighborOrigIndexByOrigIndex[`${indexB}`] === indexA &&
-					predicateForPair(candidateAnimals[indexA], candidateAnimals[indexB])
-			);
-	}
 
 	const loktaExperimentDefinition: ExperimentDefinition<{
 		foxes: Array<Animal>;
