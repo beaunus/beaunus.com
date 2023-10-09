@@ -82,8 +82,6 @@ function takeAStep({
 		  };
 }
 
-const willSurvive = (animal: Animal) => animal.age < animal.lifespan;
-
 const Legend: React.FC = () => (
 	<Table size="small">
 		<TableBody>
@@ -395,7 +393,7 @@ const LoktaVolterra: NextPage = () => {
 
 			return {
 				foxes: values.foxes
-					.filter(willSurvive)
+					.filter((fox) => fox.age < fox.lifespan)
 					.map((fox) => ({
 						...fox,
 						age: fox.age + 1,
@@ -418,7 +416,7 @@ const LoktaVolterra: NextPage = () => {
 						})
 					),
 				rabbits: values.rabbits
-					.filter(willSurvive)
+					.filter((rabbit) => rabbit.age < rabbit.lifespan)
 					.map((rabbit) => ({
 						...rabbit,
 						age: rabbit.age + 1,
