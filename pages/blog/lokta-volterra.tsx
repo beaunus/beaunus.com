@@ -174,7 +174,7 @@ function computePairs({
 		2
 	);
 
-	const closestFertileNeighborOrigIndexByOrigIndex: Record<number, number> =
+	const closestNeighborOrigIndexByOrigIndex: Record<number, number> =
 		qualifyingIndividuals.length > 1
 			? Object.fromEntries(
 					qualifyingIndividuals.map(({ animal, originalIndex }) => [
@@ -187,12 +187,12 @@ function computePairs({
 			  )
 			: {};
 
-	return Object.entries(closestFertileNeighborOrigIndexByOrigIndex)
+	return Object.entries(closestNeighborOrigIndexByOrigIndex)
 		.map(([a, b]) => [Number(a), b])
 		.filter(
 			([indexA, indexB]) =>
 				indexA < indexB &&
-				closestFertileNeighborOrigIndexByOrigIndex[`${indexB}`] === indexA &&
+				closestNeighborOrigIndexByOrigIndex[`${indexB}`] === indexA &&
 				predicateForPair(candidates[indexA], candidates[indexB])
 		);
 }
