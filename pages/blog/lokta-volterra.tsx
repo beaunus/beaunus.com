@@ -502,7 +502,7 @@ const LoktaVolterra: NextPage = () => {
 								{animalParameters.map(({ state, setStateAction, label }) => (
 									<Grid
 										item
-										key={JSON.stringify([state, setStateAction])}
+										key={`fox-${JSON.stringify([state, setStateAction])}`}
 										xs={3}
 									>
 										<TextField
@@ -554,7 +554,7 @@ const LoktaVolterra: NextPage = () => {
 								{animalParameters.map(({ state, setStateAction, label }) => (
 									<Grid
 										item
-										key={JSON.stringify([state, setStateAction])}
+										key={`rabbit-${JSON.stringify([state, setStateAction])}`}
 										xs={3}
 									>
 										<TextField
