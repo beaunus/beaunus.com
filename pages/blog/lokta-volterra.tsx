@@ -215,51 +215,49 @@ const LoktaVolterra: NextPage = () => {
 		fox: number;
 	}[] = [];
 
+	function computeMates(candidateAnimals: Animal[]) {
+		const fertileAnimals = candidateAnimals
+			.map((animal, index) => ({ animal, originalIndex: index }))
+			.filter(({ animal }) => canReproduce(animal));
+
+		const fertileAnimalTree = KDTree.from(
+			fertileAnimals.map(({ animal, originalIndex }) => [
+				{ animal, originalIndex },
+				Object.values(animal.point),
+			]),
+			2
+		);
+
+		const closestFertileNeighborOrigIndexByOrigIndex: Record<number, number> =
+			fertileAnimals.length > 1
+				? Object.fromEntries(
+						fertileAnimals.map(({ animal, originalIndex }) => [
+							originalIndex,
+							fertileAnimalTree.kNearestNeighbors(
+								2,
+								Object.values(animal.point)
+							)[1]?.originalIndex,
+						])
+				  )
+				: {};
+
+		return Object.entries(closestFertileNeighborOrigIndexByOrigIndex)
+			.map(([a, b]) => [Number(a), b])
+			.filter(
+				([indexA, indexB]) =>
+					indexA < indexB &&
+					closestFertileNeighborOrigIndexByOrigIndex[`${indexB}`] === indexA &&
+					canPairMate(candidateAnimals[indexA], candidateAnimals[indexB])
+			);
+	}
+
 	const loktaExperimentDefinition: ExperimentDefinition<{
 		foxes: Array<Animal>;
 	}> = {
 		execute: (values) => {
-			const fertileFoxes = values.foxes
-				.map((fox, index) => ({ fox, originalIndex: index }))
-				.filter(({ fox }) => canReproduce(fox));
-
-			const fertileFoxTree = KDTree.from(
-				fertileFoxes.map(({ fox, originalIndex }) => [
-					{ fox, originalIndex },
-					Object.values(fox.point),
-				]),
-				2
-			);
-
-			numAnimalsAfterEachTrialInternal.push({ fox: fertileFoxTree.size });
-
-			const closestFertileFoxNeighborOrigIndexByOrigIndex: Record<
-				number,
-				number
-			> =
-				fertileFoxes.length > 1
-					? Object.fromEntries(
-							fertileFoxes.map(({ fox, originalIndex }) => [
-								originalIndex,
-								fertileFoxTree.kNearestNeighbors(2, Object.values(fox.point))[1]
-									?.originalIndex,
-							])
-					  )
-					: {};
-
-			const foxPairsWhoShouldMate = Object.entries(
-				closestFertileFoxNeighborOrigIndexByOrigIndex
-			)
-				.map(([a, b]) => [Number(a), b])
-				.filter(
-					([indexA, indexB]) =>
-						indexA < indexB &&
-						closestFertileFoxNeighborOrigIndexByOrigIndex[`${indexB}`] ===
-							indexA &&
-						canPairMate(values.foxes[indexA], values.foxes[indexB])
-				);
-
+			const foxPairsWhoShouldMate = computeMates(values.foxes);
 			const foxesWhoMatedIndexes = foxPairsWhoShouldMate.flatMap((x) => x);
+			numAnimalsAfterEachTrialInternal.push({ fox: values.foxes.length });
 
 			return {
 				foxes: values.foxes
