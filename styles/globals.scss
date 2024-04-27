@@ -117,10 +117,10 @@ table.modes-table {
 	}
 	col.black-key {
 		&.ionian {
-			@apply bg-gray-300;
+			@apply bg-gray-200;
 		}
 		&:not(.ionian) {
-			@apply bg-gray-400;
+			@apply bg-gray-300;
 		}
 	}
 	tr {
