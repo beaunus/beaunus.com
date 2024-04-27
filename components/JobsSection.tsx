@@ -19,32 +19,30 @@ const jobs = [
 		logoImage: { isRounded: true, src: Logos.OctopusEnergy },
 		techLogos: (
 			<>
-				<Image alt="TypeScript" height={24} src={Logos.TypeScript} width={98} />
-				<Image alt="NodeJS" height={24} src={Logos.Node} width={39.187} />
-				<Image alt="GraphQL" height={24} src={Logos.GraphQL} width={88} />
-				<Image alt="Python" height={24} src={Logos.Python} width={81} />
+				<Image alt="TypeScript" className="w-auto h-6" src={Logos.TypeScript} />
+				<Image alt="NodeJS" className="w-auto h-6" src={Logos.Node} />
+				<Image alt="GraphQL" className="w-auto h-6" src={Logos.GraphQL} />
+				<Image alt="Python" className="w-auto h-6" src={Logos.Python} />
 				<Image
 					alt="React Testing Library"
-					height={24}
+					className="w-auto h-6"
 					src={Logos.ReactTestingLibrary}
-					width={24}
 				/>
-				<Image alt="Jest" height={24} src={Logos.Jest} width={22} />
-				<Image alt="Cypress" height={24} src={Logos.Cypress} width={59.5} />
-				<Image alt="React" height={24} src={Logos.React} width={24} />
-				<Image alt="Next.js" height={24} src={Logos.NextJS} width={40} />
+				<Image alt="Jest" className="w-auto h-6" src={Logos.Jest} />
+				<Image alt="Cypress" className="w-auto h-6" src={Logos.Cypress} />
+				<Image alt="React" className="w-auto h-6" src={Logos.React} />
+				<Image alt="Next.js" className="w-auto h-6" src={Logos.NextJS} />
 				<Image
 					alt="Tailwind CSS"
-					height={24}
+					className="w-auto h-6"
 					src={Logos.TailwindCSS}
-					width={102}
 				/>
-				<Image alt="XState" height={24} src={Logos.XState} width={68} />
-				<Image alt="Vercel" height={24} src={Logos.Vercel} width={106.512} />
-				<Image alt="Sentry" height={24} src={Logos.Sentry} width={80.672} />
-				<Image alt="Datadog" height={24} src={Logos.Datadog} width={94} />
-				<Image alt="Figma" height={24} src={Logos.Figma} width={16} />
-				<Image alt="Notion" height={24} src={Logos.Notion} width={24} />
+				<Image alt="XState" className="w-auto h-6" src={Logos.XState} />
+				<Image alt="Vercel" className="w-auto h-6" src={Logos.Vercel} />
+				<Image alt="Sentry" className="w-auto h-6" src={Logos.Sentry} />
+				<Image alt="Datadog" className="w-auto h-6" src={Logos.Datadog} />
+				<Image alt="Figma" className="w-auto h-6" src={Logos.Figma} />
+				<Image alt="Notion" className="w-auto h-6" src={Logos.Notion} />
 			</>
 		),
 		title: "Octopus Energy",
@@ -68,12 +66,12 @@ const jobs = [
 		logoImage: { isRounded: true, src: Logos.CodeChrysalis },
 		techLogos: (
 			<>
-				<Image alt="NodeJS" height={24} src={Logos.Node} width={39.187} />
-				<Image alt="ExpressJS" height={24} src={Logos.ExpressJS} width={48} />
-				<Image alt="React" height={24} src={Logos.React} width={24} />
-				<Image alt="GraphQL" height={24} src={Logos.GraphQL} width={88} />
-				<Image alt="HTML" height={24} src={Logos.HTML} width={17} />
-				<Image alt="CSS" height={24} src={Logos.CSS} width={17} />
+				<Image alt="NodeJS" className="w-auto h-6" src={Logos.Node} />
+				<Image alt="ExpressJS" className="w-auto h-6" src={Logos.ExpressJS} />
+				<Image alt="React" className="w-auto h-6" src={Logos.React} />
+				<Image alt="GraphQL" className="w-auto h-6" src={Logos.GraphQL} />
+				<Image alt="HTML" className="w-auto h-6" src={Logos.HTML} />
+				<Image alt="CSS" className="w-auto h-6" src={Logos.CSS} />
 			</>
 		),
 		title: "Code Chrysalis",
@@ -89,35 +87,28 @@ const jobs = [
 		logoImage: { isRounded: true, src: Logos.Basal },
 		techLogos: (
 			<>
-				<Image alt="TypeScript" height={24} src={Logos.TypeScript} width={98} />
-				<Image alt="NodeJS" height={24} src={Logos.Node} width={39.187} />
-				<Image alt="GraphQL" height={24} src={Logos.GraphQL} width={88} />
+				<Image alt="TypeScript" className="w-auto h-6" src={Logos.TypeScript} />
+				<Image alt="NodeJS" className="w-auto h-6" src={Logos.Node} />
+				<Image alt="GraphQL" className="w-auto h-6" src={Logos.GraphQL} />
 				<Image
 					alt="Google Cloud Platform"
-					height={24}
+					className="w-auto h-6"
 					src={Logos.GoogleCloudPlatform}
-					width={155}
 				/>
-				<Image alt="MongoDB" height={24} src={Logos.MongoDB} width={95.137} />
-				<Image alt="ExpressJS" height={24} src={Logos.ExpressJS} width={48} />
-				<Image alt="Cypress" height={24} src={Logos.Cypress} width={59.5} />
-				<Image alt="Jest" height={24} src={Logos.Jest} width={22} />
-				<Image alt="React" height={24} src={Logos.React} width={24} />
-				<Image alt="Webpack" height={24} src={Logos.Webpack} width={83.5} />
-				<Image alt="Ant Design" height={24} src={Logos.AntDesign} width={24} />
-				<Image
-					alt="Ionic Framework"
-					height={24}
-					src={Logos.Ionic}
-					width={70.286}
-				/>
+				<Image alt="MongoDB" className="w-auto h-6" src={Logos.MongoDB} />
+				<Image alt="ExpressJS" className="w-auto h-6" src={Logos.ExpressJS} />
+				<Image alt="Cypress" className="w-auto h-6" src={Logos.Cypress} />
+				<Image alt="Jest" className="w-auto h-6" src={Logos.Jest} />
+				<Image alt="React" className="w-auto h-6" src={Logos.React} />
+				<Image alt="Webpack" className="w-auto h-6" src={Logos.Webpack} />
+				<Image alt="Ant Design" className="w-auto h-6" src={Logos.AntDesign} />
+				<Image alt="Ionic Framework" className="w-auto h-6" src={Logos.Ionic} />
 				<Image
 					alt="Amazon Web Services"
-					height={24}
+					className="w-auto h-6"
 					src={Logos.AmazonWebServices}
-					width={40.188}
 				/>
-				<Image alt="Redis" height={24} src={Logos.Redis} width={72} />
+				<Image alt="Redis" className="w-auto h-6" src={Logos.Redis} />
 			</>
 		),
 		title: "Basal",
@@ -138,25 +129,19 @@ const jobs = [
 		},
 		techLogos: (
 			<>
-				<Image alt="NodeJS" height={24} src={Logos.Node} width={39.187} />
-				<Image alt="TypeScript" height={24} src={Logos.TypeScript} width={98} />
-				<Image alt="MongoDB" height={24} src={Logos.MongoDB} width={95.137} />
-				<Image alt="ExpressJS" height={24} src={Logos.ExpressJS} width={48} />
-				<Image alt="React" height={24} src={Logos.React} width={24} />
-				<Image
-					alt="AngularJS"
-					height={24}
-					src={Logos.AngularJS}
-					width={93.682}
-				/>
+				<Image alt="NodeJS" className="w-auto h-6" src={Logos.Node} />
+				<Image alt="TypeScript" className="w-auto h-6" src={Logos.TypeScript} />
+				<Image alt="MongoDB" className="w-auto h-6" src={Logos.MongoDB} />
+				<Image alt="ExpressJS" className="w-auto h-6" src={Logos.ExpressJS} />
+				<Image alt="React" className="w-auto h-6" src={Logos.React} />
+				<Image alt="AngularJS" className="w-auto h-6" src={Logos.AngularJS} />
 				<Image
 					alt="Amazon Web Services"
-					height={24}
+					className="w-auto h-6"
 					src={Logos.AmazonWebServices}
-					width={40.188}
 				/>
-				<Image alt="Redis" height={24} src={Logos.Redis} width={72} />
-				<Image alt="Sentry" height={24} src={Logos.Sentry} width={80.672} />
+				<Image alt="Redis" className="w-auto h-6" src={Logos.Redis} />
+				<Image alt="Sentry" className="w-auto h-6" src={Logos.Sentry} />
 			</>
 		),
 		title: "Zehitomo",
@@ -179,20 +164,18 @@ const jobs = [
 		},
 		techLogos: (
 			<>
-				<Image alt="TypeScript" height={24} src={Logos.TypeScript} width={98} />
-				<Image alt="React" height={24} src={Logos.React} width={24} />
+				<Image alt="TypeScript" className="w-auto h-6" src={Logos.TypeScript} />
+				<Image alt="React" className="w-auto h-6" src={Logos.React} />
 				<Image
 					alt="Amazon Web Services"
-					height={24}
+					className="w-auto h-6"
 					src={Logos.AmazonWebServices}
-					width={40.188}
 				/>
-				<Image alt="D3.JS" height={24} src={Logos.D3} width={25} />
+				<Image alt="D3.JS" className="w-auto h-6" src={Logos.D3} />
 				<Image
 					alt="The Movie Database"
-					height={24}
+					className="w-auto h-6"
 					src={Logos.TheMovieDB}
-					width={185}
 				/>
 			</>
 		),
@@ -246,10 +229,12 @@ export const JobsSection = () => (
 						className={`min-w-[200px] ${
 							logoImage.isRounded ? "rounded-3xl" : ""
 						}`}
-						height={logoImage.height ?? 200}
 						src={logoImage.src}
+						style={{
+							height: logoImage.height ?? 200,
+							width: logoImage.width ?? 200,
+						}}
 						title={title}
-						width={logoImage.width ?? 200}
 					/>
 				}
 				key={`job-${index}`}
