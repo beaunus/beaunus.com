@@ -1,7 +1,7 @@
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Nunito } from "@next/font/google";
 import type { AppProps } from "next/app";
+import { Nunito } from "next/font/google";
 import Head from "next/head";
 import Script from "next/script";
 import "../styles/globals.scss";
@@ -49,6 +49,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 				>
 					<Header />
 					<div className="grow">
+						{/* @ts-expect-error 'Component' cannot be used as a JSX component. */}
 						<Component {...pageProps} />
 					</div>
 					<Footer />
