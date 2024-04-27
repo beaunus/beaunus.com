@@ -24,7 +24,7 @@ export const ModeTitleCell: React.FC<{
 		)}`}
 	>
 		{parentModeNames.map((name) => (
-			<div className="italic" key={_.uniqueId()}>
+			<div className="font-bold" key={_.uniqueId()}>
 				{name} {indexRelativeToParent + 1}
 			</div>
 		))}
