@@ -78,7 +78,7 @@
 		"vercel": "28.12.8"
 	},
 	"engines": {
-		"node": "18"
+		"node": "20"
 	},
 	"engineStrict": true,
 	"packageManager": "yarn@1.22.19"
