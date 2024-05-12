@@ -5,7 +5,7 @@ import { AudioConfigContext } from "../../contexts/AudioConfigContext";
 import { INTERVALS } from "../../types";
 import { playChord } from "../../utils/audio";
 import {
-	INDEXES_BY_CHORD_CLASS,
+	INTERVALS_BY_CHORD_CLASS,
 	OSCILLATOR_TYPES,
 	CHORD_NAME_BY_INTERVALS,
 } from "../../utils/constants/music";
@@ -33,8 +33,8 @@ export const ChordDescriptionCell: React.FC<{
 				...(intervals[4] < INTERVALS.perfectFifth ? ["triad-diminished"] : []),
 			].join(" ")}
 		>
-			{Object.values(INDEXES_BY_CHORD_CLASS).map((indexes) => {
-				const chordSpelling = indexes.map(
+			{Object.values(INTERVALS_BY_CHORD_CLASS).map((intervalsForThisChord) => {
+				const chordSpelling = intervalsForThisChord.map(
 					(index) => intervalsOverTwoOctaves[index]
 				);
 				return (
@@ -44,7 +44,7 @@ export const ChordDescriptionCell: React.FC<{
 							playChord({
 								audioCtx,
 								durationInSeconds,
-								keyNumbers: indexes.map(
+								keyNumbers: intervalsForThisChord.map(
 									(index) => keyNumbersOverTwoOctaves[index]
 								),
 								oscillatorType: OSCILLATOR_TYPES[oscillatorTypeIndex],

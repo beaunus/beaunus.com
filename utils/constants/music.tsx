@@ -181,7 +181,7 @@ export const FUNCTION_BY_INTERVAL = [
 	"vii",
 ] as const;
 
-export const INDEXES_BY_CHORD_CLASS = Object.fromEntries(
+export const INTERVALS_BY_CHORD_CLASS = Object.fromEntries(
 	Object.entries({
 		/* eslint-disable sort-keys */
 		// eslint-disable-next-line @typescript-eslint/naming-convention
