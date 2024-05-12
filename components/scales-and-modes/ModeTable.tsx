@@ -120,7 +120,8 @@ export const ModeTable: FC<{
 							<ModeRow
 								baseIntervals={baseIntervals}
 								className={`fade-${
-									10 * Math.ceil(10 * (numCommonNotes / numSelectedNotes))
+									10 * Math.ceil(10 * (numCommonNotes / numSelectedNotes)) ||
+									100
 								}`}
 								indexRelativeToParent={indexRelativeToParent}
 								intervalsFromTonic={intervalsFromTonic}
