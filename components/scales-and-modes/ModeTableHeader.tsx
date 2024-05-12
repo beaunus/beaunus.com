@@ -34,7 +34,7 @@ export const ModeTableHeader: React.FC<{
 					</th>
 				))}
 			</tr>
-			<tr>
+			<tr className="print:hidden">
 				<th>
 					<input
 						checked={mustContainByNoteIndex.some(Boolean)}
@@ -68,7 +68,7 @@ export const ModeTableHeader: React.FC<{
 					)
 				)}
 			</tr>
-			<tr>
+			<tr className="print:hidden">
 				<th />
 				{rotateArray(NOTE_NAMES, startingMidiNumber % 12).map(
 					(noteName, numHalfStepsFromStartingMidiNumber) => (

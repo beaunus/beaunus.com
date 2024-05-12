@@ -7,7 +7,7 @@ import { HighlightedLink } from "../components/HighlightedLink";
 import * as Logos from "../images/logos";
 
 export const Footer: React.FC = () => (
-	<footer className="flex flex-col shrink-0 gap-8 justify-evenly items-center py-16 px-5 mt-2 w-full bg-gray-100">
+	<footer className="flex print:hidden flex-col shrink-0 gap-8 justify-evenly items-center py-16 px-5 mt-2 w-full bg-gray-100">
 		<FontAwesomeIcon color="rgb(232,25,140)" icon={faHandSpock} />
 		<HighlightedLink href="mailto:beau@beaunus.com">
 			beau@beaunus.com

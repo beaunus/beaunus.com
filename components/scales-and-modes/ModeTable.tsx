@@ -109,20 +109,23 @@ export const ModeTable: FC<{
 					})
 					.sort((a, b) => b.numCommonNotes - a.numCommonNotes)
 					.map(
-						({
-							baseIntervals,
-							names,
-							numCommonNotes,
-							indexRelativeToParent,
-							intervalsFromTonic,
-							parentModeNames,
-						}) => (
+						(
+							{
+								baseIntervals,
+								names,
+								numCommonNotes,
+								indexRelativeToParent,
+								intervalsFromTonic,
+								parentModeNames,
+							},
+							index
+						) => (
 							<ModeRow
 								baseIntervals={baseIntervals}
 								className={`fade-${
 									10 * Math.ceil(10 * (numCommonNotes / numSelectedNotes)) ||
 									100
-								}`}
+								} ${index > 0 && index % 7 === 0 ? "break-before-page" : ""} `}
 								indexRelativeToParent={indexRelativeToParent}
 								intervalsFromTonic={intervalsFromTonic}
 								key={_.uniqueId()}
