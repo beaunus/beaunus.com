@@ -7,6 +7,7 @@ export interface AudioConfig {
 }
 
 export enum INTERVALS {
+	/* eslint-disable @typescript-eslint/no-duplicate-enum-values */
 	perfectUnison = 0,
 	diminishedSecond = 0,
 	minorSecond = 0.5,
@@ -36,6 +37,7 @@ export enum INTERVALS {
 	diminishedOctave = 5.5,
 	perfectOctave = 6,
 	augmentedSeventh = 6,
+	/* eslint-enable @typescript-eslint/no-duplicate-enum-values */
 }
 
 export interface ModeSet {
