@@ -7,7 +7,7 @@ import React from "react";
 import * as Logos from "../images/logos";
 
 export const Header: React.FC = () => (
-	<header className="flex justify-between items-center p-3 mb-8">
+	<header className="flex print:hidden justify-between items-center p-3 mb-8">
 		<div className="flex flex-wrap gap-6">
 			<Link href="/">
 				<div className="flex gap-2 items-center">

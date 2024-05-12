@@ -21,7 +21,7 @@ export const Settings: React.FC = () => {
 	} = useContext(AudioConfigContext);
 
 	return (
-		<table>
+		<table className="print:hidden">
 			<tbody>
 				<tr>
 					<td>

@@ -33,31 +33,37 @@ export const ChordDescriptionCell: React.FC<{
 				...(intervals[4] < INTERVALS.perfectFifth ? ["triad-diminished"] : []),
 			].join(" ")}
 		>
-			{Object.values(INTERVALS_BY_CHORD_CLASS).map((intervalsForThisChord) => {
-				const chordSpelling = intervalsForThisChord.map(
-					(index) => intervalsOverTwoOctaves[index]
-				);
-				return (
-					<div
-						key={_.uniqueId()}
-						onClick={() =>
-							playChord({
-								audioCtx,
-								durationInSeconds,
-								keyNumbers: intervalsForThisChord.map(
-									(index) => keyNumbersOverTwoOctaves[index]
-								),
-								oscillatorType: OSCILLATOR_TYPES[oscillatorTypeIndex],
-							})
-						}
-					>
-						{romanNumeral}&nbsp;
-						<span className="normal-case">
-							{CHORD_NAME_BY_INTERVALS[chordSpelling.join(",")] ?? "?"}
-						</span>
-					</div>
-				);
-			})}
+			{Object.values(INTERVALS_BY_CHORD_CLASS).map(
+				(intervalsForThisChord, chordIndex) => {
+					const chordSpelling = intervalsForThisChord.map(
+						(index) => intervalsOverTwoOctaves[index]
+					);
+					return (
+						<div
+							key={_.uniqueId()}
+							onClick={() =>
+								playChord({
+									audioCtx,
+									durationInSeconds,
+									keyNumbers: intervalsForThisChord.map(
+										(index) => keyNumbersOverTwoOctaves[index]
+									),
+									oscillatorType: OSCILLATOR_TYPES[oscillatorTypeIndex],
+								})
+							}
+							{...(chordIndex ===
+							Object.values(INTERVALS_BY_CHORD_CLASS).length - 1
+								? {}
+								: { className: "print:hidden" })}
+						>
+							{romanNumeral}&nbsp;
+							<span className="normal-case">
+								{CHORD_NAME_BY_INTERVALS[chordSpelling.join(",")] ?? "?"}
+							</span>
+						</div>
+					);
+				}
+			)}
 		</td>
 	);
 };

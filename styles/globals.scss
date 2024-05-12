@@ -8,6 +8,9 @@ body > div:first-child,
 div#__next,
 div#__next > div {
 	height: 100%;
+	@media print {
+		font-size: small;
+	}
 }
 
 section:nth-child(even):not(:last-of-type) {
