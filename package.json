@@ -33,7 +33,7 @@
 		"monaco-editor": "0.38.0",
 		"multimatch": "6.0.0",
 		"next": "^14.2.3",
-		"react": "^18.3.1",
+		"react": "18.2.0",
 		"react-dom": "^18.3.1",
 		"sharp": "0.32.6",
 		"simple-statistics": "7.8.3"
