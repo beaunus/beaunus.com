@@ -32,7 +32,7 @@ export const ModeTitleCell: React.FC<{
 			<div key={_.uniqueId()}>{name}</div>
 		))}
 		{
-			<div key={_.uniqueId()} style={{ display: "flex" }}>
+			<div key={_.uniqueId()}>
 				{[ScaleDirection.up, ScaleDirection.down, ScaleDirection.upDown].map(
 					(scaleDirection) => (
 						<ScalePlayer
