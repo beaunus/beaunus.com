@@ -125,8 +125,7 @@ export const parseFileString = (fileString: string): GitFileChange => {
 					numLinesAdded: Number(numLinesAdded),
 					numLinesDeleted: Number(numLinesDeleted),
 			  }),
-		// Allow this "sibling" function to be mocked in tests
-		path: module.exports.parsePathString(pathString),
+		path: parsePathString(pathString),
 	};
 };
 
