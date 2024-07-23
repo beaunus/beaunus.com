@@ -313,7 +313,7 @@ export default function EnhancedTable() {
 											padding="none"
 											scope="row"
 										>
-											<Link href={`https://www.bodybuilding.com/${row.link}`}>
+											<Link href={`https://www.bodybuilding.com${row.link}`}>
 												{row.heading}
 											</Link>
 										</TableCell>
