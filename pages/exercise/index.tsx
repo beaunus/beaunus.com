@@ -1,4 +1,4 @@
-import { Chip } from "@mui/material";
+import { Chip, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Paper from "@mui/material/Paper";
@@ -152,9 +152,10 @@ export default function EnhancedTable() {
 	const [isDense, setIsDense] = React.useState(false);
 	const [rowsPerPage, setRowsPerPage] = React.useState(100);
 	const [musclesTargetedToDisplay, setMusclesTargetedToDisplay] =
-		React.useState(uniqueMusclesTargeted);
-	const [equipmentTypesToDisplay, setEquipmentTypesToDisplay] =
-		React.useState(uniqueEquipmentTypes);
+		React.useState<string[]>([]);
+	const [equipmentTypesToDisplay, setEquipmentTypesToDisplay] = React.useState<
+		string[]
+	>([]);
 
 	function EnhancedTableToolbar() {
 		return (
@@ -172,8 +173,25 @@ export default function EnhancedTable() {
 				>
 					Exercises
 				</Typography>
-				<Typography component="div" sx={{ flex: "1 1 100%" }} variant="h6">
-					Equipment Types
+				<Typography
+					component="div"
+					display="flex"
+					flexDirection="column"
+					gap={2}
+					sx={{ flex: "1 1 100%" }}
+					variant="h6"
+				>
+					<Stack direction="row" gap={2}>
+						Equipment Types
+						<Chip
+							label="check none"
+							onClick={() => setEquipmentTypesToDisplay([])}
+						/>
+						<Chip
+							label="check all"
+							onClick={() => setEquipmentTypesToDisplay(uniqueEquipmentTypes)}
+						/>
+					</Stack>
 					<Box display="flex" flexWrap="wrap" gap={2}>
 						{uniqueEquipmentTypes.map((equipmentType, index) => (
 							<Chip
@@ -199,8 +217,25 @@ export default function EnhancedTable() {
 						))}
 					</Box>
 				</Typography>
-				<Typography component="div" sx={{ flex: "1 1 100%" }} variant="h6">
-					Muscles Targeted
+				<Typography
+					component="div"
+					display="flex"
+					flexDirection="column"
+					gap={2}
+					sx={{ flex: "1 1 100%" }}
+					variant="h6"
+				>
+					<Stack direction="row" gap={2}>
+						Muscles Targeted
+						<Chip
+							label="check none"
+							onClick={() => setMusclesTargetedToDisplay([])}
+						/>
+						<Chip
+							label="check all"
+							onClick={() => setMusclesTargetedToDisplay(uniqueMusclesTargeted)}
+						/>
+					</Stack>
 					<Box display="flex" flexWrap="wrap" gap={2}>
 						{uniqueMusclesTargeted.map((musclesTargeted, index) => (
 							<Chip
