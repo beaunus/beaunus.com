@@ -268,7 +268,14 @@ export default function EnhancedTable() {
 				),
 				getComparator(order, orderBy)
 			).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-		[musclesTargetedToDisplay, order, orderBy, page, rowsPerPage]
+		[
+			equipmentTypesToDisplay,
+			musclesTargetedToDisplay,
+			order,
+			orderBy,
+			page,
+			rowsPerPage,
+		]
 	);
 
 	return (
