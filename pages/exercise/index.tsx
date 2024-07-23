@@ -159,12 +159,7 @@ export default function EnhancedTable() {
 
 	function EnhancedTableToolbar() {
 		return (
-			<Toolbar
-				sx={{
-					pl: { sm: 2 },
-					pr: { sm: 1, xs: 1 },
-				}}
-			>
+			<Toolbar sx={{ pl: { sm: 2 }, pr: { sm: 1, xs: 1 } }}>
 				<Typography
 					component="div"
 					id="tableTitle"
