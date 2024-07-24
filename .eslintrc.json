@@ -8,6 +8,7 @@
 		"plugin:import/typescript",
 		"plugin:jest/all",
 		"plugin:prettier/recommended",
+		"plugin:react-hooks/recommended",
 		"plugin:react/recommended",
 		"plugin:tailwindcss/recommended",
 		"plugin:typescript-sort-keys/recommended"

@@ -229,10 +229,13 @@ const LoktaVolterra: NextPage = () => {
 		rabbit: 0.05,
 	});
 
-	const isFertile = (animal: Animal) =>
-		animal.age >= minMatingAge[animal.type] &&
-		animal.numTrialsSinceLastReproduction >=
-			matingRecoveryDuration[animal.type];
+	const isFertile = React.useCallback(
+		(animal: Animal) =>
+			animal.age >= minMatingAge[animal.type] &&
+			animal.numTrialsSinceLastReproduction >=
+				matingRecoveryDuration[animal.type],
+		[matingRecoveryDuration, minMatingAge]
+	);
 
 	const canPairMate = (animalA: Animal, animalB: Animal) =>
 		Math.hypot(
@@ -366,7 +369,7 @@ const LoktaVolterra: NextPage = () => {
 				scatterChart.destroy();
 			};
 		}
-	}, [animals]);
+	}, [animals, isFertile, numAnimalsAfterEachTrial]);
 
 	const numAnimalsAfterEachTrialInternal: Record<AnimalType, number>[] = [];
 

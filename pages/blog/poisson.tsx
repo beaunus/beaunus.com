@@ -78,7 +78,12 @@ const Poisson: NextPage = () => {
 				barChart.destroy();
 			};
 		}
-	}, [samplesState]);
+	}, [
+		countByGapSizeState,
+		numCompleteTrials,
+		probabilityOfEvent,
+		samplesState,
+	]);
 
 	const poissonExperimentDefinition: ExperimentDefinition<{
 		countByGapSize: Record<number, number>;

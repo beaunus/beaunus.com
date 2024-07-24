@@ -186,7 +186,7 @@ const SongChart: NextPage = () => {
 					}
 				);
 		},
-		[sections]
+		[router, sections]
 	);
 
 	useEffect(
@@ -255,7 +255,13 @@ const SongChart: NextPage = () => {
 				};
 			}
 		},
-		[mostRecentlyPlayedChord, normalization, sections, tonicIndex]
+		[
+			hueBySectionName,
+			mostRecentlyPlayedChord,
+			normalization,
+			noteNameCountsBySection,
+			tonicIndex,
+		]
 	);
 
 	return (

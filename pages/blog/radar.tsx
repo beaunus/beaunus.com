@@ -92,7 +92,7 @@ const Radar: NextPage = () => {
 			undefined,
 			{ scroll: false }
 		);
-	}, [dimensions, router.isReady]);
+	}, [dimensions, router]);
 
 	useEffect(() => {
 		const dimensionsFromUrl = Array.from(
