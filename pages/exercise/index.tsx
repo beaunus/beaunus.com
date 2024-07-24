@@ -24,9 +24,8 @@ const exercises: (Exercise & { id: number })[] = exercisesJSON.map(
 	(element, index) => ({ ...element, id: index })
 );
 
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-	return b[orderBy] < a[orderBy] ? -1 : b[orderBy] > a[orderBy] ? 1 : 0;
-}
+const descendingComparator = <T,>(a: T, b: T, orderBy: keyof T) =>
+	b[orderBy] < a[orderBy] ? -1 : b[orderBy] > a[orderBy] ? 1 : 0;
 
 function getComparator<Key extends keyof Exercise>(
 	order: Order,
