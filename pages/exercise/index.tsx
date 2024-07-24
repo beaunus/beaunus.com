@@ -32,8 +32,8 @@ function getComparator<Key extends keyof Exercise>(
 	order: Order,
 	orderBy: Key
 ): (
-	a: { [key in Key]: string | string[] | number },
-	b: { [key in Key]: string | string[] | number }
+	a: { [key in Key]: string | number },
+	b: { [key in Key]: string | number }
 ) => number {
 	return order === "desc"
 		? (a, b) => descendingComparator(a, b, orderBy)
