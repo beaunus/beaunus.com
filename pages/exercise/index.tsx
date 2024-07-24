@@ -232,15 +232,6 @@ export default function EnhancedTable() {
 		);
 	}
 
-	const handleRequestSort = (
-		event: React.MouseEvent<unknown>,
-		property: keyof Exercise
-	) => {
-		const isAsc = orderBy === property && order === "asc";
-		setOrder(isAsc ? "desc" : "asc");
-		setOrderBy(property);
-	};
-
 	// Avoid a layout jump when reaching the last page with empty exercises.
 	const numEmptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - exercises.length) : 0;
@@ -278,7 +269,11 @@ export default function EnhancedTable() {
 						sx={{ minWidth: 750 }}
 					>
 						<EnhancedTableHead
-							onRequestSort={handleRequestSort}
+							onRequestSort={(_event, property: keyof Exercise) => {
+								const isAsc = orderBy === property && order === "asc";
+								setOrder(isAsc ? "desc" : "asc");
+								setOrderBy(property);
+							}}
 							order={order}
 							orderBy={orderBy}
 						/>
