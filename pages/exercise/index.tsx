@@ -65,7 +65,6 @@ function EnhancedTableHead({
 	) => void;
 	order: Order;
 	orderBy: string;
-	rowCount: number;
 }) {
 	const createSortHandler =
 		(property: keyof Exercise) => (event: React.MouseEvent<unknown>) => {
@@ -293,7 +292,6 @@ export default function EnhancedTable() {
 							onRequestSort={handleRequestSort}
 							order={order}
 							orderBy={orderBy}
-							rowCount={exercises.length}
 						/>
 						<TableBody>
 							{visibleRows.map((row, index) => {
