@@ -11,7 +11,6 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { visuallyHidden } from "@mui/utils";
 import Link from "next/link";
@@ -159,7 +158,7 @@ export default function EnhancedTable() {
 
 	function EnhancedTableToolbar() {
 		return (
-			<Toolbar sx={{ pl: { sm: 2 }, pr: { sm: 1, xs: 1 } }}>
+			<Stack direction="row">
 				<Typography
 					component="div"
 					display="flex"
@@ -248,7 +247,7 @@ export default function EnhancedTable() {
 						))}
 					</Box>
 				</Typography>
-			</Toolbar>
+			</Stack>
 		);
 	}
 
