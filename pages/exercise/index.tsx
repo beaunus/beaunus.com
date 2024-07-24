@@ -40,22 +40,6 @@ function getComparator<Key extends keyof Exercise>(
 		: (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
-function stableSort<T>(
-	array: readonly T[],
-	comparator: (a: T, b: T) => number
-) {
-	const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-	stabilizedThis.sort((a, b) => {
-		const order = comparator(a[0], b[0]);
-		return order || a[1] - b[1];
-	});
-	return stabilizedThis.map((el) => el[0]);
-}
-
 interface HeadCell {
 	disablePadding: boolean;
 	id: keyof Exercise;
@@ -274,14 +258,15 @@ export default function EnhancedTable() {
 
 	const visibleRows = React.useMemo(
 		() =>
-			stableSort(
-				exercises.filter(
+			exercises
+				.filter(
 					(exercise) =>
 						musclesTargetedToDisplay.includes(exercise.musclesTargeted) &&
 						equipmentTypesToDisplay.includes(exercise.equipmentType)
-				),
-				getComparator(order, orderBy)
-			).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+				)
+				.slice()
+				.sort(getComparator(order, orderBy))
+				.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
 		[
 			equipmentTypesToDisplay,
 			musclesTargetedToDisplay,
