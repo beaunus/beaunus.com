@@ -253,7 +253,7 @@ export default function EnhancedTable() {
 	};
 
 	// Avoid a layout jump when reaching the last page with empty exercises.
-	const emptyRows =
+	const numEmptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - exercises.length) : 0;
 
 	const visibleRows = React.useMemo(
@@ -333,8 +333,8 @@ export default function EnhancedTable() {
 									<TableCell align="right">{row.rating}</TableCell>
 								</TableRow>
 							))}
-							{emptyRows > 0 && (
-								<TableRow style={{ height: 33 * emptyRows }}>
+							{numEmptyRows > 0 && (
+								<TableRow style={{ height: 33 * numEmptyRows }}>
 									<TableCell colSpan={6} />
 								</TableRow>
 							)}
