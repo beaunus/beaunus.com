@@ -54,7 +54,11 @@ const headCells: readonly HeadCell[] = [
 	{ disablePadding: false, id: "rating", isNumeric: true, label: "Rating" },
 ];
 
-function EnhancedTableHead(props: {
+function EnhancedTableHead({
+	order,
+	orderBy,
+	onRequestSort,
+}: {
 	onRequestSort: (
 		event: React.MouseEvent<unknown>,
 		property: keyof Exercise
@@ -63,7 +67,6 @@ function EnhancedTableHead(props: {
 	orderBy: string;
 	rowCount: number;
 }) {
-	const { order, orderBy, onRequestSort } = props;
 	const createSortHandler =
 		(property: keyof Exercise) => (event: React.MouseEvent<unknown>) => {
 			onRequestSort(event, property);
