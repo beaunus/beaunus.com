@@ -27,17 +27,16 @@ const exercises: (Exercise & { id: number })[] = exercisesJSON.map(
 const descendingComparator = <T,>(a: T, b: T, orderBy: keyof T) =>
 	b[orderBy] < a[orderBy] ? -1 : b[orderBy] > a[orderBy] ? 1 : 0;
 
-function getComparator<Key extends keyof Exercise>(
+const getComparator = <Key extends keyof Exercise>(
 	order: Order,
 	orderBy: Key
-): (
+): ((
 	a: { [key in Key]: string | number },
 	b: { [key in Key]: string | number }
-) => number {
-	return order === "desc"
+) => number) =>
+	order === "desc"
 		? (a, b) => descendingComparator(a, b, orderBy)
 		: (a, b) => -descendingComparator(a, b, orderBy);
-}
 
 interface HeadCell {
 	disablePadding: boolean;
