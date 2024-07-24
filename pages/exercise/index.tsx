@@ -295,8 +295,6 @@ export default function EnhancedTable() {
 						/>
 						<TableBody>
 							{visibleRows.map((row, index) => {
-								const labelId = `enhanced-table-checkbox-${index}`;
-
 								return (
 									<TableRow
 										hover
@@ -307,7 +305,7 @@ export default function EnhancedTable() {
 									>
 										<TableCell
 											component="th"
-											id={labelId}
+											id={`enhanced-table-checkbox-${index}`}
 											padding="none"
 											scope="row"
 										>
