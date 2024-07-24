@@ -241,10 +241,6 @@ export default function EnhancedTable() {
 		setOrderBy(property);
 	};
 
-	const handleChangePage = (event: unknown, newPage: number) => {
-		setPage(newPage);
-	};
-
 	// Avoid a layout jump when reaching the last page with empty exercises.
 	const numEmptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - exercises.length) : 0;
@@ -337,7 +333,9 @@ export default function EnhancedTable() {
 				<TablePagination
 					component="div"
 					count={exercises.length}
-					onPageChange={handleChangePage}
+					onPageChange={(_event, newPage) => {
+						setPage(newPage);
+					}}
 					onRowsPerPageChange={({ target }) => {
 						setRowsPerPage(parseInt(target.value, 10));
 						setPage(0);
