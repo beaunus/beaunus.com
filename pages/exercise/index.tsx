@@ -27,17 +27,6 @@ const exercises: (Exercise & { id: number })[] = exercisesJSON.map(
 const descendingComparator = <T,>(a: T, b: T, orderBy: keyof T) =>
 	b[orderBy] < a[orderBy] ? -1 : b[orderBy] > a[orderBy] ? 1 : 0;
 
-const getComparator = <Key extends keyof Exercise>(
-	order: Order,
-	orderBy: Key
-): ((
-	a: { [key in Key]: string | number },
-	b: { [key in Key]: string | number }
-) => number) =>
-	order === "desc"
-		? (a, b) => descendingComparator(a, b, orderBy)
-		: (a, b) => -descendingComparator(a, b, orderBy);
-
 interface HeadCell {
 	disablePadding: boolean;
 	id: keyof Exercise;
@@ -239,7 +228,11 @@ export default function EnhancedTable() {
 						equipmentTypesToDisplay.includes(exercise.equipmentType)
 				)
 				.slice()
-				.sort(getComparator(order, orderBy))
+				.sort((a, b) =>
+					order === "desc"
+						? descendingComparator(a, b, orderBy)
+						: -descendingComparator(a, b, orderBy)
+				)
 				.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
 		[
 			equipmentTypesToDisplay,
