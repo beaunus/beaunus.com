@@ -137,100 +137,96 @@ export default function EnhancedTable() {
 		string[]
 	>([]);
 
-	function EnhancedTableToolbar() {
-		return (
-			<Stack direction="row">
-				<Typography
-					component="div"
-					display="flex"
-					flexDirection="column"
-					gap={2}
-					sx={{ flex: "1 1 100%" }}
-					variant="h6"
-				>
-					<Stack direction="row" gap={2}>
-						Equipment Types
+	const EnhancedTableToolbar: React.FC = () => (
+		<Stack direction="row">
+			<Typography
+				component="div"
+				display="flex"
+				flexDirection="column"
+				gap={2}
+				sx={{ flex: "1 1 100%" }}
+				variant="h6"
+			>
+				<Stack direction="row" gap={2}>
+					Equipment Types
+					<Chip
+						label="check none"
+						onClick={() => setEquipmentTypesToDisplay([])}
+					/>
+					<Chip
+						label="check all"
+						onClick={() => setEquipmentTypesToDisplay(uniqueEquipmentTypes)}
+					/>
+				</Stack>
+				<Box display="flex" flexWrap="wrap" gap={2}>
+					{uniqueEquipmentTypes.map((equipmentType, index) => (
 						<Chip
-							label="check none"
-							onClick={() => setEquipmentTypesToDisplay([])}
+							key={`equipmentType-${index}`}
+							label={equipmentType}
+							onClick={() => {
+								setEquipmentTypesToDisplay((old) =>
+									old.includes(equipmentType)
+										? old
+												.slice(0, old.indexOf(equipmentType))
+												.concat(old.slice(old.indexOf(equipmentType) + 1))
+										: old.concat([equipmentType])
+								);
+							}}
+							style={{
+								backgroundColor: equipmentTypesToDisplay.includes(equipmentType)
+									? colorByEquipmentType[equipmentType]
+									: "#eee",
+							}}
 						/>
+					))}
+				</Box>
+			</Typography>
+			<Typography
+				component="div"
+				display="flex"
+				flexDirection="column"
+				gap={2}
+				sx={{ flex: "1 1 100%" }}
+				variant="h6"
+			>
+				<Stack direction="row" gap={2}>
+					Muscles Targeted
+					<Chip
+						label="check none"
+						onClick={() => setMusclesTargetedToDisplay([])}
+					/>
+					<Chip
+						label="check all"
+						onClick={() => setMusclesTargetedToDisplay(uniqueMusclesTargeted)}
+					/>
+				</Stack>
+				<Box display="flex" flexWrap="wrap" gap={2}>
+					{uniqueMusclesTargeted.map((musclesTargeted, index) => (
 						<Chip
-							label="check all"
-							onClick={() => setEquipmentTypesToDisplay(uniqueEquipmentTypes)}
+							key={`musclesTargeted-${index}`}
+							label={musclesTargeted}
+							onClick={() => {
+								setMusclesTargetedToDisplay((old) =>
+									old.includes(musclesTargeted)
+										? old
+												.slice(0, old.indexOf(musclesTargeted))
+												.concat(old.slice(old.indexOf(musclesTargeted) + 1))
+										: old.concat([musclesTargeted])
+								);
+							}}
+							style={{
+								backgroundColor: musclesTargetedToDisplay.includes(
+									musclesTargeted
+								)
+									? colorByMusclesTargeted[musclesTargeted]
+									: "#eee",
+							}}
 						/>
-					</Stack>
-					<Box display="flex" flexWrap="wrap" gap={2}>
-						{uniqueEquipmentTypes.map((equipmentType, index) => (
-							<Chip
-								key={`equipmentType-${index}`}
-								label={equipmentType}
-								onClick={() => {
-									setEquipmentTypesToDisplay((old) =>
-										old.includes(equipmentType)
-											? old
-													.slice(0, old.indexOf(equipmentType))
-													.concat(old.slice(old.indexOf(equipmentType) + 1))
-											: old.concat([equipmentType])
-									);
-								}}
-								style={{
-									backgroundColor: equipmentTypesToDisplay.includes(
-										equipmentType
-									)
-										? colorByEquipmentType[equipmentType]
-										: "#eee",
-								}}
-							/>
-						))}
-					</Box>
-				</Typography>
-				<Typography
-					component="div"
-					display="flex"
-					flexDirection="column"
-					gap={2}
-					sx={{ flex: "1 1 100%" }}
-					variant="h6"
-				>
-					<Stack direction="row" gap={2}>
-						Muscles Targeted
-						<Chip
-							label="check none"
-							onClick={() => setMusclesTargetedToDisplay([])}
-						/>
-						<Chip
-							label="check all"
-							onClick={() => setMusclesTargetedToDisplay(uniqueMusclesTargeted)}
-						/>
-					</Stack>
-					<Box display="flex" flexWrap="wrap" gap={2}>
-						{uniqueMusclesTargeted.map((musclesTargeted, index) => (
-							<Chip
-								key={`musclesTargeted-${index}`}
-								label={musclesTargeted}
-								onClick={() => {
-									setMusclesTargetedToDisplay((old) =>
-										old.includes(musclesTargeted)
-											? old
-													.slice(0, old.indexOf(musclesTargeted))
-													.concat(old.slice(old.indexOf(musclesTargeted) + 1))
-											: old.concat([musclesTargeted])
-									);
-								}}
-								style={{
-									backgroundColor: musclesTargetedToDisplay.includes(
-										musclesTargeted
-									)
-										? colorByMusclesTargeted[musclesTargeted]
-										: "#eee",
-								}}
-							/>
-						))}
-					</Box>
-				</Typography>
-			</Stack>
-		);
-	}
+					))}
+				</Box>
+			</Typography>
+		</Stack>
+	);
 
 	// Avoid a layout jump when reaching the last page with empty exercises.
 	const numEmptyRows =
