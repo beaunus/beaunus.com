@@ -40,9 +40,9 @@
 				"selector": "variable"
 			},
 			{
-				"selector": "import",
+				"format": ["camelCase", "PascalCase"],
 				"leadingUnderscore": "allow",
-				"format": ["camelCase", "PascalCase"]
+				"selector": "import"
 			},
 			{
 				"format": ["camelCase"],
