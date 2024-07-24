@@ -162,14 +162,6 @@ export default function EnhancedTable() {
 			<Toolbar sx={{ pl: { sm: 2 }, pr: { sm: 1, xs: 1 } }}>
 				<Typography
 					component="div"
-					id="tableTitle"
-					sx={{ flex: "1 1 100%" }}
-					variant="h6"
-				>
-					Exercises
-				</Typography>
-				<Typography
-					component="div"
 					display="flex"
 					flexDirection="column"
 					gap={2}
