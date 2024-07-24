@@ -294,47 +294,45 @@ export default function EnhancedTable() {
 							orderBy={orderBy}
 						/>
 						<TableBody>
-							{visibleRows.map((row, index) => {
-								return (
-									<TableRow
-										hover
-										key={row.id}
-										role="checkbox"
-										sx={{ cursor: "pointer" }}
-										tabIndex={-1}
+							{visibleRows.map((row, index) => (
+								<TableRow
+									hover
+									key={row.id}
+									role="checkbox"
+									sx={{ cursor: "pointer" }}
+									tabIndex={-1}
+								>
+									<TableCell
+										component="th"
+										id={`enhanced-table-checkbox-${index}`}
+										padding="none"
+										scope="row"
 									>
-										<TableCell
-											component="th"
-											id={`enhanced-table-checkbox-${index}`}
-											padding="none"
-											scope="row"
-										>
-											<Link href={`https://www.bodybuilding.com${row.link}`}>
-												{row.heading}
-											</Link>
-										</TableCell>
-										<TableCell>
-											<Chip
-												label={row.equipmentType}
-												style={{
-													backgroundColor:
-														colorByEquipmentType[row.equipmentType],
-												}}
-											/>
-										</TableCell>
-										<TableCell>
-											<Chip
-												label={row.musclesTargeted}
-												style={{
-													backgroundColor:
-														colorByMusclesTargeted[row.musclesTargeted],
-												}}
-											/>
-										</TableCell>
-										<TableCell align="right">{row.rating}</TableCell>
-									</TableRow>
-								);
-							})}
+										<Link href={`https://www.bodybuilding.com${row.link}`}>
+											{row.heading}
+										</Link>
+									</TableCell>
+									<TableCell>
+										<Chip
+											label={row.equipmentType}
+											style={{
+												backgroundColor:
+													colorByEquipmentType[row.equipmentType],
+											}}
+										/>
+									</TableCell>
+									<TableCell>
+										<Chip
+											label={row.musclesTargeted}
+											style={{
+												backgroundColor:
+													colorByMusclesTargeted[row.musclesTargeted],
+											}}
+										/>
+									</TableCell>
+									<TableCell align="right">{row.rating}</TableCell>
+								</TableRow>
+							))}
 							{emptyRows > 0 && (
 								<TableRow style={{ height: 33 * emptyRows }}>
 									<TableCell colSpan={6} />
