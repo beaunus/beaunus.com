@@ -245,13 +245,6 @@ export default function EnhancedTable() {
 		setPage(newPage);
 	};
 
-	const handleChangeRowsPerPage = (
-		event: React.ChangeEvent<HTMLInputElement>
-	) => {
-		setRowsPerPage(parseInt(event.target.value, 10));
-		setPage(0);
-	};
-
 	// Avoid a layout jump when reaching the last page with empty exercises.
 	const numEmptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - exercises.length) : 0;
@@ -345,7 +338,10 @@ export default function EnhancedTable() {
 					component="div"
 					count={exercises.length}
 					onPageChange={handleChangePage}
-					onRowsPerPageChange={handleChangeRowsPerPage}
+					onRowsPerPageChange={({ target }) => {
+						setRowsPerPage(parseInt(target.value, 10));
+						setPage(0);
+					}}
 					page={page}
 					rowsPerPage={rowsPerPage}
 					rowsPerPageOptions={[10, 100, 1000, 10000]}
