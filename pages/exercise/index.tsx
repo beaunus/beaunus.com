@@ -1,8 +1,6 @@
 import { Chip, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Paper from "@mui/material/Paper";
-import Switch from "@mui/material/Switch";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -148,7 +146,6 @@ export default function EnhancedTable() {
 	const [order, setOrder] = React.useState<Order>("asc");
 	const [orderBy, setOrderBy] = React.useState<keyof Exercise>("heading");
 	const [page, setPage] = React.useState(0);
-	const [isDense, setIsDense] = React.useState(false);
 	const [rowsPerPage, setRowsPerPage] = React.useState(100);
 	const [musclesTargetedToDisplay, setMusclesTargetedToDisplay] =
 		React.useState<string[]>([]);
@@ -271,10 +268,6 @@ export default function EnhancedTable() {
 		setPage(0);
 	};
 
-	const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setIsDense(event.target.checked);
-	};
-
 	// Avoid a layout jump when reaching the last page with empty exercises.
 	const emptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - exercises.length) : 0;
@@ -306,7 +299,7 @@ export default function EnhancedTable() {
 				<TableContainer>
 					<Table
 						aria-labelledby="tableTitle"
-						size={isDense ? "small" : "medium"}
+						size="small"
 						stickyHeader
 						sx={{ minWidth: 750 }}
 					>
@@ -361,7 +354,7 @@ export default function EnhancedTable() {
 								);
 							})}
 							{emptyRows > 0 && (
-								<TableRow style={{ height: (isDense ? 33 : 53) * emptyRows }}>
+								<TableRow style={{ height: 33 * emptyRows }}>
 									<TableCell colSpan={6} />
 								</TableRow>
 							)}
@@ -378,10 +371,6 @@ export default function EnhancedTable() {
 					rowsPerPageOptions={[10, 100, 1000, 10000]}
 				/>
 			</Paper>
-			<FormControlLabel
-				control={<Switch checked={isDense} onChange={handleChangeDense} />}
-				label="Dense padding"
-			/>
 		</Box>
 	);
 }
