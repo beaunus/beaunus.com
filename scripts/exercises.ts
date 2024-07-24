@@ -1,5 +1,7 @@
 /* eslint-disable jest/require-hook */
 import https from "https";
+import fs from "node:fs";
+import path from "path";
 
 import { parse } from "node-html-parser";
 
@@ -65,10 +67,17 @@ async function fetchExercises() {
 	return exercises;
 }
 
-fetchExercises().then((exercises) =>
-	console.dir(JSON.stringify(exercises), {
-		depth: null,
-		maxArrayLength: null,
-		maxStringLength: null,
-	})
-);
+fetchExercises().then((exercises) => {
+	try {
+		const filePath = path.join(
+			__dirname,
+			"..",
+			"pages",
+			"exercise",
+			"exercises.json"
+		);
+		fs.writeFileSync(filePath, JSON.stringify(exercises));
+	} catch (err) {
+		console.error(err);
+	}
+});
