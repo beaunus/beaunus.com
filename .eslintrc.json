@@ -1,15 +1,15 @@
 {
 	"env": { "es6": true, "jest": true, "node": true },
 	"extends": [
-		"plugin:tailwindcss/recommended",
-		"plugin:@next/next/recommended",
 		"eslint:recommended",
+		"plugin:@next/next/recommended",
 		"plugin:@typescript-eslint/eslint-recommended",
 		"plugin:@typescript-eslint/recommended",
 		"plugin:import/typescript",
 		"plugin:jest/all",
 		"plugin:prettier/recommended",
 		"plugin:react/recommended",
+		"plugin:tailwindcss/recommended",
 		"plugin:typescript-sort-keys/recommended"
 	],
 	"ignorePatterns": ["**/dist/*"],
