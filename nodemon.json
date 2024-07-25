@@ -3,6 +3,6 @@
     "ts": "ts-node --skip-project"
   },
   "ignore": [
-    "exercises.json"
+    "bodybuilding-dot-com.json"
   ]
 }

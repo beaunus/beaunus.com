@@ -16,11 +16,11 @@ import * as React from "react";
 
 import { Exercise } from "../../utils/exercise.types";
 
-import exercisesJSON from "./exercises.json";
+import bodybuildingDotComJSON from "./bodybuilding-dot-com.json";
 
 type Order = "asc" | "desc";
 
-const exercises: (Exercise & { id: number })[] = exercisesJSON.map(
+const exercises: (Exercise & { id: number })[] = bodybuildingDotComJSON.map(
 	(element, index) => ({ ...element, id: index })
 );
 
