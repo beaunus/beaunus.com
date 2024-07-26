@@ -103,15 +103,15 @@ const colorByEquipmentType = Object.fromEntries(
 );
 
 export default function EnhancedTable() {
+	const [equipmentTypesToDisplay, setEquipmentTypesToDisplay] = React.useState<
+		string[]
+	>([]);
+	const [musclesTargetedToDisplay, setMusclesTargetedToDisplay] =
+		React.useState<string[]>([]);
 	const [order, setOrder] = React.useState<Order>("asc");
 	const [orderBy, setOrderBy] = React.useState<keyof Exercise>("heading");
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(100);
-	const [musclesTargetedToDisplay, setMusclesTargetedToDisplay] =
-		React.useState<string[]>([]);
-	const [equipmentTypesToDisplay, setEquipmentTypesToDisplay] = React.useState<
-		string[]
-	>([]);
 
 	const EnhancedTableToolbar: React.FC = () => (
 		<Stack direction="row">
