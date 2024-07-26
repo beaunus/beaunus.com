@@ -208,30 +208,28 @@ export default function EnhancedTable() {
 	const numEmptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - exercises.length) : 0;
 
-	const visibleRows = React.useMemo(
-		() =>
-			exercises
-				.filter(
-					(exercise) =>
-						musclesTargetedToDisplay.includes(exercise.musclesTargeted) &&
-						equipmentTypesToDisplay.includes(exercise.equipmentType)
-				)
-				.slice()
-				.sort((a, b) =>
-					order === "desc"
-						? descendingComparator(a, b, orderBy)
-						: -descendingComparator(a, b, orderBy)
-				)
-				.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-		[
-			equipmentTypesToDisplay,
-			musclesTargetedToDisplay,
-			order,
-			orderBy,
-			page,
-			rowsPerPage,
-		]
-	);
+	const visibleRows = React.useMemo(() => {
+		const shouldShowExercise = (exercise: Exercise) =>
+			musclesTargetedToDisplay.includes(exercise.musclesTargeted) &&
+			equipmentTypesToDisplay.includes(exercise.equipmentType);
+
+		return exercises
+			.filter(shouldShowExercise)
+			.slice()
+			.sort((a, b) =>
+				order === "desc"
+					? descendingComparator(a, b, orderBy)
+					: -descendingComparator(a, b, orderBy)
+			)
+			.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+	}, [
+		equipmentTypesToDisplay,
+		musclesTargetedToDisplay,
+		order,
+		orderBy,
+		page,
+		rowsPerPage,
+	]);
 
 	return (
 		<Box sx={{ width: "100%" }}>
