@@ -45,7 +45,7 @@ const EnhancedTableHead = ({
 	order,
 	orderBy,
 }: {
-	onRequestSort: (property: keyof Exercise) => void;
+	onRequestSort: (sortKey: keyof Exercise) => void;
 	order: Order;
 	orderBy: string;
 }) => (
@@ -245,10 +245,10 @@ export default function EnhancedTable() {
 						sx={{ minWidth: 750 }}
 					>
 						<EnhancedTableHead
-							onRequestSort={(property: keyof Exercise) => {
-								const isAsc = orderBy === property && order === "asc";
+							onRequestSort={(sortKey: keyof Exercise) => {
+								const isAsc = orderBy === sortKey && order === "asc";
 								setOrder(isAsc ? "desc" : "asc");
-								setOrderBy(property);
+								setOrderBy(sortKey);
 							}}
 							order={order}
 							orderBy={orderBy}
