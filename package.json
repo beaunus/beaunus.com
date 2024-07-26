@@ -21,6 +21,7 @@
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
     "@mui/system": "^5.15.15",
+    "@notionhq/client": "^2.2.15",
     "chart.js": "4.4.0",
     "crypto-js": "4.2.0",
     "dayjs": "1.11.7",
