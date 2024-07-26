@@ -34,7 +34,7 @@ interface HeadCell {
 }
 
 const headCells: readonly HeadCell[] = [
-	{ disablePadding: true, id: "heading", label: "Exercise" },
+	{ disablePadding: true, id: "name", label: "Exercise" },
 	{ disablePadding: false, id: "equipmentType", label: "Equipment Type" },
 	{ disablePadding: false, id: "musclesTargeted", label: "Muscles Targeted" },
 	{ disablePadding: false, id: "rating", isNumeric: true, label: "Rating" },
@@ -109,7 +109,7 @@ export default function EnhancedTable() {
 	const [musclesTargetedToDisplay, setMusclesTargetedToDisplay] =
 		React.useState<string[]>([]);
 	const [order, setOrder] = React.useState<Order>("asc");
-	const [orderBy, setOrderBy] = React.useState<keyof Exercise>("heading");
+	const [orderBy, setOrderBy] = React.useState<keyof Exercise>("name");
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(100);
 
@@ -267,7 +267,7 @@ export default function EnhancedTable() {
 										scope="row"
 									>
 										<Link href={`https://www.bodybuilding.com${row.link}`}>
-											{row.heading}
+											{row.name}
 										</Link>
 									</TableCell>
 									<TableCell>

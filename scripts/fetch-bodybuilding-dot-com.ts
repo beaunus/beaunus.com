@@ -27,9 +27,6 @@ function fetchBatch(batchNumber = 1): Promise<Exercise[]> {
 					.querySelectorAll(".ExResult-equipmentType a")
 					.map((element) => element.textContent.trim())
 					.join(""),
-				heading:
-					row.querySelector(".ExResult-resultsHeading")?.textContent.trim() ??
-					"",
 				images: row
 					.querySelectorAll("img.ExResult-img")
 					.map((element) => element?.attributes?.src ?? ""),
@@ -40,6 +37,9 @@ function fetchBatch(batchNumber = 1): Promise<Exercise[]> {
 					.querySelectorAll(".ExResult-muscleTargeted a")
 					.map((element) => element.textContent.trim())
 					.join(""),
+				name:
+					row.querySelector(".ExResult-resultsHeading")?.textContent.trim() ??
+					"",
 				rating: parseFloat(
 					row.querySelector(".ExRating-badge")?.textContent.trim() ?? ""
 				),
