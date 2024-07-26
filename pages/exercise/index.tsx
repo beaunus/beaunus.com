@@ -209,9 +209,9 @@ export default function EnhancedTable() {
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - exercises.length) : 0;
 
 	const visibleRows = React.useMemo(() => {
-		const shouldShowExercise = (exercise: Exercise) =>
-			musclesTargetedToDisplay.includes(exercise.musclesTargeted) &&
-			equipmentTypesToDisplay.includes(exercise.equipmentType);
+		const shouldShowExercise = ({ equipmentType, musclesTargeted }: Exercise) =>
+			musclesTargetedToDisplay.includes(musclesTargeted) &&
+			equipmentTypesToDisplay.includes(equipmentType);
 
 		return exercises
 			.filter(shouldShowExercise)
