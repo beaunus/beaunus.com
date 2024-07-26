@@ -45,10 +45,7 @@ const EnhancedTableHead = ({
 	order,
 	orderBy,
 }: {
-	onRequestSort: (
-		event: React.MouseEvent<unknown>,
-		property: keyof Exercise
-	) => void;
+	onRequestSort: (property: keyof Exercise) => void;
 	order: Order;
 	orderBy: string;
 }) => (
@@ -64,7 +61,7 @@ const EnhancedTableHead = ({
 					<TableSortLabel
 						active={orderBy === headCell.id}
 						direction={orderBy === headCell.id ? order : "asc"}
-						onClick={(event) => onRequestSort(event, headCell.id)}
+						onClick={() => onRequestSort(headCell.id)}
 					>
 						{headCell.label}
 						{orderBy === headCell.id ? (
@@ -248,7 +245,7 @@ export default function EnhancedTable() {
 						sx={{ minWidth: 750 }}
 					>
 						<EnhancedTableHead
-							onRequestSort={(_event, property: keyof Exercise) => {
+							onRequestSort={(property: keyof Exercise) => {
 								const isAsc = orderBy === property && order === "asc";
 								setOrder(isAsc ? "desc" : "asc");
 								setOrderBy(property);
