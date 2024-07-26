@@ -5,7 +5,7 @@ import path from "path";
 
 import { parse } from "node-html-parser";
 
-import { Exercise } from "../utils/exercise.types";
+import { Exercise } from "../utils/exercise/exercise.types";
 
 function fetchBatch(batchNumber = 1): Promise<Exercise[]> {
 	return new Promise<string>((resolve, reject) => {

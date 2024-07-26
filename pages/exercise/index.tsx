@@ -14,9 +14,8 @@ import { visuallyHidden } from "@mui/utils";
 import Link from "next/link";
 import * as React from "react";
 
-import { Exercise } from "../../utils/exercise.types";
-
-import bodybuildingDotComJSON from "./bodybuilding-dot-com.json";
+import bodybuildingDotComJSON from "../../utils/exercise/bodybuilding-dot-com.json";
+import { Exercise } from "../../utils/exercise/exercise.types";
 
 type Order = "asc" | "desc";
 
