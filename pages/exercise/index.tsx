@@ -41,9 +41,9 @@ const headCells: readonly HeadCell[] = [
 ];
 
 function EnhancedTableHead({
+	onRequestSort,
 	order,
 	orderBy,
-	onRequestSort,
 }: {
 	onRequestSort: (
 		event: React.MouseEvent<unknown>,
