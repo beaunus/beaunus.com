@@ -7,6 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import _ from "lodash";
+import Link from "next/link";
 import * as React from "react";
 
 import { Exercise } from "../../utils/exercise/exercise.types";
@@ -116,7 +117,9 @@ export default function SessionList(props: {
 							>
 								<Stack alignItems="center" direction="row" gap={1}>
 									{exercise.type ? <ExerciseIcon type={exercise.type} /> : null}
-									<Typography>{exercise.name}</Typography>
+									<Typography>
+										<Link href={exercise.link}>{exercise.name}</Link>
+									</Typography>
 								</Stack>
 								<Typography variant="caption">
 									{exercise.musclesTargeted}
