@@ -1,6 +1,6 @@
 import FitnessCenterOutlinedIcon from "@mui/icons-material/FitnessCenterOutlined";
 import SelfImprovementOutlinedIcon from "@mui/icons-material/SelfImprovementOutlined";
-import { Stack, Typography } from "@mui/material";
+import { createTheme, Stack, ThemeProvider, Typography } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -83,69 +83,78 @@ export default function SessionList(props: {
 	);
 
 	return (
-		<Stack alignItems="center" gap={2} padding={2}>
-			<FormControl>
-				<InputLabel id="demo-simple-select-label">Session</InputLabel>
-				<Select
-					id="select-session"
-					label="Session"
-					labelId="select-session-label"
-					onChange={(event) => setSelectedSessionId(event.target.value)}
-					size="small"
-					value={selectedSessionId}
-				>
-					{_.sortBy(
-						Object.entries(props.sessionById),
-						([, sessionName]) => sessionName
-					).map(([sessionId, sessionName]) => (
-						<MenuItem key={sessionId} value={sessionId}>
-							{sessionName}
-						</MenuItem>
-					))}
-				</Select>
-			</FormControl>
-			<Stack alignItems="center" gap={1}>
-				{Object.values(sortedExercisesByOrderNumber).map((exercises, index) => (
-					<Stack direction="row" gap={1} key={`exercises-${index}`}>
-						{exercises.map((exercise) => (
-							<Stack
-								alignItems="center"
-								border={2}
-								borderColor="ButtonShadow"
-								key={exercise.name}
-								padding={1}
-							>
-								<Stack alignItems="center" direction="row" gap={1}>
-									{exercise.type ? <ExerciseIcon type={exercise.type} /> : null}
-									<Typography>
-										<Link href={exercise.link}>{exercise.name}</Link>
-									</Typography>
-								</Stack>
-								<Typography variant="caption">
-									{exercise.musclesTargeted}
-								</Typography>
-								<table className="mt-2">
-									<tbody>
-										{Array.from({ length: 2 }).map((_rowValue, rowIndex) => (
-											<tr key={`${exercise.name}-${rowIndex}`}>
-												{Array.from({ length: 8 }).map(
-													(_colValue, colIndex) => (
-														<td
-															className="w-6 h-5 border-2"
-															key={`${exercise.name}-${rowIndex}-${colIndex}`}
-														/>
+		<ThemeProvider theme={createTheme({ typography: { fontSize: 10 } })}>
+			<Stack alignItems="center" gap={2} padding={2}>
+				<FormControl>
+					<InputLabel id="demo-simple-select-label">Session</InputLabel>
+					<Select
+						id="select-session"
+						label="Session"
+						labelId="select-session-label"
+						onChange={(event) => setSelectedSessionId(event.target.value)}
+						size="small"
+						value={selectedSessionId}
+					>
+						{_.sortBy(
+							Object.entries(props.sessionById),
+							([, sessionName]) => sessionName
+						).map(([sessionId, sessionName]) => (
+							<MenuItem key={sessionId} value={sessionId}>
+								{sessionName}
+							</MenuItem>
+						))}
+					</Select>
+				</FormControl>
+				<Stack alignItems="center" gap={1}>
+					{Object.values(sortedExercisesByOrderNumber).map(
+						(exercises, index) => (
+							<Stack direction="row" gap={1} key={`exercises-${index}`}>
+								{exercises.map((exercise) => (
+									<Stack
+										alignItems="center"
+										border={2}
+										borderColor="ButtonShadow"
+										gap={0}
+										key={exercise.name}
+										padding={1}
+									>
+										<Stack alignItems="center" direction="row" gap={1}>
+											{exercise.type ? (
+												<ExerciseIcon type={exercise.type} />
+											) : null}
+											<Typography>
+												<Link href={exercise.link}>{exercise.name}</Link>
+											</Typography>
+										</Stack>
+										<Typography variant="caption">
+											{exercise.musclesTargeted}
+										</Typography>
+										<table className="mt-1">
+											<tbody>
+												{Array.from({ length: 2 }).map(
+													(_rowValue, rowIndex) => (
+														<tr key={`${exercise.name}-${rowIndex}`}>
+															{Array.from({ length: 8 }).map(
+																(_colValue, colIndex) => (
+																	<td
+																		className="w-6 h-5 border-2"
+																		key={`${exercise.name}-${rowIndex}-${colIndex}`}
+																	/>
+																)
+															)}
+														</tr>
 													)
 												)}
-											</tr>
-										))}
-									</tbody>
-								</table>
+											</tbody>
+										</table>
+									</Stack>
+								))}
 							</Stack>
-						))}
-					</Stack>
-				))}
+						)
+					)}
+				</Stack>
 			</Stack>
-		</Stack>
+		</ThemeProvider>
 	);
 }
 
