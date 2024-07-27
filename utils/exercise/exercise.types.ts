@@ -4,4 +4,5 @@ export type Exercise = {
 	musclesTargeted: string;
 	name: string;
 	rating: number;
+	type?: string;
 };
