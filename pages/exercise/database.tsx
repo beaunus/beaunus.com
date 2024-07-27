@@ -20,7 +20,7 @@ import { Exercise } from "../../utils/exercise/exercise.types";
 type Order = "asc" | "desc";
 
 const exercises: (Exercise & { id: number })[] = bodybuildingDotComJSON.map(
-	(element, index) => ({ ...element, id: index })
+	(element, index) => ({ ...element, id: index, name: element.heading })
 );
 
 const descendingComparator = <T,>(a: T, b: T, orderBy: keyof T) =>
