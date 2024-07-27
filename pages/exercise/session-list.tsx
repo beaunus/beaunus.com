@@ -116,7 +116,7 @@ export default function SessionList(props: {
 								padding={1}
 							>
 								<Stack alignItems="center" direction="row" gap={1}>
-									{exercise.type ? <Icon type={exercise.type} /> : null}
+									{exercise.type ? <ExerciseIcon type={exercise.type} /> : null}
 									<Typography>{exercise.name}</Typography>
 								</Stack>
 								<Typography variant="body2">
@@ -131,7 +131,7 @@ export default function SessionList(props: {
 	);
 }
 
-const Icon: React.FC<{ type: string }> = ({ type }) =>
+const ExerciseIcon: React.FC<{ type: string }> = ({ type }) =>
 	type === "Resistance" ? (
 		<FitnessCenterOutlinedIcon fontSize="small" />
 	) : type.includes("Stretch") ? (
