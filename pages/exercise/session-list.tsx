@@ -111,7 +111,6 @@ export default function SessionList(props: {
 								alignItems="center"
 								border={2}
 								borderColor="ButtonShadow"
-								borderRadius={3}
 								key={exercise.name}
 								padding={1}
 							>
@@ -119,9 +118,25 @@ export default function SessionList(props: {
 									{exercise.type ? <ExerciseIcon type={exercise.type} /> : null}
 									<Typography>{exercise.name}</Typography>
 								</Stack>
-								<Typography variant="body2">
+								<Typography variant="caption">
 									{exercise.musclesTargeted}
 								</Typography>
+								<table className="mt-2">
+									<tbody>
+										{Array.from({ length: 2 }).map((_rowValue, rowIndex) => (
+											<tr key={`${exercise.name}-${rowIndex}`}>
+												{Array.from({ length: 8 }).map(
+													(_colValue, colIndex) => (
+														<td
+															className="w-6 h-5 border-2"
+															key={`${exercise.name}-${rowIndex}-${colIndex}`}
+														/>
+													)
+												)}
+											</tr>
+										))}
+									</tbody>
+								</table>
 							</Stack>
 						))}
 					</Stack>
