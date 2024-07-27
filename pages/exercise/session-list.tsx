@@ -81,13 +81,6 @@ export default function SessionList(props: {
 		"order"
 	);
 
-	const Icon: React.FC<{ type: string }> = ({ type }) =>
-		type === "Resistance" ? (
-			<FitnessCenterOutlinedIcon fontSize="small" />
-		) : type.includes("Stretch") ? (
-			<SelfImprovementOutlinedIcon fontSize="small" />
-		) : null;
-
 	return (
 		<Stack alignItems="center" gap={2} padding={2}>
 			<FormControl>
@@ -137,3 +130,10 @@ export default function SessionList(props: {
 		</Stack>
 	);
 }
+
+const Icon: React.FC<{ type: string }> = ({ type }) =>
+	type === "Resistance" ? (
+		<FitnessCenterOutlinedIcon fontSize="small" />
+	) : type.includes("Stretch") ? (
+		<SelfImprovementOutlinedIcon fontSize="small" />
+	) : null;
