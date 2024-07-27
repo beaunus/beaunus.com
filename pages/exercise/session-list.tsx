@@ -23,7 +23,7 @@ export const getServerSideProps = async () => {
 			.map((response) => (response as PageObjectResponse).properties)
 			// @ts-expect-error Property 'multi_select' does not exist on type '{ type: "number"; number: number | null; id: string; }'.ts(2339)
 			.flatMap((property) => property["Session Name"].multi_select)
-			.map((thing) => [thing.id, thing.name])
+			.map((sessionOption) => [sessionOption.id, sessionOption.name])
 	);
 
 	const exercisesBySessionId = Object.fromEntries(
