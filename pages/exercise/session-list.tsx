@@ -77,9 +77,7 @@ export default function SessionList(props: {
 	);
 
 	const sortedExercisesByOrderNumber = _.groupBy(
-		props.exercisesBySessionId[selectedSessionId].sort(
-			(a, b) => a.order - b.order
-		),
+		_.sortBy(props.exercisesBySessionId[selectedSessionId], "order"),
 		"order"
 	);
 
