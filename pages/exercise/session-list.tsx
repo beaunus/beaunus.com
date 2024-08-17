@@ -45,20 +45,15 @@ export const getServerSideProps = async () => {
 				_.sortBy(
 					resultsForThisSession.map<
 						Pick<Exercise, "link" | "musclesTargeted" | "name" | "type">
-					>((pageObjectResponse) => ({
-						// @ts-expect-error Property 'properties' does not exist on type 'PartialPageObjectResponse'.ts(2339)
-						link: pageObjectResponse.properties.Link.url,
-						// @ts-expect-error Property 'properties' does not exist on type 'PartialPageObjectResponse'.ts(2339)
-						musclesTargeted: pageObjectResponse.properties[
-							"Muscle Targeted"
-							// @ts-expect-error Binding element 'name' implicitly has an 'any' type.ts(7031)
-						].multi_select.map(({ name }) => name),
-						// @ts-expect-error Property 'properties' does not exist on type 'PartialPageObjectResponse'.ts(2339)
-						name: pageObjectResponse.properties.Name.title[0].text.content,
-						// @ts-expect-error Property 'properties' does not exist on type 'PartialPageObjectResponse'.ts(2339)
-						order: pageObjectResponse.properties.Order.number,
-						// @ts-expect-error Property 'properties' does not exist on type 'PartialPageObjectResponse'.ts(2339)
-						type: pageObjectResponse.properties.Type.select?.name ?? "",
+						// @ts-expect-error Property 'properties' does not exist on type 'PageObjectResponse | PartialPageObjectResponse | PartialDatabaseObjectResponse | DatabaseObjectResponse'.ts(2339)
+					>(({ properties }) => ({
+						link: properties.Link.url,
+						musclesTargeted: properties["Muscle Targeted"].multi_select.map(
+							({ name }: { name: string }) => name
+						),
+						name: properties.Name.title[0].text.content,
+						order: properties.Order.number,
+						type: properties.Type.select?.name ?? "",
 					})),
 					"order",
 					"name"
