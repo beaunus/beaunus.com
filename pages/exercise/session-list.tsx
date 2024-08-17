@@ -22,43 +22,49 @@ export const getServerSideProps = async () => {
 	const sessionById = Object.fromEntries(
 		queryDatabaseResponse.results
 			.map((response) => (response as PageObjectResponse).properties)
-			// @ts-expect-error Property 'multi_select' does not exist on type '{ type: "number"; number: number | null; id: string; }'.ts(2339)
-			.flatMap((property) => property["Session Name"].multi_select)
+			// @ts-expect-error Property 'select' does not exist on type '{ type: "number"; number: number | null; id: string; }'.ts(2339)
+			.flatMap((property) => property["Session Name"].select)
+			.filter(Boolean)
 			.map((sessionOption) => [sessionOption.id, sessionOption.name])
 	);
 
 	const exercisesBySessionId = Object.fromEntries(
-		Object.keys(sessionById).map((sessionId) => [
-			sessionId,
-			_.sortBy(
-				queryDatabaseResponse.results
-					.filter((response) =>
+		Object.keys(sessionById).map((sessionId) => {
+			const resultsForThisSession = queryDatabaseResponse.results.filter(
+				(response) => {
+					return (
 						(response as PageObjectResponse).properties[
 							"Session Name"
-							// @ts-expect-error Property 'multi_select' does not exist on type '{ type: "number"; number: number | null; id: string; }'.ts(2339)
-						].multi_select.find(({ id }: { id: string }) => id === sessionId)
-					)
-					.map<Pick<Exercise, "link" | "musclesTargeted" | "name" | "type">>(
-						(pageObjectResponse) => ({
-							// @ts-expect-error Property 'properties' does not exist on type 'PartialPageObjectResponse'.ts(2339)
-							link: pageObjectResponse.properties.Link.url,
-							// @ts-expect-error Property 'properties' does not exist on type 'PartialPageObjectResponse'.ts(2339)
-							musclesTargeted: pageObjectResponse.properties[
-								"Muscle Targeted"
-								// @ts-expect-error Binding element 'name' implicitly has an 'any' type.ts(7031)
-							].multi_select.map(({ name }) => name),
-							// @ts-expect-error Property 'properties' does not exist on type 'PartialPageObjectResponse'.ts(2339)
-							name: pageObjectResponse.properties.Name.title[0].text.content,
-							// @ts-expect-error Property 'properties' does not exist on type 'PartialPageObjectResponse'.ts(2339)
-							order: pageObjectResponse.properties.Order.number,
-							// @ts-expect-error Property 'properties' does not exist on type 'PartialPageObjectResponse'.ts(2339)
-							type: pageObjectResponse.properties.Type.select.name,
-						})
-					),
-				"order",
-				"name"
-			),
-		])
+							// @ts-expect-error Property 'select' does not exist on type '{ type: "number"; number: number | null; id: string; }'.ts(2339)
+						]?.select?.id === sessionId
+					);
+				}
+			);
+			return [
+				sessionId,
+				_.sortBy(
+					resultsForThisSession.map<
+						Pick<Exercise, "link" | "musclesTargeted" | "name" | "type">
+					>((pageObjectResponse) => ({
+						// @ts-expect-error Property 'properties' does not exist on type 'PartialPageObjectResponse'.ts(2339)
+						link: pageObjectResponse.properties.Link.url,
+						// @ts-expect-error Property 'properties' does not exist on type 'PartialPageObjectResponse'.ts(2339)
+						musclesTargeted: pageObjectResponse.properties[
+							"Muscle Targeted"
+							// @ts-expect-error Binding element 'name' implicitly has an 'any' type.ts(7031)
+						].multi_select.map(({ name }) => name),
+						// @ts-expect-error Property 'properties' does not exist on type 'PartialPageObjectResponse'.ts(2339)
+						name: pageObjectResponse.properties.Name.title[0].text.content,
+						// @ts-expect-error Property 'properties' does not exist on type 'PartialPageObjectResponse'.ts(2339)
+						order: pageObjectResponse.properties.Order.number,
+						// @ts-expect-error Property 'properties' does not exist on type 'PartialPageObjectResponse'.ts(2339)
+						type: pageObjectResponse.properties.Type.select?.name ?? "",
+					})),
+					"order",
+					"name"
+				),
+			];
+		})
 	);
 
 	return { props: { exercisesBySessionId, sessionById } };
