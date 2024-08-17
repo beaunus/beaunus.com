@@ -145,7 +145,11 @@ export default function SessionList(props: {
 																direction="row"
 																gap={1}
 															>
-																<Typography textAlign="center" variant="h6">
+																<Typography
+																	className="capitalize"
+																	textAlign="center"
+																	variant="h6"
+																>
 																	<Link href={exercise.link}>
 																		{exercise.name}
 																	</Link>
