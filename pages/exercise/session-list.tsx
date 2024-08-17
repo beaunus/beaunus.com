@@ -42,6 +42,7 @@ export const getServerSideProps = async () => {
 						Pick<Exercise, "link" | "musclesTargeted" | "name" | "type">
 						// @ts-expect-error Property 'properties' does not exist on type 'PageObjectResponse | PartialPageObjectResponse | PartialDatabaseObjectResponse | DatabaseObjectResponse'.ts(2339)
 					>(({ properties }) => ({
+						isSuperset: properties.isSuperset.checkbox,
 						link: properties.Link.url,
 						musclesTargeted: properties["Muscle Targeted"].multi_select.map(
 							({ name }: { name: string }) => name
@@ -61,12 +62,7 @@ export const getServerSideProps = async () => {
 };
 
 export default function SessionList(props: {
-	exercisesBySessionId: Record<
-		string,
-		(Pick<Exercise, "name" | "link" | "musclesTargeted" | "type"> & {
-			order: number;
-		})[]
-	>;
+	exercisesBySessionId: Record<string, (Exercise & { order: number })[]>;
 	sessionById: Record<string, string>;
 }) {
 	const [selectedSessionId, setSelectedSessionId] = React.useState(
@@ -74,7 +70,11 @@ export default function SessionList(props: {
 	);
 
 	const sortedExercisesByOrderNumber = _.groupBy(
-		_.sortBy(props.exercisesBySessionId[selectedSessionId], "order"),
+		_.sortBy(
+			props.exercisesBySessionId[selectedSessionId],
+			"order",
+			"isSuperset"
+		),
 		"order"
 	);
 
@@ -103,47 +103,81 @@ export default function SessionList(props: {
 				</FormControl>
 				<Stack alignItems="center" gap={1}>
 					{Object.values(sortedExercisesByOrderNumber).map(
-						(exercises, index) => (
-							<Stack direction="row" gap={1} key={`exercises-${index}`}>
-								{exercises.map((exercise) => (
-									<Stack
-										alignItems="center"
-										border={2}
-										borderColor="ButtonShadow"
-										gap={0}
-										key={exercise.name}
-										padding={1}
-									>
-										<Stack alignItems="center" direction="row" gap={1}>
-											<Typography>
-												<Link href={exercise.link}>{exercise.name}</Link>
-											</Typography>
-										</Stack>
-										<Typography variant="caption">
-											{exercise.musclesTargeted}
-										</Typography>
-										<table className="mt-1">
-											<tbody>
-												{Array.from({ length: 2 }).map(
-													(_rowValue, rowIndex) => (
-														<tr key={`${exercise.name}-${rowIndex}`}>
-															{Array.from({ length: 8 }).map(
-																(_colValue, colIndex) => (
-																	<td
-																		className="w-6 h-5 border-2"
-																		key={`${exercise.name}-${rowIndex}-${colIndex}`}
-																	/>
-																)
-															)}
-														</tr>
-													)
-												)}
-											</tbody>
-										</table>
+						(exercises, index) => {
+							const doesContainSupersetExercises = exercises.find(
+								(exercise) => exercise.isSuperset
+							);
+							return (
+								<Stack
+									alignItems="center"
+									gap={1}
+									key={`exercises-${index}`}
+									{...(doesContainSupersetExercises ? { padding: 1 } : {})}
+								>
+									{doesContainSupersetExercises ? (
+										<Typography variant="h6">SUPERSET</Typography>
+									) : null}
+									<Stack direction="row" gap={1}>
+										{Object.entries(_.groupBy(exercises, "isSuperset")).map(
+											([isSuperset, exercisesForThisSubset]) => (
+												<Stack
+													border={1}
+													borderColor="#333"
+													direction="row"
+													gap={1}
+													key={`exercises-${index}-${isSuperset}`}
+													padding={1}
+												>
+													{exercisesForThisSubset.map((exercise) => (
+														<Stack
+															alignItems="center"
+															border={2}
+															borderColor="ButtonShadow"
+															gap={0}
+															key={exercise.name}
+															padding={1}
+														>
+															<Stack
+																alignItems="center"
+																direction="row"
+																gap={1}
+															>
+																<Typography>
+																	<Link href={exercise.link}>
+																		{exercise.name}
+																	</Link>
+																</Typography>
+															</Stack>
+															<Typography variant="caption">
+																{exercise.musclesTargeted}
+															</Typography>
+															<table className="mt-1">
+																<tbody>
+																	{Array.from({ length: 2 }).map(
+																		(_rowValue, rowIndex) => (
+																			<tr key={`${exercise.name}-${rowIndex}`}>
+																				{Array.from({ length: 8 }).map(
+																					(_colValue, colIndex) => (
+																						<td
+																							className="w-6 h-5 border-2"
+																							key={`${exercise.name}-${rowIndex}-${colIndex}`}
+																						/>
+																					)
+																				)}
+																			</tr>
+																		)
+																	)}
+																</tbody>
+															</table>
+														</Stack>
+													))}
+												</Stack>
+											)
+										)}
 									</Stack>
-								))}
-							</Stack>
-						)
+								</Stack>
+							);
+						}
 					)}
 				</Stack>
 			</Stack>
