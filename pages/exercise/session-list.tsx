@@ -31,14 +31,11 @@ export const getServerSideProps = async () => {
 	const exercisesBySessionId = Object.fromEntries(
 		Object.keys(sessionById).map((sessionId) => {
 			const resultsForThisSession = queryDatabaseResponse.results.filter(
-				(response) => {
-					return (
-						(response as PageObjectResponse).properties[
-							"Session Name"
-							// @ts-expect-error Property 'select' does not exist on type '{ type: "number"; number: number | null; id: string; }'.ts(2339)
-						]?.select?.id === sessionId
-					);
-				}
+				(response) =>
+					(response as PageObjectResponse).properties[
+						"Session Name"
+						// @ts-expect-error Property 'select' does not exist on type '{ type: "number"; number: number | null; id: string; }'.ts(2339)
+					]?.select?.id === sessionId
 			);
 			return [
 				sessionId,
