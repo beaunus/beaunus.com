@@ -1,5 +1,3 @@
-import FitnessCenterOutlinedIcon from "@mui/icons-material/FitnessCenterOutlined";
-import SelfImprovementOutlinedIcon from "@mui/icons-material/SelfImprovementOutlined";
 import { createTheme, Stack, ThemeProvider, Typography } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -117,9 +115,6 @@ export default function SessionList(props: {
 										padding={1}
 									>
 										<Stack alignItems="center" direction="row" gap={1}>
-											{exercise.type ? (
-												<ExerciseIcon type={exercise.type} />
-											) : null}
 											<Typography>
 												<Link href={exercise.link}>{exercise.name}</Link>
 											</Typography>
@@ -155,10 +150,3 @@ export default function SessionList(props: {
 		</ThemeProvider>
 	);
 }
-
-const ExerciseIcon: React.FC<{ type: string }> = ({ type }) =>
-	type === "Resistance" ? (
-		<FitnessCenterOutlinedIcon fontSize="small" />
-	) : type.includes("Stretch") ? (
-		<SelfImprovementOutlinedIcon fontSize="small" />
-	) : null;
