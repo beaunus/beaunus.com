@@ -20,7 +20,7 @@ import { Exercise } from "../../utils/exercise/exercise.types";
 type Order = "asc" | "desc";
 
 const exercises: (Exercise & { id: number })[] = bodybuildingDotComJSON.map(
-	(element, index) => ({ ...element, id: index, name: element.heading })
+	(element, index) => ({ ...element, id: index })
 );
 
 const descendingComparator = <T,>(a: T, b: T, orderBy: keyof T) =>
@@ -35,7 +35,7 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
 	{ disablePadding: true, id: "name", label: "Exercise" },
-	{ disablePadding: false, id: "equipmentType", label: "Equipment Type" },
+	{ disablePadding: false, id: "equipmentTypes", label: "Equipment Types" },
 	{ disablePadding: false, id: "musclesTargeted", label: "Muscles Targeted" },
 	{ disablePadding: false, id: "rating", isNumeric: true, label: "Rating" },
 ];
@@ -90,7 +90,7 @@ const colorByMusclesTargeted = Object.fromEntries(
 );
 
 const uniqueEquipmentTypes = Array.from(
-	new Set(exercises.flatMap((exercise) => exercise.equipmentType))
+	new Set(exercises.flatMap((exercise) => exercise.equipmentTypes))
 ).sort();
 
 const colorByEquipmentType = Object.fromEntries(
@@ -209,9 +209,16 @@ export default function EnhancedTable() {
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - exercises.length) : 0;
 
 	const visibleRows = React.useMemo(() => {
-		const shouldShowExercise = ({ equipmentType, musclesTargeted }: Exercise) =>
-			musclesTargetedToDisplay.includes(musclesTargeted) &&
-			equipmentTypesToDisplay.includes(equipmentType);
+		const shouldShowExercise = ({
+			equipmentTypes,
+			musclesTargeted,
+		}: Exercise) =>
+			musclesTargetedToDisplay.some((muscleTargeted) =>
+				musclesTargeted.includes(muscleTargeted)
+			) &&
+			equipmentTypesToDisplay.some((equipmentType) =>
+				equipmentTypes.includes(equipmentType)
+			);
 
 		return exercises
 			.filter(shouldShowExercise)
@@ -272,10 +279,10 @@ export default function EnhancedTable() {
 									</TableCell>
 									<TableCell>
 										<Chip
-											label={row.equipmentType}
+											label={row.equipmentTypes}
 											style={{
 												backgroundColor:
-													colorByEquipmentType[row.equipmentType],
+													colorByEquipmentType[row.equipmentTypes[0]],
 											}}
 										/>
 									</TableCell>
@@ -284,7 +291,7 @@ export default function EnhancedTable() {
 											label={row.musclesTargeted}
 											style={{
 												backgroundColor:
-													colorByMusclesTargeted[row.musclesTargeted],
+													colorByMusclesTargeted[row.musclesTargeted[0]],
 											}}
 										/>
 									</TableCell>

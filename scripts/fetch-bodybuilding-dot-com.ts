@@ -23,20 +23,24 @@ function fetchBatch(batchNumber = 1): Promise<Exercise[]> {
 		.then((html) => parse(html))
 		.then((dom) =>
 			dom.querySelectorAll(".ExResult-row").map((row) => ({
-				equipmentType: row
-					.querySelectorAll(".ExResult-equipmentType a")
-					.map((element) => element.textContent.trim())
-					.join(""),
+				equipmentTypes: [
+					row
+						.querySelectorAll(".ExResult-equipmentType a")
+						.map((element) => element.textContent.trim())
+						.join(""),
+				],
 				images: row
 					.querySelectorAll("img.ExResult-img")
 					.map((element) => element?.attributes?.src ?? ""),
 				link:
 					row.querySelector(".ExResult-resultsHeading a")?.attributes?.href ??
 					"",
-				musclesTargeted: row
-					.querySelectorAll(".ExResult-muscleTargeted a")
-					.map((element) => element.textContent.trim())
-					.join(""),
+				musclesTargeted: [
+					row
+						.querySelectorAll(".ExResult-muscleTargeted a")
+						.map((element) => element.textContent.trim())
+						.join(""),
+				],
 				name:
 					row.querySelector(".ExResult-resultsHeading")?.textContent.trim() ??
 					"",
