@@ -42,6 +42,9 @@ export const getServerSideProps = async () => {
 						Pick<Exercise, "link" | "musclesTargeted" | "name" | "type">
 						// @ts-expect-error Property 'properties' does not exist on type 'PageObjectResponse | PartialPageObjectResponse | PartialDatabaseObjectResponse | DatabaseObjectResponse'.ts(2339)
 					>(({ properties }) => ({
+						equipmentTypes: properties["Equipment Types"].multi_select.map(
+							({ name }: { name: string }) => name
+						),
 						isSuperset: properties.isSuperset.checkbox,
 						link: properties.Link.url,
 						musclesTargeted: properties["Muscle Targeted"].multi_select.map(
@@ -148,8 +151,12 @@ export default function SessionList(props: {
 																	</Link>
 																</Typography>
 															</Stack>
-															<Typography variant="caption">
+															<Typography variant="subtitle2">
 																{exercise.musclesTargeted.join(" + ")}
+															</Typography>
+															<Typography variant="caption">
+																{exercise.equipmentTypes.join(" + ") ||
+																	"No Equipment"}
 															</Typography>
 															<table className="mt-1">
 																<tbody>

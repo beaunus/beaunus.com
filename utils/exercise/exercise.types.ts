@@ -1,5 +1,5 @@
 export type Exercise = {
-	equipmentType: string;
+	equipmentTypes: string[];
 	isSuperset: boolean;
 	link: string;
 	musclesTargeted: string[];
