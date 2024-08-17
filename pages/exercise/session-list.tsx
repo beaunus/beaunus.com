@@ -137,31 +137,33 @@ export default function SessionList(props: {
 															border={2}
 															borderColor="ButtonShadow"
 															gap={0}
+															justifyContent="space-between"
 															key={exercise.name}
 															padding={1}
 														>
-															<Stack
-																alignItems="center"
-																direction="row"
-																gap={1}
-															>
-																<Typography
-																	className="capitalize"
-																	textAlign="center"
-																	variant="h6"
+															<Stack alignItems="center">
+																<Stack
+																	alignItems="center"
+																	direction="row"
+																	gap={1}
 																>
-																	<Link href={exercise.link}>
-																		{exercise.name}
-																	</Link>
+																	<Typography
+																		className="capitalize"
+																		textAlign="center"
+																	>
+																		<Link href={exercise.link}>
+																			{exercise.name}
+																		</Link>
+																	</Typography>
+																</Stack>
+																<Typography variant="subtitle2">
+																	{exercise.musclesTargeted.join(" + ")}
+																</Typography>
+																<Typography variant="caption">
+																	{exercise.equipmentTypes.join(" + ") ||
+																		"No Equipment"}
 																</Typography>
 															</Stack>
-															<Typography variant="subtitle2">
-																{exercise.musclesTargeted.join(" + ")}
-															</Typography>
-															<Typography variant="caption">
-																{exercise.equipmentTypes.join(" + ") ||
-																	"No Equipment"}
-															</Typography>
 															<table className="mt-1">
 																<tbody>
 																	{Array.from({ length: 2 }).map(
