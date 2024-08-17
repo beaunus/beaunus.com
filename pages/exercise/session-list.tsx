@@ -149,7 +149,7 @@ export default function SessionList(props: {
 																</Typography>
 															</Stack>
 															<Typography variant="caption">
-																{exercise.musclesTargeted}
+																{exercise.musclesTargeted.join(" + ")}
 															</Typography>
 															<table className="mt-1">
 																<tbody>
