@@ -76,9 +76,9 @@ fetchExercises().then((exercises) => {
 		const filePath = path.join(
 			__dirname,
 			"..",
-			"pages",
+			"utils",
 			"exercise",
-			"exercises.json"
+			"bodybuilding-dot-com.json"
 		);
 		fs.writeFileSync(filePath, JSON.stringify(exercises));
 	} catch (err) {
